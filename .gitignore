@@ -1,0 +1,28 @@
+# Videodateien und Zwischenstände bleiben lokal — niemals ins Repo.
+# Ein 2h-Quellvideo sind 5-15 GB.
+work/
+*.mp4
+*.mkv
+*.webm
+*.wav
+*.m4a
+*.jpg
+*.png
+
+# Maschinenspezifische Überschreibungen (Pfade, Encoder, Keys)
+config/local.toml
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Ausnahme: Artefakte sind winzig und teuer erzeugt — die reisen mit.
+!data/artifacts/**

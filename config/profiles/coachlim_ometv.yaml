@@ -1,0 +1,60 @@
+# Materialprofil: Coachlim / OME.TV
+#
+# Beschreibt die Geometrie der QUELLE, nicht die Zielkomposition.
+# Gemessen am 2026-09-02 an hXpIyLxaLEQ (Coachlim Highlights), Frame bei 04:00.
+#
+# Der Bildaufbau ist ein Browser-Capture. Die Boxen sind über das ganze Video
+# statisch — deshalb reicht dieses Profil und es braucht keine Detektion.
+
+name: COACHLIM_OMETV
+beschreibung: Deutscher OME.TV-Reaction-Stream, Browser-Capture mit zwei festen Kameraboxen
+gueltig_ab: 2026-09-02
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele:
+    - Coachlim
+    - Coachlim Highlights
+    - Coachlim Reactions
+  sprache: de
+
+# x, y, w, h in Quellpixeln
+zonen:
+  fremden_cam:
+    box: [0, 0, 955, 800]
+    rolle: partner
+    hinweis: Wechselnde Belichtung, oft dunkel. Zeigt fremde Privatpersonen.
+
+  creator_cam:
+    box: [955, 0, 945, 800]
+    rolle: creator
+    hinweis: Trägt die Reaktion. Das eigentliche Signal des Clips.
+
+  twitch_chat:
+    box: [1620, 40, 280, 150]
+    rolle: overlay
+    hinweis: Liegt in der Creator-Cam. Beim Stapeln wird es mitgeschnitten.
+
+  sponsor_logo:
+    box: [0, 0, 160, 70]
+    rolle: overlay
+    hinweis: Überlagert die Fremden-Cam oben links.
+
+  muellzone:
+    box: [0, 800, 1920, 280]
+    rolle: verwerfen
+    hinweis: OME.TV-Buttons, leeres Chatfenster, Browser-Scrollbar.
+
+# Blur ist bewusst deaktiviert (Entscheidung des Nutzers vom 2026-09-02).
+# Der Schalter bleibt bestehen, damit er ohne Umbau aktivierbar ist.
+datenschutz:
+  fremden_cam_blur: false
+
+# Welche Signale bei diesem Material zählen. Gewichte fließen in die
+# Kandidatenbildung (Stage 05), nicht in die AI-Selektion.
+signale:
+  lachmarker: 1.0        # [gelächter] aus dem YouTube-Transkript
+  loudness_peak: 0.8
+  sprechtempo: 0.5
+  szenenwechsel: 0.3     # bei OME.TV = "Weiter"-Klick, oft Clipgrenze

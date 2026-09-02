@@ -1,0 +1,54 @@
+# Gemeinsame Einstellungen. Wandert mit dem Repo auf jede Maschine.
+# Maschinenspezifisches gehört in config/local.toml (nicht im Repo).
+
+[output]
+width = 1080
+height = 1920
+fps = 30
+target_lufs = -14.0
+
+[monetarisierung]
+# TikTok Creator Rewards verlangt *über* eine Minute, nicht exakt 60 s.
+# Encoder runden auf Frame-Grenzen, deshalb Sicherheitsabstand.
+# Programmbedingungen ändern sich — dieser Wert ist bewusst Konfiguration.
+tier_a_min_sekunden = 63.0
+tier_a_ziel_min = 65.0
+tier_a_ziel_max = 85.0
+
+[ingest]
+# yt-dlp wählt sonst AV1. Die RX 580 hat dafür kein Hardware-Decode.
+# Auf Apple Silicon unkritisch, aber einheitlich zu halten ist einfacher.
+format_selector = "bv[vcodec^=avc1][height<=1080]+ba/b[height<=1080]"
+# --download-sections brauchte über 7 Minuten für 2 Sekunden. Nie benutzen.
+download_sections = false
+max_retries = 5
+
+[transkript]
+# YouTube de-orig im json3-Format hat Wort-Offsets, Satzzeichen und
+# [gelächter]-Marker. Primärquelle; eigene ASR nur als Fallback.
+quelle = "youtube"
+youtube_sub_lang = "de-orig"
+asr_fallback = "whisper"
+whisper_model = "large-v3-turbo"
+
+[selektion]
+kandidaten_pro_video = 25
+min_score = 0.45
+
+# ---------------------------------------------------------------------------
+# Plattformabhängig. Genau drei Stellen — mehr darf es nicht werden.
+# ---------------------------------------------------------------------------
+
+[platform.win32]
+work_dir = "F:/videoclipper"        # C: hat nur ~80 GB frei
+encoder = "libx264"                 # kein NVENC; h264_amf nur für Previews
+preview_encoder = "libx264"
+hwaccel = "d3d11va"
+asr_backend = "cpu"
+
+[platform.darwin]
+work_dir = "~/videoclipper"         # 256 GB intern: nur für Einzelvideos
+encoder = "h264_videotoolbox"
+preview_encoder = "h264_videotoolbox"
+hwaccel = "videotoolbox"
+asr_backend = "mlx"                 # Neural Engine, deutlich schneller

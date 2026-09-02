@@ -1,0 +1,52 @@
+# Template: OME_STACK
+#
+# Beschreibt die ZIELKOMPOSITION, unabhängig von der Quelle.
+# Aus den Referenz-Shorts gemessen (NextGenClips), nicht erfunden.
+#
+# Zwei Quellboxen à ~950x800 werden auf 1080 Breite skaliert (je ~1080x909)
+# und übereinander gestapelt: 1818 px in einem 1920-px-Rahmen.
+
+name: OME_STACK
+beschreibung: Fremden-Cam oben, Creator-Cam unten, statische Headline auf der Naht
+default_fuer: [COACHLIM_OMETV]
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: fremden_cam
+    ziel: [0, 51, 1080, 909]
+  - quelle: creator_cam
+    ziel: [0, 960, 1080, 909]
+
+hintergrund:
+  # Die 102 px Rest oben und unten. Blur des jeweils angrenzenden Panels.
+  modus: blur
+  staerke: 24
+
+headline:
+  # Zentraler Befund der Materialanalyse: Die Headline ist über die volle
+  # Cliplänge pixelgleich statisch. Kein Karaoke, keine Animation.
+  statisch: true
+  quelle: editplan.headline      # das einzige Textfeld, das die AI liefert
+  schrift: Anton                 # OFL, kommerzielle Nutzung gedeckt
+  schriftgroesse: 64
+  versalien: true
+  farbe: "&HFFFFFF"
+  rand_farbe: "&H000000"
+  rand_staerke: 9
+  y: 940                         # auf der Naht zwischen den Panels
+  max_breite: 1000
+  # Renderpfad ist ASS/libass mit explizitem fontfile.
+  # FFmpeg drawtext segfaultet auf dem Windows-Rechner (fontconfig fehlt).
+  renderer: ass
+
+branding:
+  # Platzhalter — muss durch die eigene Marke ersetzt werden.
+  # Die Referenzkanäle nutzen eine abgerundete Pille unten mittig.
+  aktiv: false
+  text: "TODO"
+  y: 1790
+
+audio:
+  normalisieren: true
+  ziel_lufs: -14.0
