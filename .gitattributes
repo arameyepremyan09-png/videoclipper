@@ -1,0 +1,9 @@
+# Einheitliche Zeilenenden über Windows und macOS hinweg.
+# Ohne das erzeugt jeder Maschinenwechsel Diffs über ganze Dateien.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.mp4 binary
+*.ttf binary
+*.otf binary
