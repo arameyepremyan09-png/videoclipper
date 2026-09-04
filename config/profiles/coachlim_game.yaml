@@ -1,0 +1,51 @@
+# Materialprofil: Coachlim / Gameplay mit Facecam
+#
+# Gemessen am 2026-09-04 an LnWKgVfcMMQ ("Mimic Party"), Kanten ueber 10 Frames
+# gemittelt: x=1415 (Staerke 17.0) und y=284 (Staerke 28.5) sind dominant.
+# Die Facecam ist damit 505x284 — exakt 16:9.
+#
+# Das ist strukturell der Layouttyp, den das Blueprint fuer GTA 6 erwartet:
+# Gameplay traegt das Bild, die Facecam ist ein kleines Overlay.
+
+name: COACHLIM_GAME
+beschreibung: Gameplay im Vollbild, Facecam als PiP oben rechts, Chat am rechten Rand
+gueltig_ab: 2026-09-04
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [Coachlim Highlights]
+  sprache: de
+
+signatur:
+  modus: GAME
+  kante_x: 1415
+  bereich: [20, 260]
+  schwelle: 8.0             # gemessen: GAME 16.7..20.5, SOLO 0.6
+
+modi:
+  GAME:
+    zonen:
+      facecam:  { box: [1415, 0, 505, 284], rolle: creator }        # 16:9
+      # Inhaltszone endet an der Facecam-Kante. Rechts davon liegt zwar noch
+      # Spielflaeche, sie ist aber durchgehend von Facecam und Chat ueberdeckt.
+      # Das ist die einzige Stelle, an der bewusst Inhalt wegfaellt — die
+      # Alternative waere, die Facecam im unteren Panel ein zweites Mal zu zeigen.
+      gameplay: { box: [0, 0, 1415, 1080], rolle: inhalt, fokus_x: 707 }
+    muellzonen:
+      - { box: [1415, 284, 505, 796], hinweis: Twitch-Chat unter der Facecam }
+      - { box: [0, 0, 320, 60], hinweis: Piraten-Zaehler und Rundenanzeige }
+  SOLO:
+    zonen:
+      creator_voll: { box: [0, 0, 1920, 1080], rolle: creator, fokus_x: 960 }
+    muellzonen: []
+
+datenschutz:
+  fremdinhalt_blur: false
+
+signale:
+  # Kein einziger [gelächter]-Marker im Transkript dieses Videos. Der Lacher-
+  # Detektor muss hier aus dem Audiosignal kommen, nicht aus dem Text.
+  lachmarker: 0.0
+  loudness_peak: 1.0
+  sprechtempo: 0.6

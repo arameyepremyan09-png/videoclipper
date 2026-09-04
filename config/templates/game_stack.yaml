@@ -1,0 +1,41 @@
+# Template: GAME_STACK
+#
+# Facecam oben, Gameplay unten. Das Gameplay ist 16:9 und muss fuer 9:16
+# beschnitten werden — mittig um fokus_x, weil die Spielhandlung dort liegt.
+# Der Beschnitt laesst Facecam und Chat am rechten Rand bewusst draussen.
+
+name: GAME_STACK
+beschreibung: Facecam oben, Gameplay unten mittig beschnitten, statische Headline auf der Naht
+default_fuer: [COACHLIM_GAME]
+gilt_fuer_modus: GAME
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: facecam
+    ziel: [0, 0, 1080, 606]
+    passung: einpassen
+  - quelle: gameplay
+    ziel: [0, 606, 1080, 1314]
+    passung: einpassen          # Spielfeld vollstaendig, Reste = Blur
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: editplan.headline
+  schrift: Anton
+  schriftgroesse: 64
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 9
+  y: 606
+  max_breite: 1000
+  max_zeilen: 2
+  renderer: png_overlay
+
+branding: { aktiv: false, text: "TODO", y: 1790 }
+audio:    { normalisieren: true, ziel_lufs: -14.0 }

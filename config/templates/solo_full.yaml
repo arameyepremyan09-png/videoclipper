@@ -1,0 +1,38 @@
+# Template: SOLO_FULL
+#
+# Ein Feed formatfuellend. Entspricht OME_FULL aus dem Blueprint: Wenn nur die
+# Creator-Cam traegt, wird sie mittig um fokus_x auf 9:16 beschnitten statt
+# verkleinert — der Kopf bleibt gross, das ist der Punkt des Formats.
+
+name: SOLO_FULL
+beschreibung: Vollbild-Cam auf 9:16 beschnitten, Headline im oberen Drittel
+default_fuer: [COACHLIM_TIKTOK_REACT, COACHLIM_GAME]
+gilt_fuer_modus: SOLO
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: creator_voll
+    ziel: [0, 0, 1080, 1920]
+    passung: einpassen
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: editplan.headline
+  schrift: Anton
+  schriftgroesse: 64
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 9
+  y: 340                        # oberes Drittel
+  max_breite: 1000
+  max_zeilen: 2
+  renderer: png_overlay
+
+branding: { aktiv: false, text: "TODO", y: 1790 }
+audio:    { normalisieren: true, ziel_lufs: -14.0 }

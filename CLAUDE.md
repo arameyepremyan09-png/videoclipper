@@ -20,6 +20,32 @@ werden dort nachgelesen und dort aktualisiert, nicht neu verhandelt.
 Das Briefing sprach von GTA, das Referenzmaterial ist Reaction-Streaming. Beides gilt:
 Reaction ist das Testfeld, GTA das Ziel.
 
+## Layout ist nicht statisch — gemessen am 2026-09-04
+
+Das Blueprint nimmt an, die Boxen seien ueber ein Video statisch und ein Profil
+reiche deshalb ohne Detektion. **Fuer dieses Material stimmt das nicht.** Beide
+gepruefte Videos wechseln im Sekundenbereich zwischen Layouts. Drei sind
+vermessen, jeweils ueber 10-14 Frames gemittelte Boxkanten:
+
+| Layout | Quelle | Boxen (x, y, w, h) | Anteil |
+|---|---|---|---|
+| `REACT` | wxCFBR1_3to | TikTok-Player `[563,103,513,913]` (9:16), Creator-Cam `[1228,691,692,389]` (16:9) | 45 % |
+| `GAME` | LnWKgVfcMMQ | Facecam `[1415,0,505,284]` (16:9), Spielfeld `[0,0,1415,1080]` | 95 % |
+| `SOLO` | beide | Vollbild-Cam 1920x1080, Creator bei x&nbsp;≈&nbsp;960 | 55 % / 5 % |
+
+Konsequenz fuer die Architektur: Der Modus ist ein **Signal pro Zeitpunkt**
+(Stage 04), kein fester Profilwert. Ein Materialprofil beschreibt deshalb
+mehrere Modi plus eine Erkennungssignatur; das Template haengt am Modus, nicht
+nur am Profil. Clipgrenzen duerfen nie ueber einem Layoutwechsel liegen — die
+Analyse legt dafuer `modus_laeufe` im Artefakt ab.
+
+Erkannt wird ueber eine statische Kante, die es nur im Speziallayout gibt:
+die rechte Playerkante bei `REACT` (gemessen 48..190 gegen 0,6..7 bei `SOLO`),
+die linke Facecam-Kante bei `GAME` (17..21 gegen 0,6). Beide trennen sauber.
+
+`COACHLIM_OMETV` passt auf keines der beiden Videos. Es bleibt unveraendert im
+Repo, ist aber fuer dieses Material nicht anwendbar.
+
 ## Leitprinzipien
 
 1. **Die AI entscheidet WAS, der Code entscheidet WIE.** Das Modell liefert nur
@@ -67,12 +93,45 @@ MacBook Air M4: lüfterlos, drosselt bei längerer Dauerlast.
   Deutsch mit Satzzeichen und `[gelächter]`-Marker. Primäre Transkriptquelle, eigene
   ASR nur als Fallback. Vorsicht: die Rolling-Window-Struktur (`wWinId`/`aAppend`)
   erzeugt bei naivem Parsen Duplikate.
+- **`[gelächter]` ist nicht verlässlich vorhanden.** wxCFBR1_3to hat 9 Marker,
+  LnWKgVfcMMQ **null**. Wo sie fehlen, muss der Lacher-Detektor aus der Lautheit
+  kommen; das Materialprofil gewichtet `lachmarker` dann auf 0.
+- **yt-dlp braucht `--extractor-args "youtube:player_client=web_embedded"`.**
+  Der Default lief reproduzierbar nach ~10 MB in HTTP 403; `android_vr` extrahiert
+  zwar, bricht beim Download aber ebenso ab. Mit `web_embedded` laufen 1080p-avc1
+  vollständig durch.
+- **Ein globaler Lautheitsschwellwert taugt hier nicht.** Ein Reaction-Streamer ist
+  fast durchgehend laut — die Fenster verschmelzen dann zu wenigen Blöcken über
+  Minuten (gemessen: 5 Kandidaten, einer davon 382 s). Stage 05 pflückt deshalb
+  lokale Maxima mit erzwungenem Mindestabstand.
+- **FFmpegs `fps`-Filter läuft gegen die echte Zeitachse weg.** Beim Abtasten des
+  Layouts lagen die Frames um zig Sekunden daneben, obwohl `showinfo` saubere
+  `pts_time` meldete. Abgetastet wird deshalb über echte Bildnummern
+  (`select='not(mod(n,K))'`), das ist driftfrei.
+- **`crop` vor `format=gray` rundet ungerade Kantenmaße still ab** (5 wird zu 4)
+  und verschiebt damit jeden Reshape. `format=gray` gehört vor den Crop.
+- **Panelhöhen müssen gerade sein.** In yuv420p rundet der Scaler jede ungerade
+  Höhe still ab; 607+1313 ergab eine Bühne von 1918 statt 1920 px. Stage 09 prüft
+  das jetzt und bricht ab, statt es dem QC zu überlassen.
 
 ## Look
 
 Statische Headline pro Clip, kein Karaoke — aus dem Referenzmaterial gemessen, nicht
 angenommen. Anton (OFL, kommerziell frei), Versalien, weiß mit dickem schwarzem Rand,
 bei `OME_STACK` auf der Naht zwischen den beiden Panels.
+
+**Renderpfad weicht vom Blueprint ab.** Der FFmpeg-Build auf dem MacBook hat weder
+libass noch drawtext (kein `--enable-libass`, kein `--enable-libfreetype`) — der
+vorgesehene ASS-Pfad ist dort nicht verfügbar. Weil die Headline über die volle
+Cliplänge pixelgleich steht, ist ein einzelnes PNG funktional dasselbe wie ein
+einzelnes ASS-Event, und es hängt an keiner Buildoption. Templates tragen dafür
+`renderer: png_overlay`.
+
+**Inhalt wird vollständig gezeigt, nicht beschnitten.** Inhaltspanels laufen mit
+`passung: einpassen`: Seitenverhältnis bleibt, die Reste tragen einen Blur der
+eigenen Quelle. Einzige bewusste Ausnahme ist die Spielfeldzone bei `GAME`, die an
+der Facecam-Kante endet — rechts davon liegt zwar Spielfläche, sie ist aber
+durchgehend von Facecam und Chat überdeckt.
 
 ## Monetarisierung
 

@@ -1,0 +1,51 @@
+# Materialprofil: Coachlim / TikTok-Reactions
+#
+# Gemessen am 2026-09-04 an wxCFBR1_3to ("TIKTOK REACTIONS #21"), Boxkanten ueber
+# 14 Frames gemittelt. Kanten bei x=563 / x=1076 / y=103 / y=1016 (Player) und
+# x=1228 / y=691 (Creator-PiP) sind dominant und ueber das Video stabil.
+#
+# ABWEICHUNG ZUM BLUEPRINT: Dieses Material hat KEIN statisches Layout. Es
+# wechselt im Sekundenbereich zwischen Browser-Capture und Vollbild-Cam. Das
+# Profil beschreibt deshalb MEHRERE Modi plus je eine Erkennungssignatur; welcher
+# Modus gilt, entscheidet Stage 04 pro Zeitpunkt.
+
+name: COACHLIM_TIKTOK_REACT
+beschreibung: Browser-Capture mit TikTok-Player und Creator-Cam als PiP, wechselnd mit Vollbild-Cam
+gueltig_ab: 2026-09-04
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [Coachlim Reactions]
+  sprache: de
+
+# Erkennung des Speziallayouts: die rechte Kante des TikTok-Players. Sie ist im
+# Browser-Modus immer da und im Vollbild-Modus nie.
+signatur:
+  modus: REACT
+  kante_x: 1076
+  bereich: [250, 900]
+  schwelle: 20.0          # gemessen: REACT 48..190, SOLO 0.6..7
+
+modi:
+  REACT:
+    zonen:
+      tiktok_player: { box: [563, 103, 513, 913], rolle: inhalt }    # 9:16
+      creator_cam:   { box: [1228, 691, 692, 389], rolle: creator }  # 16:9
+    muellzonen:
+      - { box: [0, 0, 563, 1080], hinweis: TikTok-Sidebar }
+      - { box: [1076, 0, 844, 691], hinweis: Empfehlungsspalte und Kommentare }
+      - { box: [0, 1032, 1920, 48], hinweis: Windows-Taskleiste }
+  SOLO:
+    zonen:
+      creator_voll: { box: [0, 0, 1920, 1080], rolle: creator, fokus_x: 960 }
+    muellzonen:
+      - { box: [1580, 700, 340, 380], hinweis: Twitch-Chat-Overlay }
+
+datenschutz:
+  fremdinhalt_blur: false   # Entscheidung des Nutzers vom 2026-09-02, unveraendert
+
+signale:
+  lachmarker: 1.0           # [gelächter] vorhanden: 9 Treffer im Transkript
+  loudness_peak: 0.8
+  sprechtempo: 0.5

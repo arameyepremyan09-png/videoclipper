@@ -1,0 +1,137 @@
+[
+  {
+    "clip_id": "wxCFBR1_3to_001",
+    "modus": "REACT",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "wxCFBR1_3to",
+      "kanal": "Coachlim Reactions",
+      "orig_start": 143.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TIKTOK_REACT",
+    "template": "REACT_STACK",
+    "template_grund": "Durchgehend Browser-Layout; TikTok und Reaktion tragen beide",
+    "timing": {
+      "start": 143.0,
+      "ende": 190.0
+    },
+    "headline": "Sowas habe ich noch nie gesehen",
+    "sprache": "de",
+    "score": {
+      "overall": 0.82,
+      "reaktion": 0.9,
+      "klarheit": 0.75,
+      "payoff": 0.78
+    },
+    "grund": "Lachmarker bei 163 und 196, Reaktion auf Frisur laeuft ueber die ganze Strecke"
+  },
+  {
+    "clip_id": "wxCFBR1_3to_002",
+    "modus": "SOLO",
+    "modus_anteil": 0.0,
+    "quelle": {
+      "video_id": "wxCFBR1_3to",
+      "kanal": "Coachlim Reactions",
+      "orig_start": 274.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TIKTOK_REACT",
+    "template": "SOLO_FULL",
+    "template_grund": "Vollbild-Cam, Monolog ohne Bildinhalt daneben",
+    "timing": {
+      "start": 274.0,
+      "ende": 324.0
+    },
+    "headline": "Die 15 Jahre haben sich gelohnt",
+    "sprache": "de",
+    "score": {
+      "overall": 0.78,
+      "reaktion": 0.7,
+      "klarheit": 0.88,
+      "payoff": 0.72
+    },
+    "grund": "GTA-6-Monolog, sprachlich der klarste Abschnitt des Videos"
+  },
+  {
+    "clip_id": "wxCFBR1_3to_003",
+    "modus": "REACT",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "wxCFBR1_3to",
+      "kanal": "Coachlim Reactions",
+      "orig_start": 328.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TIKTOK_REACT",
+    "template": "REACT_STACK",
+    "template_grund": "Browser-Layout stabil ueber die volle Strecke",
+    "timing": {
+      "start": 328.0,
+      "ende": 361.0
+    },
+    "headline": "Maximaler Scamversuch",
+    "sprache": "de",
+    "score": {
+      "overall": 0.75,
+      "reaktion": 0.82,
+      "klarheit": 0.68,
+      "payoff": 0.76
+    },
+    "grund": "Lachmarker bei 330, klare Zuspitzung auf das Urteil am Ende"
+  },
+  {
+    "clip_id": "wxCFBR1_3to_004",
+    "modus": "SOLO",
+    "modus_anteil": 0.0,
+    "quelle": {
+      "video_id": "wxCFBR1_3to",
+      "kanal": "Coachlim Reactions",
+      "orig_start": 432.0
+    },
+    "tier": "A",
+    "profil": "COACHLIM_TIKTOK_REACT",
+    "template": "SOLO_FULL",
+    "template_grund": "Vollbild-Cam ueber 100 Sekunden am Stueck",
+    "timing": {
+      "start": 432.0,
+      "ende": 500.0
+    },
+    "headline": "Die C-Mini-Taktik schlaegt wieder zu",
+    "sprache": "de",
+    "score": {
+      "overall": 0.79,
+      "reaktion": 0.8,
+      "klarheit": 0.82,
+      "payoff": 0.74
+    },
+    "grund": "Laenge natuerlich gewachsen: Aufbau ab dem Schrei bei 430, kein Strecken noetig"
+  },
+  {
+    "clip_id": "wxCFBR1_3to_005",
+    "modus": "REACT",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "wxCFBR1_3to",
+      "kanal": "Coachlim Reactions",
+      "orig_start": 610.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TIKTOK_REACT",
+    "template": "REACT_STACK",
+    "template_grund": "Dialog im TikTok traegt die Haelfte des Gags",
+    "timing": {
+      "start": 610.0,
+      "ende": 664.0
+    },
+    "headline": "Wegen solcher TikToks haben wir es schwer",
+    "sprache": "de",
+    "score": {
+      "overall": 0.74,
+      "reaktion": 0.72,
+      "klarheit": 0.8,
+      "payoff": 0.78
+    },
+    "grund": "Aufbau im TikTok, Pointe in der Reaktion — klare Zweiteilung"
+  }
+]

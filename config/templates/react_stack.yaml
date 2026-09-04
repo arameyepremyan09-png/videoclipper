@@ -1,0 +1,50 @@
+# Template: REACT_STACK
+#
+# Creator-Cam oben, TikTok-Player unten. Der Player ist in der Quelle bereits
+# 9:16 (513x913) und wird deshalb nie beschnitten, sondern eingepasst; die
+# seitlichen Reste tragen einen Blur des Players selbst.
+
+name: REACT_STACK
+beschreibung: Creator-Cam oben, TikTok-Player unten eingepasst, statische Headline auf der Naht
+default_fuer: [COACHLIM_TIKTOK_REACT]
+gilt_fuer_modus: REACT
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: creator_cam
+    ziel: [0, 0, 1080, 606]     # 16:9 auf volle Breite
+    passung: einpassen
+  - quelle: tiktok_player
+    ziel: [0, 606, 1080, 1314]
+    passung: einpassen          # Seitenverhaeltnis bleibt, Reste = Blur
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: editplan.headline
+  schrift: Anton
+  schriftgroesse: 64
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 9
+  y: 606                        # auf der Naht
+  max_breite: 1000
+  max_zeilen: 2
+  # FFmpeg hat hier weder libass noch drawtext (Build ohne beide). Der Text wird
+  # als PNG erzeugt und per overlay komponiert. Weil die Headline ueber die volle
+  # Cliplaenge pixelgleich steht, ist das zum ASS-Pfad funktional gleichwertig.
+  renderer: png_overlay
+
+branding:
+  aktiv: false
+  text: "TODO"
+  y: 1790
+
+audio:
+  normalisieren: true
+  ziel_lufs: -14.0
