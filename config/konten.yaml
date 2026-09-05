@@ -1,0 +1,32 @@
+# Die eigenen Kanaele. Oeffentliche Profile, deshalb im Repo.
+#
+# `clip sammle` liest hier, welche Profile abgefragt werden. Was jede Plattform
+# oeffentlich herausgibt, steht in `oeffentlich` — alles andere kommt aus dem
+# Creator-Center und muss nachgetragen werden (`clip trage-nach`).
+
+tiktok:
+  handle: haribo.030.clips
+  url: https://www.tiktok.com/@haribo.030.clips
+  # Geprueft am 2026-09-05: liefert ohne Login Views, Likes, Kommentare,
+  # Shares (repost_count) und Saves (save_count) pro Video. Ungewoehnlich
+  # vollstaendig — das ist die belastbarste Datenquelle des Systems.
+  oeffentlich: [views, likes, kommentare, shares, saves, dauer, veroeffentlicht]
+  intern: [avg_watchtime, completion_rate, follows, profilaufrufe]
+
+youtube:
+  handle: hariboclips
+  url: https://www.youtube.com/@hariboclips
+  # Geprueft am 2026-09-05: Views immer, Likes meist, Kommentare selten.
+  # Shares und Saves gibt YouTube oeffentlich nicht heraus.
+  oeffentlich: [views, likes, dauer, veroeffentlicht]
+  intern: [avg_watchtime, completion_rate, shares, follows, kommentare]
+
+instagram:
+  handle: hariboclips
+  url: https://www.instagram.com/hariboclips/
+  # Geprueft am 2026-09-05: hinter Login, yt-dlp-Extractor als broken markiert.
+  # KEIN automatischer Abruf. Alle Werte kommen per `clip trage-nach` oder aus
+  # dem CSV-Export der Professional-Dashboard-Ansicht.
+  oeffentlich: []
+  intern: [views, likes, kommentare, shares, saves, avg_watchtime,
+           completion_rate, follows]

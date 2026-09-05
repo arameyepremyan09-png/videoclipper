@@ -1,0 +1,238 @@
+# Bewertungssystem — Gewichte und Schwellen.
+#
+# Alles hier ist Konfiguration, kein Code. Der Punkt ist derselbe wie bei
+# Profilen und Templates: Was sich am Material oder an den Plattformen aendert,
+# gehoert nicht in Python.
+#
+# HERKUNFT DER ZAHLEN — wichtig zu unterscheiden:
+#   gemessen  = aus den eigenen Posts errechnet, steht in data/performance/
+#   annahme   = Startwert, damit das System ab Post 1 rechnet. Wird ersetzt,
+#               sobald genug eigene Daten da sind (`clip kalibriere`).
+# Jede Annahme ist unten markiert. Keine davon ist gemessen — sie sind
+# Groessenordnungen aus oeffentlichen Branchenwerten, nicht aus diesem Account.
+
+version: 1
+stand: 2026-09-05
+
+# ---------------------------------------------------------------------------
+# Performance-Score: was zaehlt, nachdem der Clip drausssen ist
+# ---------------------------------------------------------------------------
+#
+# Vier Achsen, alle als RATEN, nie als Rohzahlen. Ein Clip mit 1000 Views und
+# 50 Likes ist besser als einer mit 5000 Views und 100 Likes. Rohzahlen wuerden
+# das Gegenteil behaupten.
+#
+# Die Gewichtung folgt dem algorithmischen Wert eines Signals, nicht seiner
+# Haeufigkeit: Ein Share traegt Reichweite direkt weiter, ein Like ist das
+# billigste Signal, das ein Zuschauer geben kann.
+
+performance:
+  achsen:
+    retention:   0.40    # Completion-Rate + absolute Watchtime
+    engagement:  0.30    # Shares, Saves, Kommentare, Likes — gewichtet
+    konversion:  0.20    # Follows pro View. Das Ziel des Accounts.
+    reichweite:  0.10    # Views relativ zum eigenen Median, logarithmisch
+
+  # Innerhalb der Engagement-Achse. Reihenfolge ist Absicht.
+  engagement_gewichte:
+    share:    0.35       # multipliziert Reichweite direkt
+    save:     0.30       # staerkstes Qualitaetssignal
+    kommentar: 0.20      # kostet den Zuschauer am meisten Aufwand
+    like:     0.15       # billigstes Signal
+
+  # Retention-Achse: Completion-Rate zaehlt mehr als absolute Sekunden, aber
+  # nicht allein — 100 % bei 8 Sekunden ist nicht dasselbe wie 60 % bei 70.
+  retention_gewichte:
+    completion_rate: 0.65
+    watchtime_abs:   0.35
+
+# ---------------------------------------------------------------------------
+# Benchmarks — ALLES ANNAHMEN, bis eigene Daten sie ersetzen
+# ---------------------------------------------------------------------------
+#
+# Sie legen fest, was "50 Punkte" bedeutet, solange weniger als
+# `min_posts_fuer_eigenen_median` eigene Posts pro Plattform vorliegen.
+# Danach rechnet das System gegen den eigenen Median und diese Werte
+# dienen nur noch als Plausibilitaetsrahmen.
+
+min_posts_fuer_eigenen_median: 8
+
+# ---------------------------------------------------------------------------
+# Kleine Zahlen — die wichtigste Schutzregel des Systems
+# ---------------------------------------------------------------------------
+#
+# GEMESSEN am 2026-09-05, beim ersten Lauf ueber die eigenen Posts: Ein
+# YouTube-Short mit 4 Views und 1 Like ergibt eine Like-Rate von 25 % und
+# landete damit auf Platz 1 von 10 — vor einem TikTok mit 1021 Views. Eine
+# Rate aus vier Beobachtungen ist Rauschen, kein Signal.
+#
+# Gegenmittel: Jede Rate wird zum Benchmark-Mittelwert hingezogen, gewichtet
+# mit der Zahl der Views. Bei wenigen Views bleibt der Score nahe der Mitte,
+# bei vielen setzen sich die echten Daten durch.
+#
+#     geglaettet = (ereignisse + m * p0) / (views + m)
+#
+# `prior_views` ist das m: die Zahl an Views, ab der die eigenen Daten den
+# Benchmark ueberstimmen. 150 heisst — bei 150 Views zaehlen Messung und
+# Annahme gleich viel.
+
+glaettung:
+  prior_views: 150
+  # Darunter wird ueberhaupt kein belastbares Urteil gemeldet. Der Score wird
+  # trotzdem gerechnet, aber als unsicher markiert.
+  min_views_fuer_urteil: 100
+
+benchmarks:
+  tiktok:
+    completion_rate: { schwach: 0.20, mittel: 0.45, stark: 0.70 }   # annahme
+    watchtime_abs:   { schwach: 5.0,  mittel: 15.0, stark: 30.0 }   # annahme, Sekunden
+    like_rate:       { schwach: 0.02, mittel: 0.05, stark: 0.10 }   # annahme
+    kommentar_rate:  { schwach: 0.001, mittel: 0.005, stark: 0.015 } # annahme
+    share_rate:      { schwach: 0.002, mittel: 0.010, stark: 0.025 } # annahme
+    save_rate:       { schwach: 0.003, mittel: 0.012, stark: 0.030 } # annahme
+    follow_rate:     { schwach: 0.0005, mittel: 0.003, stark: 0.010 } # annahme
+  youtube:
+    completion_rate: { schwach: 0.25, mittel: 0.50, stark: 0.75 }   # annahme
+    watchtime_abs:   { schwach: 5.0,  mittel: 15.0, stark: 30.0 }   # annahme
+    like_rate:       { schwach: 0.01, mittel: 0.035, stark: 0.08 }  # annahme
+    kommentar_rate:  { schwach: 0.0005, mittel: 0.002, stark: 0.008 } # annahme
+    share_rate:      { schwach: 0.001, mittel: 0.005, stark: 0.015 } # annahme
+    save_rate:       { schwach: 0.001, mittel: 0.006, stark: 0.020 } # annahme
+    follow_rate:     { schwach: 0.0003, mittel: 0.002, stark: 0.008 } # annahme
+  instagram:
+    completion_rate: { schwach: 0.20, mittel: 0.40, stark: 0.65 }   # annahme
+    watchtime_abs:   { schwach: 4.0,  mittel: 12.0, stark: 25.0 }   # annahme
+    like_rate:       { schwach: 0.015, mittel: 0.04, stark: 0.09 }  # annahme
+    kommentar_rate:  { schwach: 0.0008, mittel: 0.003, stark: 0.010 } # annahme
+    share_rate:      { schwach: 0.003, mittel: 0.015, stark: 0.040 } # annahme — Reels teilen stark
+    save_rate:       { schwach: 0.003, mittel: 0.012, stark: 0.035 } # annahme
+    follow_rate:     { schwach: 0.0005, mittel: 0.003, stark: 0.010 } # annahme
+
+# ---------------------------------------------------------------------------
+# Messfenster
+# ---------------------------------------------------------------------------
+#
+# Views nach 1 h und nach 7 d sind verschiedene Aussagen. Der Sammler legt
+# Schnappschuesse an; verglichen wird immer NUR innerhalb desselben Fensters,
+# sonst gewinnt der aeltere Post automatisch.
+
+fenster_stunden: [1, 3, 24, 72, 168]
+vergleichsfenster: 24        # Standardfenster fuer Ranking und A/B
+reifezeit_stunden: 24        # frueher gilt ein Post als unfertig
+
+# ---------------------------------------------------------------------------
+# Prognose (Stage 15): Merkmale VOR dem Posten
+# ---------------------------------------------------------------------------
+#
+# Diese Gewichte sind der schwaechste Teil des Systems, solange sie nicht
+# kalibriert sind. `clip kalibriere` schreibt sie aus den eigenen Daten neu und
+# vermerkt das Datum. Bis dahin gibt die Prognose eine niedrige Konfidenz aus.
+
+prognose:
+  kalibriert_am: null        # null = noch nie; Werte unten sind Startannahmen
+  grundlage_posts: 0
+
+  gewichte:
+    hook:      0.30          # erste 3 Sekunden
+    dauer:     0.20
+    payoff:    0.20          # wo die Pointe im Clip liegt
+    postzeit:  0.15
+    thema:     0.15
+
+  hook:
+    # Fenster in Sekunden ab Clipstart, das als Hook gilt.
+    fenster_sekunden: 3.0
+    # Ein Hook ist stark, wenn in den ersten Sekunden etwas passiert, das eine
+    # Frage aufwirft. Diese Marker sind aus dem deutschen Reaction-Material
+    # abgeleitet und bewusst erweiterbar.
+    signalwoerter:
+      - was
+      - wie
+      - warum
+      - wieso
+      - wer
+      - nie
+      - niemals
+      - sowas
+      - krass
+      - alter
+      - digga
+      - bruder
+      - wtf
+      - oh
+      - nein
+      - guck
+      - schau
+      - moment
+      - warte
+    # Zu viele Woerter in 3 Sekunden = kein Hook, sondern Gerede.
+    max_woerter: 12
+    # Headline: kurz genug, um in einem Blick lesbar zu sein.
+    headline_zeichen_ideal: [18, 42]
+
+  dauer:
+    # Kurven-Stuetzpunkte: [Sekunden, Faktor 0..1]. Wird linear interpoliert.
+    # ANNAHME. Die eigenen Daten vom 2026-09-04 deuten stark in die andere
+    # Richtung als die Tier-A-Strategie — siehe `clip kalibriere`.
+    stuetzpunkte: [[8, 0.55], [20, 0.90], [30, 1.00], [45, 0.85], [63, 0.70], [90, 0.55]]
+
+  payoff:
+    # Idealer Ort der Pointe, als Anteil der Cliplaenge. Zu frueh: kein Grund
+    # weiterzuschauen. Zu spaet: die meisten sind vorher weg.
+    ideal: [0.55, 0.85]
+
+  postzeit:
+    zeitzone: Europe/Berlin
+    # ANNAHME fuer deutsches Publikum, bis eigene Daten vorliegen.
+    # Faktor pro Stunde (0-23).
+    stundenfaktor:
+      0: 0.55
+      1: 0.40
+      2: 0.30
+      3: 0.30
+      4: 0.30
+      5: 0.35
+      6: 0.50
+      7: 0.65
+      8: 0.70
+      9: 0.65
+      10: 0.60
+      11: 0.65
+      12: 0.80
+      13: 0.75
+      14: 0.70
+      15: 0.75
+      16: 0.85
+      17: 0.90
+      18: 0.95
+      19: 1.00
+      20: 1.00
+      21: 0.95
+      22: 0.85
+      23: 0.70
+
+# ---------------------------------------------------------------------------
+# A/B-Tests
+# ---------------------------------------------------------------------------
+
+ab:
+  # Wahrscheinlichkeit, ab der eine Variante als Sieger gilt. Bewusst nicht 0.95:
+  # Bei diesen Fallzahlen wuerde das nie erreicht und der Test bliebe folgenlos.
+  entscheidungsschwelle: 0.85
+  # Darunter wird kein Ergebnis gemeldet, egal wie deutlich es aussieht.
+  min_posts_pro_arm: 3
+  # Monte-Carlo-Ziehungen fuer die Posterior-Vergleiche. Fester Seed = gleiches
+  # Ergebnis bei gleichem Input, wie jede andere Stage auch.
+  ziehungen: 40000
+  seed: 20260905
+
+  # Was getestet werden darf. Genau EINE Variable pro Experiment — sonst ist
+  # das Ergebnis nicht zuordenbar.
+  variablen: [hook, headline, cover, dauer, postzeit, hashtags, template]
+
+  # WARNUNG, aus den eigenen Daten abgeleitet: Denselben Clip zweimal auf
+  # dieselbe Plattform zu laden, ist KEIN A/B-Test. TikTok drosselt Duplikate
+  # (zwei Posts vom 2026-09-04 kamen auf 2 bzw. 4 Views gegen ~900 der uebrigen).
+  # Eine Variable wird ueber MEHRERE verschiedene Clips randomisiert, nicht
+  # durch Doppelpost desselben Clips.
+  doppelpost_erlaubt: false

@@ -133,6 +133,110 @@ eigenen Quelle. Einzige bewusste Ausnahme ist die Spielfeldzone bei `GAME`, die 
 der Facecam-Kante endet — rechts davon liegt zwar Spielfläche, sie ist aber
 durchgehend von Facecam und Chat überdeckt.
 
+## Bewertungssystem — Stages 15-17, gemessen am 2026-09-05
+
+Der Blueprint sieht das unter "Retention-Feedback (v3)" vor und nennt als Risiko
+"Ranking ohne Ground Truth". Das ist diese Schicht: Sie schliesst den Kreis vom
+gerenderten Clip zurueck zur Selektion.
+
+| Stage | Modul | Aufgabe |
+|---|---|---|
+| 15 | `forecast.py` | Prognose vor dem Posten: Hook, Dauer, Payoff, Postzeit, Thema |
+| 16 | `publish.py` | Veroeffentlichungsregister, A/B-Zuweisung |
+| 17 | `collect.py` / `scoring.py` | Messwerte holen, Performance-Score |
+
+Daten liegen als JSONL in `data/performance/` — nicht in SQLite. Sie wandern mit
+dem Repo auf beide Rechner und muessen im Diff lesbar sein; eine Binaerdatei
+waere dort ein Merge-Konflikt pro Tag. SQLite bleibt fuer den Jobstate.
+
+### Was die Plattformen hergeben — gemessen, nicht angenommen
+
+| | Views | Likes | Kommentare | Shares | Saves | Watchtime |
+|---|---|---|---|---|---|---|
+| TikTok | ja | ja | ja | ja (`repost_count`) | ja (`save_count`) | nein |
+| YouTube | ja | meist | selten | nein | nein | nein |
+| Instagram | **nichts** | | | | | |
+
+**TikTok gibt per yt-dlp ohne Login vollstaendige Engagement-Zahlen heraus** —
+`--flat-playlist -J` auf das Profil reicht, inklusive Shares und Saves. Das ist
+ungewoehnlich und die belastbarste Datenquelle des Systems. Der Extractor warnt
+zwar wegen fehlender Impersonation, liefert aber trotzdem.
+
+**Instagram ist nicht abrufbar.** yt-dlp meldet den Extractor als broken,
+WebFetch bekommt nur den Seitentitel. Alle Instagram-Werte kommen per
+`clip trage-nach`.
+
+**Watchtime, Completion-Rate und Follows gibt keine der drei heraus.** Sie
+tragen zusammen 60 % des Scores und muessen aus dem Creator-Center nachgetragen
+werden. Ohne sie meldet jede Bewertung `abdeckung 0.40` und gilt als nicht
+belastbar — das ist Absicht, keine Schwaeche.
+
+### Kleine Fallzahlen sind der Hauptfeind
+
+**Gemessen beim ersten Lauf:** Ein YouTube-Short mit 4 Views und 1 Like ergibt
+eine Like-Rate von 25 % und stand damit auf **Platz 1 von 10** — vor einem
+TikTok mit 1021 Views und 6,7 %. Eine Rate aus vier Beobachtungen ist Rauschen.
+
+Zwei Gegenmittel, beide in `config/scoring.yaml`:
+
+1. **Glaettung** zum Benchmark-Mittelwert, gewichtet mit den Views
+   (`prior_views: 150`). Aus 25 % werden 4,1 %; die 6,7 % des grossen Posts
+   bleiben bei 6,45 %.
+2. **Unter `min_views_fuer_urteil` wird kein Score angezeigt**, sondern ein
+   Strich. Wo kein Urteil moeglich ist, gehoert keine Zahl hin.
+
+### Duplikatsdrosselung — kein Doppelpost als A/B-Test
+
+Von sieben TikToks am 2026-09-04 kamen fuenf auf 905-1021 Views und zwei auf
+**2 bzw. 4**. Einer der beiden ist derselbe Clip, der auch auf YouTube liegt;
+der andere traegt einen fremden Sound (`original sound - pranksforlife`). Das
+sieht nach Duplikats- oder Audioerkennung aus.
+
+Konsequenz: Eine A/B-Variable wird ueber **mehrere verschiedene Clips**
+randomisiert, nie durch zweimaliges Hochladen desselben Clips. `doppelpost_erlaubt`
+steht auf `false`.
+
+### Der Zielkonflikt mit Tier A
+
+Aus denselben sieben Posts, bei praktisch identischer Reichweite:
+
+| Dauer | Views | Like-Rate |
+|---|---|---|
+| 27 s | 1021 | **6,66 %** |
+| 55 s | 967 | 3,41 % |
+| 69 s | 907 | 1,87 % |
+| 68 s | 920 | 1,20 % |
+| 68 s | 905 | 0,55 % |
+
+Sieben Posts eines einzigen Tages sind kein Beweis — Uhrzeit und Thema
+variieren mit. Aber die Spanne ist zu gross, um sie zu ignorieren: **Tier A
+(>63 s fuer Creator Rewards) koennte mehr Reichweite kosten, als die Auszahlung
+einbringt.** Das Experiment `laenge_kurz_vs_tier_a` ist dafuer angelegt und
+laeuft; die Altdaten zaehlen nicht mit, weil sie nicht randomisiert entstanden.
+
+### A/B-Tests ohne p-Werte
+
+Bei fuenf Posts pro Arm liefert ein Signifikanztest entweder nichts oder
+Scheingenauigkeit. Stattdessen Beta-Posteriors mit Jeffreys-Prior, Monte Carlo
+mit festem Seed: lesbar ab dem ersten Datenpunkt, und die Ausgabe nennt, wie
+viele Views pro Arm der beobachtete Effekt noch braucht. Entschieden wird ab
+85 % statt 95 % — bei diesen Fallzahlen wuerde 95 % nie erreicht und der Test
+bliebe folgenlos.
+
+### Kalibrierung
+
+Die Startgewichte sind **Annahmen** und in `scoring.yaml` als solche markiert.
+`clip kalibriere` ersetzt sie durch die eigenen Perzentile und schreibt nach
+`config/scoring.kalibriert.yaml` — dasselbe Overlay-Muster wie
+`settings.toml`/`local.toml`. Die handgepflegte Datei bleibt unberuehrt, das
+Overlay ist loeschbar.
+
+Bis dahin gibt jede Prognose `konfidenz 0.2` aus. Noetig sind 8 Posts fuer die
+Benchmarks, 25 fuer die Dauerkurve, 30 ueber mindestens 6 verschiedene Stunden
+fuer die Postzeit. **Stand 2026-09-05: 10 Posts, alle unter 24 h alt, keiner
+kalibrierbar.**
+
+
 ## Monetarisierung
 
 Tier A ist alles über 63 Sekunden gerenderter Dauer (TikTok Creator Rewards verlangt

@@ -61,6 +61,9 @@ beiden Maschinen identisch.
 assets/fonts/              Anton (OFL) — die Headline-Schrift
 config/
   settings.toml            gemeinsame Einstellungen + Plattformblöcke
+  scoring.yaml             Bewertungsgewichte, Benchmarks, A/B-Regeln
+  scoring.kalibriert.yaml  von `clip kalibriere` erzeugt, überschreibt die Annahmen
+  konten.yaml              die eigenen Kanäle
   profiles/                Geometrie der Quelle  (materialabhängig)
   templates/               Zielkomposition       (materialabhängig)
 src/videoclipper/          Pipeline              (materialunabhängig)
@@ -73,13 +76,66 @@ src/videoclipper/          Pipeline              (materialunabhängig)
   headline.py              Headline als PNG-Overlay
   render.py                Stage 12  FFmpeg-Filtergraph
   qc.py                    Stage 13  ffprobe auf der fertigen Datei
+  forecast.py              Stage 15  Prognose vor dem Posten
+  publish.py               Stage 16  Veröffentlichungsregister, A/B-Zuweisung
+  collect.py               Stage 17  Messwerte holen (yt-dlp / manuell)
+  scoring.py               Stage 17  Performance-Score
+  experiments.py           A/B-Tests (Beta-Posteriors, keine p-Werte)
+  report.py                Rangliste, Muster, Lücken
+  calibrate.py             Annahmen durch eigene Zahlen ersetzen
+  store.py                 JSONL-Ablage
 data/artifacts/            Transkripte, Kandidaten — klein, wandert mit
 data/selections/           Selektionen (Stage 06) — klein, wandert mit
+data/performance/          Posts, Messwerte, Experimente — klein, wandert mit
+tests/                     Tests der Rechenteile: `pytest`
 work/                      Videodateien, Cache — lokal, nie im Repo
 ```
 
 Materialabhängig sind ausschließlich `profiles/` und `templates/`. Der Wechsel
 von Reaction-Content auf GTA 6 ist das Schreiben zweier YAML-Dateien.
+
+## Bewertung — welche Clips gehen viral
+
+Der Kreis zurück vom fertigen Clip zur nächsten Selektion. Details und die
+gemessenen Befunde stehen in [CLAUDE.md](CLAUDE.md).
+
+```bash
+# Vor dem Posten: lohnt sich der Clip, und wann sollte er raus?
+clip prognose --headline "Sowas habe ich noch nie gesehen" --dauer 27 \
+  --hook "Alter was ist das denn" --payoff 0.7 --postzeit 2026-09-05T19:00
+
+# Nach dem Posten eintragen — Variante wird balanciert zugewiesen
+clip registriere --plattform tiktok --url "<url>" --clip-id wxCFBR1_3to_001 \
+  --experiment laenge_kurz_vs_tier_a
+
+# Messwerte holen (TikTok und YouTube automatisch, Instagram nicht)
+clip sammle
+
+# Was das Creator-Center weiß und die API nicht hergibt
+clip trage-nach --post tiktok_7681702356454624544 --watchtime 12.4 --follows 3
+
+# Rangliste, Muster, Lücken
+clip bewerte
+
+# A/B-Stand
+clip ab status --id laenge_kurz_vs_tier_a
+
+# Annahmen durch die eigenen Zahlen ersetzen (braucht ~8-30 Posts)
+clip kalibriere --probe
+```
+
+Drei Eigenschaften, die das System von einer bloßen Zahlenanzeige unterscheiden:
+
+- **Es rechnet in Raten, nie in Rohzahlen.** Ein Clip mit 1000 Views und 50
+  Likes ist besser als einer mit 5000 Views und 100 Likes.
+- **Es vergleicht nur innerhalb desselben Messfensters.** Sonst gewinnt immer
+  der ältere Post.
+- **Es sagt, wenn es nichts sagen kann.** Fehlende Metriken werden nicht als
+  Null gewertet, sondern verringern die ausgewiesene `abdeckung`; unter der
+  Reichweitenschwelle erscheint gar kein Score.
+
+Die Gewichte in `config/scoring.yaml` sind zunächst **Annahmen** und dort als
+solche markiert. `clip kalibriere` ersetzt sie durch die eigenen Perzentile.
 
 ## Ablauf
 

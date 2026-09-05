@@ -14,6 +14,8 @@ dependencies = [
 asr = ["faster-whisper>=1.1.0"]
 # Auf Apple Silicon deutlich schneller als faster-whisper auf CPU.
 asr-mac = ["mlx-whisper>=0.4.0"]
+# Tests decken die Rechenteile des Bewertungssystems ab.
+dev = ["pytest>=8.0"]
 
 [project.scripts]
 clip = "videoclipper.cli:main"
