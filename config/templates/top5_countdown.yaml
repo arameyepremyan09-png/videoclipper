@@ -1,0 +1,73 @@
+# Template: TOP5_COUNTDOWN
+#
+# Compilation statt Einzelclip. Fuenf Segmente aus beliebig vielen Quellen,
+# darueber eine Liste, die sich von Platz 5 nach Platz 1 fuellt.
+#
+# WOHER DIE ZAHLEN KOMMEN: vermessen an @phrai92/7673568784648539424
+# (2,2 Mio. Views, 11,6 % Like-Rate, 48,7 s) am 2026-09-05. Headlinefarbe aus
+# 32796 Pixeln als Median gezogen, Zeilenabstand aus den Textzeilen selbst.
+# Nichts davon ist geschaetzt.
+#
+# WARUM DIE LISTE VON UNTEN WAECHST: Das leere Geruest ist der Hook. Wer bei
+# Sekunde 0 vier unbeschriftete Zeilen sieht, hat eine offene Frage im Kopf,
+# und die wird erst am Ende beantwortet. Deshalb stehen die Ziffern 1..5 von
+# Anfang an da und nur die Beschriftung kommt dazu.
+#
+# WARUM DAS PANEL BEI y=1728 ENDET: Die unteren 192 px verdeckt TikToks eigene
+# UI (Caption, Buttons, Soundzeile). In der Referenz ist die Zone konsequent
+# frei. GAME_STACK laesst sein unteres Panel bis y=1920 laufen und verliert
+# dort Bildinhalt — hier nicht.
+
+name: TOP5_COUNTDOWN
+beschreibung: Top-5-Countdown, Liste fuellt sich von Platz 5 nach Platz 1
+gilt_fuer_modus: COMPILATION
+
+canvas: [1080, 1920]
+
+panels:
+  # "segment" ist keine Profilzone, sondern das jeweils laufende Segment.
+  # Compilationsquellen sind pro Eintrag verschieden, deshalb kann hier kein
+  # Zonenname aus einem Materialprofil stehen.
+  - quelle: segment
+    ziel: [60, 812, 960, 916]
+    passung: einpassen
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: countdown.titel
+  schrift: Anton
+  schriftgroesse: 76
+  versalien: false
+  farbe: "#01FC19"
+  rand_farbe: "#000000"
+  rand_staerke: 10
+  y: 255
+  max_breite: 960
+  max_zeilen: 2
+  renderer: png_overlay
+
+liste:
+  plaetze: 5
+  erste_zeile_y: 409
+  zeilenabstand: 89
+  ziffer_x: 170
+  text_x: 560
+  schrift: Anton
+  schriftgroesse: 54
+  versalien: false
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 8
+  max_breite: 820
+  renderer: png_overlay
+
+sicherheitszone:
+  unten: 192
+
+audio:
+  normalisieren: true
+  ziel_lufs: -14.0

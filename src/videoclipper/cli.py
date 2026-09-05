@@ -4,6 +4,9 @@ Herstellung:
 ``clip analyse``  Stages 03-05: Transkript, Signale, Kandidaten -> JSON-Artefakt.
 ``clip rendere``  Stages 08-13: Snapping, Layout, Render, QC.
 
+``clip frames``   Standbilder aus einem Video, zum Anschauen statt Abspielen.
+``clip countdown`` Top-5-Compilation: N Segmente, mitwachsende Liste.
+
 Dazwischen liegt Stage 06, die Selektion. Die liefert strukturiertes JSON und
 sonst nichts — keine Geometrie, keine Filterketten.
 
@@ -27,8 +30,9 @@ from pathlib import Path
 from . import layout
 from .candidates import bilde
 from .editplan import Aufgeloest, EditPlan
+from . import countdown, frames
 from .qc import pruefe
-from .render import rendere
+from .render import rendere, rendere_countdown
 from .settings import arbeitsverzeichnis, einstellungen
 from .signals import ModusSignatur, sammle
 from .snapping import snappe
@@ -133,6 +137,75 @@ def cmd_rendere(args: argparse.Namespace) -> None:
 
         (ausgabe / f"{plan.clip_id}.editplan.json").write_text(
             plan.model_dump_json(indent=2), encoding="utf-8")
+
+
+def cmd_frames(args: argparse.Namespace) -> None:
+    video = frames.aufloesen(args.quelle)
+    ziel_dir = Path(args.ziel).expanduser() if args.ziel else video.parent / "frames"
+    print(f"Quelle: {video}")
+
+    if args.bei:
+        pfade = frames.einzelbilder(video, args.bei, ziel_dir, breite=args.breite)
+        for pfad in pfade:
+            print(f"  {pfad}")
+        return
+
+    spalten, zeilen = (int(x) for x in args.raster.lower().split("x"))
+    ziel = ziel_dir / f"{video.stem}_bogen.png"
+    karte = frames.kontaktbogen(video, ziel, spalten, zeilen,
+                                breite=args.breite or 480, alle=args.alle)
+
+    print(f"  {ziel}")
+    # drawtext fehlt im FFmpeg-Build auf dem MacBook, also steht die Zeit
+    # nicht im Bild, sondern hier daneben.
+    for i in range(0, len(karte), spalten):
+        reihe = karte[i:i + spalten]
+        print("  " + "  ".join(f"{n:>2}: {t:7.1f}s" for n, t in reihe))
+
+
+def _quellen(plan: countdown.CountdownPlan) -> dict[str, Path]:
+    """video_id -> Datei im Quellordner des Arbeitsverzeichnisses."""
+    quell_dir = arbeitsverzeichnis() / "source"
+    gefunden = {}
+    for e in plan.eintraege:
+        treffer = sorted(quell_dir.glob(f"{e.video_id}.*"))
+        treffer = [t for t in treffer if t.suffix in (".mp4", ".mkv", ".webm")]
+        if not treffer:
+            raise FileNotFoundError(
+                f"{e.video_id} liegt nicht in {quell_dir}. "
+                f"Erst laden: clip frames <url> holt es ebenfalls dorthin.")
+        gefunden[e.video_id] = treffer[0]
+    return gefunden
+
+
+def cmd_countdown(args: argparse.Namespace) -> None:
+    daten = json.loads(Path(args.plan).expanduser().read_text(encoding="utf-8"))
+    plan = countdown.CountdownPlan.model_validate(daten)
+    tmpl = layout.template(plan.template)
+
+    for hinweis in countdown.sicherheitszone_pruefen(tmpl):
+        print(f"  Hinweis: {hinweis}")
+
+    plan = countdown.loese_auf(plan, tmpl)
+    r = plan.aufgeloest
+    print(f"{plan.clip_id}: {len(r.segmente)} Segmente, {r.dauer:.1f}s "
+          f"({'Tier A' if r.dauer > 63 else 'Tier B'})")
+    for seg in r.segmente:
+        print(f"   Platz {seg['platz']}  {seg['ab']:6.1f}-{seg['bis']:6.1f}s  "
+              f"aus {seg['video_id']} ab {seg['start']:.1f}s")
+
+    ausgabe = Path(args.ausgabe).expanduser() if args.ausgabe else \
+        arbeitsverzeichnis() / "clips"
+    ziel = ausgabe / f"{plan.clip_id}.mp4"
+    rendere_countdown(plan, tmpl, _quellen(plan), ziel, vorschau=args.vorschau)
+
+    b = pruefe(ziel, "A" if r.dauer > 63 else "B")
+    marke = "Tier A->B" if b.tier_korrigiert else f"Tier {b.tier}"
+    print(f"   QC: {b.dauer:.2f}s {b.breite}x{b.hoehe} {marke}"
+          + (f"  {'; '.join(b.hinweise)}" if b.hinweise else ""))
+    (ausgabe / f"{plan.clip_id}.countdown.json").write_text(
+        plan.model_dump_json(indent=2), encoding="utf-8")
+    print(f"   {ziel}")
 
 
 # ===========================================================================
@@ -343,6 +416,23 @@ def main() -> None:
     r.add_argument("--ausgabe")
     r.add_argument("--vorschau", action="store_true")
     r.set_defaults(func=cmd_rendere)
+
+    f = sub.add_parser("frames", help="Standbilder zum Anschauen")
+    f.add_argument("quelle", help="lokaler Pfad oder URL")
+    f.add_argument("--raster", default="5x5", help="Kacheln des Kontaktbogens")
+    f.add_argument("--alle", type=int, metavar="N",
+                   help="jedes N-te Bild statt gleichmaessig ueber die Laufzeit")
+    f.add_argument("--bei", type=float, action="append", metavar="SEK",
+                   help="Einzelbild an dieser Sekunde, mehrfach moeglich")
+    f.add_argument("--breite", type=int, default=0, help="0 = Originalbreite")
+    f.add_argument("--ziel")
+    f.set_defaults(func=cmd_frames)
+
+    c = sub.add_parser("countdown", help="Top-5-Compilation rendern")
+    c.add_argument("--plan", required=True)
+    c.add_argument("--ausgabe")
+    c.add_argument("--vorschau", action="store_true")
+    c.set_defaults(func=cmd_countdown)
 
     # --- Bewertungssystem --------------------------------------------------
     s_ = sub.add_parser("sammle", help="Messwerte von den Plattformen holen")

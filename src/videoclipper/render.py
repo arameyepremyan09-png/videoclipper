@@ -108,3 +108,100 @@ def rendere(plan: EditPlan, tmpl: dict, video: Path, ziel: Path,
     ]
     subprocess.run(cmd, check=True)
     return ziel
+
+
+# ---------------------------------------------------------------------------
+# Compilation (TOP5_COUNTDOWN)
+# ---------------------------------------------------------------------------
+
+def _segment_kette(idx: int, seg: dict, panel: tuple[int, int, int, int],
+                   canvas: tuple[int, int], blur: int, fps: int) -> str:
+    """Ein Quellsegment auf die volle Buehne bringen: Blur hinten, Inhalt vorn."""
+    cw, ch = canvas
+    px, py, pw, ph = panel
+    zone = f"crop={seg['quelle_box'][2]}:{seg['quelle_box'][3]}:" \
+           f"{seg['quelle_box'][0]}:{seg['quelle_box'][1]}," if seg["quelle_box"] else ""
+
+    return (
+        # Hintergrund: eigene Quelle, formatfuellend, unscharf.
+        f"[{idx}:v]{zone}scale={cw}:{ch}:force_original_aspect_ratio=increase,"
+        f"crop={cw}:{ch},boxblur={blur}:1,setsar=1[bg{idx}];"
+        # Inhalt: vollstaendig eingepasst, nie beschnitten, Kanten gerade.
+        f"[{idx}:v]{zone}scale={pw}:{ph}:force_original_aspect_ratio=decrease:"
+        f"force_divisible_by=2,setsar=1[fg{idx}];"
+        f"[bg{idx}][fg{idx}]overlay={px}+({pw}-w)/2:{py}+({ph}-h)/2,"
+        f"fps={fps},format=yuv420p,setsar=1[seg{idx}]"
+    )
+
+
+def filtergraph_countdown(plan, tmpl: dict, lufs: float) -> str:
+    r = plan.aufgeloest
+    blur = (tmpl.get("hintergrund") or {}).get("staerke", 24)
+    n = len(r.segmente)
+
+    teile = [_segment_kette(i, seg, r.panel, r.canvas, blur, r.fps)
+             for i, seg in enumerate(r.segmente)]
+
+    # Ton der Segmente auf ein gemeinsames Format bringen, sonst weigert sich concat.
+    teile += [f"[{i}:a]aformat=sample_rates=48000:channel_layouts=stereo,"
+              f"asetpts=PTS-STARTPTS[sa{i}]" for i in range(n)]
+
+    teile.append("".join(f"[seg{i}][sa{i}]" for i in range(n))
+                 + f"concat=n={n}:v=1:a=1[cv][ca_roh]")
+    # loudnorm muss in den Graphen: ``-af`` weigert sich bei Streams, die aus
+    # einem filter_complex kommen, und bricht mit Exit 234 ab.
+    teile.append(f"[ca_roh]loudnorm=I={lufs}:TP=-1.5:LRA=11[ca]")
+
+    # Headline liegt konstant oben; danach je Segment ein Listenzustand.
+    kopf = n                      # Eingangsindex des Headline-PNG
+    teile.append(f"[cv][{kopf}:v]overlay=0:0[o_kopf]")
+    vorher = "o_kopf"
+    for i, seg in enumerate(r.segmente):
+        # Das letzte Segment laeuft bis zum Ende: obere Grenze offen lassen,
+        # damit Rundung an der Nahtstelle keinen Frame ohne Liste erzeugt.
+        bis = f",{seg['bis']:.3f}" if i < n - 1 else f",{r.dauer + 1:.3f}"
+        raus = f"o{i}"
+        teile.append(f"[{vorher}][{kopf + 1 + i}:v]"
+                     f"overlay=0:0:enable='between(t,{seg['ab']:.3f}{bis})'[{raus}]")
+        vorher = raus
+    teile.append(f"[{vorher}]format=yuv420p[v]")
+    return ";".join(teile)
+
+
+def rendere_countdown(plan, tmpl: dict, videos: dict[str, Path], ziel: Path,
+                      vorschau: bool = False) -> Path:
+    """Stage 12 fuer Compilations: ein Durchlauf, N Quellen, N Listenzustaende."""
+    from .liste import baue_alle
+
+    r = plan.aufgeloest
+    ziel.parent.mkdir(parents=True, exist_ok=True)
+
+    kopf_png = headline_bauen(plan.titel, tmpl, ziel.with_suffix(".headline.png"))
+    listen = baue_alle(plan, tmpl, ziel.parent)
+
+    e = einstellungen()
+    encoder = e["platform"]["preview_encoder" if vorschau else "encoder"]
+    lufs = (tmpl.get("audio") or {}).get("ziel_lufs", e["output"]["target_lufs"])
+
+    cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"]
+    for seg in r.segmente:
+        quelle = videos.get(seg["video_id"])
+        if quelle is None:
+            raise FileNotFoundError(f"Kein Video fuer {seg['video_id']}")
+        cmd += ["-ss", f"{seg['start']:.3f}", "-t", f"{seg['dauer']:.3f}",
+                "-i", str(quelle)]
+    cmd += ["-i", str(kopf_png)]
+    for p in listen:
+        cmd += ["-i", str(p)]
+
+    cmd += [
+        "-filter_complex", filtergraph_countdown(plan, tmpl, lufs),
+        "-map", "[v]", "-map", "[ca]",
+        "-r", str(r.fps),
+        "-c:v", encoder, "-b:v", "1500k" if vorschau else "8000k",
+        "-c:a", "aac", "-b:a", "160k",
+        "-movflags", "+faststart",
+        str(ziel),
+    ]
+    subprocess.run(cmd, check=True)
+    return ziel

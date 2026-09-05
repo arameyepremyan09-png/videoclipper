@@ -46,6 +46,37 @@ die linke Facecam-Kante bei `GAME` (17..21 gegen 0,6). Beide trennen sauber.
 `COACHLIM_OMETV` passt auf keines der beiden Videos. Es bleibt unveraendert im
 Repo, ist aber fuer dieses Material nicht anwendbar.
 
+### Nachtrag 2026-09-05: statisch kommt auch vor
+
+Zwei weitere Videos vermessen, und beide widerlegen die Verallgemeinerung oben.
+**Ob ein Video das Layout wechselt, ist eine Eigenschaft des Videos, keine des
+Kanals** — gemessen werden muss trotzdem jedes Mal.
+
+| Profil | Quelle | Befund |
+|---|---|---|
+| `COACHLIM_OMETV_SPLIT` | utB7GTrmLYY | Splitscreen `[0,0,952,798]` / `[953,0,952,798]`, Naht bei y=799. Ueber 420 Messpunkte **100 %** — nur das Schwarzbild bei t=0 faellt raus. |
+| `COACHLIM_COUCH` | 4ubrGJLb4FQ | Keine Boxen. Feststehende Kamera auf drei Personen; staerkste statische Kante 13,3 gegen 177,1 im Splitscreen. |
+
+Der Splitscreen bestaetigt die Geometrie von `COACHLIM_OMETV` auf zwei Pixel
+genau (953/799 gegen 955/800). Das alte Profil ist also nicht falsch, nur im
+alten Schema und damit fuer Stage 04 unlesbar; `COACHLIM_OMETV_SPLIT` ist die
+gueltige Fassung.
+
+Bei der Couch-Runde gibt es **nichts zu trennen**, und die Signatur erkennt
+deshalb nicht das Layout, sondern den Bildausschnitt: Der Piraten-Zaehler oben
+links steht in der weiten Einstellung immer und faellt im nachtraeglich
+hineingezoomten Schnitt aus dem Bild. Gemessen exakt zweigipflig — 39..51 mit
+Zaehler, 0,2..4,3 ohne, dazwischen kein einziger Messwert. Die Zoomschnitte
+machen 1,5 % der Laufzeit aus und sind nie laenger als 6 s; sie brauchen kein
+eigenes Template, weil sie derselbe Bildkanal sind, nur enger.
+
+Dieses Material zwingt ausserdem eine Entscheidung, die die anderen Profile
+nicht kennen: Die drei Personen sitzen zwischen x=80 und x=1800. Ein
+9:16-Fenster ist bei 1080 px Hoehe nur 607 px breit und wuerde zwei von ihnen
+abschneiden — bei einem Format, in dem die Reaktion der anderen die Pointe ist.
+`COUCH_FULL` passt deshalb das ganze Bild ein und nimmt das kleinere Bildband
+(1080x606 auf y=657) in Kauf. Das ist der Preis dafuer, niemanden zu verlieren.
+
 ## Leitprinzipien
 
 1. **Die AI entscheidet WAS, der Code entscheidet WIE.** Das Modell liefert nur
@@ -94,8 +125,16 @@ MacBook Air M4: lüfterlos, drosselt bei längerer Dauerlast.
   ASR nur als Fallback. Vorsicht: die Rolling-Window-Struktur (`wWinId`/`aAppend`)
   erzeugt bei naivem Parsen Duplikate.
 - **`[gelächter]` ist nicht verlässlich vorhanden.** wxCFBR1_3to hat 9 Marker,
-  LnWKgVfcMMQ **null**. Wo sie fehlen, muss der Lacher-Detektor aus der Lautheit
-  kommen; das Materialprofil gewichtet `lachmarker` dann auf 0.
+  LnWKgVfcMMQ **null**. Nachgemessen am 2026-09-05: utB7GTrmLYY hat 23 Marker
+  (13 davon `[gelächter]`), 4ubrGJLb4FQ wieder **null**. Zwei von vier Videos
+  ohne Textkanal — das ist kein Ausreißer, sondern der Normalfall. Wo sie
+  fehlen, muss der Lacher-Detektor aus der Lautheit kommen; das Materialprofil
+  gewichtet `lachmarker` dann auf 0.
+- **`--write-subs` lädt `de-orig` nicht.** Gemessen am 2026-09-05: yt-dlp meldet
+  nur „There are no subtitles for the requested languages" und lädt das Video
+  trotzdem — der Fehler fällt also erst auf, wenn Stage 03 die fehlende Datei
+  sucht. `de-orig` ist eine *automatische* Caption und braucht deshalb
+  `--write-auto-subs`. Der Befehl im README ist entsprechend korrigiert.
 - **yt-dlp braucht `--extractor-args "youtube:player_client=web_embedded"`.**
   Der Default lief reproduzierbar nach ~10 MB in HTTP 403; `android_vr` extrahiert
   zwar, bricht beim Download aber ebenso ab. Mit `web_embedded` laufen 1080p-avc1
@@ -110,6 +149,25 @@ MacBook Air M4: lüfterlos, drosselt bei längerer Dauerlast.
   (`select='not(mod(n,K))'`), das ist driftfrei.
 - **`crop` vor `format=gray` rundet ungerade Kantenmaße still ab** (5 wird zu 4)
   und verschiebt damit jeden Reshape. `format=gray` gehört vor den Crop.
+- **yt-dlps `web_embedded` funktioniert nicht mehr.** Gemessen am 2026-09-05:
+  Der Client extrahiert gar nicht mehr, `tv`, `ios`, `mweb` und `web_safari`
+  ebenso wenig. Der **Default-Client** liefert wieder 31 Formate inklusive avc1
+  und laedt vollstaendig durch. Die Angabe oben galt am 2026-09-04 und ist
+  ueberholt — der Extractor ist eine bewegliche Groesse, kein Fixpunkt.
+- **TikTok ist als Quelle doch abrufbar.** Ebenfalls am 2026-09-05 gemessen:
+  Einzelvideos per URL laufen ohne CAPTCHA durch (2,6 MB in Sekunden). Die
+  Notiz oben gilt fuer Suche und Massenabruf, nicht fuer die einzelne URL.
+- **macOS setzt `UF_HIDDEN` auf die `.pth` im venv.** `site.py` ueberspringt
+  seit 3.12 versteckte `.pth`-Dateien kommentarlos (Zeile 176). Damit faellt der
+  Editable-Install still aus und `clip` stirbt mit `ModuleNotFoundError`, obwohl
+  die Datei da ist und auf den richtigen Pfad zeigt. Das Flag kommt nach jeder
+  Neuinstallation zurueck. Gegenmittel: `chflags nohidden
+  .venv/lib/python3.12/site-packages/*.pth`, oder dauerhaft
+  `PYTHONPATH=src .venv/bin/python -m videoclipper.cli` statt `clip`.
+- **`-af` weigert sich bei Streams aus `filter_complex`** und bricht mit Exit
+  234 ab. In Compilations muss `loudnorm` deshalb *in* den Graphen, hinter
+  `concat`. Bei Einzelclips bleibt `-af` richtig, weil der Ton dort direkt aus
+  dem Eingang kommt.
 - **Panelhöhen müssen gerade sein.** In yuv420p rundet der Scaler jede ungerade
   Höhe still ab; 607+1313 ergab eine Bühne von 1918 statt 1920 px. Stage 09 prüft
   das jetzt und bricht ab, statt es dem QC zu überlassen.
@@ -236,6 +294,53 @@ Benchmarks, 25 fuer die Dauerkurve, 30 ueber mindestens 6 verschiedene Stunden
 fuer die Postzeit. **Stand 2026-09-05: 10 Posts, alle unter 24 h alt, keiner
 kalibrierbar.**
 
+
+## Format: TOP5_COUNTDOWN — vermessen am 2026-09-05
+
+Bis hierher erzeugt die Pipeline **einen** Clip aus **einer** Quelle. Der
+Countdown ist das erste Format, das das aufbricht: fuenf Segmente aus bis zu
+fuenf Quellen, darueber eine Liste, die sich von Platz 5 nach Platz 1 fuellt.
+
+Vermessen an `@phrai92/7673568784648539424` (2,2 Mio. Views, 11,58 % Like-Rate,
+1,02 % Share-Rate, 48,7 s). Kein Wert im Template ist geschaetzt:
+
+| Groesse | Messwert | Herkunft |
+|---|---|---|
+| Headlinefarbe | `#01FC19` | Median aus 32796 Pixeln |
+| Zeilenabstand der Liste | 89 px | Abstand der Textzeilen selbst |
+| Panel | `[60, 812, 960, 916]` | scharfe Zone gegen Blur-Untergrund |
+| Freie Zone unten | 192 px | Panelunterkante bei y=1728 |
+| Aufdeckzeiten | 0 / 8,5 / 18,0 / 25,5 / 36,5 s | 98 Abtastpunkte |
+
+**Die Segmente werden zum Ende hin laenger** (8,5 / 9,5 / 7,5 / 11,0 / 12,2 s).
+Der Payoff bekommt am meisten Zeit.
+
+**Der Hook ist das leere Geruest.** Die Ziffern 1..5 stehen ab Sekunde 0 da, die
+Beschriftungen kommen einzeln dazu. Vier unbeschriftete Zeilen sind eine offene
+Frage, die erst bei Sekunde 36,5 beantwortet wird — und sie funktioniert ohne
+ein einziges gesprochenes Wort.
+
+Das hat eine Konsequenz fuer Stage 15: **`forecast.py` bewertet den Hook aus dem
+Transkript und wuerde dieses Format verreissen.** Ein visueller Hook ist dort
+gar nicht vorgesehen. Das ist eine Luecke im Modell, keine Frage der
+Kalibrierung.
+
+### Die UI-Zone ist real
+
+TikTok verdeckt die unteren ~192 px mit Caption, Buttons und Soundzeile. Die
+Referenz laesst sie konsequent frei. `GAME_STACK` tut das nicht — sein unteres
+Panel laeuft auf `[0, 606, 1080, 1314]` bis y=1920 und verliert dort
+Bildinhalt. `countdown.sicherheitszone_pruefen` meldet solche Faelle; es bricht
+bewusst nicht ab, weil die Zone eine Plattformeigenschaft ist und sich aendern
+kann.
+
+### Warum ein eigener Datenvertrag
+
+`EditPlan` beschreibt ein Segment aus einer Quelle. Haette der Countdown darin
+Platz finden sollen, waere jedes Feld optional geworden und der Vertrag haette
+seine Schaerfe verloren. `CountdownPlan` steht deshalb daneben, mit derselben
+Trennung: Die AI fuellt `titel`, `text` und die Zeitfenster, alles unter
+`aufgeloest` rechnet der Code aus dem Template.
 
 ## Monetarisierung
 
