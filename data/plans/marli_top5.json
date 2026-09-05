@@ -1,0 +1,50 @@
+{
+  "clip_id": "marli_top5",
+  "titel": "Die besten Marli Momente",
+  "template": "TOP5_COUNTDOWN",
+  "sprache": "de",
+  "fps": 30,
+  "eintraege": [
+    {
+      "platz": 5,
+      "text": "Ah, wie dumm du bist",
+      "video_id": "qW0__TvMo0s",
+      "start": 1266.0,
+      "dauer": 8.5
+    },
+    {
+      "platz": 4,
+      "text": "Was willst du hören?",
+      "video_id": "L5xI01XrdxY",
+      "start": 2166.0,
+      "dauer": 9.5,
+      "quelle_box": [
+        646,
+        541,
+        629,
+        355
+      ]
+    },
+    {
+      "platz": 3,
+      "text": "Ich heiß Alp Fit",
+      "video_id": "A14FQZsFooQ",
+      "start": 1712.0,
+      "dauer": 7.5
+    },
+    {
+      "platz": 2,
+      "text": "Til Schweiger ist mein Freund",
+      "video_id": "qW0__TvMo0s",
+      "start": 1208.0,
+      "dauer": 11.0
+    },
+    {
+      "platz": 1,
+      "text": "Bist du eine Katze?",
+      "video_id": "qW0__TvMo0s",
+      "start": 1776.0,
+      "dauer": 12.2
+    }
+  ]
+}
