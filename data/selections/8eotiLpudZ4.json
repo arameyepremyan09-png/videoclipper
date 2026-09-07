@@ -1,0 +1,137 @@
+[
+  {
+    "clip_id": "8eotiLpudZ4_001",
+    "modus": "KINO",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "8eotiLpudZ4",
+      "kanal": "Coachlim",
+      "orig_start": 111.1
+    },
+    "tier": "B",
+    "profil": "COACHLIM_BMW_VLOG",
+    "template": "KINO_FULL",
+    "template_grund": "Einziger geletterboxter Lauf des Videos (110.00-134.25 s gemessen); die Zone schneidet die Balken heraus, die Totalen bleiben ungeschnitten",
+    "timing": {
+      "start": 111.1,
+      "ende": 132.85
+    },
+    "headline": "Tuch runter: mein neuer M4",
+    "sprache": "de",
+    "score": {
+      "overall": 0.92,
+      "reaktion": 0.86,
+      "klarheit": 0.95,
+      "payoff": 0.94
+    },
+    "grund": "Der staerkste Kandidat des Videos (Score 0.971) und der einzige Moment, den der Cutter selbst als Hoehepunkt markiert hat: die Reveal-Montage vom fallenden Tuch ueber Aussenansichten und Motorraum bis in den Innenraum. Grenzen liegen an den gemessenen Schwarzbildern - Bild ab 110.70 s, Abblende ab 131.90 s, schwarz ab 133.30 s -, damit weder am Anfang noch am Ende Schwarz stehen bleibt. Kein gesprochenes Wort: der Hook ist rein visuell und traegt allein die Headline"
+  },
+  {
+    "clip_id": "8eotiLpudZ4_002",
+    "modus": "SOLO",
+    "modus_anteil": 0.0,
+    "quelle": {
+      "video_id": "8eotiLpudZ4",
+      "kanal": "Coachlim",
+      "orig_start": 196.44
+    },
+    "tier": "B",
+    "profil": "COACHLIM_BMW_VLOG",
+    "template": "VLOG_FULL",
+    "template_grund": "Handkamera am Auto; die Felgen-Grossaufnahme und die Seitenansicht brauchen die volle Breite",
+    "timing": {
+      "start": 196.44,
+      "ende": 222.4
+    },
+    "headline": "Guck dir die Felgen an",
+    "sprache": "de",
+    "score": {
+      "overall": 0.81,
+      "reaktion": 0.72,
+      "klarheit": 0.88,
+      "payoff": 0.8
+    },
+    "grund": "Geschlossene Detailschau: Felgen, Carbon, 19 vorne und 20 hinten, dann der Preis. Endet auf der Wortgrenze 222.48 s und damit bewusst vor dem eingeblendeten Sponsorclip, der bei gemessenen 224.70 s einsetzt (kleines Bild auf Schwarz) und den Clip sonst mit einem Schwarzblitz beenden wuerde"
+  },
+  {
+    "clip_id": "8eotiLpudZ4_003",
+    "modus": "SOLO",
+    "modus_anteil": 0.0,
+    "quelle": {
+      "video_id": "8eotiLpudZ4",
+      "kanal": "Coachlim",
+      "orig_start": 385.2
+    },
+    "tier": "B",
+    "profil": "COACHLIM_BMW_VLOG",
+    "template": "VLOG_FULL",
+    "template_grund": "Innenraum waehrend der Fahrt; Lenkrad, Display und Fahrer liegen ueber die volle Bildbreite verteilt",
+    "timing": {
+      "start": 385.2,
+      "ende": 424.3
+    },
+    "headline": "Sportmodus an, der dreht durch",
+    "sprache": "de",
+    "score": {
+      "overall": 0.89,
+      "reaktion": 0.9,
+      "klarheit": 0.85,
+      "payoff": 0.92
+    },
+    "grund": "Der Testmoment des Videos, vollstaendiger Bogen ohne Strecken: Sportmodus wird eingeschaltet (385 s), sofortige Reaktion aufs Gaspedal (390 s), 0 auf 100 (412 s), Payoff 'der dreht durch - ist ja geisteskrank' (418-424 s)"
+  },
+  {
+    "clip_id": "8eotiLpudZ4_004",
+    "modus": "SOLO",
+    "modus_anteil": 0.0,
+    "quelle": {
+      "video_id": "8eotiLpudZ4",
+      "kanal": "Coachlim",
+      "orig_start": 512.6
+    },
+    "tier": "B",
+    "profil": "COACHLIM_BMW_VLOG",
+    "template": "VLOG_FULL",
+    "template_grund": "Das Auto faehrt durch die Glastuer nach draussen - eine Totale, die ein 9:16-Fenster halbieren wuerde",
+    "timing": {
+      "start": 512.6,
+      "ende": 531.0
+    },
+    "headline": "Raus aus dem Autohaus",
+    "sprache": "de",
+    "score": {
+      "overall": 0.84,
+      "reaktion": 0.8,
+      "klarheit": 0.86,
+      "payoff": 0.9
+    },
+    "grund": "Der Meilenstein des Videos und im Bild sichtbar: Ansage 'ich fahre hier niemals in meinem Leben raus', dann rollt der Wagen bei 519-523 s tatsaechlich durch die Glastuer, Payoff auf 'ich kann immer noch nicht glauben, dass das mein Auto ist'. Start liegt hinter dem eingeblendeten Nebenclip, der bei gemessenen 512.30 s endet, und trotzdem auf der Wortgrenze von 'Bruder, ich habe extra gesagt'"
+  },
+  {
+    "clip_id": "8eotiLpudZ4_005",
+    "modus": "SOLO",
+    "modus_anteil": 0.0,
+    "quelle": {
+      "video_id": "8eotiLpudZ4",
+      "kanal": "Coachlim",
+      "orig_start": 553.5
+    },
+    "tier": "B",
+    "profil": "COACHLIM_BMW_VLOG",
+    "template": "VLOG_FULL",
+    "template_grund": "Cockpitaufnahmen ueber die volle Breite; Lenkrad links, Displays rechts",
+    "timing": {
+      "start": 553.5,
+      "ende": 575.4
+    },
+    "headline": "Vor einem Jahr undenkbar",
+    "sprache": "de",
+    "score": {
+      "overall": 0.82,
+      "reaktion": 0.78,
+      "klarheit": 0.84,
+      "payoff": 0.86
+    },
+    "grund": "Cockpitschau mit Einordnung statt reiner Angeberei: 'vor einem Jahr haette ich nicht mal daran gedacht' als Einstieg, dann 'guckt euch das an - eine Macht' auf den Aufnahmen von Lenkrad und Displays, Schluss auf 'wirklich geisteskrank'"
+  }
+]

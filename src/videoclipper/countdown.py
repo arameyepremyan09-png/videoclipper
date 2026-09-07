@@ -14,6 +14,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from . import follow
+
 
 class Eintrag(BaseModel):
     """Ein Listenplatz mit dem Ausschnitt, der ihn belegt."""
@@ -38,6 +40,9 @@ class Aufgeloest(BaseModel):
     dauer: float
     # Reihenfolge der Wiedergabe: Platz 5 zuerst, Platz 1 zuletzt.
     segmente: list[dict]
+    # Pflicht-Overlay. Untertitel hat dieses Format nicht: die Segmente kommen
+    # aus bis zu fuenf Quellen, deren Transkripte hier gar nicht vorliegen.
+    follow: dict | None = None
 
 
 class CountdownPlan(BaseModel):
@@ -92,9 +97,14 @@ def loese_auf(plan: CountdownPlan, tmpl: dict) -> CountdownPlan:
         })
         uhr += e.dauer
 
+    conf = tmpl.get("follow_hinweis") or {}
+    hinweis, _ = follow.platziere(uhr, conf) if conf.get("aktiv", True) else (None, [])
+
     plan.aufgeloest = Aufgeloest(
         canvas=tuple(tmpl["canvas"]), fps=plan.fps,
-        panel=(px, py, pw, ph), dauer=round(uhr, 3), segmente=segmente)
+        panel=(px, py, pw, ph), dauer=round(uhr, 3), segmente=segmente,
+        follow=({"text": hinweis.text, "ab": hinweis.ab, "bis": hinweis.bis}
+                if hinweis else None))
     return plan
 
 

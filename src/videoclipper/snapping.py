@@ -36,5 +36,14 @@ def snappe(tr: Transkript, start: float, ende: float) -> tuple[float, float, str
     s = max(0.0, s - 0.20)
     en = min(tr.dauer, en + 0.35)
 
+    # GEMESSEN am 2026-09-07: Liegt das gewuenschte Fenster hinter dem letzten
+    # transkribierten Wort, zieht ``min(tr.dauer, ...)`` das Ende VOR den
+    # Anfang — ``snappe`` gab dann eine negative Dauer zurueck, und FFmpeg
+    # bekam ein negatives ``-t``. Das Transkript endet regelmaessig vor dem
+    # Video (nach dem letzten Wort laufen oft noch Bilder), der Fall ist also
+    # nicht konstruiert. Dann gilt das ungesnappte Fenster.
+    if en <= s:
+        s, en = max(0.0, start), max(start + 0.05, ende)
+
     tier = "A" if (en - s) >= e["tier_a_min_sekunden"] else "B"
     return round(s, 3), round(en, 3), tier

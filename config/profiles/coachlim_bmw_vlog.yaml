@@ -1,0 +1,82 @@
+# Materialprofil: Coachlim / BMW-Vlog
+#
+# Gemessen am 2026-09-06 an 8eotiLpudZ4 ("ICH HOLE MEINEN NEUEN BMW M4
+# COMPETITION AB"), 1920x1080 bei 60 fps, 654 s.
+#
+# WIEDER EIN ANDERER MATERIALTYP. Kein Browser-Capture wie COACHLIM_OMETV_SPLIT,
+# keine feststehende Kamera wie COACHLIM_COUCH, sondern ein gefuehrter Vlog:
+# Handkamera, staendig wechselnde Einstellungen, Autohaus und Fahrt.
+#
+# Die Kantenmessung ueber 40 Frames zwischen 20 s und 640 s findet erwartungs-
+# gemaess NICHTS: staerkste persistente Spalte 4.9, staerkste Zeile 11.1 —
+# gegen 177.1 im Splitscreen und 13.3 auf der Couch, die schon als "nichts zu
+# trennen" eingestuft wurde. Dieses Material liegt noch darunter. Es gibt hier
+# keine Boxen, und es kann keine geben: Die Kamera bewegt sich in jedem Bild.
+#
+# ES GIBT ABER EINEN ZWEITEN MODUS, und der ist keine Geometrie der Quelle,
+# sondern eine Entscheidung des Cutters: Die Reveal-Sequenz ist kinematisch
+# geletterboxt. Gemessen ueber 327 Punkte im Abstand von 2 s ist das obere
+# Bildband dort auf **exakt 0.00** Helligkeit, waehrend der Median sonst bei
+# 110.3 liegt und das 5. Perzentil bei 37.7. Sauberer trennt in diesem Repo
+# nur der Piraten-Zaehler der Couch-Runde.
+#
+# Erkannt wird deshalb ueber `flaeche` + `invertiert`, nicht ueber eine Kante:
+# Ein schwarzer Balken hat per Definition keine Struktur, an der sich eine
+# Kantenstaerke messen liesse. Die Kante y=108 trennt zwar auch (min 115.9
+# drinnen gegen p99 24.3 draussen), hat aber Ausreisser bis 154.3 — die
+# Flaechenmessung hat keine.
+#
+# BEKANNTE FEHLTREFFER: Fuenf einzelne Messpunkte ausserhalb der Sequenz
+# liegen ebenfalls unter der Schwelle (176.2, 226.2, 240.2, 372.4, 416.4 s),
+# dazu das Schwarzbild bei t=0. Das sind dunkle Einstellungen — Hallendecke,
+# Schatten — in denen zufaellig auch der Bildrand schwarz ist. Alle sind
+# genau 2 s lang und damit einzelne Messpunkte. Der echte Lauf ist 26 s lang
+# (110.1..136.1 s). Regel fuer die Selektion: Laeufe unter 4 s sind Rauschen.
+
+name: COACHLIM_BMW_VLOG
+beschreibung: Handheld-Vlog im Autohaus und im Auto, dazwischen eine geletterboxte Reveal-Sequenz
+gueltig_ab: 2026-09-06
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [Coachlim]
+  sprache: de
+
+signatur:
+  modus: KINO
+  flaeche: [0, 0, 1920, 100]
+  schwelle: 20.0
+  invertiert: true          # schwarzer Balken = Modus aktiv, also *unter* der Schwelle
+
+modi:
+  # Der Regelfall: das volle Bild, eine bewegte Kamera, ein Motiv.
+  SOLO:
+    zonen:
+      voll: { box: [0, 0, 1920, 1080], rolle: creator, fokus_x: 960 }
+    muellzonen: []
+
+  # Die Reveal-Sequenz. Die Zone schneidet die schwarzen Balken heraus, damit
+  # sie nicht ein zweites Mal im eingepassten Bild auftauchen — sonst stuenden
+  # im fertigen Clip Balken im Blurfeld und saehen aus wie ein Renderfehler.
+  # Gemessen: Balken oben 0..107, Bild 108..971, Balken unten 972..1079.
+  # 864 ist gerade, der Crop rundet also nichts ab.
+  KINO:
+    zonen:
+      voll: { box: [0, 108, 1920, 864], rolle: inhalt, fokus_x: 960 }
+    muellzonen: []
+
+datenschutz:
+  # Im Autohaus laufen Mitarbeiter und fremde Kunden durchs Bild. Sie sind
+  # nicht das Motiv, aber auch nicht freistellbar — die Kamera schwenkt.
+  # Bewusst kein Blur: Der Kanal veroeffentlicht das Video selbst so.
+  fremdinhalt_blur: false
+
+signale:
+  # NULL Marker im Transkript — kein [gelächter], nichts. Derselbe Befund wie
+  # bei LnWKgVfcMMQ und 4ubrGJLb4FQ. Hier ist das aber kein Verlust: Bei diesem
+  # Video traegt ohnehin nicht der Lacher, sondern der Motor und die Reaktion
+  # auf das Auto. Lautheit ist deshalb das einzige und das richtige Signal.
+  lachmarker: 0.0
+  loudness_peak: 1.0
+  sprechtempo: 0.5

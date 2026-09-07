@@ -1,0 +1,81 @@
+# Template: VLOG_FULL
+#
+# Das ganze 16:9-Bild eingepasst, Reste als Blur der eigenen Quelle.
+#
+# WARUM NICHT BESCHNEIDEN — hier aus einem anderen Grund als bei COUCH_FULL.
+# Auf der Couch waren es drei Personen ueber die volle Breite. Hier ist es ein
+# Auto: ein Motiv, das breiter ist als hoch, und dessen Silhouette der ganze
+# Punkt des Videos ist. Ein 9:16-Fenster ist bei 1080 px Hoehe 607 px breit,
+# also 32 % der Quellbreite — davon bliebe von einer Seitenansicht die Fahrer-
+# tuer uebrig. Die Reveal-Aufnahmen und die Standbilder vor dem Autohaus sind
+# durchgehend Totalen; genau die wuerden zerstoert.
+#
+# Der Preis ist derselbe wie auf der Couch: Die Quelle landet als 1080x606-Band
+# auf y=657. Das ist die dokumentierte Hausregel (`passung: einpassen`, Inhalt
+# vollstaendig), nicht ein Kompromiss im Einzelfall.
+#
+# Die Headline steht im oberen Blurfeld und damit ueber dem Bild, nicht darin.
+# Unten bleiben 657 px frei — die 192 px TikTok-UI liegen also weit unterhalb
+# des Bildbands und verdecken keinen Inhalt.
+
+name: VLOG_FULL
+beschreibung: Vollbild 16:9 eingepasst auf 9:16, Blur ringsum, Headline ueber dem Bild
+# AGAAMUZA_TUERSTEHER teilt die Zielkomposition, aber aus einem anderen Grund:
+# Dort steht der Host rechts (x ~1150..1920) und der Kontrollierte mittig-links.
+# Ein 607 px breites 9:16-Fenster wuerde einen von beiden abschneiden — und die
+# Reaktion des Gegenuebers ist bei diesem Format die Pointe. Gleiche Loesung wie
+# COUCH_FULL, gleicher Preis: das kleinere Bildband.
+default_fuer: [COACHLIM_BMW_VLOG, AGAAMUZA_TUERSTEHER]
+gilt_fuer_modus: SOLO
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: voll
+    ziel: [0, 0, 1080, 1920]
+    passung: einpassen
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: editplan.headline
+  schrift: Anton
+  schriftgroesse: 76
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 9
+  y: 380                    # im Blurfeld ueber dem Bildband, das bei y=657 beginnt
+  max_breite: 1000
+  max_zeilen: 3
+  renderer: png_overlay
+
+# --- Pflicht-Overlays ------------------------------------------------------
+# Grundwerte stehen in config/overlays.yaml; hier steht nur, was die Geometrie
+# dieses Templates erzwingt.
+#
+# GEMESSEN am 2026-09-07 an einem gerenderten Clip: Das eingepasste 16:9-Bild
+# landet als 1080x606-Band auf y=657..1263. Die Standardwerte setzen die
+# Untertitel auf 1424 — das sind 161 px Luecke, in denen nichts steht. Der Text
+# schwebt dann abgekoppelt im Blurfeld statt am Bild zu haengen.
+#
+# Beide Overlays ruecken deshalb an die Kanten des Bildbandes:
+#   Headline        253..507
+#   Follow-Pille    535..629   in der freien Flaeche ueber dem Bild
+#   Bildband        657..1263
+#   Untertitel     1288..1552  25 px unter dem Bild, liest sich als eine Einheit
+#   UI-Zone ab     1728
+
+follow_hinweis:
+  # In die obere Luecke statt auf die Bildunterkante: Dort ueberdeckt sie
+  # nichts, und der Platz waere sonst leer.
+  y: 582
+
+untertitel:
+  y: 1420
+
+branding: { aktiv: false, text: "TODO", y: 1790 }
+audio:    { normalisieren: true, ziel_lufs: -14.0 }

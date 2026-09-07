@@ -1,0 +1,218 @@
+[
+  {
+    "clip_id": "utB7GTrmLYY_001",
+    "modus": "OMETV",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "utB7GTrmLYY",
+      "kanal": "Coachlim Highlights",
+      "orig_start": 119.6
+    },
+    "tier": "B",
+    "profil": "COACHLIM_OMETV_SPLIT",
+    "template": "OME_SPLIT",
+    "template_grund": "Durchgehend Splitscreen; die Frage kommt links, die Reaktion rechts",
+    "timing": {
+      "start": 119.6,
+      "ende": 149.7
+    },
+    "headline": "Findest du mich mit Brille hässlich?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.82,
+      "reaktion": 0.8,
+      "klarheit": 0.92,
+      "payoff": 0.78
+    },
+    "grund": "Geschlossene Frage-Antwort-Einheit im Gespraechsblock 57.75-150.25. Frage bei 119.8, erste Pointe 'da kann ich ja nur verlieren' bei 124.6, zweite Pointe 'mit Batman' bei 147.8, Lachmarker 149.34. Endet auf dem Lacheinsatz, bevor der Partner bei 150.25 abbricht."
+  },
+  {
+    "clip_id": "utB7GTrmLYY_002",
+    "modus": "OMETV",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "utB7GTrmLYY",
+      "kanal": "Coachlim Highlights",
+      "orig_start": 155.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_OMETV_SPLIT",
+    "template": "OME_SPLIT",
+    "template_grund": "Durchgehend Splitscreen; die Frage kommt links, die Reaktion rechts",
+    "timing": {
+      "start": 155.0,
+      "ende": 216.2
+    },
+    "headline": "Warum ist der so dicht, Alter?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.86,
+      "reaktion": 0.9,
+      "klarheit": 0.8,
+      "payoff": 0.82
+    },
+    "grund": "Kompletter Gespraechsblock 153.25-216.25 mit drei Lachmarkern (163.1, 173.6, 188.0). Bogen von 'Bo, er ist so dicht' ueber 'Ich sitze am smoken' und 'Mach dir Hotbox' bis zur Verabschiedung 'Der war sympathisch'."
+  },
+  {
+    "clip_id": "utB7GTrmLYY_003",
+    "modus": "OMETV",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "utB7GTrmLYY",
+      "kanal": "Coachlim Highlights",
+      "orig_start": 296.9
+    },
+    "tier": "B",
+    "profil": "COACHLIM_OMETV_SPLIT",
+    "template": "OME_SPLIT",
+    "template_grund": "Durchgehend Splitscreen; die Frage kommt links, die Reaktion rechts",
+    "timing": {
+      "start": 296.9,
+      "ende": 341.4
+    },
+    "headline": "Warum sieht dein Mikrofon so aus?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.9,
+      "reaktion": 0.92,
+      "klarheit": 0.85,
+      "payoff": 0.9
+    },
+    "grund": "Staerkster Lachmarker des Videos (313.75, Score 1.705). Aufbau 'Ich bin gerade massiv verwirrt' bei 299, Frage nach dem Mikrofon bei 311.8, Lacher 313.75, Pointe 'Lava Dildo' bei 315.6. Liegt vollstaendig im Block 258.25-373.50."
+  },
+  {
+    "clip_id": "utB7GTrmLYY_004",
+    "modus": "OMETV",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "utB7GTrmLYY",
+      "kanal": "Coachlim Highlights",
+      "orig_start": 455.9
+    },
+    "tier": "B",
+    "profil": "COACHLIM_OMETV_SPLIT",
+    "template": "OME_SPLIT",
+    "template_grund": "Durchgehend Splitscreen; die Frage kommt links, die Reaktion rechts",
+    "timing": {
+      "start": 455.9,
+      "ende": 476.5
+    },
+    "headline": "Er findet sie cute — und dann das",
+    "sprache": "de",
+    "score": {
+      "overall": 0.62,
+      "reaktion": 0.75,
+      "klarheit": 0.4,
+      "payoff": 0.65
+    },
+    "grund": "Der verstoerendste Moment: Anbaggern kippt in Schreien. Lachmarker 467.7, [schreien] 472.3-474.3, und genau darauf endet der Clip. Block 452.50-486.75; Start auf das erste Wort 456.04 gelegt, weil davor nur Stille steht. Klarheit bewusst niedrig — der Schrei steht im Ton, nicht im Text."
+  },
+  {
+    "clip_id": "utB7GTrmLYY_005",
+    "modus": "OMETV",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "utB7GTrmLYY",
+      "kanal": "Coachlim Highlights",
+      "orig_start": 575.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_OMETV_SPLIT",
+    "template": "OME_SPLIT",
+    "template_grund": "Durchgehend Splitscreen; die Frage kommt links, die Reaktion rechts",
+    "timing": {
+      "start": 575.0,
+      "ende": 604.0
+    },
+    "headline": "Warum seid ihr in Canada?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.72,
+      "reaktion": 0.7,
+      "klarheit": 0.85,
+      "payoff": 0.72
+    },
+    "grund": "Ausfragen kippt ins Bewerbungsgespraech. Block 492.25-598.75; die Pointe 'Du machst Bewerbungsgespraech mit dem' faellt mit Lachmarker 599.3 auf die Suchkarte danach, der Clip laeuft also bewusst in die Karte hinein und schliesst auf 'hat sich richtig gut mit verstanden' (603.96)."
+  },
+  {
+    "clip_id": "utB7GTrmLYY_006",
+    "modus": "OMETV",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "utB7GTrmLYY",
+      "kanal": "Coachlim Highlights",
+      "orig_start": 608.2
+    },
+    "tier": "B",
+    "profil": "COACHLIM_OMETV_SPLIT",
+    "template": "OME_SPLIT",
+    "template_grund": "Durchgehend Splitscreen; die Frage kommt links, die Reaktion rechts",
+    "timing": {
+      "start": 608.2,
+      "ende": 636.0
+    },
+    "headline": "Are you smelling your fingers?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.76,
+      "reaktion": 0.78,
+      "klarheit": 0.72,
+      "payoff": 0.8
+    },
+    "grund": "Zweiter verstoerender Moment, komisch statt laut: Untersicht aufs Bett, die Frage nach den Fingern bei 613.6, Lachmarker 622.9. Block 608.00-632.00 plus Suchkarte bis 638.75. Der Lacher 638.0 liegt auf der Grenze zum naechsten Partner und wird aufgegeben, statt den Wechsel ins Bild zu holen."
+  },
+  {
+    "clip_id": "utB7GTrmLYY_007",
+    "modus": "OMETV",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "utB7GTrmLYY",
+      "kanal": "Coachlim Highlights",
+      "orig_start": 660.0
+    },
+    "tier": "A",
+    "profil": "COACHLIM_OMETV_SPLIT",
+    "template": "OME_SPLIT",
+    "template_grund": "Durchgehend Splitscreen; die Frage kommt links, die Reaktion rechts",
+    "timing": {
+      "start": 660.0,
+      "ende": 745.0
+    },
+    "headline": "Was ist das bitte für ein Haus?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.8,
+      "reaktion": 0.72,
+      "klarheit": 0.86,
+      "payoff": 0.75
+    },
+    "grund": "Laengster zusammenhaengender Block (648.50-833.75) und damit der einzige Tier-A-Kandidat, der nicht gestreckt werden muss. Hausfuehrung ab 660, Partykeller ab 712, 'Sohn von Floyd Mayweather' 733, 'sieht aus wie Swingerclub' 739."
+  },
+  {
+    "clip_id": "utB7GTrmLYY_008",
+    "modus": "OMETV",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "utB7GTrmLYY",
+      "kanal": "Coachlim Highlights",
+      "orig_start": 777.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_OMETV_SPLIT",
+    "template": "OME_SPLIT",
+    "template_grund": "Durchgehend Splitscreen; die Frage kommt links, die Reaktion rechts",
+    "timing": {
+      "start": 777.0,
+      "ende": 833.5
+    },
+    "headline": "Woher kommt das ganze Geld, Bruder?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.78,
+      "reaktion": 0.7,
+      "klarheit": 0.88,
+      "payoff": 0.82
+    },
+    "grund": "Zweiter Clip aus demselben Block, eigener Bogen: Frage nach dem Geld bei 777.4, Aufloesung '2,7 Millionen' bei 802.9, Zahlenpointe '30 Dollar Eintritt, 600 Leute' bei 822-829. Endet vor der Schlusskarte ab 833.75."
+  }
+]

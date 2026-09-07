@@ -9,6 +9,7 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
+from . import follow, untertitel
 from .editplan import EditPlan
 from .headline import baue as headline_bauen
 from .settings import einstellungen
@@ -61,10 +62,59 @@ def _panel_kette(quelle: str, p: dict, blur: int) -> tuple[str, str]:
     return kette, label
 
 
+def ueberlagerungen(plan: EditPlan, tmpl: dict) -> list[dict]:
+    """Die PNG-Eingaenge nach der Buehne, in genau dieser Reihenfolge.
+
+    Je Eintrag ein ``overlay``: Position und optional das Zeitfenster. Die
+    Animation steckt in den x/y-Ausdruecken und kostet deshalb weder ein
+    zweites Bild noch einen zweiten Filter — siehe ``untertitel`` und
+    ``follow``.
+
+    Reihenfolge ist Absicht: Headline zuunterst, Untertitel darueber, die
+    Follow-Pille zuoberst. Wenn sich zwei ueberschneiden, gewinnt die
+    Aufforderung, weil sie nur wenige Sekunden steht.
+    """
+    r = plan.resolved
+    cw, _ = r.canvas
+    eintraege: list[dict] = [{"art": "headline", "x": "0", "y": "0"}]
+
+    if r.untertitel:
+        oben, _ = untertitel.band(tmpl)
+        conf = tmpl["untertitel"]
+        for c in r.untertitel:
+            cue = untertitel.Cue(c["text"], c["ab"], c["bis"])
+            eintraege.append({
+                "art": "untertitel",
+                "x": "0",
+                "y": untertitel.y_ausdruck(cue, oben, conf),
+                "enable": f"between(t,{cue.ab:.3f},{cue.bis:.3f})",
+            })
+
+    if r.follow:
+        conf = tmpl["follow_hinweis"]
+        x0, y0, pw, _ = follow.masse(tmpl)
+        h = follow.Hinweis(r.follow["text"], r.follow["ab"], r.follow["bis"])
+        eintraege.append({
+            "art": "follow",
+            "x": follow.x_ausdruck(h, x0, cw, pw, conf),
+            "y": str(y0),
+            "enable": f"between(t,{h.ab:.3f},{h.bis:.3f})",
+        })
+
+    return eintraege
+
+
+def _overlay(vorher: str, eingang: int, u: dict, raus: str) -> str:
+    """Ein overlay-Glied. Ausdruecke in Anfuehrungszeichen: sie enthalten Kommas."""
+    teil = f"[{vorher}][{eingang}:v]overlay=x='{u['x']}':y='{u['y']}'"
+    if u.get("enable"):
+        teil += f":enable='{u['enable']}'"
+    return teil + f"[{raus}]"
+
+
 def filtergraph(plan: EditPlan, tmpl: dict) -> str:
     r = plan.resolved
     blur = (tmpl.get("hintergrund") or {}).get("staerke", 24)
-    cw, ch = r.canvas
 
     teile, labels = [], []
     for p in r.panels:
@@ -78,16 +128,36 @@ def filtergraph(plan: EditPlan, tmpl: dict) -> str:
         teile.append("".join(f"[{l}]" for l in labels)
                      + f"vstack=inputs={len(labels)}[buehne]")
 
-    # Headline liegt als PNG auf dem zweiten Eingang.
-    teile.append(f"[buehne][1:v]overlay=0:0,format=yuv420p[v]")
+    # Eingang 0 ist das Video, ab 1 folgen die PNGs in der Reihenfolge, in der
+    # ``rendere`` sie anhaengt.
+    vorher = "buehne"
+    for i, u in enumerate(ueberlagerungen(plan, tmpl)):
+        raus = f"ov{i}"
+        teile.append(_overlay(vorher, i + 1, u, raus))
+        vorher = raus
+    teile.append(f"[{vorher}]format=yuv420p[v]")
     return ";".join(teile)
+
+
+def _overlay_bilder(plan: EditPlan, tmpl: dict, ziel: Path) -> list[Path]:
+    """Alle PNGs in der Reihenfolge, die ``ueberlagerungen`` erwartet."""
+    r = plan.resolved
+    bilder = [headline_bauen(plan.headline, tmpl, ziel.with_suffix(".headline.png"))]
+
+    if r.untertitel:
+        cues = [untertitel.Cue(c["text"], c["ab"], c["bis"]) for c in r.untertitel]
+        bilder += untertitel.baue(cues, tmpl, ziel.parent / "overlays", plan.clip_id)
+    if r.follow:
+        bilder.append(follow.baue(tmpl, ziel.parent / "overlays"
+                                  / f"{plan.clip_id}.follow.png"))
+    return bilder
 
 
 def rendere(plan: EditPlan, tmpl: dict, video: Path, ziel: Path,
             vorschau: bool = False) -> Path:
     r = plan.resolved
     ziel.parent.mkdir(parents=True, exist_ok=True)
-    hl = headline_bauen(plan.headline, tmpl, ziel.with_suffix(".headline.png"))
+    bilder = _overlay_bilder(plan, tmpl, ziel)
 
     e = einstellungen()
     encoder = e["platform"]["preview_encoder" if vorschau else "encoder"]
@@ -96,7 +166,10 @@ def rendere(plan: EditPlan, tmpl: dict, video: Path, ziel: Path,
     cmd = [
         "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
         "-ss", f"{r.start:.3f}", "-t", f"{r.dauer:.3f}", "-i", str(video),
-        "-i", str(hl),
+    ]
+    for bild in bilder:
+        cmd += ["-i", str(bild)]
+    cmd += [
         "-filter_complex", filtergraph(plan, tmpl),
         "-map", "[v]", "-map", "0:a",
         "-af", f"loudnorm=I={lufs}:TP=-1.5:LRA=11",
@@ -164,6 +237,18 @@ def filtergraph_countdown(plan, tmpl: dict, lufs: float) -> str:
         teile.append(f"[{vorher}][{kopf + 1 + i}:v]"
                      f"overlay=0:0:enable='between(t,{seg['ab']:.3f}{bis})'[{raus}]")
         vorher = raus
+
+    # Die Follow-Pille liegt ueber allem und kommt deshalb als letzter Eingang.
+    if r.follow:
+        conf = tmpl["follow_hinweis"]
+        x0, y0, pw, _ = follow.masse(tmpl)
+        h = follow.Hinweis(r.follow["text"], r.follow["ab"], r.follow["bis"])
+        teile.append(
+            f"[{vorher}][{kopf + 1 + n}:v]"
+            f"overlay=x='{follow.x_ausdruck(h, x0, r.canvas[0], pw, conf)}':"
+            f"y='{y0}':enable='between(t,{h.ab:.3f},{h.bis:.3f})'[o_follow]")
+        vorher = "o_follow"
+
     teile.append(f"[{vorher}]format=yuv420p[v]")
     return ";".join(teile)
 
@@ -193,6 +278,9 @@ def rendere_countdown(plan, tmpl: dict, videos: dict[str, Path], ziel: Path,
     cmd += ["-i", str(kopf_png)]
     for p in listen:
         cmd += ["-i", str(p)]
+    if r.follow:
+        cmd += ["-i", str(follow.baue(
+            tmpl, ziel.parent / "overlays" / f"{plan.clip_id}.follow.png"))]
 
     cmd += [
         "-filter_complex", filtergraph_countdown(plan, tmpl, lufs),

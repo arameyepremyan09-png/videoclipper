@@ -1,0 +1,72 @@
+# Materialprofil: AgaaMuza / Tuersteher-Vlog
+#
+# Gemessen am 2026-09-07 an 2aMA9-rIprc ("TUERSTEHER MIT KOLJA GOLDSTEIN"),
+# 1920x1080 bei 60 fps, 2557.6 s, Kanal AgaaMuza.
+#
+# ERSTES EINMODIGES MATERIAL IN DIESEM REPO. Die Kantenmessung ueber 40 Frames
+# zwischen 30 s und 2520 s findet nichts, und zwar deutlicher als jedes bisher
+# vermessene Video:
+#
+#   staerkste persistente Spalte  1.8   (BMW-Vlog 4.9, Couch 13.3, Splitscreen 177.1)
+#   staerkste persistente Zeile   2.3   (BMW-Vlog 11.1)
+#
+# Der BMW-Vlog lag schon unter der Couch-Runde, die als "nichts zu trennen"
+# eingestuft war — dieses Material liegt noch darunter. Es gibt keine Boxen,
+# und es kann keine geben: eine Handkamera folgt zwei Personen durch eine
+# Warteschlange.
+#
+# UND ES GIBT AUCH KEINEN ZWEITEN MODUS. Der BMW-Vlog hatte einen, obwohl auch
+# dort keine Boxen waren — die geletterboxte Reveal-Sequenz. Hier wurde derselbe
+# Test gefahren und faellt negativ aus: Das obere Bildband liegt bei min 37.3 /
+# median 110.6, das untere bei min 47.9 / median 84.2. Kein einziger Messpunkt
+# geht gegen null, wo der BMW-Vlog exakt 0.00 zeigte. Es wird nie geletterboxt.
+#
+# Deshalb `signatur.immer: true`. Das ist keine abgeschaltete Erkennung, sondern
+# eine gemessene Aussage: Es gibt nichts zu unterscheiden. Stage 04 spart sich
+# damit den Bilddurchlauf ueber 42 Minuten.
+
+name: AGAAMUZA_TUERSTEHER
+beschreibung: Handheld-Vlog an einer Clubtuer, Livestream-Mitschnitt mit Chat-Overlay
+gueltig_ab: 2026-09-07
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [AgaaMuza]
+  sprache: de
+
+signatur:
+  modus: SOLO
+  immer: true               # gemessen einmodig, siehe Kopf
+  sonst: SOLO
+
+modi:
+  SOLO:
+    zonen:
+      voll: { box: [0, 0, 1920, 1080], rolle: creator, fokus_x: 960 }
+    muellzonen:
+      # Livestream-Chat, halbtransparent ueber dem Bild. Er wandert nicht und
+      # laesst sich trotzdem nicht wegschneiden: Er liegt AUF dem Motiv, nicht
+      # daneben. In der Kantenmessung taucht er nicht auf, weil der Text
+      # staendig durchlaeuft — er ist also kein Modus, nur Bildrauschen.
+      - { box: [0, 0, 640, 190], hinweis: Twitch-Chat oben links }
+
+datenschutz:
+  # Vor der Tuer stehen durchgehend fremde Gaeste, und sie sind hier nicht
+  # Beiwerk, sondern Gegenueber jeder Szene. Freistellen ist unmoeglich.
+  # Bewusst kein Blur: Der Kanal veroeffentlicht das Video selbst so.
+  fremdinhalt_blur: false
+
+signale:
+  # VIERTES VON SIEBEN VIDEOS OHNE LACHMARKER. Das Transkript hat ueberhaupt
+  # nur 4 Marker, und alle vier sind zensierte Kraftausdruecke, kein einziges
+  # [gelächter]. Damit ist Stage 05 hier ein Lautheitsdetektor, kein
+  # Lacherdetektor — die Auswahl der lustigen Stellen passiert in Stage 06
+  # durch Lesen des Transkripts.
+  #
+  # Sprechtempo traegt hier mehr als bei den Reaction-Videos: 4574 Woerter auf
+  # 2559 s sind 1.8 Woerter/s, gegen ueber 3 bei einem Reaction-Streamer. Wo
+  # es in diesem Material dicht wird, passiert auch etwas.
+  lachmarker: 0.0
+  loudness_peak: 1.0
+  sprechtempo: 0.7

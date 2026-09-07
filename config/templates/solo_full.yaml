@@ -6,7 +6,7 @@
 
 name: SOLO_FULL
 beschreibung: Vollbild-Cam auf 9:16 beschnitten, Headline im oberen Drittel
-default_fuer: [COACHLIM_TIKTOK_REACT, COACHLIM_GAME]
+default_fuer: [COACHLIM_TIKTOK_REACT, COACHLIM_GAME, MARLI_PHONE, COACHLIM_REACT_YT]
 gilt_fuer_modus: SOLO
 
 canvas: [1080, 1920]

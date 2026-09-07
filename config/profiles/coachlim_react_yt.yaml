@@ -1,0 +1,64 @@
+# Materialprofil: Coachlim Reactions / YouTube-Reaction mit Creator-PiP
+#
+# Gemessen am 2026-09-06 an vT1ysIDSpHw ("WAS SIND DAS FUER OPFER?!", Pop The
+# Balloon Reaction mit Rohat, 3008 s, 1920x1080@60). 1003 Messpunkte im Abstand
+# von 3 s, Boxkanten an 10 Vollbildern nachgemessen.
+#
+# ANDERER AUFBAU ALS COACHLIM_TIKTOK_REACT: Dort liegt ein hochkanter
+# TikTok-Player mittig im Browserfenster. Hier laeuft das reagierte Video
+# formatfuellend ueber die ganzen 1920x1080, und die Creator-Cam sitzt als
+# PiP in der unteren rechten Ecke darueber.
+#
+# Gemessene Kanten (10 Vollbilder):
+#   PiP linke Kante  x = 1342  (Staerke 32.7, einzige Kante zwischen 1300 und 1400)
+#   PiP obere Kante  y =  755  (Staerke 65.1, dominant)
+#   rechts und unten laeuft der PiP an den Bildrand -> [1342, 755, 578, 325]
+# 578/325 = 1.7785, also exakt 16:9.
+
+name: COACHLIM_REACT_YT
+beschreibung: Reagiertes Video formatfuellend, Creator-Cam als PiP unten rechts, wechselnd mit Vollbild-Cam
+gueltig_ab: 2026-09-06
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [Coachlim Reactions]
+  sprache: de
+
+# Die obere PiP-Kante trennt sauber: gemessen ueber 1003 Punkte liegen 88 Werte
+# unter 10, dann kommt zwischen 10 und 20 KEIN EINZIGER, und der Rest liegt
+# darueber. Die Schwelle steht in dieser Luecke.
+signatur:
+  modus: REACT
+  kante_y: 755
+  bereich: [1400, 1900]
+  schwelle: 15.0
+
+modi:
+  REACT:
+    zonen:
+      # Das reagierte Video laeuft unter dem PiP weiter; als Quellbox gilt
+      # deshalb das ganze Bild. Was der PiP verdeckt, ist die untere rechte
+      # Ecke — bei diesem Format Studioboden, keine Handlung.
+      fremd_video:  { box: [0, 0, 1920, 1080], rolle: inhalt }
+      creator_cam:  { box: [1342, 755, 578, 325], rolle: creator }   # 16:9
+    muellzonen:
+      - { box: [0, 0, 420, 40], hinweis: Piraten-Zaehler oben links }
+      - { box: [0, 1000, 700, 80], hinweis: YouTube-Playerleiste unten links }
+      - { box: [1500, 640, 420, 115], hinweis: Chateinblendungen ueber dem PiP }
+  SOLO:
+    zonen:
+      creator_voll: { box: [0, 0, 1920, 1080], rolle: creator, fokus_x: 960 }
+    muellzonen:
+      - { box: [0, 0, 420, 40], hinweis: Piraten-Zaehler oben links }
+
+datenschutz:
+  fremdinhalt_blur: false
+
+signale:
+  # NULL Marker im Transkript dieses Videos — kein [gelächter], nichts, bei
+  # 47413 Zeichen Text. Damit sind es drei von sechs vermessenen Videos ohne
+  # Textkanal. Der Lacher-Detektor muss hier aus dem Ton kommen.
+  lachmarker: 0.0
+  loudness_peak: 1.0
+  sprechtempo: 0.6

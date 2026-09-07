@@ -43,12 +43,32 @@ def lautheit(video: Path, fenster: float = 0.25) -> tuple[np.ndarray, np.ndarray
 
 @dataclass(frozen=True)
 class ModusSignatur:
-    """Wie ein Layout erkannt wird: eine statische Kante, die es sonst nicht gibt."""
+    """Wie ein Layout erkannt wird.
+
+    Der Regelfall ist eine statische Kante, die es nur im Speziallayout gibt.
+    Manche Layouts haben aber gar keine: Wenn ein hochkantes Handybild mittig
+    auf schwarzem Grund steht, ist die Kante zum Rahmen nur dann da, wenn der
+    Handyinhalt gerade hell ist — bei einer dunklen App faellt sie auf null,
+    obwohl das Layout unveraendert steht (gemessen an A14FQZsFooQ: Kantenwert
+    0.3 bis 119 *innerhalb desselben Modus*). Erkannt wird dort deshalb der
+    schwarze Rahmen selbst, ueber ``flaeche`` und ``invertiert``.
+    """
     name: str
     kante_x: int | None = None      # Spalte mit persistenter vertikaler Kante
     kante_y: int | None = None      # Zeile mit persistenter horizontaler Kante
+    flaeche: tuple[int, int, int, int] | None = None   # x,y,w,h: Flaeche statt Kante
+    kantenenergie: bool = False     # bei flaeche: Struktur messen statt Helligkeit
     bereich: tuple[int, int] = (0, 0)   # Ausschnitt laengs der Kante
     schwelle: float = 12.0
+    invertiert: bool = False        # True: Modus ist *unterhalb* der Schwelle aktiv
+    immer: bool = False             # Material mit genau EINEM Modus
+    sonst: str = "SOLO"             # Modusname, wo die Signatur nicht greift
+
+    def aktiv(self, werte: np.ndarray) -> np.ndarray:
+        """Elementweise: liegt an dieser Stelle das Speziallayout vor?"""
+        if self.immer:
+            return np.ones(len(werte), dtype=bool)
+        return werte < self.schwelle if self.invertiert else werte > self.schwelle
 
 
 def _kantenstaerke(bild: np.ndarray, sig: ModusSignatur) -> float:
@@ -80,6 +100,50 @@ def bildrate(video: Path) -> float:
     return float(z) / float(n)
 
 
+def _flaechen_verlauf(video: Path, sig: ModusSignatur, K: int,
+                      fps: float) -> tuple[np.ndarray, np.ndarray]:
+    """Ein Ausschnitt ueber die Zeit — als Helligkeit oder als Kantenenergie.
+
+    Helligkeit (16x16) beantwortet "ist diese Flaeche schwarz". Das reicht
+    nicht immer: Ein Gitter aus vielen kleinen, dunklen Handybildern ist im
+    Mittel genauso schwarz wie ein leerer Rahmen (gemessen an A14FQZsFooQ:
+    0.7 gegen 0.0, ununterscheidbar). Was es unterscheidet, ist STRUKTUR —
+    Kacheln haben Kanten, ein leerer Rahmen hat keine. ``kantenenergie``
+    misst deshalb den mittleren Betrag des Gradienten statt des Pegels; auf
+    denselben Daten trennt das PHONE (p95 1.59) von Gitter (p5 2.19) mit
+    einer Luecke dazwischen.
+
+    Der Massstab ist Teil der Messgroesse: Ein Gradient auf halber Aufloesung
+    ist ein anderer Zahlenwert. Deshalb steht die Verkleinerung fest bei 4x,
+    und die Schwellen im Profil gelten fuer genau diesen Massstab.
+    """
+    x, y, w, h = sig.flaeche
+    if not sig.kantenenergie:
+        roh = subprocess.run(
+            ["ffmpeg", "-hide_banner", "-loglevel", "error", "-i", str(video),
+             "-vf", rf"select='not(mod(n\,{K}))',format=gray,"
+                    rf"crop={w}:{h}:{x}:{y},scale=16:16",
+             "-fps_mode", "passthrough", "-f", "rawvideo", "-"],
+            capture_output=True, check=True).stdout
+        anzahl = len(roh) // 256
+        stapel = np.frombuffer(roh[:anzahl * 256], dtype=np.uint8).reshape(anzahl, 256)
+        return np.arange(anzahl) * (K / fps), stapel.mean(axis=1).astype(np.float32)
+
+    bw, bh = (w // 4) // 2 * 2, (h // 4) // 2 * 2
+    roh = subprocess.run(
+        ["ffmpeg", "-hide_banner", "-loglevel", "error", "-i", str(video),
+         "-vf", rf"select='not(mod(n\,{K}))',format=gray,"
+                rf"crop={w}:{h}:{x}:{y},scale={bw}:{bh}",
+         "-fps_mode", "passthrough", "-f", "rawvideo", "-"],
+        capture_output=True, check=True).stdout
+    n = bw * bh
+    anzahl = len(roh) // n
+    st = np.frombuffer(roh[:anzahl * n], dtype=np.uint8).reshape(anzahl, bh, bw).astype(np.float32)
+    energie = (np.abs(np.diff(st, axis=2)).mean(axis=(1, 2))
+               + np.abs(np.diff(st, axis=1)).mean(axis=(1, 2)))
+    return np.arange(anzahl) * (K / fps), energie.astype(np.float32)
+
+
 def modus_verlauf(video: Path, sig: ModusSignatur, dauer: float,
                   schritt: float = 2.0) -> tuple[np.ndarray, np.ndarray]:
     """Kantenstaerke ueber die Zeit. Hoch = Layout vorhanden.
@@ -93,8 +157,20 @@ def modus_verlauf(video: Path, sig: ModusSignatur, dauer: float,
     nur wenige Kilobyte pro Frame anfallen. ``format=gray`` muss vor dem Crop
     stehen — auf yuv420p rundet crop ungerade Kantenmasse still ab.
     """
+    # Genau ein Modus: Es gibt nichts zu unterscheiden, also wird auch nichts
+    # abgetastet. Bei 42 Minuten spart das den kompletten Bilddurchlauf — und
+    # eine Messung, die per Definition immer dasselbe Ergebnis haette, waere
+    # ohnehin keine Messung. Ob ein Material einmodig ist, entscheidet die
+    # Kantenmessung beim Anlegen des Profils, nicht dieser Aufruf.
+    if sig.immer:
+        z = np.arange(0.0, max(dauer, schritt), schritt, dtype=np.float32)
+        return z, np.ones(len(z), dtype=np.float32)
+
     fps = bildrate(video)
     K = max(1, round(fps * schritt))
+
+    if sig.flaeche is not None:
+        return _flaechen_verlauf(video, sig, K, fps)
 
     a, b = sig.bereich
     laenge = (b - a) // 2 * 2
@@ -129,6 +205,7 @@ class Signale:
     modus_zeiten: np.ndarray
     modus_wert: np.ndarray
     modus_schwelle: float
+    modus_invertiert: bool = False
 
     def db_bei(self, t: float) -> float:
         i = int(np.clip(t / (self.zeiten_db[1] - self.zeiten_db[0]), 0, len(self.db) - 1))
@@ -141,7 +218,10 @@ class Signale:
             return 0.0
         w = self.modus_wert[m]
         w = w[~np.isnan(w)]
-        return float((w > self.modus_schwelle).mean()) if len(w) else 0.0
+        if not len(w):
+            return 0.0
+        an = w < self.modus_schwelle if self.modus_invertiert else w > self.modus_schwelle
+        return float(an.mean())
 
 
 def sammle(video: Path, tr: Transkript, sig: ModusSignatur,
@@ -151,4 +231,4 @@ def sammle(video: Path, tr: Transkript, sig: ModusSignatur,
     lacher = [w.start for w in tr.marker()
               if any(a in w.text.lower() for a in lach_arten)]
     mz, mw = modus_verlauf(video, sig, tr.dauer, schritt)
-    return Signale(zt, db, lacher, mz, mw, sig.schwelle)
+    return Signale(zt, db, lacher, mz, mw, sig.schwelle, sig.invertiert)

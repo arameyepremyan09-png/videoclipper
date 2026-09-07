@@ -1,0 +1,70 @@
+# Materialprofil: Coachlim / OME.TV Splitscreen
+#
+# Gemessen am 2026-09-05 an utB7GTrmLYY ("WIR VEARSCHEN LEUTE AUF OMETV MIT
+# STREAMERIN ASLEYIA"), Kanten ueber 7 Frames zwischen 60 s und 780 s gemittelt.
+# Dominant und ueber das Video stabil:
+#
+#   x=953   Staerke  56.5   Trennung der beiden Kameraboxen
+#   x=1905  Staerke  71.6   rechte Kante der Creator-Cam, dahinter Scrollbar
+#   y=799   Staerke 177.1   Beginn der weissen OME.TV-Bedienleiste
+#
+# ABGRENZUNG ZU COACHLIM_OMETV: Dasselbe Material, aber zwei Unterschiede.
+# Erstens ist das alte Profil im alten Schema (flaches `zonen`, keine
+# `signatur`) und damit fuer Stage 04 nicht lesbar. Zweitens liegen die
+# gemessenen Kanten zwei Pixel neben der Messung vom 2026-09-02 (953/799 statt
+# 955/800). Das alte Profil bleibt unveraendert stehen, dieses ist das gueltige.
+#
+# ANDERS ALS DIE VIDEOS VOM 2026-09-04: Dieses Material wechselt das Layout
+# NICHT. Ueber 420 Messpunkte im Abstand von 2 s liegt die Naht bei 99.8 % der
+# Laufzeit an; der einzige Ausreisser ist das Schwarzbild bei t=0. Die
+# Modus-Maschinerie aus Stage 04 bleibt trotzdem in Kraft — sie kostet nichts
+# und faengt den Fall ab, dass ein spaeteres Video doch umschaltet.
+
+name: COACHLIM_OMETV_SPLIT
+beschreibung: OME.TV-Splitscreen, fremde Cam links, Creator-Cam rechts, Bedienleiste unten
+gueltig_ab: 2026-09-05
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [Coachlim, Coachlim Highlights]
+  sprache: de
+
+# Erkennung ueber die Naht zur Bedienleiste: oberhalb Kamerabild, unterhalb
+# weisse UI. Gemessen ueber das ganze Video: 88.5 im ersten Perzentil gegen
+# 1.5 im Schwarzbild — die Schwelle liegt in einer sehr breiten Luecke.
+signatur:
+  modus: OMETV
+  kante_y: 799
+  bereich: [100, 1800]
+  schwelle: 40.0
+
+modi:
+  OMETV:
+    zonen:
+      # Beide Boxen sind 952x798. Die Kanten liegen bei 953 und 799, die
+      # Maasse werden auf gerade Zahlen abgerundet: in yuv420p rundet crop
+      # ungerade Kantenmasse still ab und verschiebt damit jeden Reshape.
+      fremden_cam: { box: [0, 0, 952, 798], rolle: partner }
+      creator_cam: { box: [953, 0, 952, 798], rolle: creator }
+    muellzonen:
+      - { box: [0, 799, 1920, 281], hinweis: OME.TV-Buttons, Verbindungsstatus, Chatfeld }
+      - { box: [1905, 0, 15, 799], hinweis: Browser-Scrollbar rechts neben der Creator-Cam }
+      # Die naechsten zwei liegen INNERHALB der Kameraboxen und lassen sich
+      # nicht wegschneiden, ohne Bild zu verlieren. Sie stehen hier, damit die
+      # Selektion weiss, dass dort kein Inhalt zu erwarten ist.
+      - { box: [0, 0, 300, 40], hinweis: Piraten-Zaehler und Sponsorlogo ueber der fremden Cam }
+      - { box: [1700, 0, 205, 470], hinweis: Twitch-Chat-Overlay in der Creator-Cam }
+
+datenschutz:
+  # Unveraendert die Entscheidung des Nutzers vom 2026-09-02. Die linke Box
+  # zeigt fremde Privatpersonen; der Schalter bleibt stehen, damit Blur ohne
+  # Umbau aktivierbar ist.
+  fremden_cam_blur: false
+
+signale:
+  # 23 Marker im Transkript, davon 13 [gelächter] und 2 [schreien] — anders als
+  # bei LnWKgVfcMMQ traegt der Textkanal hier also wirklich.
+  lachmarker: 1.0
+  loudness_peak: 0.8
+  sprechtempo: 0.5

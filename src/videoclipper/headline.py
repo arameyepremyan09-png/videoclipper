@@ -20,8 +20,16 @@ ROOT = Path(__file__).resolve().parents[2]
 SCHRIFTEN = ROOT / "assets" / "fonts"
 
 
-def _umbruch(text: str, font: ImageFont.FreeTypeFont, max_breite: int,
-             zeichner: ImageDraw.ImageDraw, max_zeilen: int) -> list[str]:
+def font(conf: dict, groesse: int) -> ImageFont.FreeTypeFont:
+    """Schriftdatei aus einem Konfigurationsblock. Fehlt sie, ist das ein Fehler."""
+    datei = SCHRIFTEN / f"{conf['schrift']}-Regular.ttf"
+    if not datei.exists():
+        raise FileNotFoundError(f"Schrift fehlt: {datei}")
+    return ImageFont.truetype(str(datei), groesse)
+
+
+def umbruch(text: str, font: ImageFont.FreeTypeFont, max_breite: int,
+            zeichner: ImageDraw.ImageDraw, max_zeilen: int) -> list[str]:
     woerter, zeilen, aktuell = text.split(), [], ""
     for w in woerter:
         probe = f"{aktuell} {w}".strip()
@@ -42,10 +50,6 @@ def baue(text: str, tmpl: dict, ziel: Path) -> Path:
     if conf.get("versalien", True):
         text = text.upper()
 
-    datei = SCHRIFTEN / f"{conf['schrift']}-Regular.ttf"
-    if not datei.exists():
-        raise FileNotFoundError(f"Schrift fehlt: {datei}")
-
     bild = Image.new("RGBA", (breite, hoehe), (0, 0, 0, 0))
     zeichner = ImageDraw.Draw(bild)
     max_breite = conf.get("max_breite", breite - 80)
@@ -54,15 +58,15 @@ def baue(text: str, tmpl: dict, ziel: Path) -> Path:
     # Groesse so weit reduzieren, bis der Text in die erlaubten Zeilen passt.
     groesse = conf["schriftgroesse"]
     while groesse > 24:
-        font = ImageFont.truetype(str(datei), groesse)
-        zeilen = _umbruch(text, font, max_breite, zeichner, max_zeilen + 1)
+        schrift = font(conf, groesse)
+        zeilen = umbruch(text, schrift, max_breite, zeichner, max_zeilen + 1)
         if len(zeilen) <= max_zeilen and all(
-                zeichner.textlength(z, font=font) <= max_breite for z in zeilen):
+                zeichner.textlength(z, font=schrift) <= max_breite for z in zeilen):
             break
         groesse -= 2
     else:
-        font = ImageFont.truetype(str(datei), groesse)
-        zeilen = _umbruch(text, font, max_breite, zeichner, max_zeilen)
+        schrift = font(conf, groesse)
+        zeilen = umbruch(text, schrift, max_breite, zeichner, max_zeilen)
 
     rand = conf.get("rand_staerke", 9)
     zh = int(groesse * 1.12)
@@ -71,7 +75,7 @@ def baue(text: str, tmpl: dict, ziel: Path) -> Path:
 
     for i, zeile in enumerate(zeilen):
         zeichner.text(
-            (breite // 2, y + i * zh + zh // 2), zeile, font=font,
+            (breite // 2, y + i * zh + zh // 2), zeile, font=schrift,
             fill=conf.get("farbe", "#FFFFFF"),
             stroke_width=rand, stroke_fill=conf.get("rand_farbe", "#000000"),
             anchor="mm",

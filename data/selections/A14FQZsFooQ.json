@@ -1,0 +1,272 @@
+[
+  {
+    "clip_id": "A14FQZsFooQ_001",
+    "modus": "PHONE",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "A14FQZsFooQ",
+      "kanal": "marli Ordner",
+      "orig_start": 202.8
+    },
+    "tier": "B",
+    "profil": "MARLI_PHONE",
+    "template": "PHONE_STACK",
+    "template_grund": "Durchgehend PHONE; der Suchverlauf steht auf dem Handy, die Reaktion in der Cam",
+    "timing": {
+      "start": 202.8,
+      "ende": 233.0
+    },
+    "headline": "Kondome und teuerste Lego Sets",
+    "sprache": "de",
+    "score": {
+      "overall": 0.84,
+      "reaktion": 0.82,
+      "klarheit": 0.9,
+      "payoff": 0.85
+    },
+    "grund": "Geschlossene Einheit: der Suchverlauf oeffnet bei 203, die Pointe 'du hast das neben das iPhone gehalten' faellt bei 225, Lachmarker bei 229. Der Kontrast Kondome/Lego steht als Bild da, ohne Erklaerung."
+  },
+  {
+    "clip_id": "A14FQZsFooQ_002",
+    "modus": "PHONE",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "A14FQZsFooQ",
+      "kanal": "marli Ordner",
+      "orig_start": 571.0
+    },
+    "tier": "B",
+    "profil": "MARLI_PHONE",
+    "template": "PHONE_STACK",
+    "template_grund": "Die Notizen-App ist der Inhalt, die Frage kommt aus der Cam",
+    "timing": {
+      "start": 571.0,
+      "ende": 594.0
+    },
+    "headline": "Bist du Scammer, Bruder?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.79,
+      "reaktion": 0.75,
+      "klarheit": 0.85,
+      "payoff": 0.78
+    },
+    "grund": "Kuerzester Clip der Auswahl: Vorwurf bei 571, Beleg auf dem Bildschirm bei 575, zweite Pointe 'du willst deinen Sohn Ferdi nennen' bei 587. Drei Schlaege in 23 Sekunden."
+  },
+  {
+    "clip_id": "A14FQZsFooQ_003",
+    "modus": "PHONE",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "A14FQZsFooQ",
+      "kanal": "marli Ordner",
+      "orig_start": 594.5
+    },
+    "tier": "B",
+    "profil": "MARLI_PHONE",
+    "template": "PHONE_STACK",
+    "template_grund": "Der Text steht auf dem Handy und wird mitgelesen; ohne das Handybild ist der Clip sinnlos",
+    "timing": {
+      "start": 594.5,
+      "ende": 626.0
+    },
+    "headline": "Sein geheimer Raptext",
+    "sprache": "de",
+    "score": {
+      "overall": 0.91,
+      "reaktion": 0.94,
+      "klarheit": 0.86,
+      "payoff": 0.93
+    },
+    "grund": "Staerkster Aufbau im ganzen Video: 'Bitte geh auf die Notizen Rap' bei 594, sein Widerstand bis 608, dann [schreien] UND [gelaechter] auf demselben Zeitpunkt und die Zeile 'Wir sind Frankfurter, doch oefter siehst du uns in Kreuzberg' bei 616. Zweiter Lachmarker bei 620."
+  },
+  {
+    "clip_id": "A14FQZsFooQ_004",
+    "modus": "PHONE",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "A14FQZsFooQ",
+      "kanal": "marli Ordner",
+      "orig_start": 708.6
+    },
+    "tier": "B",
+    "profil": "MARLI_PHONE",
+    "template": "PHONE_STACK",
+    "template_grund": "Die Bildschirmzeit-Statistik ist der Beleg und muss lesbar im Bild stehen",
+    "timing": {
+      "start": 708.6,
+      "ende": 745.0
+    },
+    "headline": "Wer benutzt Google auf dem Handy?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.74,
+      "reaktion": 0.7,
+      "klarheit": 0.82,
+      "payoff": 0.72
+    },
+    "grund": "Das relatable Stueck der Auswahl: Bildschirmzeit als geteilte Erfahrung. Hook ist die Google-Frage bei 708, Lachmarker bei 734, Pointe 'er macht da Aktien und so' bei 738."
+  },
+  {
+    "clip_id": "A14FQZsFooQ_005",
+    "modus": "PHONE",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "A14FQZsFooQ",
+      "kanal": "marli Ordner",
+      "orig_start": 796.4
+    },
+    "tier": "B",
+    "profil": "MARLI_PHONE",
+    "template": "PHONE_STACK",
+    "template_grund": "Die aufgeschriebenen Gewichte stehen in der Notiz; das Bild traegt die Pointe mit",
+    "timing": {
+      "start": 796.4,
+      "ende": 838.0
+    },
+    "headline": "Trainingsplan fuer die Ex",
+    "sprache": "de",
+    "score": {
+      "overall": 0.85,
+      "reaktion": 0.88,
+      "klarheit": 0.8,
+      "payoff": 0.86
+    },
+    "grund": "Kippt zweimal: erst ruehrend ('ich habe ihre Gewichte aufgeschrieben', 800), dann hart ('und jetzt ist sie Alkoholikerin', 808), dann [schreien] bei 822 auf 'ich moechte ihr eine letzte Nachricht schicken'. Lachmarker bei 838."
+  },
+  {
+    "clip_id": "A14FQZsFooQ_006",
+    "modus": "PHONE",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "A14FQZsFooQ",
+      "kanal": "marli Ordner",
+      "orig_start": 902.2
+    },
+    "tier": "B",
+    "profil": "MARLI_PHONE",
+    "template": "PHONE_STACK",
+    "template_grund": "Der Witz IST das Bild: das Spiel laeuft sichtbar, waehrend er die Trennung erzaehlt",
+    "timing": {
+      "start": 902.2,
+      "ende": 925.0
+    },
+    "headline": "Block Blast waehrend der Liebesgeschichte",
+    "sprache": "de",
+    "score": {
+      "overall": 0.82,
+      "reaktion": 0.8,
+      "klarheit": 0.88,
+      "payoff": 0.83
+    },
+    "grund": "Visueller Gag, der ohne Ton funktioniert — selten in diesem Material. Er startet das Spiel bei 906 mitten in der Trennungsgeschichte, Lachmarker bei 916. 23 Sekunden, kein Fett."
+  },
+  {
+    "clip_id": "A14FQZsFooQ_007",
+    "modus": "PHONE",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "A14FQZsFooQ",
+      "kanal": "marli Ordner",
+      "orig_start": 1101.2
+    },
+    "tier": "B",
+    "profil": "MARLI_PHONE",
+    "template": "PHONE_STACK",
+    "template_grund": "Der Chatverlauf wird nachgeschlagen; die Reaktion traegt den Rest",
+    "timing": {
+      "start": 1101.2,
+      "ende": 1152.0
+    },
+    "headline": "6,50 Euro fuer den Sub, dann gebannt",
+    "sprache": "de",
+    "score": {
+      "overall": 0.87,
+      "reaktion": 0.84,
+      "klarheit": 0.92,
+      "payoff": 0.89
+    },
+    "grund": "Vollstaendige Geschichte mit Aufloesung, die laengste der Auswahl und trotzdem unter Tier A: Vorwurf bei 1101, Aufklaerung des Missverstaendnisses bis 1140, Schlusspointe 'aber eigentlich will ich nicht, dass du stirbst' bei 1149. Lachmarker bei 1108 und 1113."
+  },
+  {
+    "clip_id": "A14FQZsFooQ_008",
+    "modus": "PHONE",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "A14FQZsFooQ",
+      "kanal": "marli Ordner",
+      "orig_start": 1456.3
+    },
+    "tier": "B",
+    "profil": "MARLI_PHONE",
+    "template": "PHONE_STACK",
+    "template_grund": "Die Kamera-App auf dem Handy ist das Bild, um das gestritten wird",
+    "timing": {
+      "start": 1456.3,
+      "ende": 1505.0
+    },
+    "headline": "Mach Fit aus deinem Namen raus",
+    "sprache": "de",
+    "score": {
+      "overall": 0.78,
+      "reaktion": 0.83,
+      "klarheit": 0.76,
+      "payoff": 0.75
+    },
+    "grund": "Laufender Gag mit Rahmen: Die Forderung steht bei 1456 und kommt bei 1501 woertlich zurueck. Lachmarker bei 1487 auf 'zeig dein Koerper'."
+  },
+  {
+    "clip_id": "A14FQZsFooQ_009",
+    "modus": "PHONE",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "A14FQZsFooQ",
+      "kanal": "marli Ordner",
+      "orig_start": 31.5
+    },
+    "tier": "B",
+    "profil": "MARLI_PHONE",
+    "template": "PHONE_STACK",
+    "template_grund": "Die Hintergrundbilder sind der Inhalt und muessen gross im Bild stehen",
+    "timing": {
+      "start": 31.5,
+      "ende": 75.0
+    },
+    "headline": "Seine alten Hintergrundbilder",
+    "sprache": "de",
+    "score": {
+      "overall": 0.75,
+      "reaktion": 0.7,
+      "klarheit": 0.86,
+      "payoff": 0.8
+    },
+    "grund": "Frueheste PHONE-Strecke des Videos und thematisch die einzige ihrer Art: Der Bogen laeuft vom Spott ('dieses Schwarzweiss, ich wuerde depressiv werden', 35) ueber die peinlichen alten Bilder (54) bis zur warmen Aufloesung 'man merkt, du bist bisschen Mann geworden' (69). Ersetzt einen zurueckgezogenen Clip, siehe 010."
+  },
+  {
+    "clip_id": "A14FQZsFooQ_010",
+    "modus": "PHONE",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "A14FQZsFooQ",
+      "kanal": "marli Ordner",
+      "orig_start": 520.0
+    },
+    "tier": "B",
+    "profil": "MARLI_PHONE",
+    "template": "PHONE_STACK",
+    "template_grund": "Die leere Wallet steht auf dem Bildschirm; ohne sie fehlt der Beleg",
+    "timing": {
+      "start": 520.0,
+      "ende": 568.0
+    },
+    "headline": "Alles verkauft, um ihr Geschenke zu machen",
+    "sprache": "de",
+    "score": {
+      "overall": 0.88,
+      "reaktion": 0.86,
+      "klarheit": 0.84,
+      "payoff": 0.9
+    },
+    "grund": "Hoechster Signalwert aller freien Kandidaten (1.77) mit zwei Lachmarkern bei 550 und 561. Der Clip kippt zweimal: Gestaendnis bei 523, Mitleid bei 527, dann der Vorschlag 'sollen wir sie zurueckgewinnen' (542) und schliesslich die leere Wallet als Pointe (558). ERSATZ: Die urspruenglichen Clips 009/010 lagen bei 2780 und 2836 und damit im Discord-Gitter, nicht auf einem Einzelhandy — das Layout-Signal hat sie faelschlich als PHONE gefuehrt, siehe Profilkommentar."
+  }
+]

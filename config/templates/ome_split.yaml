@@ -1,0 +1,50 @@
+# Template: OME_SPLIT
+#
+# Fremde Cam oben, Creator-Cam unten. Die Reihenfolge ist nicht neu erfunden:
+# Sie steht schon in OME_STACK, dort aus den Referenz-Shorts (NextGenClips)
+# gemessen. Der Aufbau laeuft in der fremden Box, die Pointe in der Reaktion.
+#
+# WARUM NICHT OME_STACK: Dessen Panels sind 909 px hoch und summieren zu 1818
+# statt 1920. Stage 09 lehnt das heute ab — zu Recht, denn vstack braucht eine
+# lueckenlose Buehne, und ungerade Hoehen rundet der Scaler in yuv420p still ab.
+# OME_STACK stammt aus der Zeit vor dieser Pruefung. Hier stehen zwei exakt
+# gleiche Haelften zu je 960 px; die Naht liegt damit auf der Bildmitte.
+
+name: OME_SPLIT
+beschreibung: Fremde Cam oben, Creator-Cam unten, je zur Haelfte, Headline auf der Naht
+default_fuer: [COACHLIM_OMETV_SPLIT]
+gilt_fuer_modus: OMETV
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: fremden_cam
+    ziel: [0, 0, 1080, 960]
+    passung: einpassen
+  - quelle: creator_cam
+    ziel: [0, 960, 1080, 960]
+    passung: einpassen
+
+# Quelle 952x798 auf 1080x960: der Massstab kommt aus der Breite (1.134), die
+# Hoehe landet bei 904. Es bleiben je 28 px oben und unten, die den Blur der
+# eigenen Quelle tragen. Beschnitten wird nichts — die Cams sind der Inhalt.
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: editplan.headline
+  schrift: Anton
+  schriftgroesse: 64
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 9
+  y: 960
+  max_breite: 1000
+  max_zeilen: 2
+  renderer: png_overlay
+
+branding: { aktiv: false, text: "TODO", y: 1790 }
+audio:    { normalisieren: true, ziel_lufs: -14.0 }

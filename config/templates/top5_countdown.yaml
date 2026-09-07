@@ -68,6 +68,28 @@ liste:
 sicherheitszone:
   unten: 192
 
+# --- Pflicht-Overlays ------------------------------------------------------
+# Die Grundwerte stehen in config/overlays.yaml. Hier steht nur, was bei
+# diesem Format anders ist.
+
+untertitel:
+  aktiv: false
+  # Eine Compilation zieht ihre Segmente aus bis zu fuenf Quellen. Deren
+  # Transkripte liegen im CountdownPlan nicht vor — er nennt nur video_id,
+  # start und dauer. Untertitel waeren hier also nicht "abgeschaltet", sondern
+  # unbaubar, solange der Plan die Quelltranskripte nicht mitfuehrt.
+  # Der Textkanal des Formats ist ohnehin die mitwachsende Liste.
+  grund: >-
+    Segmente kommen aus mehreren Quellen, deren Transkripte der CountdownPlan
+    nicht mitfuehrt. Textkanal ist die Liste.
+
+follow_hinweis:
+  # Tiefer als der Standard: Die Pille liegt hier zwangslaeufig auf dem
+  # Segmentbild — es gibt in diesem Layout keine freie Flaeche zwischen Liste
+  # (endet bei y=765) und Panel (beginnt bei y=812). An der Panelunterkante
+  # verdeckt sie am wenigsten.
+  y: 1650
+
 audio:
   normalisieren: true
   ziel_lufs: -14.0

@@ -1,0 +1,569 @@
+[
+  {
+    "clip_id": "4ubrGJLb4FQ_001",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 128.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 128.0,
+      "ende": 176.0
+    },
+    "headline": "Das ist strafbar",
+    "sprache": "de",
+    "score": {
+      "overall": 0.86,
+      "reaktion": 0.9,
+      "klarheit": 0.82,
+      "payoff": 0.88
+    },
+    "grund": "Geschlossener Spruch mit sofortiger Eskalation: 'wie konnte dein Vater aus zwei so einen schoenen Kuchen backen', Urteil 'strafbar' bei 145, Nachschlag 'das war Belaestigung' bei 164"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_002",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 176.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 176.0,
+      "ende": 212.0
+    },
+    "headline": "Du kannst nicht mal lesen",
+    "sprache": "de",
+    "score": {
+      "overall": 0.79,
+      "reaktion": 0.84,
+      "klarheit": 0.76,
+      "payoff": 0.8
+    },
+    "grund": "Der Zuschauer verliest sich mitten im eigenen Spruch; die Pointe ist das Scheitern, nicht der Spruch"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_003",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 275.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 275.0,
+      "ende": 313.0
+    },
+    "headline": "Bist du eine Galaxie",
+    "sprache": "de",
+    "score": {
+      "overall": 0.75,
+      "reaktion": 0.68,
+      "klarheit": 0.86,
+      "payoff": 0.72
+    },
+    "grund": "Seltener Fall mit Gebrauchsanweisung: erst die Erklaerung des Settings, dann der Spruch als Beleg"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_004",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 314.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 314.0,
+      "ende": 350.0
+    },
+    "headline": "Bist du ein Eis oder was",
+    "sprache": "de",
+    "score": {
+      "overall": 0.84,
+      "reaktion": 0.9,
+      "klarheit": 0.78,
+      "payoff": 0.86
+    },
+    "grund": "Kuerzester Weg von Spruch zu Rauswurf: 'geh nach Hause, Alter' direkt nach dem Satz, danach das Urteil Strafanzeige"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_005",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 398.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 398.0,
+      "ende": 423.0
+    },
+    "headline": "Bist du mein Ladekabel",
+    "sprache": "de",
+    "score": {
+      "overall": 0.76,
+      "reaktion": 0.78,
+      "klarheit": 0.82,
+      "payoff": 0.74
+    },
+    "grund": "Kurz und in sich geschlossen; die Pointe liegt im Nachtreten der Runde, nicht im Spruch"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_006",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 423.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 423.0,
+      "ende": 443.0
+    },
+    "headline": "Ich hab da was in meinem Sack",
+    "sprache": "de",
+    "score": {
+      "overall": 0.8,
+      "reaktion": 0.82,
+      "klarheit": 0.84,
+      "payoff": 0.85
+    },
+    "grund": "Kuerzester Clip der Auswahl und trotzdem vollstaendig: Aufbau, Spruch, einstimmiges Urteil"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_007",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 443.5
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 443.5,
+      "ende": 480.0
+    },
+    "headline": "Wir distanzieren uns davon",
+    "sprache": "de",
+    "score": {
+      "overall": 0.83,
+      "reaktion": 0.88,
+      "klarheit": 0.76,
+      "payoff": 0.84
+    },
+    "grund": "Michael-Jackson-Spruch, den die Runde sofort abraeumt; Schluss auf 'bitte beleidige mich'"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_008",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 480.5
+    },
+    "tier": "A",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 480.5,
+      "ende": 558.0
+    },
+    "headline": "1000 Euro fürs Badewasser",
+    "sprache": "de",
+    "score": {
+      "overall": 0.85,
+      "reaktion": 0.8,
+      "klarheit": 0.88,
+      "payoff": 0.83
+    },
+    "grund": "Laenge waechst natuerlich: von der Frage nach Angeboten ueber das hoechste Gebot bis zu den Socken des Vaters, kein Strecken noetig"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_009",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 576.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 576.0,
+      "ende": 605.0
+    },
+    "headline": "Ich brauche kein Google",
+    "sprache": "de",
+    "score": {
+      "overall": 0.74,
+      "reaktion": 0.72,
+      "klarheit": 0.84,
+      "payoff": 0.78
+    },
+    "grund": "Sauberer Zweizeiler mit Rueckfrage als Pointe: 'was suchst du denn' — 'dich'"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_010",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 605.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 605.0,
+      "ende": 645.0
+    },
+    "headline": "Darf ich meine Wurst reinschicken",
+    "sprache": "de",
+    "score": {
+      "overall": 0.84,
+      "reaktion": 0.88,
+      "klarheit": 0.79,
+      "payoff": 0.86
+    },
+    "grund": "Spruch, sofortiger Rauswurfbefehl, dann die Diskussion, mit welchem Gesicht man ihn drin lassen soll"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_011",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 742.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 742.0,
+      "ende": 782.0
+    },
+    "headline": "Den kennt sogar mein Vater",
+    "sprache": "de",
+    "score": {
+      "overall": 0.77,
+      "reaktion": 0.76,
+      "klarheit": 0.82,
+      "payoff": 0.8
+    },
+    "grund": "WLAN-Spruch mit dem besten Ablehnungssatz des Videos, danach die Aufloesung des Kaese-Insiders"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_012",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 782.0
+    },
+    "tier": "A",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 782.0,
+      "ende": 848.0
+    },
+    "headline": "Ich hab mich in deinen Augen verlaufen",
+    "sprache": "de",
+    "score": {
+      "overall": 0.78,
+      "reaktion": 0.74,
+      "klarheit": 0.85,
+      "payoff": 0.79
+    },
+    "grund": "Zwei Sprueche desselben Zuschauers und am Ende die Entscheidung, welcher gewinnt — natuerliche Tier-A-Laenge"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_013",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 857.0
+    },
+    "tier": "A",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 857.0,
+      "ende": 925.0
+    },
+    "headline": "Warum wirst du so laut",
+    "sprache": "de",
+    "score": {
+      "overall": 0.85,
+      "reaktion": 0.86,
+      "klarheit": 0.8,
+      "payoff": 0.87
+    },
+    "grund": "Autospruch, der die ganze Runde traegt; Payoff erst spaet auf 'das verstehen nur die Lenker'"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_014",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 993.0
+    },
+    "tier": "A",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 993.0,
+      "ende": 1058.0
+    },
+    "headline": "Der lebende Beweis dafür",
+    "sprache": "de",
+    "score": {
+      "overall": 0.79,
+      "reaktion": 0.82,
+      "klarheit": 0.78,
+      "payoff": 0.84
+    },
+    "grund": "Kein Anmachspruch, sondern die Kiffen-Debatte; Pointe ist der Fingerzeig auf den Sitznachbarn"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_015",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 1086.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 1086.0,
+      "ende": 1126.0
+    },
+    "headline": "Nicht mal Dexter hätte eine Option",
+    "sprache": "de",
+    "score": {
+      "overall": 0.86,
+      "reaktion": 0.9,
+      "klarheit": 0.8,
+      "payoff": 0.88
+    },
+    "grund": "Haerteste Reaktion des Videos: Belaestigung, Gefaengnis, und der Dexter-Vergleich als Schlusspointe"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_016",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 1126.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 1126.0,
+      "ende": 1166.0
+    },
+    "headline": "Ich hoffe du hast Haftpflicht",
+    "sprache": "de",
+    "score": {
+      "overall": 0.83,
+      "reaktion": 0.85,
+      "klarheit": 0.82,
+      "payoff": 0.86
+    },
+    "grund": "Einer der wenigen Sprueche, die die Runde wirklich gut findet — die Bewertung selbst ist die Pointe"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_017",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 1166.5
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 1166.5,
+      "ende": 1200.0
+    },
+    "headline": "Die Schönheit kommt von innen",
+    "sprache": "de",
+    "score": {
+      "overall": 0.85,
+      "reaktion": 0.84,
+      "klarheit": 0.88,
+      "payoff": 0.9
+    },
+    "grund": "Der bestbewertete Spruch des Videos, kurz und mit einstimmigem Urteil"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_018",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 1213.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 1213.0,
+      "ende": 1262.0
+    },
+    "headline": "Date ist Englisch, du Flüchtling",
+    "sprache": "de",
+    "score": {
+      "overall": 0.82,
+      "reaktion": 0.88,
+      "klarheit": 0.75,
+      "payoff": 0.83
+    },
+    "grund": "Der Spruch scheitert an einer Vokabel; die Antwort darauf ist die eigentliche Pointe"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_019",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 1278.0
+    },
+    "tier": "A",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 1278.0,
+      "ende": 1345.0
+    },
+    "headline": "Was für ein Karussell, Alter",
+    "sprache": "de",
+    "score": {
+      "overall": 0.8,
+      "reaktion": 0.82,
+      "klarheit": 0.83,
+      "payoff": 0.85
+    },
+    "grund": "Vollstaendig durchgespielte Szene: Anleitung, Rollenspiel, und der Traum als Absturz am Ende"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_020",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 1352.0
+    },
+    "tier": "A",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 1352.0,
+      "ende": 1418.0
+    },
+    "headline": "Geh zum syrischen Konsulat",
+    "sprache": "de",
+    "score": {
+      "overall": 0.81,
+      "reaktion": 0.84,
+      "klarheit": 0.79,
+      "payoff": 0.86
+    },
+    "grund": "Zwei Sprueche eines Zuschauers, Payoff auf der Passfrage — Laenge natuerlich erreicht"
+  },
+  {
+    "clip_id": "4ubrGJLb4FQ_021",
+    "modus": "COUCH",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "4ubrGJLb4FQ",
+      "kanal": "Coachlim",
+      "orig_start": 1419.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_COUCH",
+    "template": "COUCH_FULL",
+    "template_grund": "Feststehende Vollbildkamera; die Reaktionen aller drei tragen den Clip, deshalb volle Breite",
+    "timing": {
+      "start": 1419.0,
+      "ende": 1468.0
+    },
+    "headline": "Auf diese Triebtäter-Art",
+    "sprache": "de",
+    "score": {
+      "overall": 0.84,
+      "reaktion": 0.87,
+      "klarheit": 0.8,
+      "payoff": 0.85
+    },
+    "grund": "Zahnarztspruch mit Hochdeutsch-Vortrag; die Einordnung der Runde traegt den Schluss"
+  }
+]

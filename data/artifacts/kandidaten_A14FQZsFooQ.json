@@ -1,0 +1,581 @@
+{
+  "video_id": "A14FQZsFooQ",
+  "profil": "MARLI_PHONE",
+  "modus_name": "PHONE",
+  "modus_anteil_gesamt": 0.5255102040816326,
+  "dauer": 2929.16,
+  "modus_laeufe": [
+    {
+      "modus": "SOLO",
+      "start": 0.0,
+      "ende": 18.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 18.0,
+      "ende": 267.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 267.0,
+      "ende": 270.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 270.0,
+      "ende": 273.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 273.0,
+      "ende": 282.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 282.0,
+      "ende": 285.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 285.0,
+      "ende": 288.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 288.0,
+      "ende": 291.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 291.0,
+      "ende": 486.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 486.0,
+      "ende": 1578.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1578.0,
+      "ende": 1581.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 1581.0,
+      "ende": 1629.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1629.0,
+      "ende": 1668.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 1668.0,
+      "ende": 1671.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1671.0,
+      "ende": 1770.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 1770.0,
+      "ende": 1776.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1776.0,
+      "ende": 2469.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 2469.0,
+      "ende": 2472.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 2472.0,
+      "ende": 2520.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 2520.0,
+      "ende": 2538.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 2538.0,
+      "ende": 2541.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 2541.0,
+      "ende": 2544.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 2544.0,
+      "ende": 2559.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 2559.0,
+      "ende": 2565.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 2565.0,
+      "ende": 2577.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 2577.0,
+      "ende": 2580.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 2580.0,
+      "ende": 2586.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 2586.0,
+      "ende": 2634.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 2634.0,
+      "ende": 2640.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 2640.0,
+      "ende": 2676.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 2676.0,
+      "ende": 2757.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 2757.0,
+      "ende": 2760.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 2760.0,
+      "ende": 2835.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 2835.0,
+      "ende": 2838.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 2838.0,
+      "ende": 2841.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 2841.0,
+      "ende": 2844.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 2844.0,
+      "ende": 2868.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 2868.0,
+      "ende": 2871.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 2871.0,
+      "ende": 2928.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 2928.0,
+      "ende": 2931.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 2931.0,
+      "ende": 2934.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 2934.0,
+      "ende": 2940.0
+    }
+  ],
+  "kandidaten": [
+    {
+      "peak": 561.0,
+      "start": 526.0,
+      "ende": 581.0,
+      "score": 1.768,
+      "quelle": "lacher",
+      "modus_anteil": 1.0,
+      "text": "machen. Ich passt, aber das ist süß. Oh mein Gott, bist noch mit süß? Nein, Bruder, hat sich gar nicht gelohnt. Ja, aber in dem Moment hat sich vielleicht gelohnt. Ja, der der Moment war sehr schön. Es war der schönste Moment war. Ja, scheiße, Bruder. Sollen wir sie sollen wir sie zurückgewinnen? Nein, bitte nicht, Bruder. Die trinkt jetzt und so. Ich bin kein Fan davon. Ja. Ah. Die Sorry. Nein, sag nicht, Bruder. Sorry, [gelächter] ich wollte bisschen Phantom. Hast du Phantom? Ja, aber da habe ich auch nichts, Bruder. Ich habe da Oh, scheiße. Ich habe da auch nichts. Ich hab da auch nichts. Warte mal, warte mal. Gib mal noch mal, gib mal noch mal [gelächter] Warte mal. Gib mal wieder diese P oben ein. Nur P. P. Okay. Hä? Nein, nein. Warte mal, Bruder. Bist du Scammer? Warum hast du in deinen Notizen irgendwelche E-Mails? Bruder egal. Äh"
+    },
+    {
+      "peak": 2277.25,
+      "start": 2242.25,
+      "ende": 2297.25,
+      "score": 1.758,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "Man sieht man übrigens 21. Ja, das übrigens 21. Ja, so 25 das ist 17 sollte man 17. Hey, warte mal die mit Ah, nee, das war Le verwechselt gerade. 20 17 Ich ich dachte gerade die mit 17 hat die Dating App. Ich wollte gerade sagen, du bist doch viel zu jung, ne? Also, ich bin 20. [gelächter] Lol. [räuspern] Okay, warte mal. [gelächter] Guck mal, sie hat keine Notizen. Sie hat bei Snapchat gemacht. Ich guck mal, da stehen Passwörter drin. Deswegen deswegen schlau 21. Haben so viel Gemeinsamkeiten. Oh, Spaß. [gelächter] Ich Warte mal, hast du nicht auch eine Cam?"
+    },
+    {
+      "peak": 2467.75,
+      "start": 2432.75,
+      "ende": 2487.75,
+      "score": 1.731,
+      "quelle": "lacher",
+      "modus_anteil": 0.053,
+      "text": "ist so krass, e R. Du musst unten auf diese drei Punkte machen und dann Teilnehmer ohne Kamera Ding. Guck mal, weil ich habe jetzt alle Handys. Macht mal alle ein Bild auf von eurem Crush. Er kann muss auch nicht eine Person in echten Leben sein. Kann noch kann noch irgendein Promi sein von Google. Wer ist? Boah, ich nehme den einfach. E, soll ich Instagram geben? Dann könnt ihr mich finden auch John Berntal dicker der ist 100 Jahre der ist 49 dicker diese Lotte [gelächter] du verf die ein Mali junge cringe. Oh Goliani check ich aber Goliani check ich. Danke. Sorry. Die andere hat auch Mali. Leute hört auf. Ich wer raus. Mali hättest du mich nicht blockiert? Ich hätte dich auch genommen. Ich habe dich [gelächter] blockiert."
+    },
+    {
+      "peak": 824.75,
+      "start": 789.75,
+      "ende": 844.75,
+      "score": 1.696,
+      "quelle": "lacher",
+      "modus_anteil": 1.0,
+      "text": "Ah, mein Ex. Mein Ex. Ja. Äh ja, das war am Anfang mein Gym und so habe ich mir mein Progress aufgeschrieben, aber ja, du hast dann du hast sogar Trainingsplan für sie gemacht. Äh nein, ich habe auch ihre Gewichte aufgeschrieben. Ihr war zusammen im Gym so. Ja. Ja, ich habe sie ins Gym gebracht. Diger, wie süß. Und jetzt ist Und jetzt ist die Alkoholikerin. Ähm ja, mäßig. Also, die hat angefangen zu trinken und ich bin kein Fan von Drogen, also überhaupt nicht. TikTok Views. Geh mal darelin, ich möchte dir eine letzte Nachricht schicken. [schreien] Warte, warte. Nein, ich erklärre, ich erklärre, ich erklärre, ich erklärre, ich erklärre, ich erkläre. Soll ich erklären? Ja. Rede. Guck mal, ich habe dies Mädchen sehr geliebt. Okay, Leute, macht Clips. Gicht kommt ihr zurück. Ähm und [gelächter] ich wollte nicht so lange hinterherlufen, weißt du? Und dann habe ich mein Ziel gesetzt bis wohin ich hinterherlufe."
+    },
+    {
+      "peak": 1641.75,
+      "start": 1606.75,
+      "ende": 1661.75,
+      "score": 1.657,
+      "quelle": "lacher",
+      "modus_anteil": 0.389,
+      "text": "Sonntag wird Sonntag gewächst. Auch nicht. W Samstag wird aber gew Dicker. E oder soll ich jetzt aufmachen oder was? Diger warum? Ach so. Ach so, du gst auf X. Ja, was Diger? Da gibt's doch nicht mal lange Videos, oder? Doch, doch, doch, doch. Du brauchst die richtigen Communities. Wenn du willst, schick dir ein Link. Warte, ich mach Fullcam. Zeig mal einmal ganz kurz. Okay, wirklich? Ja, ja, ich habe [gelächter] okay. Boah, das sind so geile [ __ ] Sag stopp. Sag stopp, Dicker. Geh noch mal ganz hoch. Geh noch mal ganz hoch. [gelächter] Sag stopp. Sag stopp. Ja, Bruder, man sieht doch nichts. Ja, stopp. Mach Anzeigen, aber ohne Ton, Bruder. Aber auf solche Videos, Dicker. Auf sowas. Tschüss, [gelächter] Dicker. Da ist ein"
+    },
+    {
+      "peak": 2226.5,
+      "start": 2191.5,
+      "ende": 2246.5,
+      "score": 1.623,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "Female Army. Was können wir denn jetzt mal cooles machen? Ja, auf TikTok G wie bei Ali mit Englischkurs. [gelächter] [husten] Hey, [japst] hey. Hallo. [gelächter] Die hat ein Fahrrad als Hintergrundbild und ein Android. W wir die beleidigen? [gelächter] Das wirklich cool. Ist wirklich cool. Chill. Ich kann erklären. Ich kann bin im dich [gelächter] mein Warte kurz [räuspern] Diger. Warte mal. Was passiert hier? Ich schwöre, das ist so eine Wie alt Ladies hier sind. Ja, gut. oder schreibt bei Notizen, wie alt ihr seid, dann können wir das besser Dingsen. Man sieht man übrigens 21."
+    },
+    {
+      "peak": 611.75,
+      "start": 576.75,
+      "ende": 631.75,
+      "score": 1.602,
+      "quelle": "lacher",
+      "modus_anteil": 1.0,
+      "text": "Bruder egal. Äh Jungsnamen Mädchen Diger. Nein, das Ding wie ich wie ich das ist nicht meine Tochter und so. Du willst deinen Sohn Ferdi nennen wegen diesem Ferdo? Ja. Nein, Bruder, warte warte warte warte warte war nein nein. Ich hab da was gesehen. Bitte geh auf die Notizen Rap, den Text, den du da geschrieben hast, bitte. Oh nein, nein. Hör mir zu, hör zu, hör mir zu. Hör mir zu. Ich gehe drauf. Ich ich sag auch Ich sag auch warum. Okay, ich sag auch warum. Guck mal erstmal diese [schreien] [gelächter] Nein, ich werde dein dritter Herpis kriegen ever. Wir sind Frankfurter doch öfter siehst du uns in Kreuzberg. Ja, Bruder, warte, [gelächter] Bruder. Chill. Ich sag warum. Ich sag warum. Guck mal, ihr kennt doch diese Mann ist mit seinen Kollegen im Auto und er macht auf einmal so Beat zum Rappen und danach ihr fängt ein an"
+    },
+    {
+      "peak": 378.75,
+      "start": 343.75,
+      "ende": 398.75,
+      "score": 1.601,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "Keine Ahnung. Ach so. Bo, weißt du irgendwas, Diger? Er lebt einfach, Bruder. Er lebt einfach. [gelächter] Ich schwöre, ich wäre gerne du. Ja, schon Team blau. Yes. Starkes Ja, ja, ja, ja. Komm. Nein, schieß schieß doch, Bruder. Digcker, das ist das ist safe ein Türke gegen den du gerade spielst. Er Sneider und so. Nimm sch Ball weg. Oh mein Gott, was für ein Mensch spielt FIFA auf Handy, ich schwöre. Ja. Nein, nein, nein. [applaus] Krass, krass. Let's go, let's go, let's go. Man denkt einfach, wir machen gerade Placement oder so. Ey, komm, du hast das bitte. Renn, renn, renn. Nein, Rodrigo, er sattet, er sweattet. Nein, da"
+    },
+    {
+      "peak": 2032.0,
+      "start": 1997.0,
+      "ende": 2052.0,
+      "score": 1.558,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "Maja, du müsstest noch machen, Bruder. Mein ADHS gehör, ich hab doch an, oder? Nee, nee. Oh, sorry. Warte, alles gut. Weg. Warte, Diger, ich sag Schere jetzt. Ja, ich sag Schere. Ich hab den Rekord. [gelächter] Boah, was Bruder geh mal bitte auf alle Apps. Wer be w bei w aktivierten Anzeigen, Bruder. Lisa Lotte, geh mal auf Woche. [gelächter] Dicker Lisa Lotte, was geht denn bei dir ab, Dicker? [gelächter] 20 Stunden geht doch nicht. Das geht doch gar nicht. Handy ist immer an. Einfach immer Junge. Ey, wie geh mal bitte auf deine wie viel Kapazität hat dein Handy noch an Akku? Geh mal bitte auf schwöre. Dein"
+    },
+    {
+      "peak": 2809.5,
+      "start": 2774.5,
+      "ende": 2829.5,
+      "score": 1.555,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "Ah, ja, natürlich. Ja, seitdem er hat mir nicht mehr geantwortet auf meine WhatsApp. Nachricht [gelächter] HPV und Herpes erklären. Drew Starky Wohnort denkt bist ja richtig obsess mit Drew Starky e Mari. Ja, kann ich was fragen? So sexy Bild erstellen. Was geht da ab, Diger? Warte, warte, warte, warte, warte, warte, warte, warte, warte, warte, warte, warte. Wo ist das? Warte, warte. Hund, hau ha. Das ist, das ist dieser Typ. Und ich [gelächter] hab das Warte, ich ey Mali Mali was? Ja, was [gelächter] geht? Was hältst du was hältst du von von Rumänien, wenn ich fragen darf? So was? Keine Ahnung, ich war noch nie da. Okay. Okay. Warte mal. Sch mal bisschen runter. PS5 PS4 kein Bild HDMI"
+    },
+    {
+      "peak": 736.25,
+      "start": 701.25,
+      "ende": 756.25,
+      "score": 1.549,
+      "quelle": "lacher",
+      "modus_anteil": 1.0,
+      "text": "Woche? Ja, seit neuem. Ich habe leider Job, deswegen ich kann nicht mehr so viel auf die se Stunden Snapchat Bruder. Wer benutzt Google auf Handy? Was? Das wollte ich auch gerade. Google besser als Safari Bruder. Ich komme mit Safari. Telefonierst du mit Snapchat oder warum hast du da so viel? Ich habe gestern zwei Stunden gezählt, aber ansonsten ich bin fast nie auf Snap eigentlich. Was noch mal? Mach mal mehr Anzeig. Ich hab gestern zwei Stunden telefoniert. Ich glaube, deswegen ist bisschen hoch gett? Ja, in Frankfurt hat man getählt. Ja. Ach so, okay. Ich gern Telegram. Nein, nein, [gelächter] nein. Aktien und so. Geht nicht. Er macht da Aktien und so. Chill. Z mal mehr Anzeigen, Bruder. Was willst du da noch sehen? Was noch weiter runter? Stream Elements streamst du? Ich mache TikTok Videos, aber ich stream nicht. Okay, weiter runter. Tschüss."
+    },
+    {
+      "peak": 760.25,
+      "start": 725.25,
+      "ende": 780.25,
+      "score": 1.547,
+      "quelle": "lacher",
+      "modus_anteil": 1.0,
+      "text": "Mach mal mehr Anzeig. Ich hab gestern zwei Stunden telefoniert. Ich glaube, deswegen ist bisschen hoch gett? Ja, in Frankfurt hat man getählt. Ja. Ach so, okay. Ich gern Telegram. Nein, nein, [gelächter] nein. Aktien und so. Geht nicht. Er macht da Aktien und so. Chill. Z mal mehr Anzeigen, Bruder. Was willst du da noch sehen? Was noch weiter runter? Stream Elements streamst du? Ich mache TikTok Videos, aber ich stream nicht. Okay, weiter runter. Tschüss. Bruder, wo willst du rein? Bei in seine rein, Bruder. Ich bin bei [gelächter] Sekunden hier. Ich gehe runter bei eine Sekunde für dich. Manchmal steht steht sogar die Website auf die er drauf ist. Warte, lass mich gucken hier, Bruder. Klar. Eine Sekunde. Ein bisschen hoch. Bisschen hoch. Ja, alles gut. Passt, passt, [gelächter] passt. Ja. Wo wollt ihr mich jetzt auseinandermenh"
+    },
+    {
+      "peak": 2754.0,
+      "start": 2719.0,
+      "ende": 2774.0,
+      "score": 1.524,
+      "quelle": "lacher",
+      "modus_anteil": 0.056,
+      "text": "Ja, was? Hä? Warum? Was? Diger, man muss es onhand haben, muss [gelächter] euch sagen. Hä? Wahrscheinlich auch. Okay. Ach, Lan Meme. Ähm, mach auch. Ey, Mali. Ja. Machst du jetzt eigentlich was mit Braden, wenn du in Amerika bist? Äh mal gucken. Ja, hoffentlich. eine swipt. Ja, was soll ich denn machen? Der ist ja richtig hässlich bei dem Dings, bei dem Tinder. [gelächter] Da sind wirklich nur komische Leute. Gib mal auf eure Chat GPT Verlaufe. Nein, kann ich nicht machen. Das ist zu die. Mali, ja, weißt du noch, als ich Schwangerschaftsprank an mein Dad gemacht habe?"
+    },
+    {
+      "peak": 2723.5,
+      "start": 2688.5,
+      "ende": 2743.5,
+      "score": 1.517,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "Ich? Ja. Ja. Okay. Ernst? Auf Schat. Ja. Ja, genau. Hey, ich bin noch schon auf der Seite. Ach so, du hast auch SPChat. Ja, ich habe es gerade geöffnet. Also, ich bin nicht auf der Seite direkt drauf. Ach so, das ist wie Twitch für Fantasie. Ja, ja, ja, ja, ja, ja. Ach du Kacke. Digcker, dicker. Mach weg. Mach mach das weg. Mach das weg. Warte. Und und sie hat das als App auf ihrem Handy. Ja, was? Hä? Warum? Was? Diger, man muss es onhand haben, muss [gelächter] euch sagen. Hä? Wahrscheinlich auch. Okay. Ach, Lan Meme. Ähm, mach auch. Ey, Mali. Ja. Machst du jetzt eigentlich"
+    },
+    {
+      "peak": 915.25,
+      "start": 880.25,
+      "ende": 935.25,
+      "score": 1.463,
+      "quelle": "lacher",
+      "modus_anteil": 1.0,
+      "text": "bin ein Mensch. Ich habe gerne so vieles vor den Augen, außer eine Person, die mich liebt und sagt, wie toll ich bin. Mm. Ja. Okay. Sag mal, wie ist es in die Brüche gegangen? Diese Kaner mit Mittelfinger Bruder Brüche gegangen ist. Also, sie hat mich so gesehen. Ähm, also es war alles ein bisschen komisch. Soll ich euch nebenbei was zeigen? Weil so mein Konzentrationspar weit. Ja. Ja. Mama Subway Server nebenbei bitte, Bruder. Soll ich Blockblast? Ich glaube, ich habe den Scheiß nicht. Ja. Block dre zwei ähm [gelächter] wie war ähm ich liebe dich. Mein Gott meine Digcker bist du Zuschauer von mir oder von Rohat, Bruder? Wallah sehr lange Zuschauer von dir. Jetzt kommt Werbung. Nein, wir gönnen den Hack nicht oder? Oder doch? Vielleicht muss gucken. Ist lustig. Er ist wirklich lustig. Danke. Ach, danke. Ach äh darf"
+    },
+    {
+      "peak": 2200.5,
+      "start": 2165.5,
+      "ende": 2220.5,
+      "score": 1.45,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "Das stimmt nicht. [schnauben] Hab keine Schere. Oben noch mal eine Schere. Ähm, warte mal, wir haben nur eine mit der App oder was? Oder wie oder was? Mann, dann ladet euch die Scheiße jetzt runter. Komm. Also, aber die müssen doch Profile erstellen und sowaser. [gelächter] Das war zu lange, Alter. Was ist das? Janette, du kannst auch anmachen. Ach so, so. Okay. Ey, aber wir guck mal, wir sind jetzt voll die Female Army. Was können wir denn jetzt mal cooles machen? Ja, auf TikTok G wie bei Ali mit Englischkurs. [gelächter] [husten] Hey, [japst] hey. Hallo. [gelächter] Die hat ein Fahrrad als Hintergrundbild und ein Android. W wir die beleidigen? [gelächter] Das wirklich cool. Ist wirklich cool."
+    },
+    {
+      "peak": 1977.25,
+      "start": 1942.25,
+      "ende": 1997.25,
+      "score": 1.441,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "also auch mit paar Frauen weißt du sonst haben wir nur so Männer ja Täter haben wir immer nur ja [gelächter] cia ich schwöre manchmal ich sehe so verrückte TikToks Frauen über Männer reden und alle in den Kommentaren so ja you go girl. e gesehen eine meinte, jeder Mann sollte in Knast sein und danach von Geburt an und danach mal guckt, wie der sich beleben kann und dann kommt er erst raus. [gelächter] Komi [schnauben] [gelächter] wollen wir alle einfach gleichzeitig deren Handys durchstöbern? Ja, stark. Okay, gut. [gelächter] Wir machen wir machen so ein allgemeines Ding, wo jeder auf einmal raufgt. Jeder fängt an bei Bildschirmzeit, oder? Ja."
+    },
+    {
+      "peak": 2865.75,
+      "start": 2830.75,
+      "ende": 2885.75,
+      "score": 1.433,
+      "quelle": "lacher",
+      "modus_anteil": 0.167,
+      "text": "Ja, okay. Sorry. Darf ich kurz sagen? Mein Geburtstagstext für Betty. [gelächter] Hallo. Hallo. Was geht hier ab? Was steht da ganz? Warte mal, was steht da bei Nora? Geh mal hoch. Oh, hat Discord Link einfach bei Chat GPT eingegeben. [gelächter] Mal Milchreis für Sushi. Ja, man kann Milchreis für Suche verwenden. Zahnbürste in Rachen. Wo habt ihr das gesehen? Chat, [gelächter] Mensch, das ist bei mir, weil ich halt in der Essstörung mich befinde. Ah, okay. Ja, gute gute Besserung. Langsame Bewegungseinführung. What the [ __ ] Bewegung. Listen and judge. Schön gesagt,"
+    },
+    {
+      "peak": 2123.75,
+      "start": 2088.75,
+      "ende": 2143.75,
+      "score": 1.406,
+      "quelle": "lautheit",
+      "modus_anteil": 0.0,
+      "text": "rechts auch 14 Stunden ist ja ey, wie kann ich wieder die anderen Streams sehen? Hilfe! Ganz kurz, ich habe noch eine. Niemand. Hi, Lea, Lea, mach an, mach an die die Bildschirmertragung. Ey, kurze, kurze Frage in die Runde. Die Girls, ey, Lea, du hast doch ein bisschen Echo. Ich höre euch nicht. Warte. Oh, die hat ein Android. Okay, ich hab kein Android. Also, sorry, sorry, Chuldigung. Also, [gelächter] okay. Ey, wollen wir wollen wir mal wirklich ein Top Five Respect Moments machen? Habt ihr alle habt ihr alle eine dating App oder wer von euch hat guck mal, wir gehen jetzt alle auf unsere Dating App und wir liken einfach jeden aus"
+    },
+    {
+      "peak": 1719.0,
+      "start": 1684.0,
+      "ende": 1739.0,
+      "score": 1.399,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "war Anton Harden, Bruder. Ich weiß nicht, aber er hat auf jeden Fall einen Harden Diger. Ich weiß nicht, wo Anton Harden ist, aber äh ich muss ehrlich sein, ihr habt mir ihr beide und Mert ab, ihr habt mir wirklich durch eine sehr schwierige Zeit geholfen jetzt auch wegen Trennung und so. Schade. Ja. Oh, wie du dein Bizeps zeigen willst, du geile Sau diger. Ja, [schnauben] Mali Fit. [gelächter] M er hat VIP verdient. Ja, Wall, gib ihm mal VIP. Komm. [gelächter] Wie heißt du im Chat? Wie heißt du? Ich heiß Alp Fit. Oh Gott. Ja, okay. [gelächter] Bitte. Ey, warte mal. Wie machen wir? Ich liebe euch. Wallah, ich liebe euch. Ey, Mali. Okay. Nein, ich aber zeigst du noch dein liebeste Text? Nee, das eigentlich zu das nicht. Warte, macht Fullcam. Mach ma. Ich bin"
+    },
+    {
+      "peak": 2779.0,
+      "start": 2744.0,
+      "ende": 2799.0,
+      "score": 1.383,
+      "quelle": "lacher",
+      "modus_anteil": 0.056,
+      "text": "Braden, wenn du in Amerika bist? Äh mal gucken. Ja, hoffentlich. eine swipt. Ja, was soll ich denn machen? Der ist ja richtig hässlich bei dem Dings, bei dem Tinder. [gelächter] Da sind wirklich nur komische Leute. Gib mal auf eure Chat GPT Verlaufe. Nein, kann ich nicht machen. Das ist zu die. Mali, ja, weißt du noch, als ich Schwangerschaftsprank an mein Dad gemacht habe? Okay. Ah, ja, natürlich. Ja, seitdem er hat mir nicht mehr geantwortet auf meine WhatsApp. Nachricht [gelächter] HPV und Herpes erklären. Drew Starky Wohnort denkt bist ja richtig obsess mit Drew Starky e Mari. Ja, kann ich was fragen? So sexy Bild erstellen. Was geht da ab, Diger? Warte, warte, warte, warte, warte, warte, warte, warte, warte, warte, warte, warte."
+    },
+    {
+      "peak": 2322.5,
+      "start": 2287.5,
+      "ende": 2342.5,
+      "score": 1.366,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "Oh, Spaß. [gelächter] Ich Warte mal, hast du nicht auch eine Cam? Ja, warte mal kurz. Du bist mich Bruder, du musst beleidigen, Bruder. Auf damit, Bruder. Nein, nein, nein. Warte kurz. Können wir noch mal auf Bildschirmzeit alle gehen und dann auf Woche Woche, weil jetzt habe ich alle Dings offen. Das wird gottlos. P abschüssen, glaub ich. Wie wie findet ihr so? Also jetzt einfach objektiv ist er Ausländerung. Ja, [gelächter] gefragt nicht. Sehr valide Frage. Ja, Alter, ich schwöre bitte die Warte mal, wer war das noch mal? Lockstar FC Loxa. Ja,"
+    },
+    {
+      "peak": 1936.0,
+      "start": 1901.0,
+      "ende": 1956.0,
+      "score": 1.342,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "er schenkt ihr Lebensmittelvergiftung. Aber du hast dich nur getrennt, weil sie mit Alkohol angefangen hat? Nein, wir hatten allgemeine sehr schwierige Beziehung. Ja, aber Alkohol ist für mich ein No Goo. Okay, Al, reicht jetzt auch mit dir. Reicht jetzt auch mit dir tatsächlich. Ja, guck mal, warum? Guck mal in diesem Privat aber aber warte mal, warte mal, warte mal, ich muss mal kurz mein Mod hier reinholen. Ada Ar Ja, warte. Hörst du mich, Bruder? Warum bist du so ein Vergunter? Warum ist mäßig in diesem Kanal, wo die Leute die schon gecheckt wurden nur Frauen checkst du oder Feminist [gelächter] Feministen schon nur Frauen rein Bruder war gut und paar Männer guck mal Ben und der Don und so schon gesagt ist unterhaltsam Bruder mit also also auch mit paar Frauen weißt du sonst haben wir nur so Männer ja Täter haben wir immer nur ja [gelächter] cia ich schwöre manchmal ich sehe"
+    },
+    {
+      "peak": 1822.25,
+      "start": 1787.25,
+      "ende": 1842.25,
+      "score": 1.339,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "und so. Vielleicht sieht man das irgendwo. Ey Leute, bitte macht mal Clips. Ich will mich selber reposten. Ja, danke. Mal äh eine letzte Nachricht schreiben. Also, diese Nachricht hast du aber auch abgeschickt, ne? Äh oh, kann ich euch was erzählen, was ich gemacht habe so nach Trennung? Woll Bruder, beantworte doch mal die Frage. Hast du uns abgeschickt? Sorry. Äh, das habe ich abgeschickt. Ja. Was kam darauf für eine Nachricht? Äh, gar nichts. Oh, [gelächter] [ __ ] Ja, guck mal, das Ding ist so einem riesen Text, Bruder. Ja, Bruder, das war nicht Ich habe ich habe mich so, guck mal, bei mir ich find es wichtig, wie man sich nach einer Beziehung ähm verhält, weißt du? Ich finde das sogar vielleicht wichtiger als manchmal in der Beziehung und äh nach der Beziehung hat sie ja mit Alkohol und sagen, oh Male, wie in die Kamera guckt. Äh warte, wie soll ich das sagen?"
+    },
+    {
+      "peak": 229.5,
+      "start": 194.5,
+      "ende": 249.5,
+      "score": 1.321,
+      "quelle": "lacher",
+      "modus_anteil": 1.0,
+      "text": "doch mal nicht so schüchtern Bruder. Mach mal links diese Leiste auf. Ja, ja, ja. Okay. Ja, ich komme mal da ein bisschen runter, mein Bester. Kondome von Freedom, Bruder. Was ist das, Junge? Teuerste Lego Sets. Diger, er ist so unschuldig. Ja, wir müssen ihn iPhone 14 Größe ist krass. Ja, wir haben ihn. Wieso? Mal was er gesagt hat. Warum hast du diese eingegeben? Keine Ahnung. Für Hülle weiß ich nicht. Ich wollte Custom Hülle bestellen. Bruder, du hast der neben der iPhone gehalten. Sei [gelächter] ja ja, das hat er gemacht. [räuspern] Warte, was gibt's noch? Ja, ich für Bruder, was macht man auf Roblox? Geh mal auf Roblox, ich will das verstehen. Geh mal bitte darauf. Keine Ahnung. Man 5 Stunden auf"
+    },
+    {
+      "peak": 261.0,
+      "start": 226.0,
+      "ende": 281.0,
+      "score": 1.3,
+      "quelle": "lacher",
+      "modus_anteil": 0.778,
+      "text": "Bruder, du hast der neben der iPhone gehalten. Sei [gelächter] ja ja, das hat er gemacht. [räuspern] Warte, was gibt's noch? Ja, ich für Bruder, was macht man auf Roblox? Geh mal auf Roblox, ich will das verstehen. Geh mal bitte darauf. Keine Ahnung. Man 5 Stunden auf Roblox. Keine Ahnung. Ohne Spaß. Weiß was ich auch noch nie gesehen habe und der hat das vier Stunden letzte Woche gespielt. Spiel mal einmal eine Runde diese FIFA auf Handy. Ja, [gelächter] ja, ja. Eine komplette Runde, aber ja. Und wir gucken dir zu. Mods mach Kanalwette. Gewinnt er die Runde oder nicht? [gelächter] Aber man spielt schon online gegen andere, ne? Ja. Ja. Okay. Rot, wenn wir fünf Subs wetten, ich habe den anderen, aber zeh, ich gehe auf ihn. Zeh. Ich gehe auf ihn. Geh auch mit zehn."
+    },
+    {
+      "peak": 186.5,
+      "start": 151.5,
+      "ende": 206.5,
+      "score": 1.266,
+      "quelle": "lacher",
+      "modus_anteil": 1.0,
+      "text": "eigentlich schon. Boah, hast du Phantom? Zeig mal deine Phantom Wolle. Ich will wissen, welche Coins du hast. Nein, ich habe noch nichts. Ähm, ich wollte echt anfangen, aber ich muss noch verbinden mit meinem Bankkonto. Okay. Okay. Ich dachte du hast irgendwelche Shit Coins geholt, weil manchmal ist wirklich crazy, was Leute sich für Coins holen. Kantom, zeig mal dein Dings. Welche App hast du noch mal am meisten uns? Zeig mal Chatt, weil mit denen schreibst schon ganz schön viel. Ja, nein, ich wollte hal so so neue Bings, Bruder. [gelächter] Mal Bruder, chill doch mal. Zeig doch mal nicht so schüchtern Bruder. Mach mal links diese Leiste auf. Ja, ja, ja. Okay. Ja, ich komme mal da ein bisschen runter, mein Bester. Kondome von Freedom, Bruder. Was ist das, Junge?"
+    },
+    {
+      "peak": 1115.0,
+      "start": 1080.0,
+      "ende": 1135.0,
+      "score": 1.258,
+      "quelle": "lacher",
+      "modus_anteil": 1.0,
+      "text": "ich hier so auf den das ja so sie hat ja gemacht. Ähm ja und dann meinte sie zu mir, ja, ich habe ihn vergessen dies das und es geht jetzt um uns. Dann sind wir zusammengekommen und haben halt so eine Kennerphase gehabt halt wie ganz normale K. Bruder, ich Bruder, ich weine gleich diese [gelächter] verfickte Werbung. Kann man nicht kann man nicht Geld bezahlen, dass keine Werbung mehr kommt? Bruder, ich habe ich habe mein letzte 6,50 € für dein Sub benutzt und wurde 5 Minuten später gebannt. Ich schwöre auf alles. Ja, was hast du reingeschrieben? Was hast du reingeschrieben? Boah, da [gelächter] guck mal [räuspern] ähm ich ich mache paar TikTok Videos so, okay. Und bei mir in der Community ist es so ein Gick. Wir sagen immer kack auf den und kack auf den, weil ich würde jetzt sagen kack auf Rohhard und so so mäßig fick Roh bei mir in der Community. Okay. Ja. Ja, weil wir sind so viele Leute, weißt du? Ähm und dann meinte jemand schreib mal Kack auf Arda und dein Mod dachte,"
+    },
+    {
+      "peak": 2395.25,
+      "start": 2360.25,
+      "ende": 2415.25,
+      "score": 1.248,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "Twitch warte mal, wie ist wie man 26 Stunden auf Was ist corflix.tv? Äh, das ist diese, wo man so illegal wie so Filme schauen kann. Okay. Oh mein Gott. Äh äh schlaft ihr alle ein mit irgendwas gucken? Ja, ich erkenne da ich erkenne da gerade ein Muster. Das ist eigentlich gar nicht gut, weil unser euer Gehirn kann da gar nicht so richtig abschalten. Dann du hast vorin gesagt, du bist um 6 oder so aufgestanden. [gelächter] Was ist eure Bildschirmzeit bei mir? 7 Stunden. Weiß ja machen. Ist gar kein Problem. Wie viel Bro hat? Der hat wahrscheinlich zu viel. 9 Stunden. Na, das in der Woche, Digcker."
+    },
+    {
+      "peak": 404.5,
+      "start": 369.5,
+      "ende": 424.5,
+      "score": 1.246,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "Nimm sch Ball weg. Oh mein Gott, was für ein Mensch spielt FIFA auf Handy, ich schwöre. Ja. Nein, nein, nein. [applaus] Krass, krass. Let's go, let's go, let's go. Man denkt einfach, wir machen gerade Placement oder so. Ey, komm, du hast das bitte. Renn, renn, renn. Nein, Rodrigo, er sattet, er sweattet. Nein, da steht ganz schnell 20 Dicker. Ich muss wechsel wechsel Wechsel wechsel wechsel schnell. [gelächter] Ach du Scheiße. Was ist das für ein Wechselsystem, Bruder? Aber hast du hast du keine Konsole? Doch, doch, aber du [ __ ] Wie wie du Bruder du"
+    },
+    {
+      "peak": 353.75,
+      "start": 318.75,
+      "ende": 373.75,
+      "score": 1.2,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "Ich habe fünf Subs auf dich. Okay. Okay. Mods, kann einer Wette machen? schnell. Was ist das für eine Grafik? Warte mal, das ist dein Team. Ja, mein Team, das ist sein Team. Er hat viel bessere Team. Boah, scheiße. Ein Sneider mit 126er Rating. Verdammt. Okay. E, Anstoß direkt konzentrieren, Bruder. Schaff dich. Wie wie lange geht eine Partie? Keine Ahnung. Ach so. Bo, weißt du irgendwas, Diger? Er lebt einfach, Bruder. Er lebt einfach. [gelächter] Ich schwöre, ich wäre gerne du. Ja, schon Team blau. Yes. Starkes Ja, ja, ja, ja. Komm. Nein, schieß schieß doch, Bruder. Digcker, das ist das ist safe ein Türke gegen den du gerade spielst. Er Sneider und so. Nimm sch Ball weg. Oh mein Gott, was für ein"
+    },
+    {
+      "peak": 2489.75,
+      "start": 2454.75,
+      "ende": 2509.75,
+      "score": 1.166,
+      "quelle": "lacher",
+      "modus_anteil": 0.056,
+      "text": "ich nehme den einfach. E, soll ich Instagram geben? Dann könnt ihr mich finden auch John Berntal dicker der ist 100 Jahre der ist 49 dicker diese Lotte [gelächter] du verf die ein Mali junge cringe. Oh Goliani check ich aber Goliani check ich. Danke. Sorry. Die andere hat auch Mali. Leute hört auf. Ich wer raus. Mali hättest du mich nicht blockiert? Ich hätte dich auch genommen. Ich habe dich [gelächter] blockiert. Ja. Oh, Lucio checke ich auch. Das Weekend check. Hey, hey, hey, sag nichts falsches. Wer wer ist wer wer ist das? Daniel Craigs Coaster Drew Stark. Nein, das ist Dre sind"
+    },
+    {
+      "peak": 2083.25,
+      "start": 2048.25,
+      "ende": 2103.25,
+      "score": 1.156,
+      "quelle": "lacher",
+      "modus_anteil": 0.0,
+      "text": "auf deine wie viel Kapazität hat dein Handy noch an Akku? Geh mal bitte auf schwöre. Dein Akku muss so gefried sein. Zwei Handys. Ich habe zwei Handys. Bist du tippig? Ohne Spaß. Meine Nora. Geh mal auch auf äh Woche. Geht alle auf Woche, weil ihr alle wirklich meine klitze kleine Freundin hat echt ein bisschen Bildschirmzeit, aber 14 Stunden ist auch a fucking lot, dude. Ja, man [gelächter] Digcker unten rechts auch 14 Stunden ist ja ey, wie kann ich wieder die anderen Streams sehen? Hilfe! Ganz kurz, ich habe noch eine. Niemand. Hi, Lea,"
+    },
+    {
+      "peak": 2842.25,
+      "start": 2807.25,
+      "ende": 2862.25,
+      "score": 1.088,
+      "quelle": "lacher",
+      "modus_anteil": 0.105,
+      "text": "Mali was? Ja, was [gelächter] geht? Was hältst du was hältst du von von Rumänien, wenn ich fragen darf? So was? Keine Ahnung, ich war noch nie da. Okay. Okay. Warte mal. Sch mal bisschen runter. PS5 PS4 kein Bild HDMI richtig broke. Ja, okay. Sorry. Darf ich kurz sagen? Mein Geburtstagstext für Betty. [gelächter] Hallo. Hallo. Was geht hier ab? Was steht da ganz? Warte mal, was steht da bei Nora? Geh mal hoch. Oh, hat Discord Link einfach bei Chat GPT eingegeben. [gelächter] Mal Milchreis für Sushi. Ja, man kann Milchreis für Suche verwenden."
+    },
+    {
+      "peak": 1486.25,
+      "start": 1451.25,
+      "ende": 1506.25,
+      "score": 1.076,
+      "quelle": "lacher",
+      "modus_anteil": 1.0,
+      "text": "Ah, hier. Ja. Ah, Bruder, ja. Mach mal diese Fit aus der Name raus, Bruder. Soll ich jetzt Malin Körper zeigen? Ja, Bruder. Wie wie heiß du Al Fit und so aus? Jam, Bruder, soll ich auf Snap gehen? Warte, auf Kamer. Nein, nein, nein. Du sollst jetzt deinen Körper zeigen. Jetzt, jetzt, jetzt. Ja, ja. Ich zeig jetzt auf Ich zeig jetzt meinen Körper. Aber wie soll ich das machen? Kamera App oder Kamera App oder Kamera App. Ja, mach Kamera App. Ist lustiger. Ja, okay. Zeig [gelächter] zeig dein Körper. Warte, Bruder. Mach Fit aus dein Name raus, Junge. Bitte."
+    },
+    {
+      "peak": 2177.5,
+      "start": 2142.5,
+      "ende": 2197.5,
+      "score": 1.012,
+      "quelle": "lautheit",
+      "modus_anteil": 0.0,
+      "text": "einfach jeden aus Respekt. Einfach einfach einfach das einfach mal so, dass die man gutes Gefühl auch bekommen. Das kann ich nicht bringen. Weißt du, wie oft ich sowas schon gemacht habe? Warum hast du sowas schon oft gemacht? Hä? Weil ich Langeweile hatte. Dier du warst unnormal verfreakt und Honor um 3 Uhr morgens. Warum hast du Nein, nein, nein, nein, nein. Hör auf so eine Scheiße zu labern. Das stimmt nicht. [schnauben] Hab keine Schere. Oben noch mal eine Schere. Ähm, warte mal, wir haben nur eine mit der App oder was? Oder wie oder was? Mann, dann ladet euch die Scheiße jetzt runter. Komm. Also, aber die müssen doch Profile erstellen und sowaser. [gelächter] Das war zu lange, Alter. Was ist das? Janette, du kannst auch anmachen. Ach so, so. Okay. Ey, aber wir guck mal, wir sind jetzt voll die Female Army. Was können wir denn jetzt mal cooles machen? Ja, auf TikTok"
+    },
+    {
+      "peak": 1741.25,
+      "start": 1706.25,
+      "ende": 1761.25,
+      "score": 0.729,
+      "quelle": "lautheit",
+      "modus_anteil": 0.0,
+      "text": "er hat VIP verdient. Ja, Wall, gib ihm mal VIP. Komm. [gelächter] Wie heißt du im Chat? Wie heißt du? Ich heiß Alp Fit. Oh Gott. Ja, okay. [gelächter] Bitte. Ey, warte mal. Wie machen wir? Ich liebe euch. Wallah, ich liebe euch. Ey, Mali. Okay. Nein, ich aber zeigst du noch dein liebeste Text? Nee, das eigentlich zu das nicht. Warte, macht Fullcam. Mach ma. Ich bin gerade, ich hab gerade so ein Pult. Oha, mit Zenny Serverum Alper am Ende. Ja, Bruder, ich hab sie geliebt. Scheiße, irgendwie ist mein Leben. Okay, darf ich aber paar Sachen lesen einfach sofort les einfach. Warte, du kannst eigentlich Ja, du kannst Ich will diese Super. Du weißt doch bei"
+    },
+    {
+      "peak": 57.0,
+      "start": 22.0,
+      "ende": 77.0,
+      "score": 0.619,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "Okay. Okay. Wie lange wie lange ziehst du Gym und Ernährung schon durch? Ähm seit drei Wochen habe ich hab okay okay also sehr ordentlich auf jeden Fall alles. Bruder, dieses schwarzweiß, ich würde depressiv werden, Dicker. Ja, ja, das bockt echt nicht. Ich könnte das gar nicht. Kannst du mal deine Hintergrundbilder zeigen? Boah, keine Ahnung. Warte. Ja. Mhm. So. Ja. Ja. Guck mal. Zeig mal weiter. Ich weiter. Oh ne. Oh ne. Nicht den Tiers jetzt als nächstes und die St. Aber aber die sind ja alt. Guck mal. Und bei den neueren, da bist du zur Besinnung gekommen. Guck mal jetzt einfach einfach clean. So. Man merkt, du bist bisschen Mann geworden. Okay. Ja. Ja. Es war früher. Es war früher. Okay."
+    },
+    {
+      "peak": 1459.25,
+      "start": 1424.25,
+      "ende": 1479.25,
+      "score": 0.619,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "dich jetzt hier todbeleidigt, aber dann aber dann aber dann könntest du Mitleid Maxing Video machen und Video Bruder. Nein, fick diese Hate Video, Bruder. Ja, was soll ich? Also ja, mach mal diese [räuspern] Brustpresse. Brustpresse. Wo ist Brustpresse? Ah, das ist dieses Spider-Man Pink Video. Also zwar das können aber Leute fühlen. Also es fühlt man, wenn man in Stream geht. Drei. Geh mal bisschen hoch, Bruder. Brustpresse. Ah, hier. Ja. Ah, Bruder, ja. Mach mal diese Fit aus der Name raus, Bruder. Soll ich jetzt Malin Körper zeigen? Ja, Bruder. Wie wie heiß du Al Fit und so aus? Jam, Bruder, soll ich auf Snap gehen? Warte, auf Kamer. Nein, nein, nein. Du sollst jetzt deinen Körper zeigen. Jetzt, jetzt, jetzt. Ja, ja. Ich zeig jetzt auf Ich zeig jetzt meinen Körper. Aber wie soll ich das machen? Kamera App oder Kamera"
+    },
+    {
+      "peak": 1674.5,
+      "start": 1639.5,
+      "ende": 1694.5,
+      "score": 0.612,
+      "quelle": "lautheit",
+      "modus_anteil": 0.056,
+      "text": "Geh noch mal ganz hoch. Geh noch mal ganz hoch. [gelächter] Sag stopp. Sag stopp. Ja, Bruder, man sieht doch nichts. Ja, stopp. Mach Anzeigen, aber ohne Ton, Bruder. Aber auf solche Videos, Dicker. Auf sowas. Tschüss, [gelächter] Dicker. Da ist ein Video, wie einer gekackoutet wird einfach. Dicker, mach das weg, Junge. Junge, ich hatte eben gerade, zum Glück habe ich wieder voll Cam gemacht, du. Sorry, ich schwö dich auch. Ey, Jungs, ich liebe euch, Bruder. Ich sag ehrlich, ich glaube, das war Anton Harden, Bruder. Ich weiß nicht, aber er hat auf jeden Fall einen Harden Diger. Ich weiß nicht, wo Anton Harden ist, aber äh ich muss ehrlich sein, ihr habt mir ihr beide und Mert ab, ihr"
+    }
+  ]
+}

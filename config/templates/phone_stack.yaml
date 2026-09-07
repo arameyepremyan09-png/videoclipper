@@ -1,0 +1,53 @@
+# Template: PHONE_STACK
+#
+# Facecam oben, Zuschauer-Handy unten. Geometrisch identisch zu REACT_STACK,
+# und das ist kein Zufall: Die Facecam misst 460x260, also 1.77 — in ein Panel
+# von 1080x606 eingepasst ergibt das 1072x606, es bleiben 4 px Blur pro Seite.
+# Naeher kann ein 16:9-Feed an dieser Buehne nicht liegen.
+#
+# Das Handy ist 500x1080 (9:19.5) und damit SCHMALER als 9:16. Eingepasst in
+# 1080x1314 wird es 608x1314; links und rechts bleiben 236 px, die den Blur des
+# Handys selbst tragen. Beschneiden waere die Alternative und wuerde 40 % der
+# Bildschirmhoehe kosten — bei einem Format, in dem der Handyinhalt die Pointe
+# ist. Der Blur ist der guenstigere Preis.
+#
+# UI-Zone: Die unteren 192 px verdeckt TikTok mit Caption und Buttons. Sie
+# liegen hier auf dem unteren Rand des Handybildes, also auf Home-Indikator und
+# Tastaturzeile. Das ist die informationsaermste Zone des Handys — bewusst
+# dorthin gelegt, statt die Facecam nach unten zu nehmen.
+
+name: PHONE_STACK
+beschreibung: Facecam oben, gespiegeltes Handy unten eingepasst, statische Headline auf der Naht
+default_fuer: [MARLI_PHONE]
+gilt_fuer_modus: PHONE
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: facecam
+    ziel: [0, 0, 1080, 606]
+    passung: einpassen
+  - quelle: handy
+    ziel: [0, 606, 1080, 1314]
+    passung: einpassen          # Seitenverhaeltnis bleibt, Reste = Blur
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: editplan.headline
+  schrift: Anton
+  schriftgroesse: 64
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 9
+  y: 606                        # auf der Naht
+  max_breite: 1000
+  max_zeilen: 2
+  renderer: png_overlay
+
+branding: { aktiv: false, text: "TODO", y: 1790 }
+audio:    { normalisieren: true, ziel_lufs: -14.0 }

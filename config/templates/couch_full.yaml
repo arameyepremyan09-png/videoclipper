@@ -1,0 +1,50 @@
+# Template: COUCH_FULL
+#
+# Das ganze 16:9-Bild eingepasst, Reste als Blur der eigenen Quelle.
+#
+# WARUM NICHT BESCHNEIDEN: SOLO_FULL beschneidet mittig um fokus_x, weil dort
+# genau eine Person sitzt und der Kopf gross bleiben soll. Hier sitzen drei
+# Personen ueber die volle Breite (x=80 bis x=1800). Ein 9:16-Fenster ist bei
+# 1080 px Hoehe 607 px breit — es wuerde zwei der drei abschneiden, und bei
+# diesem Material sind die Reaktionen der anderen beiden die Pointe.
+#
+# Der Preis ist Bildgroesse: Die Quelle landet als 1080x606-Band auf y=657.
+# Das ist bewusst, nicht versehentlich — die Alternative waere, Inhalt zu
+# verlieren, und das ist laut Leitprinzip die teurere Entscheidung.
+#
+# Die kurzen hineingezoomten Schnitte des Cutters (1.5 % der Laufzeit, nie
+# laenger als 6 s) brauchen kein eigenes Template: Sie sind derselbe Bildkanal,
+# nur enger. Im fertigen Clip sehen sie aus wie das, was sie sind — ein Zoom.
+
+name: COUCH_FULL
+beschreibung: Vollbild 16:9 eingepasst auf 9:16, Blur ringsum, Headline ueber dem Bild
+default_fuer: [COACHLIM_COUCH]
+gilt_fuer_modus: COUCH
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: couch
+    ziel: [0, 0, 1080, 1920]
+    passung: einpassen
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: editplan.headline
+  schrift: Anton
+  schriftgroesse: 72        # groesser als sonst: hier ist Platz, das Bild ist klein
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 9
+  y: 400                    # im Blurfeld ueber dem Bildband, das bei y=657 beginnt
+  max_breite: 1000
+  max_zeilen: 3
+  renderer: png_overlay
+
+branding: { aktiv: false, text: "TODO", y: 1790 }
+audio:    { normalisieren: true, ziel_lufs: -14.0 }

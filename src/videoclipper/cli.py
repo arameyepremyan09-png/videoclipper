@@ -2,8 +2,10 @@
 
 Herstellung:
 ``clip analyse``  Stages 03-05: Transkript, Signale, Kandidaten -> JSON-Artefakt.
-``clip rendere``  Stages 08-13: Snapping, Layout, Render, QC.
+``clip rendere``  Stages 08-13: Snapping, Layout, Overlays, Render, QC.
 
+``clip rangliste`` Stage 07b: alle Clips eines Plans bewerten und sortieren,
+                  bevor gerendert wird.
 ``clip frames``   Standbilder aus einem Video, zum Anschauen statt Abspielen.
 ``clip countdown`` Top-5-Compilation: N Segmente, mitwachsende Liste.
 
@@ -30,8 +32,8 @@ from pathlib import Path
 from . import layout
 from .candidates import bilde
 from .editplan import Aufgeloest, EditPlan
-from . import countdown, frames
-from .qc import pruefe
+from . import countdown, follow, frames, hook, rangliste, schnitte, untertitel
+from .qc import overlays_vorhanden, pflichtelemente, pruefe
 from .render import rendere, rendere_countdown
 from .settings import arbeitsverzeichnis, einstellungen
 from .signals import ModusSignatur, sammle
@@ -61,24 +63,33 @@ def cmd_analyse(args: argparse.Namespace) -> None:
     s = prof["signatur"]
     sig = ModusSignatur(s["modus"], kante_x=s.get("kante_x"),
                         kante_y=s.get("kante_y"),
-                        bereich=tuple(s["bereich"]), schwelle=s["schwelle"])
+                        flaeche=tuple(s["flaeche"]) if s.get("flaeche") else None,
+                        kantenenergie=bool(s.get("kantenenergie", False)),
+                        bereich=tuple(s.get("bereich") or (0, 0)),
+                        schwelle=s.get("schwelle", 12.0),
+                        invertiert=bool(s.get("invertiert", False)),
+                        immer=bool(s.get("immer", False)),
+                        sonst=s.get("sonst", "SOLO"))
 
     print(f"Transkript: {len(tr.woerter)} Woerter, {tr.dauer:.0f}s, "
           f"{len(tr.marker())} Marker")
     signale = sammle(video, tr, sig, schritt=args.schritt)
-    anteil = float((signale.modus_wert > sig.schwelle).mean())
+    anteil = float(sig.aktiv(signale.modus_wert).mean())
     print(f"Layout {sig.name}: {anteil:.0%} der Laufzeit")
 
     # Modus-Laeufe: zusammenhaengende Strecken eines Layouts. Die Selektion
     # braucht sie, um Clipgrenzen nicht mitten durch einen Layoutwechsel zu legen.
-    aktiv = signale.modus_wert > sig.schwelle
+    aktiv = sig.aktiv(signale.modus_wert)
     laeufe, i = [], 0
     while i < len(aktiv):
         j = i
         while j + 1 < len(aktiv) and aktiv[j + 1] == aktiv[i]:
             j += 1
         laeufe.append({
-            "modus": sig.name if bool(aktiv[i]) else "SOLO",
+            # Der Name des Gegenmodus stand hier fest auf "SOLO". Fuer
+            # COACHLIM_COUCH zeigt das auf kein Template, das Profil hat gar
+            # keinen SOLO-Modus. Er gehoert ins Profil, nicht in den Code.
+            "modus": sig.name if bool(aktiv[i]) else sig.sonst,
             "start": round(float(signale.modus_zeiten[i]), 2),
             "ende": round(float(signale.modus_zeiten[j]) + args.schritt, 2),
         })
@@ -107,27 +118,60 @@ def cmd_rendere(args: argparse.Namespace) -> None:
     ausgabe = Path(args.ausgabe).expanduser() if args.ausgabe else \
         arbeitsverzeichnis() / "clips"
 
+    # Ein Durchlauf ueber die Quelle fuer alle Clips, nicht einer je Clip.
+    # Ein Bildwechsel mitten im Clip ist im QC der Datei nicht mehr messbar.
+    bildwechsel = [] if args.ohne_schnittpruefung else schnitte.finde(video)
+
     for roh in plaene:
         modus = roh.pop("modus")
         anteil = roh.pop("modus_anteil", 1.0)
         tmpl = layout.template_fuer(args.profil, modus)
 
+        # Untertitel und Follow-Aufforderung gehoeren in jeden Clip. Fehlen sie
+        # im Template, wird nicht gerendert — ein Clip ohne sie ist kein
+        # fertiger Clip, und im QC der Datei waere es nicht mehr zu sehen.
+        if fehler := pflichtelemente(tmpl):
+            raise SystemExit("\n".join(fehler))
+
         start, ende, tier = snappe(tr, roh["timing"]["start"], roh["timing"]["ende"])
         roh["template"] = tmpl["name"]
         plan = EditPlan.model_validate(roh)
         plan.tier = tier
+
+        dauer = round(ende - start, 3)
+        ut_conf = tmpl["untertitel"]
+        cues = (untertitel.schneide(tr, start, ende, ut_conf)
+                if ut_conf.get("aktiv", True) else [])
+        fw_conf = tmpl["follow_hinweis"]
+        hinweis, fw_meldungen = (follow.platziere(dauer, fw_conf)
+                                 if fw_conf.get("aktiv", True) else (None, []))
+
         plan.resolved = Aufgeloest(
-            start=start, ende=ende, dauer=round(ende - start, 3),
+            start=start, ende=ende, dauer=dauer,
             modus=modus, modus_anteil=anteil,
             panels=layout.panels(prof, tmpl, modus),
             canvas=tuple(tmpl["canvas"]),
             fps=int(einstellungen()["output"]["fps"]),
             headline_y=tmpl["headline"]["y"],
+            untertitel=[{"text": c.text, "ab": c.ab, "bis": c.bis} for c in cues],
+            follow=({"text": hinweis.text, "ab": hinweis.ab, "bis": hinweis.bis}
+                    if hinweis else None),
         )
 
         ziel = ausgabe / f"{plan.clip_id}.mp4"
         print(f"  {plan.clip_id}  {start:7.2f}-{ende:7.2f}  "
               f"{ende-start:5.1f}s  {tmpl['name']:12s} Tier {tier}  {plan.headline}")
+        fw = f"{hinweis.ab:.1f}-{hinweis.bis:.1f}s" if hinweis else "keine"
+        print(f"      Overlays: {len(cues)} Untertitel, Follow {fw}")
+        # Die Headline ist das einzige Textfeld der AI und im fertigen Clip
+        # nicht mehr korrigierbar. Verraet sie die Pointe, faellt das sonst
+        # erst auf, wenn der Clip schon draussen ist.
+        hb = hook.pruefe(plan.headline, tr, start, ende)
+        for m in (fw_meldungen + overlays_vorhanden(plan.resolved, tmpl)
+                  + hb.hinweise
+                  + schnitte.melde(plan.clip_id, start, ende, bildwechsel)):
+            print(f"      ! {m}")
+
         rendere(plan, tmpl, video, ziel, vorschau=args.vorschau)
 
         b = pruefe(ziel, tier)
@@ -137,6 +181,46 @@ def cmd_rendere(args: argparse.Namespace) -> None:
 
         (ausgabe / f"{plan.clip_id}.editplan.json").write_text(
             plan.model_dump_json(indent=2), encoding="utf-8")
+
+
+def _historie() -> list[tuple[str, float]]:
+    """Titel und Score der eigenen bewertbaren Posts — Grundlage fuer `thema`."""
+    try:
+        return [(z.post["titel"], z.bewertung.score)
+                for z in report.sammle_auswertung().gerankt]
+    except Exception:
+        return []
+
+
+def cmd_rangliste(args: argparse.Namespace) -> None:
+    plaene = json.loads(Path(args.plan).expanduser().read_text(encoding="utf-8"))
+    prof = layout.profil(args.profil) if args.profil else {}
+    tr = lade_json3(Path(args.transkript).expanduser(), args.video_id,
+                    (prof.get("quelle") or {}).get("sprache", "de"))
+    postzeit = datetime.fromisoformat(args.postzeit) if args.postzeit else None
+
+    plaetze = rangliste.bilde(plaene, tr, postzeit, _historie(), args.plattform)
+    print(f"\nRANGLISTE  {len(plaetze)} Clips aus {args.video_id}")
+    print("\n".join(rangliste.tabelle(plaetze)))
+
+    k = plaetze[0].prognose.konfidenz if plaetze else 0.0
+    print(f"\n  Prognosekonfidenz {k:.0%} — "
+          + ("kalibriert" if plaetze and plaetze[0].prognose.kalibriert
+             else "NICHT kalibriert, die Reihenfolge ist eine Sortierhilfe, "
+                  "keine Vorhersage"))
+    if args.ausgabe:
+        ziel = Path(args.ausgabe).expanduser()
+        ziel.write_text(json.dumps([{
+            "rang": i, "clip_id": p.clip_id, "headline": p.headline,
+            "start": p.start, "ende": p.ende, "dauer": p.dauer, "tier": p.tier,
+            "prognose": p.prognose.score, "auswahl": p.auswahl,
+            "payoff": p.payoff, "hook_taugt": p.hookbefund.taugt,
+            "hook_verraeter": p.hookbefund.verraeter,
+            "hinweise": p.hinweise,
+        } for i, p in enumerate(plaetze, 1)], ensure_ascii=False, indent=2),
+            encoding="utf-8")
+        print(f"  -> {ziel}")
+    print()
 
 
 def cmd_frames(args: argparse.Namespace) -> None:
@@ -183,6 +267,9 @@ def cmd_countdown(args: argparse.Namespace) -> None:
     plan = countdown.CountdownPlan.model_validate(daten)
     tmpl = layout.template(plan.template)
 
+    if fehler := pflichtelemente(tmpl):
+        raise SystemExit("\n".join(fehler))
+
     for hinweis in countdown.sicherheitszone_pruefen(tmpl):
         print(f"  Hinweis: {hinweis}")
 
@@ -193,6 +280,10 @@ def cmd_countdown(args: argparse.Namespace) -> None:
     for seg in r.segmente:
         print(f"   Platz {seg['platz']}  {seg['ab']:6.1f}-{seg['bis']:6.1f}s  "
               f"aus {seg['video_id']} ab {seg['start']:.1f}s")
+    if r.follow:
+        print(f"   Follow-Aufforderung {r.follow['ab']:.1f}-{r.follow['bis']:.1f}s")
+    for h in overlays_vorhanden(r, tmpl):
+        print(f"   ! {h}")
 
     ausgabe = Path(args.ausgabe).expanduser() if args.ausgabe else \
         arbeitsverzeichnis() / "clips"
@@ -415,7 +506,20 @@ def main() -> None:
     r.add_argument("--profil", required=True)
     r.add_argument("--ausgabe")
     r.add_argument("--vorschau", action="store_true")
+    r.add_argument("--ohne-schnittpruefung", action="store_true",
+                   help="Bildwechsel in der Quelle nicht suchen "
+                        "(spart einen Durchlauf ueber das ganze Video)")
     r.set_defaults(func=cmd_rendere)
+
+    rl = sub.add_parser("rangliste", help="Clips eines Plans bewerten und sortieren")
+    rl.add_argument("--plan", required=True)
+    rl.add_argument("--transkript", required=True)
+    rl.add_argument("--video-id", required=True)
+    rl.add_argument("--profil")
+    rl.add_argument("--plattform", default="tiktok", choices=list(publish.PLATTFORMEN))
+    rl.add_argument("--postzeit", help="ISO-Zeitstempel der geplanten Veroeffentlichung")
+    rl.add_argument("--ausgabe", help="Rangliste zusaetzlich als JSON ablegen")
+    rl.set_defaults(func=cmd_rangliste)
 
     f = sub.add_parser("frames", help="Standbilder zum Anschauen")
     f.add_argument("quelle", help="lokaler Pfad oder URL")

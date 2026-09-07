@@ -1,0 +1,81 @@
+# Materialprofil: marli Ordner / Zuschauer-Handys
+#
+# Gemessen am 2026-09-06 an A14FQZsFooQ ("ICH KONTROLLIERE ZUSCHAUER HANDYS MIT
+# ROHAT", 2938 s, 1920x1080@60). 980 Messpunkte im Abstand von 3 s, Boxkanten
+# zusaetzlich an 12 Vollbildern nachgemessen.
+#
+# Das Video wechselt zwischen vier Bildern: das gespiegelte Handy des Zuschauers
+# (57 %), Vollbild-Cam (12 %), Discord-Desktop und ein Handyspiel (zusammen
+# 31 %). Geclippt wird aus den ersten beiden — die anderen beiden haben keine
+# Geometrie, die sich sinnvoll auf 9:16 bringen laesst.
+#
+# Gemessene Boxen (Wechsel der Belegung ueber 12 Vollbilder, Schwelle 0.25):
+#   Handy    x 710..1210, ueber die volle Hoehe   -> [710, 0, 500, 1080]
+#   Facecam  x 1444..1905, y 410..670             -> [1444, 410, 460, 260]
+# 500/1080 = 0.463 ist exakt das iPhone-Verhaeltnis (9:19.5), 460/260 = 1.77
+# exakt 16:9. Beide Boxen sind ueber das ganze Video unveraendert.
+
+name: MARLI_PHONE
+beschreibung: Gespiegeltes Zuschauer-Handy mittig auf Schwarz, Facecam rechts, wechselnd mit Vollbild-Cam
+gueltig_ab: 2026-09-06
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [marli Ordner]
+  sprache: de
+
+# KEINE Kantensignatur, anders als bei allen bisherigen Profilen. Die Kante
+# zwischen schwarzem Rahmen und Handybild gibt es nur, solange der Handyinhalt
+# hell ist: gemessen schwankt sie *innerhalb* des PHONE-Modus zwischen 0.3 (dunkle
+# App) und 119 (heller Homescreen) und trennt damit gar nichts.
+#
+# Erste Fassung mass deshalb die HELLIGKEIT des Rahmens links vom Handy. Das
+# trennt PHONE sauber von Vollbild-Cam und Spiel, aber NICHT vom vierten Bild
+# dieses Videos: dem Discord-Gitter aus vielen kleinen Zuschauerhandys. Dessen
+# Kacheln sind dunkle App-Oberflaechen, im Mittel also genauso schwarz wie ein
+# leerer Rahmen — gemessen 0.7 gegen 0.0. Zwei Clips liefen damit auf dem
+# falschen Bild, bevor es auffiel.
+#
+# Gemessen wird deshalb STRUKTUR statt Pegel: Kacheln haben Kanten, ein leerer
+# Rahmen hat keine. Ueber 526 Einzelhandy- und 234 Gitter-Frames als
+# Grundwahrheit (aus Kontaktboegen abgelesen, nicht gerechnet):
+#   Einzelhandy  Median 0.001, p95 1.59
+#   Gitter       p5     2.19,  Median 9.86
+# Dazwischen liegt eine echte Luecke; die Schwelle steht darin. Trefferquote
+# 96.6 %, und die wichtige Richtung sitzt: 99.6 % der Gitterbilder werden
+# korrekt ausgeschlossen.
+signatur:
+  modus: PHONE
+  flaeche: [0, 0, 710, 400]
+  kantenenergie: true       # Struktur, nicht Helligkeit — siehe oben
+  schwelle: 1.8
+  invertiert: true          # Modus aktiv *unterhalb* der Schwelle: Flaeche leer
+
+modi:
+  PHONE:
+    zonen:
+      handy:   { box: [710, 0, 500, 1080], rolle: inhalt }     # 9:19.5
+      facecam: { box: [1444, 410, 460, 260], rolle: creator }  # 16:9
+    muellzonen:
+      - { box: [0, 0, 710, 1080], hinweis: schwarzer Rahmen links }
+      - { box: [1210, 0, 234, 1080], hinweis: schwarzer Rahmen zwischen Handy und Cam }
+      - { box: [1444, 300, 460, 110], hinweis: Chateinblendungen ueber der Facecam }
+  SOLO:
+    zonen:
+      creator_voll: { box: [0, 0, 1920, 1080], rolle: creator, fokus_x: 700 }
+    muellzonen:
+      - { box: [0, 0, 300, 60], hinweis: Streamlabels oben links }
+
+datenschutz:
+  # Die gespiegelten Handys gehoeren Zuschauern, die sie selbst freigegeben
+  # haben; im Bild stehen Vornamen und Chatnamen. Unveraenderte Entscheidung
+  # des Nutzers wie in den anderen Profilen.
+  fremdinhalt_blur: false
+
+signale:
+  # 55 [gelächter] im Transkript, dazu [schreien], [japst], [schnauben] und
+  # [applaus]. Der Textkanal traegt hier also — anders als bei COACHLIM_COUCH.
+  lachmarker: 1.0
+  loudness_peak: 0.8
+  sprechtempo: 0.5

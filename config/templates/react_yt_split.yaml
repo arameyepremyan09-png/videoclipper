@@ -1,0 +1,59 @@
+# Template: REACT_YT_SPLIT
+#
+# Reagiertes Video oben, Creator-Cam unten, je zur Haelfte. Reihenfolge und
+# Aufteilung sind aus OME_SPLIT uebernommen, und zwar aus demselben Grund:
+# Der Aufbau laeuft in der fremden Box, die Pointe in der Reaktion.
+#
+# Beide Quellen sind 16:9. In einem 9:16-Rahmen passen zwei davon als je
+# 1080x607 uebereinander, zusammen 1214 der 1920 px. Die restlichen 706 px
+# lassen sich nicht wegdefinieren — sie werden hier gleichmaessig auf vier
+# Blurbaender zu je 176 px verteilt, statt sie einseitig anzuhaeufen.
+#
+# WARUM NICHT BESCHNEIDEN: Das reagierte Format stellt sechs bis acht Personen
+# nebeneinander ueber die volle Bildbreite auf. Ein 9:16-Fenster waere bei
+# 1080 px Hoehe 607 px breit und wuerde die Haelfte davon abschneiden — dieselbe
+# Ueberlegung wie bei COUCH_FULL, und dieselbe Entscheidung.
+#
+# DER PIP ERSCHEINT DAMIT DOPPELT: klein im oberen Panel, wo er im reagierten
+# Bild mitlaeuft, und gross im unteren. Wegschneiden liesse er sich nur, indem
+# die Quellbox bei x=1342 endet. Das waere sogar der bessere Bildausschnitt —
+# 1080x869 statt 1080x607, also 43 % mehr Flaeche. Nachgemessen ueber 915
+# REACT-Frames traegt der Streifen rechts von 1342 aber die STAERKSTE Bewegung
+# des ganzen Bildes (44.3 gegen 38.7 links davon, also 114 %). Dort stehen die
+# Kandidaten, um die es geht. Die Dopplung ist der guenstigere Preis.
+
+name: REACT_YT_SPLIT
+beschreibung: Reagiertes Video oben, Creator-Cam unten, je zur Haelfte, Headline auf der Naht
+default_fuer: [COACHLIM_REACT_YT]
+gilt_fuer_modus: REACT
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: fremd_video
+    ziel: [0, 0, 1080, 960]
+    passung: einpassen
+  - quelle: creator_cam
+    ziel: [0, 960, 1080, 960]
+    passung: einpassen
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: editplan.headline
+  schrift: Anton
+  schriftgroesse: 64
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 9
+  y: 960                        # auf der Naht, auf der Bildmitte
+  max_breite: 1000
+  max_zeilen: 2
+  renderer: png_overlay
+
+branding: { aktiv: false, text: "TODO", y: 1790 }
+audio:    { normalisieren: true, ziel_lufs: -14.0 }

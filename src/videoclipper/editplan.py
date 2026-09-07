@@ -52,6 +52,11 @@ class Aufgeloest(BaseModel):
     canvas: tuple[int, int]
     fps: int
     headline_y: int
+    # Pflicht-Overlays. Beide sind aus Transkript und Template gerechnet, nicht
+    # vom Modell gewaehlt — sie stehen hier, damit im ``.editplan.json`` steht,
+    # was tatsaechlich im Bild landet, und nicht erst im fertigen Video.
+    untertitel: list[dict] = Field(default_factory=list)
+    follow: dict | None = None
 
 
 class EditPlan(BaseModel):

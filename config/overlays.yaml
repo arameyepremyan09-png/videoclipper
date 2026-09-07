@@ -1,0 +1,135 @@
+# Pflicht-Overlays — gelten fuer JEDEN Clip.
+#
+# WARUM HIER UND NICHT IM TEMPLATE: Leitprinzip 3 sagt, nur zwei Schichten
+# duerfen materialabhaengig sein — Materialprofil (Geometrie der Quelle) und
+# Template (Zielkomposition). Untertitel und Follow-Aufforderung sind weder
+# das eine noch das andere: Sie sind eine Hausregel und in jedem Clip gleich.
+# In elf Templates kopiert waeren sie elf Stellen, die auseinanderlaufen.
+#
+# Templates duerfen einzelne Werte ueberschreiben (``layout.template`` mischt
+# diese Datei als Unterlage darunter, gleiches Muster wie
+# settings.toml/local.toml). Abschalten geht nur mit ``grund`` — siehe
+# ``qc.pflichtelemente``.
+
+version: 1
+stand: 2026-09-06
+
+# ---------------------------------------------------------------------------
+# Sicherheitszone
+# ---------------------------------------------------------------------------
+#
+# TikTok verdeckt die unteren ~192 px mit Caption, Buttons und Soundzeile.
+# Gemessen an @phrai92/7673568784648539424 (siehe TOP5_COUNTDOWN). Beide
+# Overlays unten muessen darueber bleiben, sonst stehen sie hinter der UI.
+
+sicherheitszone:
+  unten: 192
+
+# ---------------------------------------------------------------------------
+# Untertitel — Pflicht 1
+# ---------------------------------------------------------------------------
+#
+# ANIMATION MIT WENIG AUFWAND, woertlich gemeint:
+#
+# Der FFmpeg-Build auf dem MacBook hat weder libass noch drawtext. Karaoke
+# waere hier also nicht nur teuer, sondern gar nicht baubar — und es ist
+# ausserdem nicht der gemessene Hausstil (siehe CLAUDE.md, Abschnitt "Look").
+#
+# Gebaut wird deshalb wie die Countdown-Liste: ein PNG je Cue, eingeblendet
+# ueber ``enable='between(t,ab,bis)'``. Die Animation ist ein Aufwaertsruck
+# beim Cue-Wechsel und steckt komplett im ``y``-Ausdruck des overlay-Filters.
+# Kosten: null zusaetzliche Bilder, null zusaetzliche Filter. Genau das ist
+# der "wenig Aufwand".
+#
+# Die Bandbreite (nicht die volle Canvashoehe) haelt den Speicher klein:
+# 1080x264 statt 1080x1920 ist pro Cue ein Achtel.
+
+untertitel:
+  aktiv: true
+
+  # --- Satz ---
+  schrift: Anton
+  schriftgroesse: 62
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 8
+  max_breite: 960
+  max_zeilen: 2
+
+  # --- Lage ---
+  # y ist die Mitte des Bandes, gleiche Bedeutung wie bei ``headline.y``.
+  # 1556 +- 132 ergibt 1424..1688, also 40 px Luft bis zur UI-Zone bei 1728.
+  y: 1556
+  band_hoehe: 264
+
+  # --- Schnitt der Cues ---
+  # Ein Cue bricht, sobald eine der drei Grenzen reisst. Die Werte sind
+  # gewaehlt, nicht gemessen: zwei lesbare Zeilen bei 62 px sind rund 42
+  # Zeichen, und ueber ~2 s hat ein Zuschauer den Text laengst gelesen.
+  satzende: true       # ein Punkt bricht die Zeile, nicht erst max_zeichen
+  max_zeichen: 42
+  max_dauer: 2.2
+  pause: 0.45          # Sprechpause, die einen Umbruch erzwingt
+  min_dauer: 0.6       # kuerzer blitzt der Text nur auf
+  max_halten: 0.9      # so lange steht ein Cue nach dem letzten Wort noch
+
+  animation:
+    art: aufwaerts     # einziger Wert; alles andere braucht mehr als einen Filter
+    dauer: 0.14        # Einschwingzeit
+    hub: 26            # px, aus denen der Cue nach oben faehrt
+
+  renderer: png_overlay
+
+# ---------------------------------------------------------------------------
+# Follow-Aufforderung — Pflicht 2
+# ---------------------------------------------------------------------------
+#
+# WARUM MITTEN IM CLIP UND NICHT AM ENDE: Die eigenen Zahlen sagen, dass die
+# Zuschauer nicht bis zum Ende bleiben (scoring.yaml gewichtet Retention mit
+# 0.40, und ``completion_rate`` ist die Groesse, die dort fehlt). Eine
+# Aufforderung am Abspann erreicht nur die, die ohnehin geblieben sind.
+# Gesetzt wird sie deshalb nach dem Hook und vor der Pointe.
+#
+# ``konversion`` ist mit 0.20 die drittstaerkste Achse des Scores und laut
+# scoring.yaml "das Ziel des Accounts" — Follows pro View. Dieses Overlay ist
+# die einzige Stelle der Pipeline, die direkt darauf einzahlt.
+#
+# Die Pille fliegt von rechts ein und rechts wieder hinaus: Auf TikTok liegt
+# dort die Buttonleiste mit dem Folgen-Knopf, die Bewegung zeigt also dorthin,
+# wohin geklickt werden soll. Auch das steckt im ``x``-Ausdruck des
+# overlay-Filters — keine zweite Bilddatei, kein zweiter Filter.
+
+follow_hinweis:
+  aktiv: true
+
+  text: "FOLGEN FÜR MEHR"
+  schrift: Anton
+  schriftgroesse: 46
+  versalien: true
+  farbe: "#000000"           # Text auf der Pille
+  pille_farbe: "#01FC19"     # gemessener Akzent aus TOP5_COUNTDOWN
+  pille_rand_farbe: "#000000"
+  pille_rand_staerke: 5
+  polsterung_x: 42
+  polsterung_y: 22
+  radius: 26
+
+  # y ist die Mitte der Pille. 1290 haelt sie ueber dem Untertitelband
+  # (beginnt bei 1424) und unter der Bildmitte.
+  y: 1290
+
+  # --- Zeitfenster ---
+  # ab_anteil ist der Anteil der Cliplaenge, an dem sie erscheint; die
+  # Schranken davor und danach gewinnen, wenn der Clip kurz ist.
+  ab_anteil: 0.35
+  dauer: 2.6
+  min_dauer: 1.6             # darunter wird nicht gestaucht, sondern gemeldet
+  nicht_vor: 3.0             # der Hook gehoert dem Clip
+  nicht_nach_ende: 2.0       # die Pointe auch
+
+  animation:
+    art: einflug_rechts
+    dauer: 0.28
+
+  renderer: png_overlay

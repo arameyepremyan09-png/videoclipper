@@ -1,0 +1,48 @@
+# Template: KINO_FULL
+#
+# Fuer die geletterboxte Reveal-Sequenz. Geometrisch identisch mit VLOG_FULL —
+# der Unterschied steckt nicht hier, sondern in der Zone des Profils: KINO
+# schneidet die schwarzen Balken der Quelle heraus (Box [0,108,1920,864]).
+#
+# WARUM DAS EIN EIGENER MODUS SEIN MUSS: Ohne den Schnitt kaeme das Bild mit
+# seinen Balken in die Einpassung, das Band waere 1080x486 statt 1080x606, und
+# im fertigen Clip staenden zwei schwarze Streifen mitten im Blurfeld. Das sieht
+# nach Fehler aus, obwohl es die Quelle korrekt wiedergibt. Mit dem Schnitt
+# bleibt das 2.22:1-Bild als 1080x486-Band stehen und liest sich als das, was
+# es ist: eine bewusst breite Einstellung.
+#
+# Die Headline sitzt tiefer als in VLOG_FULL, weil das schmalere Band erst bei
+# y=717 beginnt — sonst klebte sie am Bild.
+
+name: KINO_FULL
+beschreibung: Geletterboxte Reveal-Sequenz ohne Balken eingepasst, Blur ringsum
+default_fuer: [COACHLIM_BMW_VLOG]
+gilt_fuer_modus: KINO
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: voll
+    ziel: [0, 0, 1080, 1920]
+    passung: einpassen
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: editplan.headline
+  schrift: Anton
+  schriftgroesse: 76
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 9
+  y: 440                    # Bildband beginnt hier erst bei y=717
+  max_breite: 1000
+  max_zeilen: 3
+  renderer: png_overlay
+
+branding: { aktiv: false, text: "TODO", y: 1790 }
+audio:    { normalisieren: true, ziel_lufs: -14.0 }

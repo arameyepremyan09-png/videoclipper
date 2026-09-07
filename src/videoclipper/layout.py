@@ -12,7 +12,13 @@ from typing import Any
 
 import yaml
 
+from .settings import _deep_merge
+
 ROOT = Path(__file__).resolve().parents[2]
+
+# Overlays, die in jedem Clip gleich aussehen und deshalb nicht elfmal im
+# Template stehen. Ein Template darf einzelne Werte ueberschreiben.
+UEBERALL = ("sicherheitszone", "untertitel", "follow_hinweis")
 
 
 def _lade(ordner: str, name: str) -> dict[str, Any]:
@@ -23,12 +29,28 @@ def _lade(ordner: str, name: str) -> dict[str, Any]:
     raise FileNotFoundError(f"{ordner}/{name} nicht gefunden")
 
 
+def _globale_overlays() -> dict[str, Any]:
+    daten = yaml.safe_load(
+        (ROOT / "config" / "overlays.yaml").read_text(encoding="utf-8"))
+    return {k: daten[k] for k in UEBERALL if k in daten}
+
+
+def _mit_overlays(tmpl: dict[str, Any]) -> dict[str, Any]:
+    """Globale Pflicht-Overlays als Unterlage unter das Template legen.
+
+    Gleiches Muster wie settings.toml/local.toml: Die allgemeine Fassung
+    steht unten, das Template schreibt einzelne Werte darueber. Ein Template
+    muss also nur nennen, was bei ihm anders ist.
+    """
+    return _deep_merge(_globale_overlays(), tmpl)
+
+
 def profil(name: str) -> dict[str, Any]:
     return _lade("profiles", name)
 
 
 def template(name: str) -> dict[str, Any]:
-    return _lade("templates", name)
+    return _mit_overlays(_lade("templates", name))
 
 
 def template_fuer(profil_name: str, modus: str) -> dict[str, Any]:
@@ -37,7 +59,7 @@ def template_fuer(profil_name: str, modus: str) -> dict[str, Any]:
         daten = yaml.safe_load(pfad.read_text(encoding="utf-8"))
         if profil_name in (daten.get("default_fuer") or []) \
                 and daten.get("gilt_fuer_modus") == modus:
-            return daten
+            return _mit_overlays(daten)
     raise FileNotFoundError(f"Kein Template fuer {profil_name}/{modus}")
 
 

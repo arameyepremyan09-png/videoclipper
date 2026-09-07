@@ -1,0 +1,274 @@
+"""Tests fuer die beiden Pflicht-Overlays.
+
+Bewusst die Stellen, die still falsch sein koennen. Ein Clip ohne Untertitel
+sieht im QC genauso aus wie einer mit: richtige Dauer, richtige Aufloesung,
+Tonspur vorhanden. Und ein Cue, der 0.2 s aufblitzt oder unter TikToks UI
+haengt, faellt erst im Feed auf — dort aber jedem.
+"""
+
+from __future__ import annotations
+
+import pytest
+from videoclipper import follow, layout, qc, untertitel
+from videoclipper.transcript import Transkript, Wort
+
+
+@pytest.fixture
+def tmpl():
+    return layout.template("SOLO_FULL")
+
+
+def _tr(*paare: tuple[str, float, float]) -> Transkript:
+    return Transkript("t", "de", tuple(Wort(t, a, b) for t, a, b in paare))
+
+
+def _conf(tmpl, **kw):
+    c = dict(tmpl["untertitel"])
+    c.update(kw)
+    return c
+
+
+# --- Templates tragen die Pflicht-Overlays ---------------------------------
+
+def test_jedes_template_traegt_beide_overlays():
+    """Das ist die eigentliche Zusage: kein Clip ohne Untertitel und Follow."""
+    from videoclipper.layout import ROOT
+    import yaml
+    namen = [yaml.safe_load(p.read_text(encoding="utf-8"))["name"]
+             for p in (ROOT / "config" / "templates").glob("*.yaml")]
+    assert namen
+    for name in namen:
+        assert qc.pflichtelemente(layout.template(name)) == [], name
+
+
+def test_kein_template_laesst_die_drei_textebenen_kollidieren():
+    """Headline, Follow-Pille und Untertitelband duerfen sich nie beruehren.
+
+    Sie stehen an drei verschiedenen Orten: Headline im Template, die beiden
+    anderen in config/overlays.yaml. Wer eine Headline tiefer setzt, sieht die
+    Pille nicht — und im fertigen Clip liegt dann Text auf Text.
+    """
+    import yaml
+    from videoclipper.layout import ROOT
+    for pfad in (ROOT / "config" / "templates").glob("*.yaml"):
+        t = layout.template(yaml.safe_load(pfad.read_text(encoding="utf-8"))["name"])
+        hc = t["headline"]
+        zh = int(hc["schriftgroesse"] * 1.12)
+        headline_unten = hc["y"] + zh * hc.get("max_zeilen", 2) // 2
+        _, fy, _, fh = follow.masse(t)
+        assert headline_unten < fy, t["name"]
+        if t["untertitel"].get("aktiv", True):
+            assert fy + fh <= untertitel.band(t)[0], t["name"]
+
+
+def test_abschalten_ohne_grund_ist_ein_fehler(tmpl):
+    tmpl["untertitel"] = {"aktiv": False}
+    assert qc.pflichtelemente(tmpl)
+
+
+def test_abschalten_mit_grund_ist_erlaubt(tmpl):
+    tmpl["untertitel"] = {"aktiv": False, "grund": "Format hat keine Quelle"}
+    assert qc.pflichtelemente(tmpl) == []
+
+
+def test_template_darf_einzelne_werte_ueberschreiben():
+    """TOP5_COUNTDOWN setzt nur y — der Rest kommt aus config/overlays.yaml."""
+    t = layout.template("TOP5_COUNTDOWN")
+    assert t["follow_hinweis"]["y"] == 1650
+    assert t["follow_hinweis"]["text"] == layout.template("SOLO_FULL")[
+        "follow_hinweis"]["text"]
+
+
+# --- Untertitel: Schnitt ---------------------------------------------------
+
+def test_marker_werden_nicht_gesetzt(tmpl):
+    """[gelaechter] ist eine Annotation von YouTube, kein gesprochenes Wort."""
+    tr = _tr(("Hallo", 0.0, 0.5), ("[gelächter]", 0.5, 1.5), ("Welt", 1.5, 2.0))
+    cues = untertitel.schneide(tr, 0.0, 3.0, tmpl["untertitel"])
+    assert "gelächter" not in " ".join(c.text for c in cues)
+
+
+def test_satzende_bricht_die_zeile(tmpl):
+    tr = _tr(("Stell", 0.0, 0.2), ("dich", 0.2, 0.4), ("vor.", 0.4, 0.6),
+             ("Also,", 0.6, 0.8), ("ich", 0.8, 1.0))
+    cues = untertitel.schneide(tr, 0.0, 2.0, _conf(tmpl, max_halten=0.0))
+    assert cues[0].text == "Stell dich vor."
+
+
+def test_initialen_brechen_nicht(tmpl):
+    """'Maus L.' ist kein Satzende — sonst steht der Nachname allein im Bild."""
+    tr = _tr(("Gute", 0.0, 0.2), ("Maus", 0.2, 0.4), ("L.", 0.4, 0.6),
+             ("Gute", 0.6, 0.8))
+    cues = untertitel.schneide(tr, 0.0, 2.0, _conf(tmpl, max_halten=0.0))
+    assert cues[0].text == "Gute Maus L. Gute"
+
+
+def test_sprechpause_bricht_die_zeile(tmpl):
+    tr = _tr(("eins", 0.0, 0.3), ("zwei", 2.0, 2.3))
+    cues = untertitel.schneide(tr, 0.0, 3.0, tmpl["untertitel"])
+    assert [c.text for c in cues] == ["eins", "zwei"]
+
+
+def test_lange_rede_bricht_an_der_zeichenzahl(tmpl):
+    tr = _tr(*[(f"wort{i}", i * 0.1, i * 0.1 + 0.1) for i in range(30)])
+    conf = _conf(tmpl, satzende=False, max_dauer=99.0)
+    for c in untertitel.schneide(tr, 0.0, 5.0, conf):
+        assert len(c.text) <= conf["max_zeichen"]
+
+
+# --- Untertitel: Zeitachse -------------------------------------------------
+
+def test_kein_cue_blitzt_nur_auf(tmpl):
+    """Unter min_dauer wuerde der Text erscheinen und wieder weg sein."""
+    tr = _tr(("ja.", 0.0, 0.12), ("nein.", 2.0, 2.2))
+    cues = untertitel.schneide(tr, 0.0, 4.0, tmpl["untertitel"])
+    for c in cues:
+        assert c.bis - c.ab >= tmpl["untertitel"]["min_dauer"] - 1e-6
+
+
+def test_abgeschnittener_letzter_cue_faellt_weg(tmpl):
+    """Der Nachlauf aus ``snappe`` zieht oft das naechste Wort halb mit herein.
+
+    GEMESSEN am 2026-09-07 an utB7GTrmLYY: Drei von acht Clips endeten auf
+    einem 0.35-s-Fetzen ("E ich", "Ja, ich habe"). Mitten im Clip kann
+    ``min_dauer`` so einen Cue noch dehnen, am Fensterrand nicht — dort blitzt
+    er genau so lange auf, wie er lang ist, und der Clip sieht aus, als sei er
+    mitten im Satz abgeschnitten.
+    """
+    tr = _tr(("Das", 0.0, 0.5), ("reicht.", 0.5, 1.0), ("Und", 1.9, 2.1))
+    cues = untertitel.schneide(tr, 0.0, 2.05, tmpl["untertitel"])
+    assert [c.text for c in cues] == ["Das reicht."]
+
+
+def test_vollstaendiger_letzter_cue_bleibt(tmpl):
+    """Nur der abgeschnittene faellt weg — ein Cue, der von selbst endet, nicht."""
+    tr = _tr(("Das", 0.0, 0.5), ("reicht.", 0.5, 1.0))
+    cues = untertitel.schneide(tr, 0.0, 6.0, tmpl["untertitel"])
+    assert [c.text for c in cues] == ["Das reicht."]
+    assert cues[-1].bis - cues[-1].ab >= tmpl["untertitel"]["min_dauer"] - 1e-6
+
+
+def test_kurzer_cue_mitten_im_clip_bleibt_stehen(tmpl):
+    """Die Regel gilt nur am Fensterrand. Sonst verschwaende Gesprochenes."""
+    tr = _tr(("Was", 0.0, 0.2), ("hab?", 0.2, 0.5), ("Spaeter.", 5.0, 5.4))
+    cues = untertitel.schneide(tr, 0.0, 8.0, tmpl["untertitel"])
+    assert "Was hab?" in [c.text for c in cues]
+
+
+def test_cues_ueberlappen_sich_nie(tmpl):
+    """Zwei Standbilder gleichzeitig waeren zwei Zeilen uebereinander."""
+    tr = _tr(*[(f"w{i}.", i * 0.5, i * 0.5 + 0.3) for i in range(12)])
+    cues = untertitel.schneide(tr, 0.0, 6.0, tmpl["untertitel"])
+    for a, b in zip(cues, cues[1:]):
+        assert a.bis <= b.ab + 1e-6
+
+
+def test_cues_bleiben_im_clipfenster(tmpl):
+    tr = _tr(("vorher", 0.0, 4.0), ("drin", 12.0, 12.4), ("nachher", 19.0, 25.0))
+    cues = untertitel.schneide(tr, 10.0, 20.0, tmpl["untertitel"])
+    assert cues
+    for c in cues:
+        assert 0.0 <= c.ab < c.bis <= 10.0
+
+
+def test_ein_cue_haelt_nicht_ewig_stehen(tmpl):
+    """Nach dem letzten Wort verschwindet er, sonst steht er ueber der naechsten
+    Szene."""
+    tr = _tr(("kurz.", 0.0, 0.4), ("spaeter.", 8.0, 8.4))
+    cues = untertitel.schneide(tr, 0.0, 10.0, tmpl["untertitel"])
+    assert cues[0].bis <= 0.4 + tmpl["untertitel"]["max_halten"] + 1e-6
+
+
+# --- Untertitel: Lage und Animation ----------------------------------------
+
+def test_band_bleibt_ueber_der_ui_zone(tmpl):
+    oben, hoehe = untertitel.band(tmpl)
+    frei = tmpl["canvas"][1] - tmpl["sicherheitszone"]["unten"]
+    assert oben + hoehe <= frei
+
+
+def test_band_im_ui_bereich_bricht_ab(tmpl):
+    tmpl["untertitel"]["y"] = 1800
+    with pytest.raises(ValueError, match="UI-Zone"):
+        untertitel.band(tmpl)
+
+
+def test_animation_endet_in_der_ruhelage(tmpl):
+    """Nach der Einschwingzeit muss der Cue exakt auf der Bandkante sitzen."""
+    cue = untertitel.Cue("x", 5.0, 7.0)
+    ausdruck = untertitel.y_ausdruck(cue, 1424, tmpl["untertitel"])
+    assert _eval(ausdruck, t=5.0) == pytest.approx(1424 + 26)
+    assert _eval(ausdruck, t=5.14) == pytest.approx(1424)
+    assert _eval(ausdruck, t=6.5) == pytest.approx(1424)
+
+
+def _eval(ausdruck: str, t: float) -> float:
+    """Die FFmpeg-Ausdruecke nachrechnen — sie nutzen nur pow/min/max."""
+    return eval(ausdruck.replace("pow", "__pow"),
+                {"__pow": pow, "min": min, "max": max, "t": t})
+
+
+# --- Follow-Aufforderung ---------------------------------------------------
+
+def test_steht_nicht_im_hook(tmpl):
+    h, _ = follow.platziere(60.0, tmpl["follow_hinweis"])
+    assert h.ab >= tmpl["follow_hinweis"]["nicht_vor"]
+
+
+def test_steht_nicht_auf_der_pointe(tmpl):
+    conf = tmpl["follow_hinweis"]
+    for dauer in (8.0, 15.0, 27.0, 68.0, 90.0):
+        h, _ = follow.platziere(dauer, conf)
+        assert h.bis <= dauer - conf["nicht_nach_ende"] + 1e-6, dauer
+
+
+def test_zu_kurzer_clip_bekommt_keine_aufforderung_sondern_eine_meldung(tmpl):
+    h, meldungen = follow.platziere(4.0, tmpl["follow_hinweis"])
+    assert h is None and meldungen
+
+
+def test_pille_bleibt_ueber_der_ui_zone(tmpl):
+    _, y, _, ph = follow.masse(tmpl)
+    assert y + ph <= tmpl["canvas"][1] - tmpl["sicherheitszone"]["unten"]
+
+
+def test_pille_kollidiert_nicht_mit_dem_untertitelband(tmpl):
+    _, y, _, ph = follow.masse(tmpl)
+    oben, _ = untertitel.band(tmpl)
+    assert y + ph <= oben
+
+
+def test_pille_hat_gerade_masse(tmpl):
+    """In yuv420p rundet der Scaler ungerade Kanten still ab."""
+    _, _, pw, ph = follow.masse(tmpl)
+    assert pw % 2 == 0 and ph % 2 == 0
+
+
+def test_einflug_und_ausflug_enden_in_der_ruhelage(tmpl):
+    h = follow.Hinweis("X", 10.0, 14.0)
+    a = follow.x_ausdruck(h, 346, 1080, 388, tmpl["follow_hinweis"])
+    assert _eval(a, t=10.0) > 1080 - 388          # startet ausserhalb rechts
+    assert _eval(a, t=10.28) == pytest.approx(346)
+    assert _eval(a, t=12.0) == pytest.approx(346)
+    assert _eval(a, t=14.0) > 1080 - 388          # verlaesst das Bild rechts
+
+
+# --- Countdown -------------------------------------------------------------
+
+def test_countdown_bekommt_die_aufforderung_aber_keine_untertitel():
+    from videoclipper import countdown
+    t = layout.template("TOP5_COUNTDOWN")
+    plan = countdown.CountdownPlan.model_validate({
+        "clip_id": "t", "titel": "Titel",
+        "eintraege": [{"platz": p, "text": f"P{p}", "video_id": f"v{p}",
+                       "start": 0.0, "dauer": 9.0} for p in range(1, 6)]})
+    r = countdown.loese_auf(plan, t).aufgeloest
+    assert r.follow and 0 < r.follow["ab"] < r.follow["bis"] < r.dauer
+    assert not t["untertitel"]["aktiv"] and t["untertitel"]["grund"]
+    # countdown.Aufgeloest kennt kein Feld ``untertitel``. Die Pruefung darf
+    # daran nicht scheitern, auch wenn ein Template sie einmal einschaltet.
+    assert qc.overlays_vorhanden(r, t) == []
+    t["untertitel"] = {"aktiv": True}
+    assert qc.overlays_vorhanden(r, t) == [
+        "Keine Untertitel — im Clipfenster steht kein Wort im Transkript. "
+        "Bitte den Clip ansehen."]

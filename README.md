@@ -49,11 +49,13 @@ absichtlich nicht im Repo.
 
 - Python 3.12+ und [uv](https://docs.astral.sh/uv/)
 - FFmpeg (Windows: `winget install Gyan.FFmpeg`, macOS: `brew install ffmpeg`)
-- yt-dlp — der Format-Selektor *und* `player_client=web_embedded` sind Pflicht, siehe CLAUDE.md
+- yt-dlp — Format-Selektor, `player_client=web_embedded` *und* `--write-auto-subs`
+  sind Pflicht, siehe CLAUDE.md
 
 libass wird **nicht** vorausgesetzt: Der Homebrew-Build 8.1.1 bringt weder libass
-noch drawtext mit. Die Headline läuft deshalb als PNG-Overlay und ist damit auf
-beiden Maschinen identisch.
+noch drawtext mit. Der gesamte Textpfad — Headline, Untertitel, Countdown-Liste,
+Follow-Aufforderung — läuft deshalb als PNG-Overlay und ist damit auf beiden
+Maschinen identisch.
 
 ## Struktur
 
@@ -61,6 +63,7 @@ beiden Maschinen identisch.
 assets/fonts/              Anton (OFL) — die Headline-Schrift
 config/
   settings.toml            gemeinsame Einstellungen + Plattformblöcke
+  overlays.yaml            Untertitel und Follow-Aufforderung — Pflicht in jedem Clip
   scoring.yaml             Bewertungsgewichte, Benchmarks, A/B-Regeln
   scoring.kalibriert.yaml  von `clip kalibriere` erzeugt, überschreibt die Annahmen
   konten.yaml              die eigenen Kanäle
@@ -69,13 +72,18 @@ config/
 src/videoclipper/          Pipeline              (materialunabhängig)
   transcript.py            Stage 03  json3 → Wörter mit Zeitstempeln
   signals.py               Stage 04  Lautheit, Lachmarker, Layout-Modus
+  schnitte.py              Stage 04b harte Bildwechsel in der Quelle
   candidates.py            Stage 05  lokale Maxima → Zeitfenster
   editplan.py              Stage 10  Datenvertrag (pydantic)
+  hook.py                  Stage 07  verrät die Headline die Pointe?
+  rangliste.py             Stage 07b Clips eines Plans bewerten und sortieren
   snapping.py              Stage 08  Wortgrenzen, Tier A/B
   layout.py                Stage 09  Profil + Template + Modus → Rechtecke
   headline.py              Headline als PNG-Overlay
+  untertitel.py            Stage 11a animierte Untertitel  (Pflicht)
+  follow.py                Stage 11b Follow-Aufforderung   (Pflicht)
   render.py                Stage 12  FFmpeg-Filtergraph
-  qc.py                    Stage 13  ffprobe auf der fertigen Datei
+  qc.py                    Stage 13  ffprobe + Pflichtprüfung vor dem Rendern
   forecast.py              Stage 15  Prognose vor dem Posten
   publish.py               Stage 16  Veröffentlichungsregister, A/B-Zuweisung
   collect.py               Stage 17  Messwerte holen (yt-dlp / manuell)
@@ -93,6 +101,41 @@ work/                      Videodateien, Cache — lokal, nie im Repo
 
 Materialabhängig sind ausschließlich `profiles/` und `templates/`. Der Wechsel
 von Reaction-Content auf GTA 6 ist das Schreiben zweier YAML-Dateien.
+
+`config/overlays.yaml` steht bewusst daneben und nicht in den Templates: Die
+beiden Pflicht-Overlays sehen in jedem Clip gleich aus, hängen also weder an
+der Quelle noch an der Zielkomposition. In elf Templates kopiert wären sie elf
+Stellen, die auseinanderlaufen.
+
+## Pflicht in jedem Clip
+
+Zwei Overlays liegen auf **jedem** gerenderten Clip. `clip rendere` bricht ab,
+wenn ein Template sie nicht trägt — im QC der fertigen Datei wären sie nicht
+mehr nachweisbar, denn Dauer, Auflösung und Tonspur stimmen ja trotzdem.
+
+**1. Untertitel mit Animation.** Ein PNG je Cue, eingeblendet über
+`enable='between(t,ab,bis)'`. Der Ruck nach oben beim Cue-Wechsel steckt
+vollständig im `y`-Ausdruck des `overlay`-Filters — die Animation kostet damit
+weder ein zusätzliches Bild noch einen zusätzlichen Filter. Gebrochen wird an
+Sprechpause, Satzende, Zeichenzahl oder Standzeit; `[gelächter]` wird nie
+gesetzt.
+
+**2. Follow-Aufforderung.** Eine Pille, die von rechts einfliegt, ~2,6 s steht
+und rechts wieder hinausfliegt — dorthin, wo auf TikTok der Folgen-Knopf liegt.
+Sie steht bei 35 % der Cliplänge, nie im Hook und nie auf der Pointe. Auch hier
+ein einziges PNG, die Bewegung im `x`-Ausdruck.
+
+Beide bleiben über TikToks UI-Zone (unterste 192 px); `untertitel.band` und
+`follow.masse` brechen ab, wenn ein Template sie hineinschiebt. Alle Werte
+stehen in `config/overlays.yaml`; ein Template überschreibt einzelne davon.
+Abschalten geht nur mit `aktiv: false` **und** `grund:` — ohne Begründung ist
+es ein Fehler.
+
+```bash
+# Was tatsächlich im Bild landet, steht im geschriebenen EditPlan:
+#   resolved.untertitel  Liste der Cues mit Zeitfenster
+#   resolved.follow      Text und Zeitfenster der Aufforderung
+```
 
 ## Bewertung — welche Clips gehen viral
 
@@ -143,7 +186,7 @@ solche markiert. `clip kalibriere` ersetzt sie durch die eigenen Perzentile.
 # Quelle holen — der Player-Client ist nicht optional, siehe CLAUDE.md
 yt-dlp -f "bv[vcodec^=avc1][height<=1080]+ba/b[height<=1080]" \
   --extractor-args "youtube:player_client=web_embedded" \
-  --write-subs --sub-langs de-orig --sub-format json3 \
+  --write-auto-subs --sub-langs de-orig --sub-format json3 \
   --merge-output-format mp4 -o "%(id)s.%(ext)s" "<url>"
 
 # Stages 03-05: Transkript, Signale, Kandidaten
@@ -153,12 +196,86 @@ clip analyse --video VIDEO.mp4 --transkript VIDEO.de-orig.json3 \
 # Stage 06 liegt dazwischen: die Selektion nach data/selections/VIDEO.json.
 # Sie liefert nur strukturiertes JSON — Moment, Länge, Headline, Modus.
 
-# Stages 08-13: Snapping, Layout, Render, QC
+# Stage 07: bewerten und sortieren, BEVOR gerendert wird — läuft in Sekunden
+clip rangliste --plan data/selections/VIDEO.json \
+  --transkript VIDEO.de-orig.json3 --video-id VIDEO
+
+# Stages 08-13: Snapping, Layout, Overlays, Render, QC
 clip rendere --plan data/selections/VIDEO.json --video VIDEO.mp4 \
   --transkript VIDEO.de-orig.json3 --video-id VIDEO \
   --profil COACHLIM_TIKTOK_REACT --ausgabe ~/videoclipper/clips
 ```
 
+`clip rendere` meldet pro Clip, was an Overlays entstanden ist:
+
+```
+  vT1ysIDSpHw_001   545.04- 578.99   34.0s  REACT_YT_SPLIT Tier B  Keiner will eine Milf
+      Overlays: 23 Untertitel, Follow 11.9-14.5s
+      QC: 34.00s 1080x1920 Tier B
+```
+
+Steht dort `0 Untertitel`, enthält das Clipfenster kein transkribiertes Wort —
+das ist zulässig, aber ein Grund, sich den Clip anzusehen.
+
 Die Analyse legt neben den Kandidaten auch `modus_laeufe` ab — die
 zusammenhängenden Strecken eines Layouts. Clipgrenzen gehören in einen Lauf
 hinein, nie über einen Wechsel.
+
+## Bildwechsel im Clip
+
+Der Modus sagt, welches Layout vorliegt — nicht, ob das Bild *innerhalb*
+desselben Layouts springt. Bei OME.TV-Material bleibt der Splitscreen zu
+100 % stehen, während zwanzigmal ein neuer Mensch davorsitzt.
+
+`clip rendere` sucht deshalb in **einem** Durchlauf über die Quelle die harten
+Bildwechsel und meldet je Clip, was dazwischenliegt:
+
+```
+  utB7GTrmLYY_005   575.24- 604.31   29.1s  OME_SPLIT  Tier B  Warum seid ihr in Canada?
+      ! utB7GTrmLYY_005: 1 Bildwechsel im Clip bei 598.75s — der Clip springt dort.
+```
+
+Es bricht **nicht** ab: Bei einer Handkamera ist ein Wechsel im Clip normal,
+und ob er stört, entscheidet der Blick. Gemessen wird gegen den lokalen
+Median, nicht gegen einen festen Schwellwert — sonst meldet jeder Rundgang
+mit Handkamera hunderte Schnitte. `--ohne-schnittpruefung` spart den
+Durchlauf. Details und Messwerte in [CLAUDE.md](CLAUDE.md).
+
+## Rangliste und Hook
+
+`clip rangliste` bewertet alle Clips eines Selektionsplans, bevor auch nur
+einer gerendert ist. Es braucht kein Video, nur den Plan und das Transkript,
+und läuft deshalb in Sekunden.
+
+```
+ #   prog ausw   dauer tier  payoff  hook      headline
+ 1   58.4 0.88    41.2s    B     71%  offen     Was hat der denn in der Tasche
+ 2   55.1 0.82    36.0s    B     64%  ok        Mit Essen spielt man nicht
+ …
+```
+
+Sortiert wird nach der Prognose (Stage 15) — **aber ein Clip, dessen Headline
+die Pointe verrät, rutscht ans Ende**, unabhängig von seiner Punktzahl. Die
+Prognose kennt den Clipinhalt nicht, die Hookprüfung schon.
+
+Zwei Zahlen statt einer: `prog` ist die Prognose, `ausw` der Selektionsscore
+der AI. Wo beide auseinanderlaufen, sagt die Ausgabe das ausdrücklich — das
+ist die interessante Zeile, nicht die mit dem höchsten Wert. Die Prognose ist
+unkalibriert (`konfidenz 0.2`); sie ist eine Sortierhilfe für die
+Reviewschlange, keine Vorhersage.
+
+### Was die Hookprüfung misst
+
+`hook.pruefe` vergleicht die Headline gegen den **tatsächlichen Inhalt** des
+Clipfensters — nicht gegen Annahmen. Zwei Befunde, beide im fertigen Clip nicht
+mehr sichtbar:
+
+- **`VERRAET`** — ein Inhaltswort der Headline fällt erst im letzten Drittel
+  des Clips und im Aufbau nicht. Dann ist die Frage schon beantwortet, bevor
+  jemand den Clip startet. Wörter, die ohnehin früh fallen, gelten nicht als
+  Verrat: die ordnen nur ein.
+- **`lose`** — kein Wort der Headline kommt im Clip vor. Die Headline
+  verspricht dann etwas anderes, als zu sehen ist.
+
+`clip rendere` führt dieselbe Prüfung mit und meldet sie pro Clip. Umgeschrieben
+wird nichts — der Code entscheidet WIE, nicht WAS.

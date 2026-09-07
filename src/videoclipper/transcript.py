@@ -80,4 +80,20 @@ def lade_json3(pfad: Path, video_id: str, sprache: str = "de") -> Transkript:
             woerter.append(Wort(text, start, max(ende, start + 0.05)))
 
     woerter.sort(key=lambda w: w.start)
+
+    # GEMESSEN am 2026-09-06: Das *letzte* Wort eines Ereignisses bekommt oben
+    # ``basis + dDurationMs`` — also das Ende des Rolling-Windows, nicht das
+    # Ende des Wortes. Bei vT1ysIDSpHw endet " vor." dadurch auf 547.88, waehrend
+    # das naechste Ereignis schon bei 546.04 beginnt: 2,3 s Ueberhang.
+    #
+    # Innerhalb eines Ereignisses faellt das nicht auf, ueber Ereignisgrenzen
+    # hinweg schon. Es zerschnitt die Untertitel an falschen Stellen ("Stell
+    # dich" / "vor.") und verschob in ``snappe`` jede Endgrenze nach hinten.
+    # Gekuerzt wird nur, nie verlaengert — eine echte Sprechpause bleibt stehen.
+    woerter = [
+        Wort(w.text, w.start,
+             max(min(w.ende, naechstes.start), w.start + 0.05)
+             if naechstes else w.ende)
+        for w, naechstes in zip(woerter, woerter[1:] + [None])
+    ]
     return Transkript(video_id, sprache, tuple(woerter))

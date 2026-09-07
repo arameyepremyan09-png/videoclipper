@@ -12,14 +12,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-from .headline import SCHRIFTEN
-
-
-def _font(conf: dict, groesse: int) -> ImageFont.FreeTypeFont:
-    datei = SCHRIFTEN / f"{conf['schrift']}-Regular.ttf"
-    if not datei.exists():
-        raise FileNotFoundError(f"Schrift fehlt: {datei}")
-    return ImageFont.truetype(str(datei), groesse)
+from .headline import font as _font
 
 
 def _passend(text: str, conf: dict, zeichner: ImageDraw.ImageDraw
