@@ -224,6 +224,31 @@ Templates, nicht fuer solche mit kleinem Bildband.
 Die Lehre ist dieselbe wie beim Modus-Anteil von 1,00: **Zahlen, die
 plausibel aussehen, ersetzen keinen Blick auf einen gerenderten Frame.**
 
+Zweiter Fall am selben Tag, und er zeigt den Unterschied zwischen "passt
+nicht" und "steht im Weg": Bei `OME_SPLIT` lagen die Untertitel auf
+1424..1688 **mitten in den Gesichtern der Creator-Cam**. Ueber vier gerenderte
+Clips vermessen sitzen dort Stuhlkante ab y=1378, Haaransatz ab 1391 und
+Gesichter bis rund 1660 — die Standardlage trifft sie genau.
+
+Frei ist bei diesem Template nur das Wandband oberhalb der Koepfe:
+**1031..1378**, nach oben von der Headline begrenzt, nach unten von den
+Personen. Dort hinein passen beide Overlays, wenn das Band von 264 auf 200 px
+schrumpft (zwei Zeilen brauchen 142) und die Pille mit nach oben rutscht:
+
+| | Lage |
+|---|---|
+| Headline unten | 1031 |
+| Follow-Pille | 1050..1144 |
+| Untertitelband | 1155..1355 |
+| Stuhlkante, ab hier Personen | 1378 |
+
+Die Reihenfolge Headline → Pille → Band ist die Zusage aus
+`tests/test_overlays.py`; die Pille musste deshalb mitwandern, sie haette
+sonst unter dem Band gelegen. **Beide Faelle zusammen sagen dasselbe: Die
+Standardlagen in `overlays.yaml` gelten fuer formatfuellende Templates. Wo
+zwei Quellen uebereinanderliegen, muss die freie Flaeche gemessen werden,
+und zwar am gerenderten Clip, nicht am Template.**
+
 ## Bildschnitte — Stage 04b, gemessen am 2026-09-07
 
 Der Modus sagt, *welches Layout* vorliegt. Er sagt nicht, ob das Bild

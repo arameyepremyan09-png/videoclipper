@@ -46,5 +46,39 @@ headline:
   max_zeilen: 2
   renderer: png_overlay
 
+# Overlay-Lagen — gemessen am 2026-09-07 an acht gerenderten Clips
+#
+# Die Standardwerte aus config/overlays.yaml setzen die Untertitel auf
+# 1424..1688. Das ist bei diesem Template genau die Zone, in der die Gesichter
+# der Creator-Cam stehen: Stuhlkante ab y=1378, Haaransatz ab 1391, Gesichter
+# bis rund 1660. Der Text lag also mitten im Gesicht.
+#
+# Frei ist nur das Wandband oberhalb der Koepfe. Ueber vier Clips vermessen
+# ist 1030..1378 durchgehend Wand, Poster und Klimageraet — kein Gesicht.
+# Nach oben begrenzt die Headline: Ihre Testformel gibt 1031, gemessen reicht
+# die zweizeilige Fassung bis 1032.
+#
+#   1031  Unterkante Headline (zweizeilig gemessen)
+#   1050  Follow-Pille oben      (94 px hoch)
+#   1144  Follow-Pille unten
+#   1155  Untertitelband oben    (200 px statt 264, zwei Zeilen brauchen 142)
+#   1355  Untertitelband unten
+#   1378  Stuhlkante — ab hier beginnt das Bild der Personen
+#
+# Die Reihenfolge Headline -> Pille -> Band ist die Zusage aus
+# tests/test_overlays.py und bleibt erhalten; die Pille rutscht mit nach oben,
+# weil sie sonst unter dem Band laege.
+#
+# Der Twitch-Chat der Creator-Cam liegt rechts im selben Band. Er ist kleiner,
+# halbtransparenter Lauftext, der Untertitel hat 8 px schwarzen Rand — das
+# traegt. Ihn zu umgehen hiesse, den Text aus der Mitte zu ruecken.
+
+untertitel:
+  y: 1255
+  band_hoehe: 200
+
+follow_hinweis:
+  y: 1097
+
 branding: { aktiv: false, text: "TODO", y: 1790 }
 audio:    { normalisieren: true, ziel_lufs: -14.0 }
