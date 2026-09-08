@@ -89,3 +89,42 @@ def test_asr_transkript_hat_keine_marker(tmp_path):
         {"text": "lustig", "ab": 600, "bis": 1200},
     ], tmp_path)
     assert tr.marker() == []
+
+
+# --- Sprecherwechsel-Marker aus YouTube-Captions ---------------------------
+
+def test_sprecherwechsel_wird_aus_dem_wortlaut_entfernt(tmp_path):
+    """GEMESSEN am 2026-09-08: In der englischen `en-orig` von JtWRKErMIGc
+    tragen 470 von 3528 Woertern ein fuehrendes ">>". Es ist eine Formatmarke
+    des Transkripts, kein gesprochenes Wort — im Untertitel stand es sonst
+    mitten im Bild."""
+    import json as _json
+    pfad = tmp_path / "t.json3"
+    pfad.write_text(_json.dumps({"events": [
+        {"tStartMs": 0, "dDurationMs": 400, "segs": [{"utf8": ">> Hello.", "tOffsetMs": 0}]},
+        {"tStartMs": 400, "dDurationMs": 400, "segs": [{"utf8": " What's", "tOffsetMs": 0}]},
+    ]}), encoding="utf-8")
+    tr = lade_json3(pfad, "v", "en")
+    assert [w.text.strip() for w in tr.woerter] == ["Hello.", "What's"]
+
+
+def test_pfeile_mitten_im_wort_bleiben_stehen(tmp_path):
+    """Entfernt wird nur der fuehrende Marker, nie Inhalt."""
+    import json as _json
+    pfad = tmp_path / "t.json3"
+    pfad.write_text(_json.dumps({"events": [
+        {"tStartMs": 0, "dDurationMs": 400, "segs": [{"utf8": "a>>b", "tOffsetMs": 0}]},
+    ]}), encoding="utf-8")
+    tr = lade_json3(pfad, "v", "en")
+    assert tr.woerter[0].text == "a>>b"
+
+
+def test_wort_das_nur_aus_dem_marker_besteht_faellt_raus(tmp_path):
+    import json as _json
+    pfad = tmp_path / "t.json3"
+    pfad.write_text(_json.dumps({"events": [
+        {"tStartMs": 0, "dDurationMs": 400, "segs": [{"utf8": ">>", "tOffsetMs": 0}]},
+        {"tStartMs": 400, "dDurationMs": 400, "segs": [{"utf8": " da", "tOffsetMs": 0}]},
+    ]}), encoding="utf-8")
+    tr = lade_json3(pfad, "v", "en")
+    assert [w.text.strip() for w in tr.woerter] == ["da"]

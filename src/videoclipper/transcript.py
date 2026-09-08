@@ -18,6 +18,14 @@ from pathlib import Path
 # YouTube annotiert Audio-Ereignisse in eckigen Klammern.
 MARKER = re.compile(r"\[([^\]]{1,30})\]")
 
+# Sprecherwechsel in YouTube-Captions. GEMESSEN am 2026-09-08: In der
+# englischen `en-orig` von JtWRKErMIGc tragen 470 von 3528 Woertern ein
+# fuehrendes ">>", in allen deutschen `de-orig` kein einziges. Es ist eine
+# Formatmarke des Transkripts, kein gesprochenes Wort — im Untertitel stand
+# es sonst mitten im Bild (">> ALL RIGHT, SO LOOK, QUAVO"). Entfernt wird nur
+# der Marker, nie das Wort dahinter.
+SPRECHERWECHSEL = re.compile(r"^\s*>>+\s*")
+
 
 @dataclass(frozen=True)
 class Wort:
@@ -65,7 +73,7 @@ def lade_json3(pfad: Path, video_id: str, sprache: str = "de") -> Transkript:
         basis = ereignis["tStartMs"]
         dauer = ereignis.get("dDurationMs", 0)
         for i, seg in enumerate(segs):
-            text = seg.get("utf8", "")
+            text = SPRECHERWECHSEL.sub("", seg.get("utf8", ""))
             if not text.strip():
                 continue
             start = (basis + seg.get("tOffsetMs", 0)) / 1000.0
