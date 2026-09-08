@@ -149,3 +149,19 @@ def test_tabelle_hat_eine_zeile_pro_clip(plaene, tr_lang):
     zeilen = rangliste.tabelle(rangliste.bilde(plaene, tr_lang))
     kopf = [z for z in zeilen if z.strip().startswith(("1 ", "2 ", "3 "))]
     assert len(kopf) == 3
+
+
+def test_ein_fragewort_verraet_nichts():
+    """OFFEN-Woerter halten zurueck, sie benennen nicht.
+
+    Gemessen am 2026-09-08: "WARUM WARTET ER KEINE ZWEI TAGE" wurde als
+    Spoiler gemeldet, weil im letzten Drittel des Clips jemand "Warum hast du
+    nicht einfach die Flasche bestellt?" fragt. Seit Satzzeichen verboten sind,
+    ist ein OFFEN-Wort das einzige Mittel, eine Headline offen zu halten — der
+    Fehlalarm traf also genau die richtigen Headlines.
+    """
+    tr = _tr(*_rede("ich habe zwei tage gewartet und dann kam nichts"),
+             *_rede("warum hast du das eigentlich gemacht", ab=10.0))
+    b = hook.pruefe("WARUM WARTET ER KEINE ZWEI TAGE", tr, 0.0, 14.0)
+    assert b.verraeter == []
+    assert b.verankert and b.offen

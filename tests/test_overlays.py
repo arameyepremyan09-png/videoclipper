@@ -325,3 +325,28 @@ def test_countdown_bekommt_die_aufforderung_aber_keine_untertitel():
     assert qc.overlays_vorhanden(r, t) == [
         "Keine Untertitel — im Clipfenster steht kein Wort im Transkript. "
         "Bitte den Clip ansehen."]
+
+
+# --- Handkorrekturen an den Untertiteln ------------------------------------
+
+def test_korrekturregeln_werden_ueber_den_ganzen_lauf_gezaehlt(tmpl, monkeypatch):
+    """Eine Regel fuer Clip 3 greift in Clip 1 nicht — das ist keine Fehlmeldung.
+
+    Je Clip gemeldet ergab das bei 22 Regeln und 4 Clips rund 60 Zeilen
+    Rauschen, in dem die eine echte Fehlmeldung unterging.
+    """
+    regeln = [{"suche": "hier steht Unsinn", "ersetze": "hier steht Sinn"},
+              {"suche": "und hier auch", "ersetze": "und hier nicht"},
+              {"suche": "kommt nirgends vor", "ersetze": "egal"}]
+    monkeypatch.setattr(untertitel, "regeln", lambda _vid: regeln)
+
+    clip1, t1 = untertitel.korrigiere([untertitel.Cue("hier steht Unsinn", 0, 1)], "v")
+    clip2, t2 = untertitel.korrigiere([untertitel.Cue("und hier auch", 0, 1)], "v")
+
+    assert clip1[0].text == "hier steht Sinn"
+    assert clip2[0].text == "und hier nicht"
+    # Je Clip einzeln betrachtet haette jeder die Regel des anderen vermisst.
+    assert untertitel.ungenutzte("v", t1) and untertitel.ungenutzte("v", t2)
+    # Ueber den Lauf bleibt genau die eine uebrig, die wirklich nie greift.
+    offen = untertitel.ungenutzte("v", t1 | t2)
+    assert len(offen) == 1 and "kommt nirgends vor" in offen[0]

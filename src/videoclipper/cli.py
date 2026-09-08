@@ -156,6 +156,9 @@ def cmd_rendere(args: argparse.Namespace) -> None:
     # Ein Durchlauf ueber die Quelle fuer alle Clips, nicht einer je Clip.
     # Ein Bildwechsel mitten im Clip ist im QC der Datei nicht mehr messbar.
     bildwechsel = [] if args.ohne_schnittpruefung else schnitte.finde(video)
+    # Korrekturregeln gelten je Video, gerendert werden mehrere Clips daraus.
+    # Ausgewertet wird deshalb ueber den ganzen Lauf, nicht je Clip.
+    kor_getroffen: set[int] = set()
 
     for roh in plaene:
         modus = roh.pop("modus")
@@ -180,7 +183,8 @@ def cmd_rendere(args: argparse.Namespace) -> None:
         # SCHNITTREGELN.md Regel 4: Untertitel muessen korrekt sein. YouTubes
         # ASR verschreibt sich; die Handkorrekturen liegen je Video in
         # data/korrekturen/ und greifen erst hier, nach dem Schnitt der Cues.
-        cues, kor_meldungen = untertitel.korrigiere(cues, args.video_id)
+        cues, treffer = untertitel.korrigiere(cues, args.video_id)
+        kor_getroffen |= treffer
         fw_conf = tmpl["follow_hinweis"]
         hinweis, fw_meldungen = (follow.platziere(dauer, fw_conf)
                                  if fw_conf.get("aktiv", True) else (None, []))
@@ -209,7 +213,7 @@ def cmd_rendere(args: argparse.Namespace) -> None:
         # Formregeln aus SCHNITTREGELN.md Regel 3 — kurz, keine Satzzeichen,
         # Emoji-Paar am Ende. Mechanisch pruefbar, also geprueft.
         st = hook.stil(plan.headline)
-        for m in (fw_meldungen + kor_meldungen
+        for m in (fw_meldungen
                   + overlays_vorhanden(plan.resolved, tmpl)
                   + hb.hinweise + st.verstoesse
                   + schnitte.melde(plan.clip_id, start, ende, bildwechsel)):
@@ -226,6 +230,8 @@ def cmd_rendere(args: argparse.Namespace) -> None:
         lauf.editplan(plan.clip_id).write_text(
             plan.model_dump_json(indent=2), encoding="utf-8")
 
+    for m in untertitel.ungenutzte(args.video_id, kor_getroffen):
+        print(f"  ! {m}")
     print(f"\n{len(plaene)} Clips in {lauf.mp4}")
 
 

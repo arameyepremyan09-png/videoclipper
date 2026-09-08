@@ -261,24 +261,42 @@ def _ersetze(text: str, regel: dict) -> str:
                   flags=re.IGNORECASE)
 
 
-def korrigiere(cues: list[Cue], video_id: str) -> tuple[list[Cue], list[str]]:
-    """Regeln auf die Cues anwenden und melden, was nicht gegriffen hat."""
+def korrigiere(cues: list[Cue], video_id: str) -> tuple[list[Cue], set[int]]:
+    """Regeln auf die Cues anwenden. Gibt die Nummern zurueck, die gegriffen haben.
+
+    NICHT die Meldungen: Die Regeln gelten fuer ein VIDEO, ein Renderlauf
+    schneidet daraus mehrere Clips. Eine Regel fuer Clip 3 greift in Clip 1
+    naturgemaess nicht — je Clip gemeldet ergab das bei 22 Regeln und 4 Clips
+    rund 60 Zeilen Rauschen, in dem die eine echte Fehlmeldung unterging.
+    Wer die Regeln auswertet, muss deshalb ueber den ganzen Lauf zaehlen; das
+    tut ``ungenutzte``.
+    """
     rs = regeln(video_id)
     if not rs:
-        return cues, []
+        return cues, set()
 
-    getroffen = {i: 0 for i, _ in enumerate(rs)}
+    getroffen: set[int] = set()
     raus: list[Cue] = []
     for c in cues:
         text = c.text
         for i, r in enumerate(rs):
             neu = _ersetze(text, r)
             if neu != text:
-                getroffen[i] += 1
+                getroffen.add(i)
                 text = neu
         raus.append(Cue(text, c.ab, c.bis) if text != c.text else c)
+    return raus, getroffen
 
-    meldungen = [f"Korrekturregel ohne Treffer: {rs[i]['suche']!r} — steht sie "
-                 f"ueber einer Cuegrenze?"
-                 for i, n in getroffen.items() if n == 0]
-    return raus, meldungen
+
+def ungenutzte(video_id: str, getroffen: set[int]) -> list[str]:
+    """Regeln, die im ganzen Lauf nirgends gegriffen haben.
+
+    Das ist der Fall, der eine Meldung verdient: Die Regel ist falsch
+    geschrieben, oder die Stelle liegt ueber einer Cuegrenze und wird deshalb
+    nie gefunden. Still verfallen darf sie nicht — dann steht der falsche Text
+    im Clip und niemand merkt es.
+    """
+    rs = regeln(video_id)
+    return [f"Korrekturregel ohne Treffer: {r['suche']!r} — falsch geschrieben, "
+            f"oder steht sie ueber einer Cuegrenze?"
+            for i, r in enumerate(rs) if i not in getroffen]

@@ -394,6 +394,61 @@ und wuerde mit der Playerbox gerendert. Ein Trennmerkmal wurde gesucht und
 nicht gefunden — die Kantenenergie derselben Flaeche liegt ueber alle 659
 Punkte zwischen 0 und 4 und trennt gar nichts.
 
+### Nachtrag 2026-09-08: vier Clips aus ErYc_3POazo, drei Befunde
+
+Der erste Lauf mit den Schnittregeln als Arbeitsanweisung. Von den urspruenglich
+sechs Kandidaten sind vier geblieben; die beiden anderen scheiterten an Regel 2,
+und daran zeigt sich, was die Modusgrenzen wirklich kosten:
+
+- **Der Bungee-Anruf** (643-666 s) hat die Pointe genau auf dem Layoutwechsel.
+  Gemessen im 0.4-s-Raster springt das Bild bei **664.8 s** auf Fullcam, waehrend
+  "das ist fett" bis 665.96 s laeuft. Ein REACT-Clip muesste vor der Pointe
+  enden, ein FULLCAM-Clip haette keinen Aufbau — Regel 1a. Nicht schneidbar.
+- **Der China-Preis** (796-817 s) liegt ueber drei Laeufen: FULLCAM 790-798,
+  REACT 798-806, FULLCAM 806-858. Das Ratespiel um den Preis faellt genau in
+  den mittleren. Ebenfalls nicht schneidbar.
+
+Beides ist kein Fehler der Pipeline, sondern der Preis dafuer, dass ein Clip
+mit **einem** Template gerendert wird. Er ist hoeher als gedacht: Zwei der
+besten Stellen des Videos sind unbrauchbar.
+
+**Die 2-s-Abtastung von `clip analyse` reicht fuer die Raender nicht.** Sie
+sagt "REACT 590-666"; der Wechsel liegt tatsaechlich bei 664.8. Wer eine
+Clipgrenze in die Naehe eines Laufendes legt, muss dort nachmessen — bei
+`ErYc_3POazo_004` lagen zwischen Laufbeginn und Clipbeginn 0.24 s, und im
+laufenden Fullcam steckt bei 215.5-218.0 s ein **2.5 s langer REACT-Einschub**,
+den das 2-s-Raster als einen einzigen Punkt sieht.
+
+### Zwei Fehler in Werkzeugen, die ich selbst gebaut habe
+
+1. **`hook.pruefe` meldete die richtigen Headlines als Spoiler.** Ein Wort aus
+   `OFFEN` zaehlte als Inhaltswort und wurde damit zum Verraeter, sobald
+   dasselbe Fragewort spaet im Clip faellt: "WARUM WARTET ER KEINE ZWEI TAGE"
+   galt als Spoiler, weil bei 13 von 20 s jemand "Warum hast du nicht einfach
+   die Flasche bestellt?" fragt. Ein OFFEN-Wort kann per Definition nichts
+   verraten — und seit Regel 3 Satzzeichen verbietet, ist es das *einzige*
+   Mittel, eine Headline offen zu halten. Der Fehlalarm traf also genau die
+   Headlines, die die Regel richtig umsetzen.
+
+2. **Die Korrekturmeldung war je Clip statt je Lauf.** Die Regeln gelten fuer
+   ein Video, ein Lauf schneidet daraus mehrere Clips — eine Regel fuer Clip 3
+   greift in Clip 1 naturgemaess nicht. Bei 23 Regeln und 4 Clips waren das
+   rund 60 Zeilen "ohne Treffer", in denen eine echte Fehlmeldung untergegangen
+   waere. `korrigiere` gibt jetzt die Nummern zurueck, die gegriffen haben;
+   `ungenutzte` meldet am Ende des Laufes, was nirgends gegriffen hat.
+
+**Beide Fehler haben dieselbe Form:** ein Pruefwerkzeug, das so laut ist, dass
+man es abschaltet, ist schlechter als keins. Das ist die Kehrseite der Regel
+"melden statt still verfallen lassen".
+
+### Und `FULLCAM_169` zum ersten Mal gerendert
+
+Zwischen Headline und Bildband liegen genau **150 px** frei — das Kantenmass
+des Follow-Knopfes. Bei y=620 lag er 38 px im Bild und sass auf der LED-Leiste.
+`y: 582` und `max_zeilen: 2` gehoeren deshalb zusammen: Bei drei erlaubten
+Headlinezeilen reicht die Headline bis 520 und der Knopf passt nicht mehr
+darueber. Seit Regel 3 sind Headlines ohnehin kurz.
+
 ## Bildschnitte — Stage 04b, gemessen am 2026-09-07
 
 Der Modus sagt, *welches Layout* vorliegt. Er sagt nicht, ob das Bild

@@ -71,7 +71,16 @@ def pruefe(headline: str, tr: Transkript, start: float, ende: float,
     wird — alles danach gilt als Verratszone.
     """
     b = Hookbefund(headline, len(headline))
-    eigene = _inhaltswoerter(headline)
+    # OFFEN-Woerter koennen per Definition nichts verraten: Sie halten etwas
+    # zurueck, statt es zu benennen. Sie zaehlten trotzdem als Inhaltswoerter
+    # und wurden damit zu Verraetern, sobald dasselbe Fragewort spaet im Clip
+    # faellt — gemessen am 2026-09-08 an "WARUM WARTET ER KEINE ZWEI TAGE":
+    # Im Clip fragt jemand bei 13 von 20 s "Warum hast du nicht einfach die
+    # Flasche bestellt?", und die Headline galt deshalb als Spoiler. Seit
+    # SCHNITTREGELN.md Regel 3 Satzzeichen verbietet, ist ein OFFEN-Wort das
+    # einzige Mittel, eine Headline offen zu halten — der Fehlalarm traf also
+    # ausgerechnet die Headlines, die die Regel richtig umsetzen.
+    eigene = _inhaltswoerter(headline) - OFFEN
 
     grenze = start + (ende - start) * payoff_ab
     vorn = _inhaltswoerter(tr.text_zwischen(start, grenze))

@@ -43,7 +43,7 @@ headline:
   rand_staerke: 9
   y: 400                    # im Blurfeld ueber dem Bildband, das bei y=657 beginnt
   max_breite: 1000
-  max_zeilen: 3
+  max_zeilen: 2
   renderer: png_overlay
 
 # --- Pflicht-Overlays ------------------------------------------------------
@@ -61,10 +61,13 @@ headline:
 #   UI-Zone ab     1728
 
 follow_hinweis:
-  # 620 statt 582: Der runde Knopf ist mit 150 px Kantenmass deutlich groesser
-  # als die alte Pille (94 px) und stiess bei 582 an die Headline. Er bleibt in
-  # derselben freien Flaeche zwischen Headline und Bildband.
-  y: 620
+  # 582 und max_zeilen 2 gehoeren zusammen, gemessen am ersten gerenderten
+  # FULLCAM_169-Clip: Zwischen Headline und Bildband (beginnt 657) liegen
+  # genau 150 px frei — exakt das Kantenmass des Knopfes. Bei y=620 lag er
+  # 38 px im Bild und sass auf der LED-Leiste. Bei drei erlaubten
+  # Headlinezeilen reicht die Headline bis 520 und der Knopf passt nicht mehr
+  # darueber; seit SCHNITTREGELN Regel 3 sind Headlines ohnehin kurz.
+  y: 582
 
 untertitel:
   y: 1420

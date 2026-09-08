@@ -1,17 +1,110 @@
 [
   {
     "clip_id": "ErYc_3POazo_001",
-    "quelle": {"video_id": "ErYc_3POazo", "kanal": "Coachlim Reactions", "orig_start": 594.9},
+    "quelle": {
+      "video_id": "ErYc_3POazo",
+      "kanal": "Coachlim Reactions",
+      "orig_start": 594.9
+    },
     "tier": "B",
     "profil": "COACHLIM_ABU_TIKTOK",
     "template": "REACT_STACK",
     "template_grund": "Reaction auf ein TikTok — SCHNITTREGELN Regel 2, Fall 4: Facecam oben, TikTok-Video mittig eingepasst. Der Moduslauf REACT 590-666s traegt das Fenster vollstaendig.",
     "modus": "REACT",
     "modus_anteil": 1.0,
-    "timing": {"start": 594.9, "ende": 641.8},
+    "timing": {
+      "start": 594.9,
+      "ende": 641.8
+    },
     "headline": "MIT 145 KILO AUFS PFERD 🥀💀",
     "sprache": "de",
-    "score": {"overall": 0.87, "reaktion": 0.84, "klarheit": 0.92, "payoff": 0.9},
+    "score": {
+      "overall": 0.87,
+      "reaktion": 0.84,
+      "klarheit": 0.92,
+      "payoff": 0.9
+    },
     "grund": "Regel 1a Kontext: Der Clip beginnt mit dem Satz, der die ganze Nummer aufmacht — 'ein Reiterhof anrufen und fragen, ob ich reiten kann mit 150 kg'. Es braucht nichts davor. Regel 1b Ende: geschlossener Bogen bis 'Ich nehme schnell 70 ab. Ciao. Ciao.' bei 641.4s; der naechste Anruf (Bungee) beginnt erst 643s und bleibt draussen. Ein Gegenstand, eine Pointe. Regel 1c Lacher: [gelaechter] bei 638.6s auf der Pointe, davor die staerkste Zeile des Videos — 'Mein Hund kann mir auf Rücken tragen' bei 611.7s. Kein blosser Lautheitspeak. Regel 2: REACT-Lauf 590-666s, Fenster mit 5s Rand auf beiden Seiten."
+  },
+  {
+    "clip_id": "ErYc_3POazo_002",
+    "quelle": {
+      "video_id": "ErYc_3POazo",
+      "kanal": "Coachlim Reactions",
+      "orig_start": 1116.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_ABU_TIKTOK",
+    "template": "REACT_STACK",
+    "template_grund": "Reaction auf ein TikTok — Regel 2, Fall 4. REACT-Lauf gemessen 1112.8-1172.2s, das Fenster liegt mit 3.0s / 1.3s Rand darin.",
+    "modus": "REACT",
+    "modus_anteil": 1.0,
+    "timing": {
+      "start": 1116.0,
+      "ende": 1171.0
+    },
+    "headline": "WARUM MACHT ER DEN GRILL AN 💀🙏",
+    "sprache": "de",
+    "score": {
+      "overall": 0.89,
+      "reaktion": 0.82,
+      "klarheit": 0.94,
+      "payoff": 0.9
+    },
+    "grund": "Regel 1a Kontext: Der Clip oeffnet mit 'Seht ihr diesen wunderschoenen Wasserspender?' — die Sache steht in der ersten Sekunde im Bild und im Ton. Regel 1b Ende: geschlossen bis 'Wie konnte ich nicht wissen, dass es zum Platzen bringt?' (1170.5s); der Satz danach ist ein Teaser ('jetzt kommt aber das Lustige') und bleibt draussen. Regel 1c Lacher: [gelaechter] bei 1166.6s auf dem gesprungenen Fenster, davor eine Eskalation aus vier Schaeden. Kein Lautheitspeak, sondern ein Aufbau. Regel 2: REACT durchgehend, gemessen ueber 0.5s-Abtastung an den Raendern."
+  },
+  {
+    "clip_id": "ErYc_3POazo_003",
+    "quelle": {
+      "video_id": "ErYc_3POazo",
+      "kanal": "Coachlim Reactions",
+      "orig_start": 1222.4
+    },
+    "tier": "B",
+    "profil": "COACHLIM_ABU_TIKTOK",
+    "template": "FULLCAM_169",
+    "template_grund": "Gast in Fullcam — Regel 2, Fall 2: 16:9 vollstaendig zeigen. Beide sitzen nebeneinander, ein 9:16-Schnitt wuerde einen von ihnen abschneiden. FULLCAM-Lauf gemessen ab 1221.85s.",
+    "modus": "FULLCAM",
+    "modus_anteil": 1.0,
+    "timing": {
+      "start": 1222.4,
+      "ende": 1242.2
+    },
+    "headline": "WARUM NICHT ZWEI TAGE WARTEN 🙏🫩",
+    "sprache": "de",
+    "score": {
+      "overall": 0.85,
+      "reaktion": 0.88,
+      "klarheit": 0.86,
+      "payoff": 0.92
+    },
+    "grund": "Regel 1a Kontext: Der Clip traegt seine Praemisse selbst — er hat einen Lochkreis-Aufsatz fuer den Bohrer bestellt, statt zwei Tage auf die Flasche zu warten. Man muss die Wasserspender-Geschichte nicht kennen, die Pointe erklaert sie. Regel 1b Ende: Die Frage 'Warum hast du nicht einfach die Flasche bestellt?' und die Antwort 'Weil mein Kopf gesagt hat, ich mache das alles alleine' schliessen den Bogen; [gelaechter] 1241.9s. Der Satz danach bleibt draussen. Regel 2: FULLCAM ab 1221.85s gemessen, Start bei 1222.28s."
+  },
+  {
+    "clip_id": "ErYc_3POazo_004",
+    "quelle": {
+      "video_id": "ErYc_3POazo",
+      "kanal": "Coachlim Reactions",
+      "orig_start": 218.4
+    },
+    "tier": "B",
+    "profil": "COACHLIM_ABU_TIKTOK",
+    "template": "FULLCAM_169",
+    "template_grund": "Gast in Fullcam — Regel 2, Fall 2. Zwei Personen ueber die volle Breite, nichts beschneiden.",
+    "modus": "FULLCAM",
+    "modus_anteil": 1.0,
+    "timing": {
+      "start": 218.4,
+      "ende": 269.6
+    },
+    "headline": "WIE DIE KI DIE BEIDEN ZEIGT 🥀🫩",
+    "sprache": "de",
+    "score": {
+      "overall": 0.84,
+      "reaktion": 0.86,
+      "klarheit": 0.82,
+      "payoff": 0.88
+    },
+    "grund": "Regel 1a Kontext: Die Frage 'Was sagst du eigentlich zu diesen ganzen KI-Clips?' steht in der ersten Sekunde. Regel 1b Ende: geschlossener Bogen ueber 'Ihr seht da nicht fehl am Platz aus' -> 'ich sehe mich in beiden nicht' -> 'du passt da nicht rein, Ali auch nicht vom Gewicht her'; [gelaechter] 267.9s, danach nur noch 'oder was meinst du?'. Regel 1c: zwei Lacher im Fenster (249.6s, 267.9s), der zweite auf der Pointe. Regel 2: Vorsicht noetig — bei 215.5-218.0s liegt ein 2.5s langer REACT-Einschub im laufenden FULLCAM. Start deshalb erst bei 218.24s statt am Satzanfang 217.92s."
   }
 ]
