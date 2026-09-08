@@ -22,6 +22,8 @@ Wortmarkierung (ein PNG je Wort statt je Cue, rund viermal so viele Eingaenge).
 
 from __future__ import annotations
 
+import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -29,6 +31,9 @@ from PIL import Image, ImageDraw
 
 from .headline import font as _font, umbruch
 from .transcript import Transkript, Wort
+
+ROOT = Path(__file__).resolve().parents[2]
+KORREKTUREN = ROOT / "data" / "korrekturen"
 
 
 @dataclass(frozen=True)
@@ -113,6 +118,8 @@ def schneide(tr: Transkript, start: float, ende: float, conf: dict) -> list[Cue]
                max(g[0].start, start) - start,
                min(g[-1].ende, ende) - start)
            for g in gruppen]
+    # Wurde das erste Wort einer Gruppe vom Fensteranfang abgeschnitten?
+    angeschnitten = [g[0].start < start for g in gruppen]
 
     cues: list[Cue] = []
     fenster = ende - start
@@ -135,6 +142,15 @@ def schneide(tr: Transkript, start: float, ende: float, conf: dict) -> list[Cue]
         # verschiebt die Grenze, die Stage 06 bewusst gesetzt hat, und laeuft
         # bei diesem Material in den naechsten Gespraechspartner.
         if letzter and bis >= fenster - 1e-6 and bis - c.ab < min_dauer:
+            continue
+        # SPIEGELBILDLICH DAZU, gemessen am 2026-09-08 an ErYc_3POazo: Derselbe
+        # Fetzen entsteht am ANFANG. ``snappe`` setzt 0.20 s Vorlauf, und bei
+        # durchgehender Rede liegt darin das Ende des vorigen Satzes — der Clip
+        # begann mit dem Cue "kann." fuer 0.2 s. Dehnen kann ``min_dauer`` ihn
+        # nicht: Die Grenze ist der naechste Cue, nicht das Fensterende. Der
+        # Zuschauer liest in der ersten Sekunde also ein Wort ohne Satz, und
+        # genau die erste Sekunde entscheidet (siehe Kopf dieses Moduls).
+        if i == 0 and angeschnitten[0] and bis - c.ab < min_dauer:
             continue
         cues.append(Cue(c.text, round(c.ab, 3), round(bis, 3)))
     return cues
@@ -209,3 +225,60 @@ def y_ausdruck(cue: Cue, oben: int, conf: dict) -> str:
         return str(oben)
     p = f"max(min((t-{cue.ab:.3f})/{d:.3f},1),0)"
     return f"{oben}+{hub}*pow(1-{p},2)"
+
+
+# ---------------------------------------------------------------------------
+# Handkorrekturen — SCHNITTREGELN.md, Regel 4 ("korrekt sind")
+# ---------------------------------------------------------------------------
+#
+# YouTubes ASR verschreibt sich bei Namen, Fremdwoertern und vor allem bei
+# Stotterern: Aus "Mein Hund kann mir auf'n Ruecken tragen" wurde bei
+# ErYc_3POazo "Mein Hund kann mein Hand mein Hund kann". Als Untertitel ist
+# das schlicht falsch, und es steht im fertigen Clip in Versalien quer ueber
+# dem Bild.
+#
+# KORRIGIERT WIRD DER CUE, NICHT DAS TRANSKRIPT. Das Transkript traegt die
+# Zeitachse — Snapping, Kandidaten und Hookpruefung haengen daran. Ein Eingriff
+# dort verschoebe Clipgrenzen, nur um einen Buchstaben zu aendern. Der Cue ist
+# das Ende der Kette und beeinflusst nichts mehr.
+#
+# PREIS DIESER ENTSCHEIDUNG: Eine Regel greift nur, wenn die gesuchte Stelle
+# vollstaendig in EINEM Cue liegt. Ueber eine Cuegrenze hinweg greift sie
+# nicht — deshalb meldet ``pruefe_korrekturen`` jede Regel, die nicht gegriffen
+# hat, statt sie still verfallen zu lassen.
+
+def regeln(video_id: str) -> list[dict]:
+    """Korrekturregeln zu einem Video, falls hinterlegt."""
+    datei = KORREKTUREN / f"{video_id}.json"
+    if not datei.exists():
+        return []
+    daten = json.loads(datei.read_text(encoding="utf-8"))
+    return list(daten.get("regeln") or [])
+
+
+def _ersetze(text: str, regel: dict) -> str:
+    return re.sub(re.escape(regel["suche"]), regel["ersetze"], text,
+                  flags=re.IGNORECASE)
+
+
+def korrigiere(cues: list[Cue], video_id: str) -> tuple[list[Cue], list[str]]:
+    """Regeln auf die Cues anwenden und melden, was nicht gegriffen hat."""
+    rs = regeln(video_id)
+    if not rs:
+        return cues, []
+
+    getroffen = {i: 0 for i, _ in enumerate(rs)}
+    raus: list[Cue] = []
+    for c in cues:
+        text = c.text
+        for i, r in enumerate(rs):
+            neu = _ersetze(text, r)
+            if neu != text:
+                getroffen[i] += 1
+                text = neu
+        raus.append(Cue(text, c.ab, c.bis) if text != c.text else c)
+
+    meldungen = [f"Korrekturregel ohne Treffer: {rs[i]['suche']!r} — steht sie "
+                 f"ueber einer Cuegrenze?"
+                 for i, n in getroffen.items() if n == 0]
+    return raus, meldungen

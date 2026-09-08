@@ -1,0 +1,72 @@
+# Template: FULLCAM_169
+#
+# Das ganze 16:9-Bild eingepasst, Reste als Blur der eigenen Quelle.
+#
+# WARUM ES DIESES TEMPLATE GIBT, obwohl VLOG_FULL und COUCH_FULL geometrisch
+# dasselbe tun: Es ist die Zielkomposition zu SCHNITTREGELN.md Regel 2, Fall 2
+# — "Wenn Gaeste da sind und in Fullcam gesprochen wird: im 16:9 Format alles
+# zeigen (gilt auch wenn Coachlim alleine in Fullcam redet)". Die beiden
+# anderen haengen an den Modusnamen SOLO und COUCH und sind mit ihren
+# Materialien begruendet (ein Auto; drei Personen auf einer Couch); dieses
+# haengt am Modus FULLCAM und gilt als Regel, nicht als Einzelfall.
+#
+# ABGRENZUNG ZU SOLO_FULL: Das beschneidet mittig um fokus_x auf 9:16, weil
+# dort genau eine Person vor einer Wand sitzt und der Kopf gross bleiben soll.
+# Sobald ein Gast danebensitzt, ist das falsch: Ein 9:16-Fenster ist bei
+# 1080 px Hoehe 607 px breit, also 32 % der Quellbreite, und schneidet einen
+# der beiden ab. Bei einem Gespraechsformat ist die Reaktion des anderen die
+# Pointe — genau die Begruendung, die schon COUCH_FULL traegt.
+#
+# Der Preis ist Bildgroesse: Die Quelle landet als 1080x606-Band auf y=657.
+# Das ist die dokumentierte Hausregel (`passung: einpassen`, Inhalt
+# vollstaendig), kein Kompromiss im Einzelfall.
+
+name: FULLCAM_169
+beschreibung: Vollbild 16:9 vollstaendig eingepasst, Blur ringsum, Headline ueber dem Bild
+default_fuer: [COACHLIM_ABU_TIKTOK]
+gilt_fuer_modus: FULLCAM
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: voll
+    ziel: [0, 0, 1080, 1920]
+    passung: einpassen
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: editplan.headline
+  schrift: Anton
+  schriftgroesse: 76
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 9
+  y: 380                    # im Blurfeld ueber dem Bildband, das bei y=657 beginnt
+  max_breite: 1000
+  max_zeilen: 3
+  renderer: png_overlay
+
+# --- Pflicht-Overlays ------------------------------------------------------
+# Dieselbe Rechnung wie bei VLOG_FULL, und aus demselben Grund (Regel 4): Das
+# eingepasste 16:9-Bild ist ein 1080x606-Band auf y=657..1263. Die Standardlage
+# 1424 laege 161 px darunter im leeren Blurfeld.
+#
+#   Headline        265..495
+#   Follow-Pille    535..629   in der freien Flaeche ueber dem Bild
+#   Bildband        657..1263
+#   Untertitel     1288..1552  25 px unter dem Bild
+#   UI-Zone ab     1728
+
+follow_hinweis:
+  y: 582
+
+untertitel:
+  y: 1420
+
+branding: { aktiv: false, text: "TODO", y: 1790 }
+audio:    { normalisieren: true, ziel_lufs: -14.0 }

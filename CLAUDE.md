@@ -10,6 +10,27 @@ Es enthält die fünfzehn Stages, das EditPlan-Schema, die Materialprofile, Temp
 das Kostenmodell und die Tabelle aller getroffenen Entscheidungen. Architekturfragen
 werden dort nachgelesen und dort aktualisiert, nicht neu verhandelt.
 
+## SCHNITTREGELN.md — vor jedem Clip abarbeiten
+
+**[SCHNITTREGELN.md](SCHNITTREGELN.md) ist die Auftragslage des Nutzers und steht
+ueber jeder Heuristik im Code.** Sie wird bei *jeder* Clip-Erstellung gelesen und
+Punkt fuer Punkt abgearbeitet, nicht nur bei neuem Material. Kurzfassung:
+
+1. **Dranbleibe-Grund.** Jeder Clip traegt seinen eigenen Kontext (1a), endet auf
+   der Pointe statt mittendrin und enthaelt keinen zweiten Gegenstand (1b), und
+   hat einen echten Lacher statt nur eines Lautheitspeaks (1c).
+2. **Layout je Format.** 1:1-Kaese → `CHAT_STACK`, Fullcam mit Gaesten →
+   `FULLCAM_169` (alles zeigen, nicht beschneiden), Gaming → `GAME_STACK`,
+   TikTok-Reaction → `REACT_STACK`, Top-5 → `TOP5_COUNTDOWN`.
+3. **Hooks** kurz, ohne jedes Satzzeichen, mit Emoji-Paar aus 🥀🫩💀🙏.
+4. **Untertitel** verdecken nie ein Gesicht — je Template nachgemessen, am
+   gerenderten Frame kontrolliert.
+5. **Qualitaet halten, dynamisch schneiden.**
+
+Der Anlass ist gemessen und steht in der Datei: Von neun ausgelieferten Clips
+wurden drei abgelehnt, und **die abgelehnten hatten die hoeheren AI-Scores**
+(0.88 an der Spitze). Der Selektionsscore misst nicht, was der Nutzer bewertet.
+
 ## Material
 
 - **Zielmaterial:** GTA-6-Content. Existiert noch nicht (Stand September 2026).
@@ -282,6 +303,96 @@ sonst unter dem Band gelegen. **Beide Faelle zusammen sagen dasselbe: Die
 Standardlagen in `overlays.yaml` gelten fuer formatfuellende Templates. Wo
 zwei Quellen uebereinanderliegen, muss die freie Flaeche gemessen werden,
 und zwar am gerenderten Clip, nicht am Template.**
+
+### Nachtrag 2026-09-08: der untere Feed laeuft von Kante zu Kante
+
+Vermessen an ErYc_3POazo ("COACH UND ABUGOKU REAGIEREN AUF EURE TIKTOKS",
+1317.7 s, 1920x1080@60). Profil `COACHLIM_ABU_TIKTOK`, Templates `REACT_STACK`
+und `FULLCAM_169`. Zwei Modi, ueber 659 Abtastpunkte sauber getrennt: REACT
+42 %, dazwischen Fullcam auf zwei Personen.
+
+Der Anlass war nicht das Material, sondern eine **Rueckmeldung des Nutzers zu
+neun ausgelieferten Clips** — sechs gut, drei schlecht. Die drei abgelehnten
+hatten die *hoeheren* AI-Scores; `6T-QuUKYy7w_006` stand mit 0.88 an der
+Spitze und war unbrauchbar ("kein Kontext, kein Inhalt, kein wirklicher
+Lacher"). **Der Selektionsscore misst nicht, was der Nutzer bewertet.** Was er
+bewertet, steht seither in [SCHNITTREGELN.md](SCHNITTREGELN.md); die Datei
+wird vor jedem Renderlauf abgearbeitet.
+
+**Zum ersten Mal wurden die Referenzen selbst geladen und vermessen**, statt
+den Hausstil aus den eigenen Clips abzuleiten. Das hat sofort eine Annahme
+widerlegt, die seit dem 2026-09-04 im Repo stand: `REACT_STACK` passte den
+TikTok-Player ein, weil er in der Quelle bereits 9:16 ist und "deshalb nie
+beschnitten" werden duerfe. Ergebnis war ein 739 px breites Video zwischen
+zwei 170 px breiten Blurbalken. In beiden Referenzen des Nutzers
+(`@coachlim.clips25/7677675052585831713`, `@coachlim.clips5/7678435849457028384`)
+laeuft der untere Feed **ohne einen Pixel Blur von Bildkante zu Bildkante**.
+"Mittig und angepasst" heisst mittig *beschnitten*. `REACT_STACK` steht jetzt
+auf `fuellen`; der Preis sind rund 15 % oben und unten, und das trifft bei
+einem TikTok den Rand, nicht das Motiv.
+
+`PHONE_STACK` und `GAME_STACK` stehen bewusst weiter auf `einpassen`: Ein
+Handy ist 9:19.5 und damit schmaler als die Buehne — dort schneidet `fuellen`
+40 % der Bildschirmhoehe weg statt Rand. Was dort richtig ist, wird am
+naechsten Video dieses Typs gemessen.
+
+### Drei Dinge, die erst am gerenderten Frame auffielen
+
+Alle drei standen vorher nicht im Repo, alle drei waren im QC unsichtbar:
+
+1. **Anton hat keine Emoji-Glyphen.** Die neue Hookregel verlangt ein
+   Emoji-Paar am Ende jeder Headline — gerendert wurde ein leeres Kaestchen.
+   Weil Regel 3 genau **vier** Emojis zulaesst, ist die Menge endlich: Sie
+   liegen jetzt als PNG in `assets/emoji/` und wandern wie Anton mit dem Repo.
+   Ein Emoji-Font waere die naheliegende Loesung gewesen und die falsche — er
+   ist plattformabhaengig (Apple Color Emoji gegen seguiemj), und die Zahl der
+   plattformabhaengigen Stellen bleibt bei drei. `.gitignore` hat dafuer eine
+   ausdrueckliche Ausnahme von `*.png`.
+2. **Die Standard-Overlaylagen sassen mitten im Gesicht.** Im gefuellten
+   Player liegt das Gesicht des reagierten Videos auf y=965..1501; die
+   Follow-Pille stand auf der Stirn (1243..1337), das Untertitelband auf dem
+   Mund (1424..1688). `REACT_STACK` setzt beide jetzt an die Raender —
+   Pille auf 713..807 ueber dem Gesicht, Band auf 1556..1724 darunter.
+   **Dabei ein Detail, das nicht offensichtlich ist:** Das Band wurde von 264
+   auf 168 px *verkleinert*, um den Text tiefer zu bekommen. Der Text steht im
+   Band zentriert, also zieht jedes ueberschuessige Pixel Bandhoehe ihn wieder
+   nach oben. Schmaler heisst hier tiefer.
+3. **Der erste Cue war ein Fetzen** — derselbe Fehler wie beim letzten Cue,
+   nur spiegelbildlich. `snappe` setzt 0.20 s Vorlauf, und bei durchgehender
+   Rede liegt darin das Ende des vorigen Satzes: Der Clip begann mit "kann."
+   fuer 0.2 s. Dehnen kann `min_dauer` ihn nicht, weil die Grenze der naechste
+   Cue ist und nicht das Fensterende. Die Regel fuer den letzten Cue steht
+   seit dem 2026-09-07 im Repo; die fuer den ersten fehlte.
+
+### Untertitel duerfen falsch sein, und sie waren es
+
+Regel 4 des Nutzers verlangt ausdruecklich **korrekte** Untertitel. YouTubes
+ASR verschreibt sich bei Stotterern: Aus "Mein Hund kann mir auf'n Ruecken
+tragen" wurde "Mein Hund kann mein Hand mein Hund kann", und das stand in
+Versalien quer im Bild.
+
+Korrigiert wird deshalb der **Cue**, nicht das Transkript — das Transkript
+traegt die Zeitachse, an der Snapping, Kandidaten und Hookpruefung haengen.
+Die Regeln liegen je Video in `data/korrekturen/<video_id>.json` und greifen
+in `untertitel.korrigiere` nach dem Schnitt der Cues. Preis: Eine Regel muss
+vollstaendig in *einen* Cue passen, also unter `max_zeichen`. Deshalb meldet
+`korrigiere` jede Regel, die nicht gegriffen hat, statt sie still verfallen zu
+lassen.
+
+Gegengeprueft wurde mit whisper.cpp auf demselben 47-s-Fenster — nicht als
+Ersatz fuer das Transkript, sondern als **Zweitmeinung** dort, wo eine Zeile
+offensichtlich Unsinn ist. Das hat vier Korrekturen belegt und zwei weitere
+verhindert: Wo beide ASRs verschiedenen Unsinn hoeren, wird nichts erfunden.
+
+### Und ein Grenzfall, den die Signatur nicht kann
+
+Dieselbe Warnung wie bei `COACHLIM_HANDYS`, und sie ist hier erneut gemessen:
+Die Flaechensignatur erkennt "Browser-Capture", nicht "TikTok-Player". Bei
+340 s zeigt der Kanal ein TikTok-**Profilgitter** im selben Browser; die linke
+Flaeche ist dort ebenfalls schwarz (4.9), das Bild laeuft also als REACT durch
+und wuerde mit der Playerbox gerendert. Ein Trennmerkmal wurde gesucht und
+nicht gefunden — die Kantenenergie derselben Flaeche liegt ueber alle 659
+Punkte zwischen 0 und 4 und trennt gar nichts.
 
 ## Bildschnitte — Stage 04b, gemessen am 2026-09-07
 

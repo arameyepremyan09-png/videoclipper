@@ -46,5 +46,25 @@ headline:
   max_zeilen: 3
   renderer: png_overlay
 
+# --- Pflicht-Overlays ------------------------------------------------------
+# NACHGETRAGEN 2026-09-08 (SCHNITTREGELN.md, Regel 4). Dieses Template hat
+# dieselbe Geometrie wie VLOG_FULL — eingepasstes 16:9 als 1080x606-Band auf
+# y=657..1263 — und hatte denselben Fehler, nur unbemerkt: Die Standardlage
+# setzt die Untertitel auf 1424, also 161 px UNTER die Bildunterkante. Der Text
+# schwebt dort abgekoppelt im Blurfeld. Fuer VLOG_FULL steht die Korrektur seit
+# dem 2026-09-07 in CLAUDE.md, hier fehlte sie.
+#
+#   Headline        273..527
+#   Follow-Pille    535..629   in der freien Flaeche ueber dem Bild
+#   Bildband        657..1263
+#   Untertitel     1288..1552  25 px unter dem Bild
+#   UI-Zone ab     1728
+
+follow_hinweis:
+  y: 582
+
+untertitel:
+  y: 1420
+
 branding: { aktiv: false, text: "TODO", y: 1790 }
 audio:    { normalisieren: true, ziel_lufs: -14.0 }

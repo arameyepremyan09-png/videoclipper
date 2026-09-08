@@ -96,9 +96,13 @@ def pruefe(headline: str, tr: Transkript, start: float, ende: float,
     else:
         b.hinweise.append("Headline hat keine Inhaltswoerter")
 
-    b.offen = bool(set(_woerter(headline)) & OFFEN) or headline.rstrip().endswith("?")
+    # Das Fragezeichen zaehlte hier frueher als Beleg dafuer, dass die Headline
+    # etwas offenlaesst. SCHNITTREGELN.md Regel 3 verbietet Satzzeichen — der
+    # Beleg kann deshalb nur noch ein Wort aus OFFEN sein.
+    b.offen = bool(set(_woerter(headline)) & OFFEN)
     if not b.offen:
-        b.hinweise.append("Kein offenes Element — die Headline stellt keine Frage")
+        b.hinweise.append(
+            "Kein offenes Element — kein Wort wie warum/wer/was haelt etwas zurueck")
 
     if b.zeichen > max_zeichen:
         b.hinweise.append(
@@ -137,3 +141,74 @@ def payoff_position(tr: Transkript, start: float, ende: float) -> float | None:
             beste, bester_wert = t + fenster / 2, n
         t += fenster / 2
     return round(min(max((beste - start) / dauer, 0.0), 1.0), 3)
+
+
+# ---------------------------------------------------------------------------
+# Formregeln der Headline — SCHNITTREGELN.md, Regel 3
+# ---------------------------------------------------------------------------
+#
+# Sie sind mechanisch pruefbar und deshalb hier und nicht im Kopf: "kurz, keine
+# Satzzeichen, Emoji-Paar am Ende" ist keine Geschmacksfrage, sondern eine
+# Zeichenkette. Umgeschrieben wird auch hier nichts — der Code entscheidet WIE,
+# nicht WAS.
+
+EMOJIS = "🥀🫩💀🙏"
+# Vom Nutzer genannte Kombinationen. Andere Paare aus denselben vier Zeichen
+# sind nicht verboten, nur unbelegt — sie laufen als Hinweis durch.
+PAARE = {"🙏🫩", "🥀💀", "🥀🫩", "💀🙏"}
+# Alles, was Satzzeichen ist. Der Bindestrich steht ausdruecklich mit drin:
+# er war der haeufigste Fall in den bisherigen Headlines.
+SATZZEICHEN = set(".,;:!?-–—\"'„“”‚‘’()[]{}…/\\|*_")
+
+
+@dataclass
+class Stilbefund:
+    headline: str
+    zeichen: int
+    verstoesse: list[str] = field(default_factory=list)
+
+    @property
+    def taugt(self) -> bool:
+        return not self.verstoesse
+
+
+def stil(headline: str, max_zeichen: int = 42, ziel_zeichen: int = 32) -> Stilbefund:
+    """Haelt die Headline die Formregeln ein?
+
+    ``ziel_zeichen`` ist keine Grenze, sondern die vom Nutzer gewuenschte
+    Kuerze ("kuerzere und lustigere Text Hooks") — darueber gibt es einen
+    Hinweis, keinen Verstoss.
+    """
+    text = headline.strip()
+    b = Stilbefund(text, len(text))
+
+    rumpf = "".join(z for z in text if z not in EMOJIS).strip()
+
+    if treffer := sorted({z for z in rumpf if z in SATZZEICHEN}):
+        b.verstoesse.append(
+            f"Satzzeichen in der Headline: {' '.join(treffer)} — Regel 3 "
+            f"erlaubt nur Text und Emoji")
+
+    gefunden = [z for z in text if z in EMOJIS]
+    if not gefunden:
+        b.verstoesse.append(f"Kein Emoji am Ende — erlaubt sind {EMOJIS}")
+    elif not text.endswith("".join(gefunden[-2:])):
+        b.verstoesse.append("Die Emojis stehen nicht am Ende der Headline")
+    elif len(gefunden) != 2:
+        b.verstoesse.append(
+            f"{len(gefunden)} Emoji statt einem Paar wie {' '.join(sorted(PAARE))}")
+    elif (paar := "".join(gefunden)) not in PAARE:
+        b.verstoesse.append(
+            f"Emoji-Paar {paar} ist nicht belegt — genannt sind "
+            f"{', '.join(sorted(PAARE))}")
+
+    if b.zeichen > max_zeichen:
+        b.verstoesse.append(
+            f"{b.zeichen} Zeichen: laenger als {max_zeichen}, im Feed nicht "
+            f"in einem Blick lesbar")
+    elif b.zeichen > ziel_zeichen:
+        b.verstoesse.append(
+            f"{b.zeichen} Zeichen: unter {max_zeichen}, aber Regel 3 will "
+            f"kuerzer — Ziel sind rund {ziel_zeichen}")
+
+    return b

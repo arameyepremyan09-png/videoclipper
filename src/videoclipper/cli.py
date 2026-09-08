@@ -177,6 +177,10 @@ def cmd_rendere(args: argparse.Namespace) -> None:
         ut_conf = tmpl["untertitel"]
         cues = (untertitel.schneide(tr, start, ende, ut_conf)
                 if ut_conf.get("aktiv", True) else [])
+        # SCHNITTREGELN.md Regel 4: Untertitel muessen korrekt sein. YouTubes
+        # ASR verschreibt sich; die Handkorrekturen liegen je Video in
+        # data/korrekturen/ und greifen erst hier, nach dem Schnitt der Cues.
+        cues, kor_meldungen = untertitel.korrigiere(cues, args.video_id)
         fw_conf = tmpl["follow_hinweis"]
         hinweis, fw_meldungen = (follow.platziere(dauer, fw_conf)
                                  if fw_conf.get("aktiv", True) else (None, []))
@@ -202,8 +206,12 @@ def cmd_rendere(args: argparse.Namespace) -> None:
         # nicht mehr korrigierbar. Verraet sie die Pointe, faellt das sonst
         # erst auf, wenn der Clip schon draussen ist.
         hb = hook.pruefe(plan.headline, tr, start, ende)
-        for m in (fw_meldungen + overlays_vorhanden(plan.resolved, tmpl)
-                  + hb.hinweise
+        # Formregeln aus SCHNITTREGELN.md Regel 3 — kurz, keine Satzzeichen,
+        # Emoji-Paar am Ende. Mechanisch pruefbar, also geprueft.
+        st = hook.stil(plan.headline)
+        for m in (fw_meldungen + kor_meldungen
+                  + overlays_vorhanden(plan.resolved, tmpl)
+                  + hb.hinweise + st.verstoesse
                   + schnitte.melde(plan.clip_id, start, ende, bildwechsel)):
             print(f"      ! {m}")
 

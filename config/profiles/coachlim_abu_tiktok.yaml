@@ -1,0 +1,107 @@
+# Materialprofil: Coachlim Reactions mit Gast — TikTok-Reactions zu zweit
+#
+# Gemessen am 2026-09-08 an ErYc_3POazo ("COACH UND ABUGOKU REAGIEREN AUF EURE
+# TIKTOKS", 1317.7 s, 1920x1080@60). 659 Abtastpunkte im Abstand von 2 s,
+# Boxkanten an 14 Vollbildern aus REACT-Strecken nachgemessen.
+#
+# ABGRENZUNG ZU COACHLIM_TIKTOK_REACT: Dasselbe Format und derselbe Kanal, aber
+# eine andere Szene. Dort liegt der Player auf [563,103,513,913]; hier ist das
+# Browserfenster anders skaliert und der Player sitzt auf [472,104,484,860].
+# Wie bei MARLI_PHONE gegen COACHLIM_HANDYS ist die Boxgeometrie eine
+# Eigenschaft des VIDEOS, nicht des Formats — jedes Video wird neu vermessen.
+#
+# GEMESSENE BOXEN
+#   TikTok-Player  [472, 104, 484, 860]
+#     Links/rechts ueber 13 von 14 Frames auf denselben Pixel: die
+#     Spaltenbelegung springt bei x=473 an und faellt hinter x=955 ab.
+#     Oben/unten ebenso stabil bei y=104 und y=964.
+#     484/860 = 0.5628, also exakt 9:16 (0.5625). Der Player wird deshalb
+#     eingepasst und nie beschnitten.
+#     Die eine Ausnahme (f_460, x 276..1152) ist ein querformatiges TikTok im
+#     selben Player — der Rahmen bleibt, nur der Inhalt hat Balken.
+#
+#   Creator-Cam    [1312, 690, 608, 342]
+#     Die Cam sitzt buendig in der rechten unteren Bildecke; ihre Oberkante
+#     bei y=690 ist ueber alle REACT-Frames die staerkste Zeile nach der
+#     Taskleiste. ZWEI bewusste Beschnitte:
+#       unten  Die Windows-Taskleiste liegt auf y=1032..1080 ueber der Cam.
+#              Die Box endet deshalb bei y=1032, nicht bei 1080 — sonst
+#              stuende die Taskleiste im oberen Panel des fertigen Clips.
+#       links  692x342 waere 2.02:1 und muesste im 16:9-Panel mit Blurbalken
+#              liegen. 608x342 ist exakt 16:9 und fuellt das Panel. Die 84 px
+#              fallen links weg, weil dort Wand und Sofakante liegen: Die
+#              beiden Sprecher stehen gemessen bei x=1360..1880.
+#
+# WAS HIER NICHT GEHT — dieselbe Warnung wie bei COACHLIM_HANDYS, und sie ist
+# an genau diesem Video gemessen: Die Signatur erkennt "Browser-Capture", nicht
+# "TikTok-Player". Bei 340 s zeigt der Kanal ein TikTok-PROFILGITTER im selben
+# Browser; die linke Flaeche ist dort ebenfalls dunkel (gemessen 4.9), das
+# Bild laeuft also als REACT durch und wuerde mit der Playerbox gerendert —
+# ein Ausschnitt mitten aus einer Kachelwand. Ein Trennmerkmal wurde gesucht
+# und nicht gefunden: Die Kantenenergie derselben Flaeche liegt ueber alle 659
+# Punkte zwischen 0 und 4 und trennt gar nichts.
+# KONSEQUENZ: REACT-Fenster gehoeren vor dem Rendern gegen die Gitterstrecken
+# geprueft. Gemessen liegen sie in diesem Video bei rund 336-346 s.
+
+name: COACHLIM_ABU_TIKTOK
+beschreibung: Browser-Capture mit TikTok-Player und Doppel-Facecam, wechselnd mit Fullcam auf zwei Personen
+gueltig_ab: 2026-09-08
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [Coachlim Reactions]
+  sprache: de
+
+# WIE ERKANNT WIRD: ueber die schwarze Flaeche LINKS vom Player. Im Browser
+# liegt dort der schwarze Seitenhintergrund von TikTok, in der Fullcam das
+# Zimmer mit LED-Leiste und Postern.
+#
+# Gemessen ueber 659 Punkte:
+#   REACT    260 Punkte unter 5.0, weitere 20 zwischen 5 und 13
+#   FULLCAM  358 Punkte ueber 30, die beiden dunkelsten bei 22.8 und 23.0
+#   dazwischen  KEIN EINZIGER Punkt zwischen 12.7 und 22.8
+#
+# Die Schwelle steht in der Mitte dieser Luecke. Gemessen wird die FLAECHE:
+# der Seitenhintergrund ist strukturlos, an ihm gibt es keine Kante.
+signatur:
+  modus: REACT
+  flaeche: [80, 250, 340, 650]
+  schwelle: 18.0
+  invertiert: true          # REACT aktiv, wo die Flaeche SCHWARZ ist
+  sonst: FULLCAM
+
+modi:
+  REACT:
+    zonen:
+      tiktok_player: { box: [472, 104, 484, 860], rolle: inhalt }    # exakt 9:16
+      creator_cam:   { box: [1312, 690, 608, 342], rolle: creator }  # exakt 16:9
+    muellzonen:
+      - { box: [0, 0, 472, 1080], hinweis: schwarzer Seitenhintergrund links }
+      - { box: [956, 0, 964, 690], hinweis: Kommentarspalte und Empfehlungen }
+      - { box: [0, 1032, 1920, 48], hinweis: Windows-Taskleiste }
+      - { box: [0, 0, 460, 45], hinweis: Piraten-Zaehler oben links }
+      - { box: [0, 0, 1920, 88], hinweis: Browser-Titel- und Adresszeile }
+      - { box: [0, 985, 200, 95], hinweis: Instant-Gaming-Sponsorlogo }
+  FULLCAM:
+    # Zwei Personen nebeneinander auf dem Sofa. KEIN fokus_x und bewusst kein
+    # 9:16-Schnitt: SCHNITTREGELN.md Regel 2 verlangt fuer Fullcam mit Gaesten
+    # "im 16:9 Format alles zeigen". Gemessen sitzen die beiden bei x=430..1500,
+    # ein 607 px breites Fenster wuerde einen von ihnen anschneiden — und bei
+    # einem Gespraechsformat ist die Reaktion des anderen die Pointe.
+    zonen:
+      voll: { box: [0, 0, 1920, 1080], rolle: creator }
+    muellzonen:
+      - { box: [0, 0, 460, 45], hinweis: Piraten-Zaehler oben links }
+      - { box: [1770, 0, 150, 70], hinweis: Sponsorlogo oben rechts }
+      - { box: [1600, 60, 320, 380], hinweis: Twitch-Chat rechts oben }
+
+datenschutz:
+  fremdinhalt_blur: false   # unveraenderte Entscheidung des Nutzers
+
+signale:
+  # 32 Marker im Transkript: 27 [gelächter], 3 [räuspern], 2 [schnauben].
+  # Der Textkanal traegt hier also — anders als bei COACHLIM_REACT_YT.
+  lachmarker: 1.0
+  loudness_peak: 0.8
+  sprechtempo: 0.5

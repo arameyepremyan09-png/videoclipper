@@ -1,12 +1,32 @@
 # Template: REACT_STACK
 #
-# Creator-Cam oben, TikTok-Player unten. Der Player ist in der Quelle bereits
-# 9:16 (513x913) und wird deshalb nie beschnitten, sondern eingepasst; die
-# seitlichen Reste tragen einen Blur des Players selbst.
+# Creator-Cam oben, TikTok-Player unten auf volle Breite.
+#
+# KORREKTUR 2026-09-08 — der Player wird GEFUELLT, nicht eingepasst.
+# Vorher stand hier `einpassen` mit der Begruendung, der Player sei in der
+# Quelle bereits 9:16 und duerfe deshalb nie beschnitten werden. Das Ergebnis
+# war ein 739 px breites Video zwischen zwei 170 px breiten Blurbalken.
+#
+# Gegen die Referenz gemessen, die der Nutzer fuer dieses Format nennt
+# (@coachlim.clips25/7677675052585831713, geladen und vermessen): Dort laeuft
+# das reagierte Video von Bildkante zu Bildkante, ohne einen einzigen Pixel
+# Blur an den Seiten. Dasselbe bei der 1:1-Kaese-Referenz
+# (@coachlim.clips5/7678435849457028384). Der Hausstil dieses Formats ist also
+# volle Breite; "mittig und angepasst" heisst mittig beschnitten, nicht
+# verkleinert.
+#
+# Der Preis ist bekannt und in Kauf genommen: Bei 1080x1314 Zielflaeche gegen
+# 9:16 Quelle fallen oben und unten je rund 15 % weg. Das trifft bei einem
+# TikTok den Rand, nicht das Motiv — und es ist derselbe Handel wie bei
+# SOLO_FULL, wo `fuellen` aus demselben Grund richtig ist.
 
 name: REACT_STACK
 beschreibung: Creator-Cam oben, TikTok-Player unten eingepasst, statische Headline auf der Naht
-default_fuer: [COACHLIM_TIKTOK_REACT]
+# COACHLIM_ABU_TIKTOK teilt die Zielkomposition, nicht die Quellgeometrie:
+# Dort ist der Player 484x860 statt 513x913 und die Cam auf exakt 16:9
+# beschnitten, damit sie das obere Panel fuellt. Beides steht im Profil,
+# das Template rechnet nur.
+default_fuer: [COACHLIM_TIKTOK_REACT, COACHLIM_ABU_TIKTOK]
 gilt_fuer_modus: REACT
 
 canvas: [1080, 1920]
@@ -17,7 +37,7 @@ panels:
     passung: einpassen
   - quelle: tiktok_player
     ziel: [0, 606, 1080, 1314]
-    passung: einpassen          # Seitenverhaeltnis bleibt, Reste = Blur
+    passung: fuellen            # volle Breite, oben/unten beschnitten
 
 hintergrund:
   modus: blur
@@ -39,6 +59,38 @@ headline:
   # als PNG erzeugt und per overlay komponiert. Weil die Headline ueber die volle
   # Cliplaenge pixelgleich steht, ist das zum ASS-Pfad funktional gleichwertig.
   renderer: png_overlay
+
+# --- Pflicht-Overlays ------------------------------------------------------
+# SCHNITTREGELN.md Regel 4: Kein Overlay auf einem Gesicht.
+#
+# GEMESSEN am ersten gerenderten Clip aus ErYc_3POazo: Die Standardlagen setzen
+# das Untertitelband auf 1424..1688 und die Follow-Pille auf 1243..1337. Im
+# gefuellten Player liegt das Gesicht des reagierten Videos auf y=965..1501 —
+# beide Overlays standen also mitten darin, die Pille auf der Stirn, der
+# Untertitel auf dem Mund.
+#
+# Frei sind zwei Streifen, und beide werden benutzt:
+#   Naht / Headline           606
+#   Follow-Pille       713..807   oberer Rand des Videos, ueber dem Gesicht
+#   Gesichtszone      965..1501   bleibt leer
+#   Untertitelband   1556..1724   so tief wie erlaubt, 4 px ueber der UI-Zone
+#   UI-Zone ab         1728
+#
+# Das Band ist bewusst nur 168 px hoch statt der 264 aus overlays.yaml: Zwei
+# Zeilen brauchen bei 62 px Schrift 142 px, und weil der Text im Band zentriert
+# steht, zieht jedes ueberschuessige Pixel Bandhoehe den Text wieder nach oben
+# ins Gesicht. Schmaler heisst hier tiefer.
+#
+# Die Pille steht bewusst OBEN und nicht knapp ueber dem Band: Unten waere sie
+# 2.6 s lang die dritte Textebene im selben Streifen, oben hat sie den Rand
+# fuer sich allein.
+
+follow_hinweis:
+  y: 760
+
+untertitel:
+  y: 1640
+  band_hoehe: 168
 
 branding:
   aktiv: false

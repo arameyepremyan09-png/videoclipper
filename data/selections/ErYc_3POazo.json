@@ -1,0 +1,17 @@
+[
+  {
+    "clip_id": "ErYc_3POazo_001",
+    "quelle": {"video_id": "ErYc_3POazo", "kanal": "Coachlim Reactions", "orig_start": 594.9},
+    "tier": "B",
+    "profil": "COACHLIM_ABU_TIKTOK",
+    "template": "REACT_STACK",
+    "template_grund": "Reaction auf ein TikTok — SCHNITTREGELN Regel 2, Fall 4: Facecam oben, TikTok-Video mittig eingepasst. Der Moduslauf REACT 590-666s traegt das Fenster vollstaendig.",
+    "modus": "REACT",
+    "modus_anteil": 1.0,
+    "timing": {"start": 594.9, "ende": 641.8},
+    "headline": "MIT 145 KILO AUFS PFERD 🥀💀",
+    "sprache": "de",
+    "score": {"overall": 0.87, "reaktion": 0.84, "klarheit": 0.92, "payoff": 0.9},
+    "grund": "Regel 1a Kontext: Der Clip beginnt mit dem Satz, der die ganze Nummer aufmacht — 'ein Reiterhof anrufen und fragen, ob ich reiten kann mit 150 kg'. Es braucht nichts davor. Regel 1b Ende: geschlossener Bogen bis 'Ich nehme schnell 70 ab. Ciao. Ciao.' bei 641.4s; der naechste Anruf (Bungee) beginnt erst 643s und bleibt draussen. Ein Gegenstand, eine Pointe. Regel 1c Lacher: [gelaechter] bei 638.6s auf der Pointe, davor die staerkste Zeile des Videos — 'Mein Hund kann mir auf Rücken tragen' bei 611.7s. Kein blosser Lautheitspeak. Regel 2: REACT-Lauf 590-666s, Fenster mit 5s Rand auf beiden Seiten."
+  }
+]

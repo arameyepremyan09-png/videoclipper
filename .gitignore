@@ -9,6 +9,11 @@ work/
 *.jpg
 *.png
 
+# AUSNAHME: die vier erlaubten Headline-Emojis. Sie sind keine Zwischenstaende,
+# sondern Assets wie die Schrift Anton — ohne sie rendert die Headline auf einer
+# frischen Maschine leere Kaestchen. Siehe headline.py, Abschnitt "Emoji".
+!assets/emoji/*.png
+
 # Maschinenspezifische Überschreibungen (Pfade, Encoder, Keys)
 config/local.toml
 .env
