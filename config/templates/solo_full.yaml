@@ -3,10 +3,33 @@
 # Ein Feed formatfuellend. Entspricht OME_FULL aus dem Blueprint: Wenn nur die
 # Creator-Cam traegt, wird sie mittig um fokus_x auf 9:16 beschnitten statt
 # verkleinert — der Kopf bleibt gross, das ist der Punkt des Formats.
+#
+# KORREKTUR 2026-09-08: Genau das tat es nicht. Das Panel stand auf
+# `passung: einpassen`, und damit wurde 1920x1080 auf ein 1080x608-Band
+# heruntergerechnet, das auf y=656..1264 in einem Blurfeld schwebte. Zwei
+# Folgen, beide erst am gerenderten Frame sichtbar:
+#
+#   1. Der Kopf war rund ein Drittel so gross wie beabsichtigt — bei einem
+#      Reaktionsformat ist das Gesicht der Inhalt.
+#   2. Die Untertitel standen auf ihrer Standardlage 1424, also 160 px UNTER
+#      der Bildunterkante. Derselbe Fehler, der fuer VLOG_FULL schon in
+#      CLAUDE.md steht ("Der Text schwebt dann abgekoppelt im Blurfeld") —
+#      dort behoben, hier nicht.
+#
+# Der Beleg, dass `fuellen` gemeint war, steht in den Profilen: ALLE sieben
+# mit einer SOLO-Zone geben `fokus_x` an (COACHLIM_HANDYS 870, MARLI_PHONE 700,
+# die uebrigen 960). `fokus_x` wird in `render._panel_kette` ausschliesslich im
+# `fuellen`-Zweig gelesen — unter `einpassen` war es tote Konfiguration.
+#
+# ABGRENZUNG ZU VLOG_FULL UND COUCH_FULL: Die passen bewusst ein, und beide
+# haben dafuer einen gemessenen Grund (drei Personen ueber die volle Breite;
+# ein Auto, dessen Silhouette der Punkt ist). Hier steht eine Person mittig
+# vor einer Wand — seitlich beschneiden kostet nichts als Wand.
 
 name: SOLO_FULL
 beschreibung: Vollbild-Cam auf 9:16 beschnitten, Headline im oberen Drittel
-default_fuer: [COACHLIM_TIKTOK_REACT, COACHLIM_GAME, MARLI_PHONE, COACHLIM_REACT_YT]
+default_fuer: [COACHLIM_TIKTOK_REACT, COACHLIM_GAME, MARLI_PHONE, COACHLIM_REACT_YT,
+               COACHLIM_HANDYS]
 gilt_fuer_modus: SOLO
 
 canvas: [1080, 1920]
@@ -14,7 +37,7 @@ canvas: [1080, 1920]
 panels:
   - quelle: creator_voll
     ziel: [0, 0, 1080, 1920]
-    passung: einpassen
+    passung: fuellen           # 9:16-Schnitt um fokus_x, siehe Kopf
 
 hintergrund:
   modus: blur

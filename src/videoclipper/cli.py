@@ -1,6 +1,7 @@
 """Kommandozeile.
 
 Herstellung:
+``clip transkribiere`` Stage 03b: eigenes Transkript, wenn YouTube keins hat.
 ``clip analyse``  Stages 03-05: Transkript, Signale, Kandidaten -> JSON-Artefakt.
 ``clip rendere``  Stages 08-13: Snapping, Layout, Overlays, Render, QC.
 
@@ -32,7 +33,7 @@ from pathlib import Path
 from . import layout
 from .candidates import bilde
 from .editplan import Aufgeloest, EditPlan
-from . import countdown, follow, frames, hook, rangliste, schnitte, untertitel
+from . import asr, ausgabe, countdown, follow, frames, hook, rangliste, schnitte, untertitel
 from .qc import overlays_vorhanden, pflichtelemente, pruefe
 from .render import rendere, rendere_countdown
 from .settings import arbeitsverzeichnis, einstellungen
@@ -109,14 +110,48 @@ def cmd_analyse(args: argparse.Namespace) -> None:
     print(f"{len(kand)} Kandidaten -> {ziel}")
 
 
+def cmd_transkribiere(args: argparse.Namespace) -> None:
+    """Stage 03b — eigenes Transkript, wenn YouTube keins in der Kanalsprache hat.
+
+    Der Fall ist nicht exotisch: Auf einem Reaction-Video waehlt YouTubes ASR
+    die Sprache des reagierten Videos. Bei einer Reaktion auf eine englische
+    Show gibt es deshalb kein ``de-orig``, und das angebotene ``de`` ist eine
+    Uebersetzung des englischen Dialogs — der deutsche Kommentar fehlt in
+    beiden.
+    """
+    video = Path(args.video).expanduser()
+    modell = Path(args.modell).expanduser()
+    ziel = Path(args.ziel).expanduser() if args.ziel else \
+        video.with_suffix(f".{args.sprache}-asr.json3")
+
+    print(f"ASR {video.name} -> {ziel.name}  (Modell {modell.name})")
+    asr.transkribiere(video, modell, ziel, sprache=args.sprache,
+                      threads=args.threads)
+
+    tr = lade_json3(ziel, args.video_id or video.stem, args.sprache)
+    print(f"  {len(tr.woerter)} Woerter, {tr.dauer:.0f}s, "
+          f"{len(tr.woerter)/max(tr.dauer, 1):.2f} W/s")
+    # Whisper schreibt keine [gelächter]-Marker. Das ist kein Fehler, sondern
+    # der Grund, warum `lachmarker` im Profil auf 0 gehoert.
+    print(f"  Marker: {len(tr.marker())} — bei ASR-Material immer 0, "
+          f"`lachmarker: 0.0` im Profil setzen")
+
+
 def cmd_rendere(args: argparse.Namespace) -> None:
     plaene = json.loads(Path(args.plan).expanduser().read_text(encoding="utf-8"))
     video = Path(args.video).expanduser()
     prof = layout.profil(args.profil)
     tr = lade_json3(Path(args.transkript).expanduser(), args.video_id,
                     prof["quelle"].get("sprache", "de"))
-    ausgabe = Path(args.ausgabe).expanduser() if args.ausgabe else \
+    # Ein Lauf, ein Ordner: MP4, EditPlan und Overlays getrennt darunter.
+    # Warum nicht flach in clips/ — siehe ausgabe.py.
+    basis = Path(args.ausgabe).expanduser() if args.ausgabe else \
         arbeitsverzeichnis() / "clips"
+    lauf = ausgabe.neuer_lauf(basis)
+    lauf.notiere(video_id=args.video_id, profil=args.profil,
+                 plan=str(Path(args.plan).expanduser()),
+                 quelle=str(video), clips=len(plaene))
+    print(f"Lauf {lauf.name}  ->  {lauf.wurzel}")
 
     # Ein Durchlauf ueber die Quelle fuer alle Clips, nicht einer je Clip.
     # Ein Bildwechsel mitten im Clip ist im QC der Datei nicht mehr messbar.
@@ -158,7 +193,7 @@ def cmd_rendere(args: argparse.Namespace) -> None:
                     if hinweis else None),
         )
 
-        ziel = ausgabe / f"{plan.clip_id}.mp4"
+        ziel = lauf.clip(plan.clip_id)
         print(f"  {plan.clip_id}  {start:7.2f}-{ende:7.2f}  "
               f"{ende-start:5.1f}s  {tmpl['name']:12s} Tier {tier}  {plan.headline}")
         fw = f"{hinweis.ab:.1f}-{hinweis.bis:.1f}s" if hinweis else "keine"
@@ -172,15 +207,18 @@ def cmd_rendere(args: argparse.Namespace) -> None:
                   + schnitte.melde(plan.clip_id, start, ende, bildwechsel)):
             print(f"      ! {m}")
 
-        rendere(plan, tmpl, video, ziel, vorschau=args.vorschau)
+        rendere(plan, tmpl, video, ziel, vorschau=args.vorschau,
+                bilder_dir=lauf.png)
 
         b = pruefe(ziel, tier)
         marke = "Tier A->B" if b.tier_korrigiert else f"Tier {b.tier}"
         print(f"      QC: {b.dauer:.2f}s {b.breite}x{b.hoehe} {marke}"
               + (f"  {'; '.join(b.hinweise)}" if b.hinweise else ""))
 
-        (ausgabe / f"{plan.clip_id}.editplan.json").write_text(
+        lauf.editplan(plan.clip_id).write_text(
             plan.model_dump_json(indent=2), encoding="utf-8")
+
+    print(f"\n{len(plaene)} Clips in {lauf.mp4}")
 
 
 def _historie() -> list[tuple[str, float]]:
@@ -285,16 +323,22 @@ def cmd_countdown(args: argparse.Namespace) -> None:
     for h in overlays_vorhanden(r, tmpl):
         print(f"   ! {h}")
 
-    ausgabe = Path(args.ausgabe).expanduser() if args.ausgabe else \
+    basis = Path(args.ausgabe).expanduser() if args.ausgabe else \
         arbeitsverzeichnis() / "clips"
-    ziel = ausgabe / f"{plan.clip_id}.mp4"
-    rendere_countdown(plan, tmpl, _quellen(plan), ziel, vorschau=args.vorschau)
+    lauf = ausgabe.neuer_lauf(basis)
+    lauf.notiere(format="countdown", template=plan.template,
+                 quellen=[e.video_id for e in plan.eintraege], clips=1)
+    print(f"   Lauf {lauf.name}")
+
+    ziel = lauf.clip(plan.clip_id)
+    rendere_countdown(plan, tmpl, _quellen(plan), ziel,
+                      vorschau=args.vorschau, bilder_dir=lauf.png)
 
     b = pruefe(ziel, "A" if r.dauer > 63 else "B")
     marke = "Tier A->B" if b.tier_korrigiert else f"Tier {b.tier}"
     print(f"   QC: {b.dauer:.2f}s {b.breite}x{b.hoehe} {marke}"
           + (f"  {'; '.join(b.hinweise)}" if b.hinweise else ""))
-    (ausgabe / f"{plan.clip_id}.countdown.json").write_text(
+    (lauf.json / f"{plan.clip_id}.countdown.json").write_text(
         plan.model_dump_json(indent=2), encoding="utf-8")
     print(f"   {ziel}")
 
@@ -498,13 +542,26 @@ def main() -> None:
     a.add_argument("--anzahl", type=int, default=40)
     a.set_defaults(func=cmd_analyse)
 
+    tk = sub.add_parser("transkribiere",
+                        help="Stage 03b: eigenes Transkript per whisper.cpp")
+    tk.add_argument("--video", required=True)
+    tk.add_argument("--modell", required=True, help="ggml-*.bin von whisper.cpp")
+    tk.add_argument("--sprache", default="de")
+    tk.add_argument("--video-id")
+    tk.add_argument("--threads", type=int, default=8)
+    tk.add_argument("--ziel", help="Standard: <video>.<sprache>-asr.json3")
+    tk.set_defaults(func=cmd_transkribiere)
+
     r = sub.add_parser("rendere", help="Snapping, Layout, Render, QC")
     r.add_argument("--plan", required=True)
     r.add_argument("--video", required=True)
     r.add_argument("--transkript", required=True)
     r.add_argument("--video-id", required=True)
     r.add_argument("--profil", required=True)
-    r.add_argument("--ausgabe")
+    r.add_argument("--ausgabe", metavar="ORDNER",
+                   help="Basisordner der Laeufe (Standard: <work>/clips). "
+                        "Darunter entsteht je Aufruf ein neuer Ordner "
+                        "<datum>_<uhrzeit>/ mit mp4/, json/ und png/")
     r.add_argument("--vorschau", action="store_true")
     r.add_argument("--ohne-schnittpruefung", action="store_true",
                    help="Bildwechsel in der Quelle nicht suchen "
@@ -534,7 +591,8 @@ def main() -> None:
 
     c = sub.add_parser("countdown", help="Top-5-Compilation rendern")
     c.add_argument("--plan", required=True)
-    c.add_argument("--ausgabe")
+    c.add_argument("--ausgabe", metavar="ORDNER",
+                   help="Basisordner der Laeufe (Standard: <work>/clips)")
     c.add_argument("--vorschau", action="store_true")
     c.set_defaults(func=cmd_countdown)
 

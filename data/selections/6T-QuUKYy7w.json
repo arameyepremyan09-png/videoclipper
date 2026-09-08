@@ -1,0 +1,272 @@
+[
+  {
+    "clip_id": "6T-QuUKYy7w_001",
+    "modus": "PHONE",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "6T-QuUKYy7w",
+      "kanal": "Coachlim",
+      "orig_start": 163.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_HANDYS",
+    "template": "PHONE_STACK",
+    "template_grund": "Handyinhalt und Reaktion tragen gemeinsam — der Ordnername ist der Witz, das Gesicht die Pointe",
+    "timing": {
+      "start": 163.0,
+      "ende": 190.0
+    },
+    "headline": "Sein gespeicherter Ordner sagt alles",
+    "sprache": "de",
+    "score": {
+      "overall": 0.86,
+      "reaktion": 0.88,
+      "klarheit": 0.84,
+      "payoff": 0.85
+    },
+    "grund": "Er laesst den Zuschauer die eigenen Ordnernamen vorlesen; bei 172.3s kippt es in Gelaechter. Geschlossener Aufbau, braucht keinen Kontext davor. Geprueft: Handykante bei x=783 ueber das ganze Fenster, p25 42.8 — Geraet A, die Profilbox passt."
+  },
+  {
+    "clip_id": "6T-QuUKYy7w_002",
+    "modus": "PHONE",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "6T-QuUKYy7w",
+      "kanal": "Coachlim",
+      "orig_start": 191.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_HANDYS",
+    "template": "PHONE_STACK",
+    "template_grund": "Der Widerspruch steht im Handy, die Fassungslosigkeit im Gesicht",
+    "timing": {
+      "start": 191.0,
+      "ende": 216.0
+    },
+    "headline": "Er weiß selbst nicht was er will",
+    "sprache": "de",
+    "score": {
+      "overall": 0.84,
+      "reaktion": 0.9,
+      "klarheit": 0.8,
+      "payoff": 0.86
+    },
+    "grund": "Zwei widerspruechliche gespeicherte Posts hintereinander, dann die Abrechnung. Payoff ist der Schrei bei 208.3s. Geprueft: Handykante bei x=783, p25 42.8 — Geraet A."
+  },
+  {
+    "clip_id": "6T-QuUKYy7w_003",
+    "modus": "SOLO",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "6T-QuUKYy7w",
+      "kanal": "Coachlim",
+      "orig_start": 559.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_HANDYS",
+    "template": "SOLO_FULL",
+    "template_grund": "Reine Reaktion, das Handy ist hier nicht im Bild",
+    "timing": {
+      "start": 559.0,
+      "ende": 581.0
+    },
+    "headline": "Face ID nur um Reddit zu öffnen?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.8,
+      "reaktion": 0.86,
+      "klarheit": 0.78,
+      "payoff": 0.8
+    },
+    "grund": "Er stolpert ueber die Face-ID-Sperre auf Reddit und den Namen des Lieferdienstes darunter. Gelaechter bei 560.7s, kurze geschlossene Nummer. Geprueft: SOLO-Lauf 558-582s, Rahmensignatur eindeutig."
+  },
+  {
+    "clip_id": "6T-QuUKYy7w_004",
+    "modus": "SOLO",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "6T-QuUKYy7w",
+      "kanal": "Coachlim",
+      "orig_start": 599.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_HANDYS",
+    "template": "SOLO_FULL",
+    "template_grund": "Die Panik des Zuschauers spielt sich im Ton ab, das Gesicht traegt sie",
+    "timing": {
+      "start": 599.0,
+      "ende": 633.0
+    },
+    "headline": "Nein nein, das warst du nicht",
+    "sprache": "de",
+    "score": {
+      "overall": 0.83,
+      "reaktion": 0.88,
+      "klarheit": 0.82,
+      "payoff": 0.82
+    },
+    "grund": "Der Zuschauer will etwas wegdruecken und redet sich immer tiefer hinein. Gelaechter bei 603.3s. Geprueft: SOLO-Lauf 598-634s."
+  },
+  {
+    "clip_id": "6T-QuUKYy7w_005",
+    "modus": "SOLO",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "6T-QuUKYy7w",
+      "kanal": "Coachlim",
+      "orig_start": 660.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_HANDYS",
+    "template": "SOLO_FULL",
+    "template_grund": "Reine Reaktion auf einen Fund, kein zweiter Bildkanal noetig",
+    "timing": {
+      "start": 660.0,
+      "ende": 697.0
+    },
+    "headline": "Was macht man fünf Jahre auf Reddit?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.79,
+      "reaktion": 0.82,
+      "klarheit": 0.8,
+      "payoff": 0.84
+    },
+    "grund": "Aufbau ueber das Kontoalter, Pointe ist der voellig absurde Doener-Einwurf am Ende. Die Prognose bewertet ihn schwach, weil der Payoff spaet liegt — der Aufbau traegt ihn trotzdem. Geprueft: SOLO-Lauf 656-698s."
+  },
+  {
+    "clip_id": "6T-QuUKYy7w_006",
+    "modus": "SOLO",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "6T-QuUKYy7w",
+      "kanal": "Coachlim",
+      "orig_start": 717.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_HANDYS",
+    "template": "SOLO_FULL",
+    "template_grund": "Die Frage steht im Raum, das Gesicht beantwortet sie",
+    "timing": {
+      "start": 717.0,
+      "ende": 750.0
+    },
+    "headline": "Wer ist Mia?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.88,
+      "reaktion": 0.9,
+      "klarheit": 0.88,
+      "payoff": 0.88
+    },
+    "grund": "Die staerkste Stelle des Videos: eine Nachricht taucht auf, die Frage wird zweimal gestellt, dann Gelaechter bei 727.7s und die Erkenntnis, dass Mia in jeder Gruppe ist. Geprueft: SOLO-Lauf 716-790s."
+  },
+  {
+    "clip_id": "6T-QuUKYy7w_007",
+    "modus": "SOLO",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "6T-QuUKYy7w",
+      "kanal": "Coachlim",
+      "orig_start": 917.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_HANDYS",
+    "template": "SOLO_FULL",
+    "template_grund": "Wortwechsel zwischen zweien, nur eine Person im Bild",
+    "timing": {
+      "start": 917.0,
+      "ende": 950.0
+    },
+    "headline": "Warum musst du dafür 18 sein?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.81,
+      "reaktion": 0.84,
+      "klarheit": 0.82,
+      "payoff": 0.8
+    },
+    "grund": "Der Zuschauer verteidigt sich in eine Ecke hinein. Gelaechter bei 921.6s, Schrei bei 929.5s. Geprueft: SOLO-Lauf 916-956s."
+  },
+  {
+    "clip_id": "6T-QuUKYy7w_008",
+    "modus": "SOLO",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "6T-QuUKYy7w",
+      "kanal": "Coachlim",
+      "orig_start": 997.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_HANDYS",
+    "template": "SOLO_FULL",
+    "template_grund": "Kurze Konfrontation, ganz ueber den Ton getragen",
+    "timing": {
+      "start": 997.0,
+      "ende": 1017.0
+    },
+    "headline": "Warum steht da mein Name?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.78,
+      "reaktion": 0.8,
+      "klarheit": 0.82,
+      "payoff": 0.76
+    },
+    "grund": "Er findet den eigenen Namen in der Suchhistorie des Zuschauers. Kurz, in sich geschlossen. Geprueft: SOLO-Lauf 996-1018s."
+  },
+  {
+    "clip_id": "6T-QuUKYy7w_009",
+    "modus": "SOLO",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "6T-QuUKYy7w",
+      "kanal": "Coachlim",
+      "orig_start": 1140.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_HANDYS",
+    "template": "SOLO_FULL",
+    "template_grund": "Erzaehlung, das Gesicht des Zuhoerers traegt die Reaktion",
+    "timing": {
+      "start": 1140.0,
+      "ende": 1178.0
+    },
+    "headline": "Deswegen kam damals die Polizei",
+    "sprache": "de",
+    "score": {
+      "overall": 0.77,
+      "reaktion": 0.76,
+      "klarheit": 0.84,
+      "payoff": 0.78
+    },
+    "grund": "Der Zuschauer erzaehlt unaufgefordert von einem Polizeibrief mit 15. Der Aufbau traegt, weil die Frage 'was hast du gemacht' offen bleibt. Geprueft: SOLO-Lauf 1094-1208s."
+  },
+  {
+    "clip_id": "6T-QuUKYy7w_010",
+    "modus": "SOLO",
+    "modus_anteil": 1.0,
+    "quelle": {
+      "video_id": "6T-QuUKYy7w",
+      "kanal": "Coachlim",
+      "orig_start": 1241.0
+    },
+    "tier": "B",
+    "profil": "COACHLIM_HANDYS",
+    "template": "SOLO_FULL",
+    "template_grund": "Reine Reaktion auf einen Fund im Chat",
+    "timing": {
+      "start": 1241.0,
+      "ende": 1265.0
+    },
+    "headline": "Wer schreibt dir denn da?",
+    "sprache": "de",
+    "score": {
+      "overall": 0.79,
+      "reaktion": 0.84,
+      "klarheit": 0.78,
+      "payoff": 0.8
+    },
+    "grund": "Kurzer Schlagabtausch ueber einen Chatverlauf, Gelaechter bei 1257.0s. Geprueft: SOLO-Lauf 1240-1266s."
+  }
+]

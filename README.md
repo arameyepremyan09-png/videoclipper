@@ -52,6 +52,11 @@ absichtlich nicht im Repo.
 - yt-dlp — Format-Selektor, `player_client=web_embedded` *und* `--write-auto-subs`
   sind Pflicht, siehe CLAUDE.md
 
+Für Reaction-Videos zusätzlich `whisper-cpp` (`brew install whisper-cpp`) plus
+ein `ggml-*.bin`-Modell nach `<work>/models/`. Es liegt nicht im Repo — auf
+YouTube-Reaktionen auf fremdsprachige Videos gibt es kein `de-orig`, und das
+angebotene `de` ist eine Übersetzung des fremden Dialogs. Details in CLAUDE.md.
+
 libass wird **nicht** vorausgesetzt: Der Homebrew-Build 8.1.1 bringt weder libass
 noch drawtext mit. Der gesamte Textpfad — Headline, Untertitel, Countdown-Liste,
 Follow-Aufforderung — läuft deshalb als PNG-Overlay und ist damit auf beiden
@@ -71,6 +76,7 @@ config/
   templates/               Zielkomposition       (materialabhängig)
 src/videoclipper/          Pipeline              (materialunabhängig)
   transcript.py            Stage 03  json3 → Wörter mit Zeitstempeln
+  asr.py                   Stage 03b eigenes Transkript (whisper.cpp)
   signals.py               Stage 04  Lautheit, Lachmarker, Layout-Modus
   schnitte.py              Stage 04b harte Bildwechsel in der Quelle
   candidates.py            Stage 05  lokale Maxima → Zeitfenster
@@ -84,6 +90,7 @@ src/videoclipper/          Pipeline              (materialunabhängig)
   follow.py                Stage 11b Follow-Aufforderung   (Pflicht)
   render.py                Stage 12  FFmpeg-Filtergraph
   qc.py                    Stage 13  ffprobe + Pflichtprüfung vor dem Rendern
+  ausgabe.py               Ablage: ein Lauf, ein Ordner (mp4/ json/ png/)
   forecast.py              Stage 15  Prognose vor dem Posten
   publish.py               Stage 16  Veröffentlichungsregister, A/B-Zuweisung
   collect.py               Stage 17  Messwerte holen (yt-dlp / manuell)
@@ -97,6 +104,11 @@ data/selections/           Selektionen (Stage 06) — klein, wandert mit
 data/performance/          Posts, Messwerte, Experimente — klein, wandert mit
 tests/                     Tests der Rechenteile: `pytest`
 work/                      Videodateien, Cache — lokal, nie im Repo
+  source/                  Quellvideos + Transkripte
+  clips/<datum>_<uhrzeit>/ ein Ordner je Renderlauf
+    mp4/                   die fertigen Clips — nur das wird hochgeladen
+    json/                  EditPlans + lauf.json
+    png/                   Headline, Untertitel, Follow (Zwischenstand)
 ```
 
 Materialabhängig sind ausschließlich `profiles/` und `templates/`. Der Wechsel
@@ -189,6 +201,14 @@ yt-dlp -f "bv[vcodec^=avc1][height<=1080]+ba/b[height<=1080]" \
   --write-auto-subs --sub-langs de-orig --sub-format json3 \
   --merge-output-format mp4 -o "%(id)s.%(ext)s" "<url>"
 
+# Hat das Video überhaupt ein de-orig? Auf Reaction-Videos oft NICHT —
+# dann liefert die ASR die Sprache des reagierten Videos (siehe CLAUDE.md).
+yt-dlp --list-subs --skip-download "<url>" | grep -iE "^de|orig"
+
+# Stage 03b, nur wenn de-orig fehlt: eigenes Transkript per whisper.cpp
+clip transkribiere --video VIDEO.mp4 --modell ~/videoclipper/models/ggml-large-v3-turbo-q5_0.bin \
+  --sprache de --video-id VIDEO
+
 # Stages 03-05: Transkript, Signale, Kandidaten
 clip analyse --video VIDEO.mp4 --transkript VIDEO.de-orig.json3 \
   --video-id VIDEO --profil COACHLIM_TIKTOK_REACT
@@ -201,6 +221,7 @@ clip rangliste --plan data/selections/VIDEO.json \
   --transkript VIDEO.de-orig.json3 --video-id VIDEO
 
 # Stages 08-13: Snapping, Layout, Overlays, Render, QC
+# --ausgabe ist der Basisordner; darunter entsteht <datum>_<uhrzeit>/
 clip rendere --plan data/selections/VIDEO.json --video VIDEO.mp4 \
   --transkript VIDEO.de-orig.json3 --video-id VIDEO \
   --profil COACHLIM_TIKTOK_REACT --ausgabe ~/videoclipper/clips
@@ -220,6 +241,47 @@ das ist zulässig, aber ein Grund, sich den Clip anzusehen.
 Die Analyse legt neben den Kandidaten auch `modus_laeufe` ab — die
 zusammenhängenden Strecken eines Layouts. Clipgrenzen gehören in einen Lauf
 hinein, nie über einen Wechsel.
+
+## Wo die Clips landen — ein Lauf, ein Ordner
+
+`clip rendere` und `clip countdown` legen bei **jedem** Aufruf einen neuen
+Ordner an, benannt nach Datum und Uhrzeit des Laufes. Darunter liegen die
+Dateitypen getrennt:
+
+```
+~/videoclipper/clips/
+  2026-09-08_14-30-15/
+    mp4/    6T-QuUKYy7w_001.mp4       die fertigen Clips
+    json/   6T-QuUKYy7w_001.editplan.json
+            lauf.json                 Quelle, Profil, Plan, Clipzahl
+    png/    6T-QuUKYy7w_001.headline.png
+            6T-QuUKYy7w_001.ut_00.png …
+  2026-09-08_18-02-40/
+    …
+```
+
+Vorher schrieb jeder Lauf flach in `clips/`. Nach acht vermessenen Videos
+lagen dort über 200 Einträge aus einem Dutzend Läufen, und weil MP4,
+EditPlan und Headline-PNG desselben Clips sich den Namensstamm teilen, standen
+sie auch noch verschränkt. Welcher Lauf welchen Clip erzeugt hat, stand danach
+nur noch im Zeitstempel der Datei.
+
+Die Trennung der drei Unterordner ist nicht Kosmetik:
+
+| | |
+|---|---|
+| `mp4/` | das Einzige, was den Rechner verlässt — am Stück kopierbar |
+| `json/` | überlebt die Videodateien: welcher Ausschnitt, welche Headline |
+| `png/` | reiner Zwischenstand, jederzeit löschbar — der Renderer baut ihn neu |
+
+Ein Lauf ist bewusst der **Aufruf**, nicht das Video: Werden zwei Videos in
+einem Rutsch geschnitten, gehören ihre Clips zusammen. Die Zuordnung zum Video
+steckt im Clipnamen und zusätzlich in `lauf.json`.
+
+`--ausgabe` benennt den **Basisordner** der Läufe, nicht das Ziel selbst —
+der Zeitstempel-Ordner entsteht immer darunter. Fallen zwei Aufrufe in
+dieselbe Sekunde, bekommt der zweite ein `_2`; ein Lauf überschreibt nie
+einen anderen.
 
 ## Bildwechsel im Clip
 

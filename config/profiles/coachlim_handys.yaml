@@ -1,0 +1,115 @@
+# Materialprofil: Coachlim / Zuschauer-Handys
+#
+# Gemessen am 2026-09-08 an 6T-QuUKYy7w ("ICH KONTROLLIERE DIE HANDYS MEINER
+# ZUSCHAUER", 1382.9 s, 1920x1080@60). 692 Abtastpunkte im Abstand von 2 s,
+# Boxkanten an 50 Vollbildern aus reinen Handy-Strecken nachgemessen.
+#
+# ABGRENZUNG ZU MARLI_PHONE: Dasselbe Format — ein gespiegeltes Zuschauerhandy
+# neben einer Facecam —, aber andere Geometrie und ein anderer Kanal. Dort
+# liegt das Handy auf [710,0,500,1080] und die Cam auf [1444,410,460,260];
+# hier ist die Cam mehr als doppelt so gross und sitzt buendig an der rechten
+# Bildkante. MARLI_PHONE ist auf dieses Video nicht anwendbar. Das ist der
+# Normalfall, nicht die Ausnahme: Die Boxgeometrie ist eine Eigenschaft des
+# Videos, nicht des Formats.
+#
+# GEMESSENE BOXEN
+#   Facecam   [1216, 90, 704, 396]   704/396 = 1.7778, also exakt 16:9.
+#             Ueber 4 von 6 Vollbildern auf den Pixel identisch; 1216+704=1920,
+#             die Cam laeuft also buendig an die rechte Bildkante.
+#   Handy     [782, 236, 382, 844]   382/844 = 0.453, also rund 20:9.
+#             Flanken 1-px-genau: links springt die Spaltenbelegung bei x=783
+#             von 0.02 auf 0.74, rechts faellt sie hinter x=1164 auf 0.01.
+#             Oben beginnt der Inhalt bei y=236, unten laeuft das Handy aus
+#             dem Bild (y=1079). Masse auf gerade Zahlen gelegt: crop rundet
+#             ungerade Kantenmasse in yuv420p still ab.
+#
+# DAS HANDY IST NICHT BEI JEDEM ZUSCHAUER GLEICH GROSS. Gemessen ueber 28
+# Vollbilder ueber die ganze Laufzeit tauchen zwei Geraete auf:
+#   Geraet A (bis ~560 s)   x 783..1164, Breite 381   — die Messung oben
+#   Geraet B (ab  ~710 s)   x 785..1215, Breite ~425
+# Die LINKE Kante ist bei beiden dieselbe (783 gegen 785), nur die Breite
+# unterscheidet sich. Die Box oben ist deshalb bewusst die schmalere: Auf
+# Geraet B beschneidet sie rund 10 % am rechten Rand — dort liegt App-Chrom,
+# kein Inhalt. Die Alternative waere eine Box ueber beide Geraete, die auf
+# Geraet A 47 px schwarzen Rand ins Panel holt. Beschneiden ist hier der
+# guenstigere Fehler, weil das Handy ohnehin eingepasst wird.
+
+name: COACHLIM_HANDYS
+beschreibung: Gespiegeltes Zuschauer-Handy auf schwarzem Discord-Share, Facecam rechts oben, wechselnd mit Vollbild-Cam
+gueltig_ab: 2026-09-08
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [Coachlim]
+  sprache: de
+
+# WIE ERKANNT WIRD: ueber den schwarzen Rahmen LINKS vom Handy. Im Screenshare
+# liegt dort Discord-Hintergrund, in der Vollbild-Cam das Zimmer.
+# Gemessen ueber 692 Punkte, und die Trennung ist die sauberste im ganzen Repo:
+#
+#   Screenshare   428 von 692 Punkten unter 6.0, Median 0.0
+#   Vollbild-Cam  Median 67.0, Minimum 49.7
+#   dazwischen    5 Punkte von 692 im Bereich 5..40
+#
+# Die Schwelle steht mitten in einer Luecke von 40 Punkten Breite.
+# Gemessen wird die FLAECHE, nicht eine Kante: Der Rahmen ist per Definition
+# strukturlos, an ihm gibt es keine Kantenstaerke zu messen.
+#
+# WAS DIESE SIGNATUR NICHT KANN — und das ist wichtig genug fuer eine eigene
+# Warnung: Sie erkennt "Screenshare", nicht "Handy". Der Kanal teilt in
+# diesem Video auch ChatGPT- und Desktopfenster, und die haben denselben
+# schwarzen Hintergrund (gemessen ebenfalls 0.0). Sie laufen also als PHONE
+# durch und wuerden mit der Handybox gerendert — ein Ausschnitt mitten aus
+# einem ChatGPT-Fenster.
+#
+# Ein Trennmerkmal wurde gesucht und NICHT gefunden: Die Kante bei x=783
+# trennt Desktop (max 0.2) sauber von Handy (Median 42.8), faellt aber bei
+# dunklem Handyscreen selbst auf 0.0 — derselbe Fall, an dem schon
+# MARLI_PHONE gescheitert ist. Ein Einzelbildtest kann das nicht.
+#
+# KONSEQUENZ FUER DIE SELEKTION: Clipfenster im PHONE-Modus gehoeren gegen
+# die Desktopstrecken geprueft. Gemessen liegen sie in diesem Video bei
+# rund 246-560 s und 940-1000 s.
+signatur:
+  modus: PHONE
+  flaeche: [400, 300, 300, 700]
+  schwelle: 25.0
+  invertiert: true          # PHONE aktiv, wo die Flaeche SCHWARZ ist
+  sonst: SOLO
+
+modi:
+  PHONE:
+    zonen:
+      handy:   { box: [782, 236, 382, 844], rolle: inhalt }    # rund 20:9
+      facecam: { box: [1216, 90, 704, 396], rolle: creator }   # exakt 16:9
+    muellzonen:
+      - { box: [0, 0, 782, 1080], hinweis: schwarzer Discord-Hintergrund links }
+      - { box: [1164, 486, 756, 594], hinweis: schwarzer Grund unter der Facecam }
+      - { box: [1690, 820, 230, 210], hinweis: Twitch-Chat rechts unten }
+      - { box: [0, 0, 460, 45], hinweis: Piraten-Zaehler oben links }
+      - { box: [700, 105, 320, 40], hinweis: Discord-Titelzeile ueber dem Handy }
+  SOLO:
+    zonen:
+      # fokus_x=870: In der Vollbild-Cam sitzt der Kopf bei x rund 870,
+      # also links der Bildmitte. Ein 9:16-Schnitt um 960 wuerde ihn
+      # anschneiden.
+      creator_voll: { box: [0, 0, 1920, 1080], rolle: creator, fokus_x: 870 }
+    muellzonen:
+      - { box: [0, 0, 460, 45], hinweis: Piraten-Zaehler oben links }
+      - { box: [1770, 0, 150, 70], hinweis: Sponsorlogo oben rechts }
+      - { box: [1690, 820, 230, 210], hinweis: Twitch-Chat rechts unten }
+
+datenschutz:
+  # Die gespiegelten Handys gehoeren Zuschauern, die sie selbst freigegeben
+  # haben; im Bild stehen Chatnamen und private Galerien. Unveraenderte
+  # Entscheidung des Nutzers wie in den anderen Profilen.
+  fremdinhalt_blur: false
+
+signale:
+  # 28 Marker im Transkript: 10 [gelächter], 11 [schreien], 4 [schnauben],
+  # dazu [japst], [räuspern], [musik]. Der Textkanal traegt hier also — anders
+  # als bei COACHLIM_REACT_YT und AGAAMUZA_TUERSTEHER, wo er leer ist.
+  lachmarker: 1.0
+  loudness_peak: 0.8
+  sprechtempo: 0.5

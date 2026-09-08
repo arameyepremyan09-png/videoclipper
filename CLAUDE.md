@@ -224,6 +224,40 @@ Templates, nicht fuer solche mit kleinem Bildband.
 Die Lehre ist dieselbe wie beim Modus-Anteil von 1,00: **Zahlen, die
 plausibel aussehen, ersetzen keinen Blick auf einen gerenderten Frame.**
 
+### Nachtrag 2026-09-08: derselbe Fehler stand noch in SOLO_FULL
+
+Beim Sichten des ersten gerenderten Clips aus `COACHLIM_HANDYS` aufgefallen —
+und es ist **nicht** dasselbe Problem wie oben, sondern seine Ursache eine
+Ebene tiefer. `SOLO_FULL` stand auf `passung: einpassen`. Damit wurde die
+1920x1080-Cam auf ein 1080x608-Band heruntergerechnet, das auf y=656..1264
+in einem Blurfeld schwebte. Zwei Folgen:
+
+1. **Der Kopf war rund ein Drittel so gross wie beabsichtigt.** Bei einem
+   Reaktionsformat ist das Gesicht der Inhalt.
+2. **Die Untertitel standen 160 px unter der Bildunterkante** — exakt der
+   Fehler, der fuer `VLOG_FULL` einen Abschnitt weiter oben schon
+   beschrieben ist. Dort behoben, hier nicht.
+
+Das Template widersprach dabei seinem eigenen Kopfkommentar, der seit jeher
+sagt, die Cam werde „mittig um fokus_x auf 9:16 beschnitten statt
+verkleinert". Der Beleg, dass `fuellen` gemeint war, steht in den Profilen:
+**Alle sieben Profile mit einer SOLO-Zone geben `fokus_x` an** (870 bei
+`COACHLIM_HANDYS`, 700 bei `MARLI_PHONE`, sonst 960). Und `fokus_x` liest
+`render._panel_kette` **ausschliesslich im `fuellen`-Zweig** — unter
+`einpassen` war es tote Konfiguration. Sieben Profilautoren haben also
+aufgeschrieben, wo beschnitten werden soll, und beschnitten wurde nie.
+
+`VLOG_FULL` und `COUCH_FULL` bleiben bei `einpassen`: Beide haben dafuer
+einen gemessenen Grund (drei Personen ueber die volle Breite; ein Auto,
+dessen Silhouette der Punkt ist). Bei `SOLO_FULL` steht eine Person mittig
+vor einer Wand — seitlich beschneiden kostet nichts als Wand.
+
+**Die Lehre ist eine dritte, ueber die Overlay-Lage hinaus: Eine Einstellung,
+die kein Code liest, ist kein Kommentar, sondern ein Fehler.** `fokus_x`
+stand in sieben Profilen und wurde nirgends wirksam; das faellt weder im QC
+noch im Test auf, weil die Datei formal richtig bleibt. Wer ein Feld ins
+Schema aufnimmt, sollte pruefen, ob der Pfad es ueberhaupt erreicht.
+
 Zweiter Fall am selben Tag, und er zeigt den Unterschied zwischen "passt
 nicht" und "steht im Weg": Bei `OME_SPLIT` lagen die Untertitel auf
 1424..1688 **mitten in den Gesichtern der Creator-Cam**. Ueber vier gerenderte
@@ -416,6 +450,49 @@ MacBook Air M4: lüfterlos, drosselt bei längerer Dauerlast.
   Wortende jetzt auf den Beginn des nächsten Wortes — nur kürzen, nie
   verlängern, sonst verschwände eine echte Sprechpause.
 
+- **Auf einem Reaction-Video wählt YouTubes ASR die Sprache des REAGIERTEN
+  Videos, nicht die des Kanals.** Gemessen am 2026-09-08 an JtWRKErMIGc
+  ("20 FRAUEN VS RAPPER QUAVO", Kanal Coachlim Reactions): Es gibt **kein
+  `de-orig`**. Angeboten werden `en-orig` — das Original, also die englische
+  Show — und `de`, eine Maschinenübersetzung davon. Beide enthalten den Dialog
+  der Show; der deutsche Kommentar des Creators, also das eigentliche Produkt,
+  steht in keinem von beiden. Stichproben aus `en-orig` bei 120 s, 400 s,
+  800 s und 1200 s: 3528 Wörter, **kein einziges Deutsch**.
+
+  Das ist kein Downloadfehler, den ein anderer Sprachcode behebt — die
+  Tonspur ist zweisprachig und die ASR hat sich für die dominante entschieden.
+  Ein Transkript ohne den Kommentar ist hier wertlos: Stage 06 sucht die
+  lustigen Stellen durch Lesen, und Untertitel sind Pflicht in jedem Clip.
+
+  **Damit ist die eigene ASR aus dem Fallback ein Regelfall geworden** und in
+  `asr.py` implementiert (`clip transkribiere`, whisper.cpp als Subprozess wie
+  FFmpeg). Sie schreibt `json3`, nicht ein eigenes Format — `lade_json3` liest
+  es dann unverändert und keine spätere Stage merkt, woher das Transkript
+  kommt. Prüfe bei jedem Reaction-Video **vor** dem Download, ob `de-orig`
+  überhaupt angeboten wird: `yt-dlp --list-subs` kostet Sekunden, der Fehler
+  fällt sonst erst in Stage 03 auf.
+
+  **Und die eigene ASR loest das Problem nur halb.** Auf JtWRKErMIGc
+  gemessen: whisper.cpp mit `-l de` transkribiert nicht den deutschen
+  Kommentar, sondern **uebersetzt** den englischen Showton ins Deutsche —
+  "Ja, weil wenn ich einen Hügel gebe, ist es wie ein Ja" ist kein Satz des
+  Creators, sondern eine Fehluebersetzung. Nur 8 % der 1418 Woerter sind
+  ueberhaupt deutsche Funktionswoerter, und stellenweise haengt der Decoder
+  in Wiederholungsschleifen (17-mal "Hey" am Stueck). `-l auto` mit
+  Beam-Search 5 liefert **wortgleich** dasselbe — es liegt nicht an den
+  Parametern, sondern daran, dass der Showton den Kommentar ueberdeckt.
+
+  Konsequenz fuer das Rendern: Gerendert wurde mit **`en-orig`**, also
+  YouTubes eigener ASR der Show. Die ist sauber (3528 Woerter, 2,24 W/s,
+  27 wiederholungsfreie 30-s-Fenster gegen 5 im ASR-Transkript) und
+  untertitelt das, was im Clip tatsaechlich zu hoeren ist. Headline deutsch,
+  Untertitel englisch — richtige fremdsprachige Untertitel sind besser als
+  falsche deutsche. Der ASR-Lauf bleibt trotzdem richtig: Er hat die Frage
+  ueberhaupt erst entscheidbar gemacht.
+
+  Whisper schreibt **keine** `[gelächter]`-Marker. Bei ASR-Material gehört
+  `lachmarker` im Profil deshalb zwingend auf 0 — derselbe Fall wie bei den
+  drei markerlosen YouTube-Transkripten.
 - **`--write-subs` lädt `de-orig` nicht.** Gemessen am 2026-09-05: yt-dlp meldet
   nur „There are no subtitles for the requested languages" und lädt das Video
   trotzdem — der Fehler fällt also erst auf, wenn Stage 03 die fehlende Datei
@@ -610,6 +687,22 @@ unabhaengige Urteile, die sich widersprechen, sind eine brauchbare Information.
 Gesnappt wird mit derselben `snappe`, die auch der Renderer benutzt — sonst
 rankt man Laengen, die in der fertigen Datei nie vorkommen.
 
+### `hook.pruefe` setzt voraus, dass Headline und Transkript dieselbe Sprache sprechen
+
+Gemessen am 2026-09-08 an JtWRKErMIGc. Bei einem Reaction-Video auf eine
+fremdsprachige Quelle ist das nicht mehr gegeben: Die Headline ist deutsch
+(der Kanal ist deutsch), das Transkript des Clipfensters englisch (die Show
+ist englisch). `hook.pruefe` vergleicht Headline-Woerter gegen den Wortlaut
+des Fensters und meldet dann **jede** Headline als "lose" — kein Wort kommt
+im Clip vor.
+
+Das ist ein Fehlalarm, kein Befund, und er ist nicht harmlos: "lose" ist laut
+demselben Abschnitt der teurere der beiden Headline-Fehler. Wo Headline und
+Ton verschiedene Sprachen haben, sagt der Test nichts aus und die Meldung
+gehoert ignoriert. Ein echter Verrat waere in diesem Aufbau ohnehin nur
+sichtbar, wenn man die Headline gegen eine Uebersetzung prueft — und die hat
+die Pipeline nicht.
+
 ### Payoff-Position ist eine Naeherung, keine Pointenerkennung
 
 `hook.payoff_position` sucht die dichteste Sprechstelle im Clip. Das ist
@@ -626,6 +719,68 @@ negatives `-t` bekommen. Das Transkript endet regelmaessig vor dem Video, nach
 dem letzten Wort laufen oft noch Bilder; der Fall ist also nicht konstruiert,
 sondern trifft jeden Clip am Videoende. Bei `en <= s` gilt jetzt das
 ungesnappte Fenster.
+
+## Ablage der Ergebnisse — ein Lauf, ein Ordner, ab 2026-09-08
+
+Bis hierher schrieb jeder Renderlauf flach in `<work>/clips/`. Nach acht
+vermessenen Videos lagen dort **206 Eintraege** aus einem Dutzend Laeufen, und
+weil MP4, EditPlan und Headline-PNG desselben Clips sich den Namensstamm
+teilen, standen sie auch noch verschraenkt:
+
+```
+4ubrGJLb4FQ_001.editplan.json
+4ubrGJLb4FQ_001.headline.png
+4ubrGJLb4FQ_001.mp4
+4ubrGJLb4FQ_002.editplan.json
+...
+```
+
+Welcher Lauf welchen Clip erzeugt hat, stand danach nur noch im Zeitstempel
+der Datei. Und wer die fertigen Clips aufs Handy ziehen wollte, musste sie aus
+den Zwischenschritten heraussuchen — bei drei Dateien je Clip sind zwei davon
+Ausschuss fuer diesen Zweck.
+
+Deshalb bekommt jeder **Aufruf** einen eigenen Ordner, benannt nach seinem
+Startzeitpunkt, und darunter liegen die Dateitypen getrennt:
+
+```
+clips/2026-09-08_14-30-15/
+  mp4/    die fertigen Clips
+  json/   EditPlans + lauf.json
+  png/    Headline, Untertitel, Follow
+```
+
+Die drei Ordner trennen nicht Dateiendungen, sondern **Lebensdauern**:
+
+| | |
+|---|---|
+| `mp4/` | verlaesst den Rechner — am Stueck kopierbar, ohne Beifang |
+| `json/` | ueberlebt die Videodateien: welcher Ausschnitt, welche Headline |
+| `png/` | reiner Zwischenstand, jederzeit loeschbar — der Renderer baut ihn neu |
+
+`png/` ist der Grund, warum die Trennung mehr ist als Ordnungsliebe: Ein Clip
+mit 23 Untertitel-Cues erzeugt 25 PNGs und **eine** MP4. Flach abgelegt sind
+96 % der Eintraege im Ordner Zwischenstand.
+
+**Ein Lauf ist der Aufruf, nicht das Video.** Werden zwei Videos in einem
+Rutsch geschnitten, gehoeren ihre Clips zusammen — sie entstehen aus derselben
+Absicht und werden am selben Tag gepostet. Die Zuordnung zum Video steckt
+ohnehin in jedem Clipnamen und zusaetzlich in `lauf.json`.
+
+Zwei Entscheidungen im Ordnernamen, beide nicht kosmetisch:
+
+- **Kein Doppelpunkt.** ISO-Zeit waere `14:30:15`; `:` ist auf Windows in
+  Dateinamen verboten, und das Repo laeuft auf beiden Maschinen.
+- **`%Y-%m-%d_%H-%M-%S`, nicht `%d.%m.%Y`.** So sortiert der Ordnername als
+  Text chronologisch, und `ausgabe.zuletzt` muss die Namen nicht parsen.
+
+Faellt ein zweiter Lauf in dieselbe Sekunde — zwei Aufrufe aus einem Skript —,
+bekommt er ein `_2` angehaengt. Ein Lauf ueberschreibt nie einen anderen; das
+waere genau der alte Zustand, nur mit Ordnern drumherum.
+
+`--ausgabe` benennt seither den **Basisordner**, nicht das Ziel selbst. Der
+Altbestand in `clips/` bleibt unangetastet liegen: `ausgabe.zuletzt` erkennt
+einen Lauf am `mp4/`-Unterordner und uebergeht alles andere.
 
 ## Look
 

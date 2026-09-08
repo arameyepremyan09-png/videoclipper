@@ -18,7 +18,7 @@
 
 name: PHONE_STACK
 beschreibung: Facecam oben, gespiegeltes Handy unten eingepasst, statische Headline auf der Naht
-default_fuer: [MARLI_PHONE]
+default_fuer: [MARLI_PHONE, COACHLIM_HANDYS]
 gilt_fuer_modus: PHONE
 
 canvas: [1080, 1920]

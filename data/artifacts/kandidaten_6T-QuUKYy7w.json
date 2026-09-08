@@ -1,0 +1,666 @@
+{
+  "video_id": "6T-QuUKYy7w",
+  "profil": "COACHLIM_HANDYS",
+  "modus_name": "PHONE",
+  "modus_anteil_gesamt": 0.6228323699421965,
+  "dauer": 1384.6,
+  "modus_laeufe": [
+    {
+      "modus": "PHONE",
+      "start": 0.0,
+      "ende": 2.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 2.0,
+      "ende": 4.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 4.0,
+      "ende": 24.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 24.0,
+      "ende": 28.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 28.0,
+      "ende": 104.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 104.0,
+      "ende": 108.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 108.0,
+      "ende": 142.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 142.0,
+      "ende": 144.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 144.0,
+      "ende": 152.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 152.0,
+      "ende": 156.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 156.0,
+      "ende": 160.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 160.0,
+      "ende": 162.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 162.0,
+      "ende": 228.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 228.0,
+      "ende": 230.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 230.0,
+      "ende": 244.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 244.0,
+      "ende": 246.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 246.0,
+      "ende": 258.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 258.0,
+      "ende": 268.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 268.0,
+      "ende": 282.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 282.0,
+      "ende": 292.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 292.0,
+      "ende": 316.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 316.0,
+      "ende": 324.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 324.0,
+      "ende": 398.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 398.0,
+      "ende": 400.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 400.0,
+      "ende": 404.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 404.0,
+      "ende": 410.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 410.0,
+      "ende": 468.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 468.0,
+      "ende": 474.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 474.0,
+      "ende": 558.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 558.0,
+      "ende": 582.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 582.0,
+      "ende": 598.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 598.0,
+      "ende": 634.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 634.0,
+      "ende": 638.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 638.0,
+      "ende": 646.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 646.0,
+      "ende": 656.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 656.0,
+      "ende": 698.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 698.0,
+      "ende": 716.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 716.0,
+      "ende": 790.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 790.0,
+      "ende": 842.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 842.0,
+      "ende": 848.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 848.0,
+      "ende": 916.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 916.0,
+      "ende": 956.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 956.0,
+      "ende": 980.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 980.0,
+      "ende": 984.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 984.0,
+      "ende": 996.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 996.0,
+      "ende": 1018.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 1018.0,
+      "ende": 1038.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1038.0,
+      "ende": 1052.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 1052.0,
+      "ende": 1094.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1094.0,
+      "ende": 1208.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 1208.0,
+      "ende": 1212.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1212.0,
+      "ende": 1216.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 1216.0,
+      "ende": 1240.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1240.0,
+      "ende": 1266.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 1266.0,
+      "ende": 1290.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1290.0,
+      "ende": 1294.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 1294.0,
+      "ende": 1342.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1342.0,
+      "ende": 1382.0
+    },
+    {
+      "modus": "PHONE",
+      "start": 1382.0,
+      "ende": 1384.0
+    }
+  ],
+  "kandidaten": [
+    {
+      "peak": 344.5,
+      "start": 309.5,
+      "ende": 364.5,
+      "score": 1.382,
+      "quelle": "lacher",
+      "modus_anteil": 0.857,
+      "text": "das mal. Soll ich dir da erklären? Ich habe mir auch rumgemacht, die besoffen war und ich musste Auto fahren. [gelächter] Bruder, ich sch so dumm kann man nicht sein, ey. So dumm kann man nicht sein. Warte mal. Landes ist bei Geisteskrank. Das ist bei geisteskrank. Hey um 3:45 Uhr. Hey Handbremse löst sich. Geh weiter runter. Ab wann wie Hodenkrebs erkennen? [schreien] Warum Hotrebs? Bruder was passiert hier? Geh mal da rein Bruder. Was? Geh mal hoch. Wie erkennt man Hodenkrebs? Um 4:32 Uhr, Bruder. Hey, was ist denn"
+    },
+    {
+      "peak": 561.25,
+      "start": 526.25,
+      "ende": 581.25,
+      "score": 1.342,
+      "quelle": "lacher",
+      "modus_anteil": 0.556,
+      "text": "Die Leute haben was entdeckt. Nein, nein. Bei Chat. Geh mal mit Geh mal geh mal hoch geh mal hoch vor Ehe geh mal da rein. Darf man im Christentum vor der Ehe Geschlechtsverkehr haben oder ich hatte Diskussion mit paar Freunden, dass man vor der Ehe als Christ nicht auch nicht darf machen. Auch nicht darf machen. [schreien] Ja. Ja. Wie hast du Christen geschrieben nicht, Bruder? Du hast nichts übrig gelassen. Mach weiter da. Geh mal raus. Geh mal Freddy dreimal besser. Warum waren [gelächter] wie Fullscreen bist du? Ja. Face ID zum Öffnen von Reddit. Big Cake Delivery Service Bruder erste Video geh mal ob auf redit durchsuchen"
+    },
+    {
+      "peak": 714.25,
+      "start": 679.25,
+      "ende": 734.25,
+      "score": 1.34,
+      "quelle": "lacher",
+      "modus_anteil": 0.321,
+      "text": "Aber Hauptsache kein Tomatendöner, Bruder. Hauptsache kein Tomatendöner. Edible Bruder. Wer schaut sowas an? Um Gottes Willen. Geh mal Pinterest runter. Mm. Hier kommt einfach mal Ronaldo und so. Mm. Kommt eigent auf Pinterest, wenn man Coach schlimm eingibt? Warum kommt da asiatische Tim Gionen der asiatische Baddy Bruder? [schreien] Was ist das Land? Tamam. Tamam. Aus. Okay. Was gibt's noch eigentlich? Haben wir alles durch oder? Geh mal Safari. Mia schreibt, ich habe Lust heute Abend mit dir Spaß zu haben. Bruder. Wer ist Mia? Wer ist Mia? [gelächter] Mia Bruder ist Mia ist in jede Gruppe die es gibt archivierte Chat"
+    },
+    {
+      "peak": 1220.0,
+      "start": 1185.0,
+      "ende": 1240.0,
+      "score": 1.332,
+      "quelle": "lacher",
+      "modus_anteil": 0.519,
+      "text": "mal nach. Was geht? Was machst? Komm mal wieder mit Handy, du. Hallo, was geht Co? Nicht viel bei dir, mein Bruder. Bruder, jetzt kann es sehr böse für mich gehen. Warum? Bruder, guck, guck, kannst alles gucken. Du musst, was du findest, findest du. Ja, mache ich, mache ich, ma. Ich geh mal erstmal Bildschirmzeiten [japst] [schnauben][gelächter] oder hast du bei keinen geguckt. Bei keinen. Geh mal, geh mal bei welchen Zeit? 9 Stunden du [schreien] 9 Stunden Durchschnitt du. Was bist denn du für ein Instagram 5 Stunden? Was machst du auf Insta Bruder? Ja oder Käse suchen für dich Bruder. Das ist ein Vollzeitjob. Land Käse Vollzeitjob Bruder. Das ja geisteskrank. Leute gehen 9 Stunden Arbeit an ist gemein als 9 Stunden auf Ding."
+    },
+    {
+      "peak": 208.75,
+      "start": 173.75,
+      "ende": 228.75,
+      "score": 1.321,
+      "quelle": "lacher",
+      "modus_anteil": 0.964,
+      "text": "Bruder, du hast gerade mir ein ein gespeicherten Ordner mit 65 Videos gezeigt von Chaas. Okay, mit Recall, mit allem mit Nack hinher und der nächste Ordner, das zweite Bild zeigt mir Soul once that one girl Bruder, ich glaube, du weißt nicht mal selber, was du willst, mein Bruder. Du weißt glaub nicht mal deine deine Seele weiß nicht mal selber, was die will, Bruder. Und währenddessen bist du auf Toilette am kacken. Kann es sein, dass du nicht mal selber weißt, was du willst? Mein Bruder? Ich will dich. [schreien] Wie du willst mich was H was passiert jetzt? Geh mal raus. Geh mal bei geh mal geh mal bei Likes. Geh mal bei Likes. Warum nicht gespeichert? Ja, haben wir schon genug geschafft. Mhm. Bravo. Schön. Mm. Kann ich mal schauen Kommentarverlauf. Weißt du, wo das geht? Bevor ich irgendwas lieg, geh mal auf Kommentarverlauf."
+    },
+    {
+      "peak": 585.5,
+      "start": 550.5,
+      "ende": 605.5,
+      "score": 1.314,
+      "quelle": "lacher",
+      "modus_anteil": 0.407,
+      "text": "Christen geschrieben nicht, Bruder? Du hast nichts übrig gelassen. Mach weiter da. Geh mal raus. Geh mal Freddy dreimal besser. Warum waren [gelächter] wie Fullscreen bist du? Ja. Face ID zum Öffnen von Reddit. Big Cake Delivery Service Bruder erste Video geh mal ob auf redit durchsuchen Sheets [schreien] lässt so anfragen. Hey hey hey gerade am gewesen dir noch wahrscheinlich ein R holt und jetzt einfach bei mir einfach bei mir jetzt kurz einfach reinkommen. Drück mal X drück mal X paar weggehen, dass paar neuer kommen. Nein, nein, nein, das warst du nicht. Wieso? Nein, nein, nein, nein, nein. [gelächter] Mach mal, mach mal, ma. Ich bin full"
+    },
+    {
+      "peak": 1110.75,
+      "start": 1075.75,
+      "ende": 1130.75,
+      "score": 1.299,
+      "quelle": "lacher",
+      "modus_anteil": 0.321,
+      "text": "nicht viel. Das das ein neuer Account bisschen, da ist nicht mehr so viel. Du bist aber Warum speicherst du irgendwelche Frauen einfach, du Gan? Nein, nein, warte doch mal. Das doch alles gut, alles gut. Okay, geh mal raus hier. Geh mal Safari. Safari? Mhm. Ja. Ja. Wo ist Verlauf? Du kannst du irgendwo Verlauf zeigen. Flora in se anzeigen. Was geht da oben ab? Ich sehe das jetzt. Du, was ist das, Bruder? Das muss ein Link sein, auf dass ich geklickt habe. Nein, nein, nein, nein. Geh mal da drauf. Ich bin du willst auch an mag Bruder, was suchst du da, du [schreien] hast sie? Hast du dir gestern einfach ein bestellt oder was? oder ich wollte nur auf Markt gucken, was so was so zur Verfügung gibt so in der Gegend. Du bist doch 16, L Bruder 16, ich küss dein Herz. Ich bin nicht 16. Geh mal hoch. Geh mal h aber da sollte nichts mehr kommen eigentlich. Alles"
+    },
+    {
+      "peak": 929.25,
+      "start": 894.25,
+      "ende": 949.25,
+      "score": 1.298,
+      "quelle": "lacher",
+      "modus_anteil": 0.37,
+      "text": "ich das machen? Kostenlos auseinandergeschrieben und es soll auf iOS geben. Bruder, sei ehrlich. Du kannst du musst doch nicht 18 sein bei dem Format. Doch, doch. Warum musst du 18 sein? Nein, du musst nicht 18 sein. Ich bin 18. [schnauben] Tamam. Geh mal raus. Geh mal raus. Verlose make it meme im Alter Scooter Hacking. [gelächter] Rüber. Ja. Tamam. Du hast ja nichts besonders an. Tamam. Bruder. Telegram. [schreien] Warum sprichst du dich aber so an? Du willst ja, dass ich was finde. Der sag, ich habe Telegram. Geh mal bei Telegram rein. Geh aus. Geh raus. Tschü. Geh aus. Geh aus. Hallo. Hallo. Wie geht's dir? Wo fangen wir an? Oder ich sag, es ist alles sehr unaufgeräumt, aber für mich ist übersichtlich."
+    },
+    {
+      "peak": 844.5,
+      "start": 809.5,
+      "ende": 864.5,
+      "score": 1.296,
+      "quelle": "lacher",
+      "modus_anteil": 0.893,
+      "text": "wenn du 18 bist, ich fresse jetzt fünf Jung das auf Joke, Diger. Was ist das für ein Joke? Wieso nicht? H geh mal auf Repost. Dein Arsch ist keine Deine 18. Geh mal auf Chat GPT. PS4 Fehleranalyse, Bruder. Ja, Junge, meine PS4 ist kaputt. Ich wollte reparieren. Hund mit Milchunfall. Was heißt es? [schreien] Was zum du? Ich dachte dein Hund hat ein Unfall. Du du musst den retten. L am 15. August um 21:59 Uhr. Jas bist du für ein Kanan? Gute. Warum hast du das gemacht, Bruder? Du Discord. Geh mal zurück wieder. Kein Trauben mit Steel"
+    },
+    {
+      "peak": 241.25,
+      "start": 206.25,
+      "ende": 261.25,
+      "score": 1.293,
+      "quelle": "lacher",
+      "modus_anteil": 0.852,
+      "text": "[schreien] Wie du willst mich was H was passiert jetzt? Geh mal raus. Geh mal bei geh mal geh mal bei Likes. Geh mal bei Likes. Warum nicht gespeichert? Ja, haben wir schon genug geschafft. Mhm. Bravo. Schön. Mm. Kann ich mal schauen Kommentarverlauf. Weißt du, wo das geht? Bevor ich irgendwas lieg, geh mal auf Kommentarverlauf. Geh mal raus. 25. August. [schreien] Warum hast du das kommentiert, Bruder? Nicht so die. Nicht so die. [gelächter] Wie nicht so die? Dachtest du jetzt echt damit? Du legst Käse, Bruder, mit dem Flammen Ding von Bühne oder was? Aber reason. Geh mal raus. Geh mal auf Chat PT mal besser. Geh mal auf Chat PT mal bisschen"
+    },
+    {
+      "peak": 404.75,
+      "start": 369.75,
+      "ende": 424.75,
+      "score": 1.291,
+      "quelle": "lacher",
+      "modus_anteil": 0.857,
+      "text": "abbrechen. HentiS erkennt man oft selbst vor allem durch Veränderung am Hoden. Wichtig früh Anzeichen sind häufig schmerzlos. Deshalb sollte man aufmerksam sein. Knotenverhärtung. Tamam. Geh mal bisschen runter. Irgendwo stand doch gerade was beim und so. Was ist das? Warum brennt es, wenn die Frau Bruder? Was? Warum gehst du gerade langsam runter? Wie wenn nichts passiert ist gerade. Hol mich ab, Bruder. K, was ist passiert, Bruder? Hat mich ang und dann hat's gebrennt bei den [schreien] Wir sind. Was hat die hat die diese Kanone wie Toto gemacht? Bites hat gebrannt, Bruder. Drei dreimal hintereinander [schnauben] und dann hat's gebrannt oder was?"
+    },
+    {
+      "peak": 170.75,
+      "start": 135.75,
+      "ende": 190.75,
+      "score": 1.255,
+      "quelle": "lacher",
+      "modus_anteil": 0.857,
+      "text": "Geh mal das erste Geh das nächste noch eins les mal vor. Body one sleep. Minds money. So once still [gelächter] Bruder, du hast gerade mir ein ein gespeicherten Ordner mit 65 Videos gezeigt von Chaas. Okay, mit Recall, mit allem mit Nack hinher und der nächste Ordner, das zweite Bild zeigt mir Soul once that one girl Bruder,"
+    },
+    {
+      "peak": 1257.5,
+      "start": 1222.5,
+      "ende": 1277.5,
+      "score": 1.214,
+      "quelle": "lacher",
+      "modus_anteil": 0.519,
+      "text": "du. Was bist denn du für ein Instagram 5 Stunden? Was machst du auf Insta Bruder? Ja oder Käse suchen für dich Bruder. Das ist ein Vollzeitjob. Land Käse Vollzeitjob Bruder. Das ja geisteskrank. Leute gehen 9 Stunden Arbeit an ist gemein als 9 Stunden auf Ding. Mal hast du Reddit, Bruder? Hast du Tinder? Tinder. Ach du Sch Bruder geh mal auf Chat. nichts nichts dabei gewesen, sogar ein Typ. Warum schreibt dir ein Joss Alejandro, Bruder? Keine [gelächter] Ahnung. Ist nicht so krass. Be [räuspern] geh raus, geh raus, geh aus geh mal auf Reddit. Reddit. Ja. French White Nails Foot Toast. Tors. Was ist Tor? Wolltest du echt to schreiben und hast Tor geschrieben? Autokorrektur einfach T von Windland Sagerland der hat uns mach mal X drück mal X"
+    },
+    {
+      "peak": 280.75,
+      "start": 245.75,
+      "ende": 300.75,
+      "score": 1.203,
+      "quelle": "lacher",
+      "modus_anteil": 0.643,
+      "text": "die. [gelächter] Wie nicht so die? Dachtest du jetzt echt damit? Du legst Käse, Bruder, mit dem Flammen Ding von Bühne oder was? Aber reason. Geh mal raus. Geh mal auf Chat PT mal besser. Geh mal auf Chat PT mal bisschen der Tik. Bravo. Okay, mach mal links auf. Visum für London. Ja, war klar, dass du Visum brauchst. Was hast du denn für ein Pass? Schweizer Alkohol durch rummachen. Was? Was? Was? Was? Was? Geh mal bei Alkohol durch rummen. Was passiert da? kann Alkohol durch rummachen übertragen. [gelächter] Du hast jetzt nicht, du hast jetzt nicht Chat GPT gefragt, ob Alkohol um 3:45 Uhr nachts durch Romachen übertragen werden kann,"
+    },
+    {
+      "peak": 320.25,
+      "start": 285.25,
+      "ende": 340.25,
+      "score": 1.02,
+      "quelle": "lacher",
+      "modus_anteil": 0.75,
+      "text": "Du hast jetzt nicht, du hast jetzt nicht Chat GPT gefragt, ob Alkohol um 3:45 Uhr nachts durch Romachen übertragen werden kann, Bruder. Ja, ne? Wo warst du mein Bruder in Gedanken? Ja, nee, welche? Ja, nee. Ja, nee. Das war kein Alkohol mehr. Welche Substanzen waren das, mein Bruder? Was war? Erklär mir das mal. Soll ich dir da erklären? Ich habe mir auch rumgemacht, die besoffen war und ich musste Auto fahren. [gelächter] Bruder, ich sch so dumm kann man nicht sein, ey. So dumm kann man nicht sein. Warte mal. Landes ist bei Geisteskrank. Das ist bei geisteskrank. Hey um 3:45 Uhr. Hey Handbremse löst sich."
+    },
+    {
+      "peak": 977.75,
+      "start": 942.75,
+      "ende": 997.75,
+      "score": 0.751,
+      "quelle": "lautheit",
+      "modus_anteil": 0.667,
+      "text": "Wie geht's dir? Wo fangen wir an? Oder ich sag, es ist alles sehr unaufgeräumt, aber für mich ist übersichtlich. Tam, dann geh mal auf Chatt geh links mal auf. Ja. Er den Bildtabelle geh weiter runter. Ja. Ja. Gameb Mund geschlossen. Lächeln Tempomat einstellen. Op Astra Tick kurzes Gamescom anschreiben. Geh mal darauf. Wo? Wo? Kurzes Gamescom anschreiben. Was ist das? Bruder, ich wollte Gamescom Job einfach, weißt du? Aber ich bin zu faul für das Schreiben, deswegen einfach man wird eh abgelehnt ohne Ende, deswegen habe ich mir gar keine Mühe gegeben. Wie alt bist du überhaupt? Ich bin 19. Okay, geh mal raus bei Chat, du hast nicht nichts verrücktes. Geh mal auf Redit. Hast du Redit? Okay. [schnauben] Aber Redit ist gefährlich. Geh mal rein. Geh mal rein. Wie ist gefährlich?"
+    },
+    {
+      "peak": 1012.75,
+      "start": 977.75,
+      "ende": 1032.75,
+      "score": 0.731,
+      "quelle": "lautheit",
+      "modus_anteil": 0.536,
+      "text": "Ende, deswegen habe ich mir gar keine Mühe gegeben. Wie alt bist du überhaupt? Ich bin 19. Okay, geh mal raus bei Chat, du hast nicht nichts verrücktes. Geh mal auf Redit. Hast du Redit? Okay. [schnauben] Aber Redit ist gefährlich. Geh mal rein. Geh mal rein. Wie ist gefährlich? Okay, okay. Also geh mal durchsuchen. Warum steht da C schlim? Wer ist Lex? Nein, Bruder, das ist irgendwel irgendwas von TikTok, was ich einfach gucken wollte. Du wolltest einfach von TikTok auf Reddit gucken, du Bruder, das ist doch, wenn man kein Geld ausgeben möchte, ist Red, mach die mal weg. Mach die mal weg, die zwei Namen. Mach mal diese Kchlim weg, du Ness Sopie, Bruder, was geht da mit der Nessa Sophie? Du schaust ja nur noch dir an. Wer ist es, du? Nein, nein, ich musste zweimal eingeben. Ich weiß nicht. Ich wollte gucken, ob die ob man was findet. Mal weg Ness Sopie. Hallo"
+    },
+    {
+      "peak": 1178.25,
+      "start": 1143.25,
+      "ende": 1198.25,
+      "score": 0.717,
+      "quelle": "lautheit",
+      "modus_anteil": 0.0,
+      "text": "deswegen bekommen. Warum? Was hast du gemacht, Bruder? Das kann dir erzählen, das ist so, aber damals, ne? Das ist so, wo ich 15 war. Okay. Was war da? Guck mal, da gibt's guck mal, da gibt's Leute, die machen so scheiße, die verkaufen so Sachen, aber ich habe nie was verkauft. Ich habe so getan, als würde ich verkaufen, damit ich diese Pos jag, weißt du? Und Bruder, ich habe wirklich 15 jagen, Bruder. Ja, Bruder, das alles guck mal Fehler hin oder her, aber dann habe ich Brief bekommen, auf einmal Kriminalpolizei, die wollten mich packen, weil oder das ist keine kleine Sache, aber ich habe mich entschuldigt, aber alles ist fallen gelassen auch. Bravo, bravo, sehr gut. Da bist du noch mal gut weggekommen. M b wegommen. Aha, Balzista mal nach. Was geht? Was machst? Komm mal wieder mit Handy, du. Hallo, was geht Co? Nicht viel bei dir, mein Bruder. Bruder, jetzt kann es"
+    },
+    {
+      "peak": 1151.0,
+      "start": 1116.0,
+      "ende": 1171.0,
+      "score": 0.667,
+      "quelle": "lautheit",
+      "modus_anteil": 0.0,
+      "text": "auf Markt gucken, was so was so zur Verfügung gibt so in der Gegend. Du bist doch 16, L Bruder 16, ich küss dein Herz. Ich bin nicht 16. Geh mal hoch. Geh mal h aber da sollte nichts mehr kommen eigentlich. Alles ja nur arbeiten jetzt Arbeit egal, egal definit. Coach Coach was? Redit Bruder, man muss wirklich aufpassen, weil ich habe mal Polizeibrief deswegen bekommen. Warum? Was hast du gemacht, Bruder? Das kann dir erzählen, das ist so, aber damals, ne? Das ist so, wo ich 15 war. Okay. Was war da? Guck mal, da gibt's guck mal, da gibt's Leute, die machen so scheiße, die verkaufen so Sachen, aber ich habe nie was verkauft. Ich habe so getan, als würde ich verkaufen, damit ich diese Pos jag, weißt du? Und Bruder, ich habe wirklich 15 jagen, Bruder. Ja, Bruder, das alles guck mal Fehler hin oder her, aber dann habe"
+    },
+    {
+      "peak": 1077.75,
+      "start": 1042.75,
+      "ende": 1097.75,
+      "score": 0.638,
+      "quelle": "lautheit",
+      "modus_anteil": 0.778,
+      "text": "Ich sag dir, ich weiß auch nicht mehr, wer das ist. Ein Naturmäuschen. Du, warum suchst du die auf Reddit Land? Warte, hast du was gefunden? Auf TikTok halt. Geh mal weiter weg. Geh mal noch mal. Okay. Warte, warte mal. Aha. Ah, das war verbugt, glaube ich. Blam. Geh mal raus hier. Komplett. Ja. Ja. Komplett raus. Gut. Geh mal auf TikTok. Okay. Speichern. Speichern. Mhm. Ich speeich das hier. Ach so, speichern. Ah, bravo. Nicht viel, nicht viel, nicht viel. Das das ein neuer Account bisschen, da ist nicht mehr so viel. Du bist aber Warum speicherst du irgendwelche Frauen einfach, du Gan? Nein, nein, warte doch mal. Das doch alles gut, alles gut. Okay, geh mal raus hier. Geh mal Safari. Safari? Mhm. Ja. Ja. Wo ist Verlauf? Du kannst du irgendwo Verlauf zeigen. Flora in se anzeigen. Was geht da oben ab? Ich sehe das"
+    },
+    {
+      "peak": 1316.25,
+      "start": 1281.25,
+      "ende": 1336.25,
+      "score": 0.593,
+      "quelle": "lautheit",
+      "modus_anteil": 0.929,
+      "text": "nein war ich warte range was zum suchst du da du warum oder warum tut mir leid wie tut mir leid was hast du da probiert Ich Bruder tüch. Er hat alles angeschaut. Er wollte unbedingt jeden sehen laden. Hat nicht gereicht. Er hat doch gesucht. Okay. Was soll ich machen? Maieren auf Englisch. Warum steht da auf Englisch? Ich wusste nicht wie es auf Englisch geschrieben wird. Warum brauchst du das auf Englisch? Weil jemand auf meinen TikTok drunter geschrieben hat, wie ich in ein Jahr so anders aussehen kann. D habe ich geschrieben muss halt einfach mehren. Okay, geh mal zurück. Altersunterschied Beziehungen. Mein Bruder, was heißt es, Bruder? Das ist äh ich habe einen guten Rad gebraucht. Geh mal da rein, ich will mal den Rad. Ich vielleicht habe ich auch noch ein Rad. Für wen hast du diesen Rad gebraucht? Me besser"
+    },
+    {
+      "peak": 1353.0,
+      "start": 1318.0,
+      "ende": 1373.0,
+      "score": 0.496,
+      "quelle": "lautheit",
+      "modus_anteil": 0.429,
+      "text": "wie ich in ein Jahr so anders aussehen kann. D habe ich geschrieben muss halt einfach mehren. Okay, geh mal zurück. Altersunterschied Beziehungen. Mein Bruder, was heißt es, Bruder? Das ist äh ich habe einen guten Rad gebraucht. Geh mal da rein, ich will mal den Rad. Ich vielleicht habe ich auch noch ein Rad. Für wen hast du diesen Rad gebraucht? Me besser Bruder von eine hat mich angeschrieben, die war halt 16 und ich wusste nicht ob das geht und ich hab Chitt gefragt ob ist 16 19. Wie du hast ein Ratschlag gebraucht du? Was für ein den einzigsten Rat den ich dir geben kann? Geh und meld dich freiwillig bei der Polizei. 16 19 schlimm. Bist du verrückt? L wie schlimm natürlich schlimm. Dre Jahre trotzdem Bruder L was lass mal diese Mas Bruder such dir auch eine Vorjährige einfachim wie 16-jährige oder sonst sind alle vorjährig ich habe die wir haben ja nichts gemacht so ich schreib nicht mal mit der ja blockiert die Bruder blockiert die und niemand soll wieder"
+    },
+    {
+      "peak": 812.75,
+      "start": 777.75,
+      "ende": 832.75,
+      "score": 0.417,
+      "quelle": "lautheit",
+      "modus_anteil": 0.786,
+      "text": "dir mein Bruder? Gut und dir? Gut, Bruder. Wie alt bist du denn? 18. Okay. Und du bist jetzt hier bereit für die Handykontrolle. Ja. Ja. Dann fangen wir mal bei dir auch an. Ganz simpel mit TikTok. Mein Beste. Mein TikTok. Ich habe gestern PUBG gespielt, meine Beste. Bravo. PUBG war gestern echt sehr coch gestern zur ersten meinem Leben. Kommt da bei dir auch so Dinger? Was ist denn mit euren Silent Repost, Bruder? Warum macht ihr mir alle auf Poeten? Wenn ihr was reposten wollt, dann repostet einfach du heiß Sigma Alpha 6767 67 Bruder, wenn du 18 bist, ich fresse jetzt fünf Jung das auf Joke, Diger. Was ist das für ein Joke? Wieso nicht? H geh mal auf Repost. Dein Arsch ist keine Deine 18. Geh mal auf Chat GPT. PS4 Fehleranalyse, Bruder. Ja, Junge, meine PS4 ist kaputt. Ich wollte reparieren."
+    },
+    {
+      "peak": 1050.0,
+      "start": 1015.0,
+      "ende": 1070.0,
+      "score": 0.412,
+      "quelle": "lautheit",
+      "modus_anteil": 0.704,
+      "text": "weg. Mach die mal weg, die zwei Namen. Mach mal diese Kchlim weg, du Ness Sopie, Bruder, was geht da mit der Nessa Sophie? Du schaust ja nur noch dir an. Wer ist es, du? Nein, nein, ich musste zweimal eingeben. Ich weiß nicht. Ich wollte gucken, ob die ob man was findet. Mal weg Ness Sopie. Hallo Nessa Sopie, wer ist das? Warte mal, warte mal, warte mal. Jetzt hast du mich auch noch irgierig gemacht an. Nessa Sophie, die ist ja Deutsch. Ich sag dir, ich weiß auch nicht mehr, wer das ist. Ein Naturmäuschen. Du, warum suchst du die auf Reddit Land? Warte, hast du was gefunden? Auf TikTok halt. Geh mal weiter weg. Geh mal noch mal. Okay. Warte, warte mal. Aha. Ah, das war verbugt, glaube ich. Blam. Geh mal raus hier. Komplett. Ja. Ja. Komplett raus. Gut. Geh mal auf TikTok. Okay. Speichern. Speichern. Mhm. Ich speeich das hier. Ach so, speichern."
+    },
+    {
+      "peak": 1377.0,
+      "start": 1342.0,
+      "ende": 1384.6,
+      "score": 0.392,
+      "quelle": "lautheit",
+      "modus_anteil": 0.048,
+      "text": "und ich hab Chitt gefragt ob ist 16 19. Wie du hast ein Ratschlag gebraucht du? Was für ein den einzigsten Rat den ich dir geben kann? Geh und meld dich freiwillig bei der Polizei. 16 19 schlimm. Bist du verrückt? L wie schlimm natürlich schlimm. Dre Jahre trotzdem Bruder L was lass mal diese Mas Bruder such dir auch eine Vorjährige einfachim wie 16-jährige oder sonst sind alle vorjährig ich habe die wir haben ja nichts gemacht so ich schreib nicht mal mit der ja blockiert die Bruder blockiert die und niemand soll wieder in dein Kopf kommen. Okay. Ich ich wusste nicht, deswegen Bruder geh ausus"
+    },
+    {
+      "peak": 501.75,
+      "start": 466.75,
+      "ende": 521.75,
+      "score": 0.365,
+      "quelle": "lautheit",
+      "modus_anteil": 0.889,
+      "text": "Bruder. Wie weiß ist doch mal auch der Krankheit oder nicht? Nein. Okay. Okay. Geh heraus. Gehus. Warte mal. Stand gerade geh mal noch mal rein. Geh mal noch mal rein. Geh mal runter. Stand. Was laberst du? Durchschnittliche P. Geh mal rein. In der Schweiz. Warum wolltest du das wissen Bruder? hat mich runtergenommen. Komm ich über Erweiz, er fragt Deutschland, er fragt Tunesien, er wollte ganze er wollte von ganzer Welt wissen, wo in welche Liga der spielt. Er wollte wissen in welche in welche Liga der spielt. In jeder Land in jeder Land wollte der wissen, wo der ist, Bruder. Nicht Land nicht mal Tom fragt nach so vielen"
+    },
+    {
+      "peak": 78.75,
+      "start": 43.75,
+      "ende": 98.75,
+      "score": 0.325,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "Bruder? Das war ein Pipi. Das war ein Plums beim Kackenland. Ich bin doch nicht gespiel 25 M Bruder. Ich meins ernst, es war keine Kacke. Muss ich jetzt meine meine Toilette zeigen? Egal, egal, egal, egal, egal. Scheiß drauf. Kack mir ins Gesicht. Am besten kack mir ins Gesicht. Also mein Bester, wir fangen an. Als allererstes, mein Bruder, würde ich mal gerne in dein TikTok reingehen, mein Bester. Geh mal den dein TikTok, mein Bruder. Bravo. 10k würde ich auch nicht. 10k. Warum ist der erste Clip von mir? Schön, mein Bruder. Geh mal auf dein Warte mal, was habe ich da gerade gesehen? Was habe ich da gerade gesehen? Warum geht da eine private Ding auf Baddys? Was war das gerade? Warum stand da Baddys oben mit Schloss? Geh mal eins runter. Geh mal ein wieder runter. Ich hab ihr verdient jetzt vielleicht nach Ausbildung 3000 € vielleicht einer Schichtet. Bis diese Bads. Warte mal, warte mal, warte mal. Diese Bys muss ich sehen. Geh mal da rein, Bruder. Was ist das? Was ist das für ein Git Bruder? Wo steht jetzt hier Bys? Geh mal da"
+    },
+    {
+      "peak": 446.5,
+      "start": 411.5,
+      "ende": 466.5,
+      "score": 0.312,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "hat die diese Kanone wie Toto gemacht? Bites hat gebrannt, Bruder. Drei dreimal hintereinander [schnauben] und dann hat's gebrannt oder was? Nein, er später so paar Stunden später. Ja, ja, klar. Du bist ja bravo, bravo, bravo. Er hat ja er hat er hat einfach ohne das war das war vi 14. März. Geh mal raus. Ja, ja, ist vorbei. Seh nie. Malaria Symptome, Fahrerflucht und Konsequenzen. Bruder, was passiert bei dir? Warte mal, geh mal bei Malaria Symptome. Wie weißt man, dass man Malaria hat, Bruder? Ich kann Malaria nur aus Filmen L. Was ist passiert, dass du dachtest du Malaria, Bruder? oder mein Kollege sein Vater hatte mal und ich war bei dem zu Hause,"
+    },
+    {
+      "peak": 615.5,
+      "start": 580.5,
+      "ende": 635.5,
+      "score": 0.309,
+      "quelle": "lautheit",
+      "modus_anteil": 0.333,
+      "text": "redit durchsuchen Sheets [schreien] lässt so anfragen. Hey hey hey gerade am gewesen dir noch wahrscheinlich ein R holt und jetzt einfach bei mir einfach bei mir jetzt kurz einfach reinkommen. Drück mal X drück mal X paar weggehen, dass paar neuer kommen. Nein, nein, nein, das warst du nicht. Wieso? Nein, nein, nein, nein, nein. [gelächter] Mach mal, mach mal, ma. Ich bin full screen. Ich bin fullen. Nein, nein, nicht. Mach mal, ma weiter. Try not. Was ist? Warum bin ich, Bruder? Er hat aus gemacht. Try not to come Bruder. Er hat jede Challenge gemacht."
+    },
+    {
+      "peak": 110.0,
+      "start": 75.0,
+      "ende": 130.0,
+      "score": 0.296,
+      "quelle": "lautheit",
+      "modus_anteil": 0.926,
+      "text": "gerade gesehen? Was habe ich da gerade gesehen? Warum geht da eine private Ding auf Baddys? Was war das gerade? Warum stand da Baddys oben mit Schloss? Geh mal eins runter. Geh mal ein wieder runter. Ich hab ihr verdient jetzt vielleicht nach Ausbildung 3000 € vielleicht einer Schichtet. Bis diese Bads. Warte mal, warte mal, warte mal. Diese Bys muss ich sehen. Geh mal da rein, Bruder. Was ist das? Was ist das für ein Git Bruder? Wo steht jetzt hier Bys? Geh mal da drauf. 65 Beiträge. 65 Beiträge von Frauen full auf TikTok. Bruder, hast du mal was von gehört? Hast du mal was von Hast du mal was von Seiten gehört? Von Reddit gehört? Alles kostenlos. Was bist du für ein G? Du geh mal bisschen runter. Sogar Filmedit mal. Hey Bruder, was ist das? 50 Millionen. Warte mal. Ach du Bruder. Geisteskrank."
+    },
+    {
+      "peak": 678.0,
+      "start": 643.0,
+      "ende": 698.0,
+      "score": 0.291,
+      "quelle": "lautheit",
+      "modus_anteil": 0.185,
+      "text": "[musik] Bruder, er hat nichts übrig gelassen, ne? Er hat nichts übrig. Er hat alles geschaut, was man schauen kann. Ich saber schon, Bruder. Er muss stinken. Geh mal geh mal geh mal bei geh mal noch mal auf 3. Geh mal raus hier. Geh mal auf dein Profil und bei du geh mal bei aktiv in. Guck mal rechts neben Konto, Alter. 5 Jahre. Er hat er ist seit 5 Jahren auf Reddit. Wir sind komplett Edible. Da bist du aktiv in Bruder. So clean that you could eat of them taste the texture. Aber Hauptsache kein Tomatendöner, Bruder. Hauptsache kein Tomatendöner. Edible Bruder. Wer schaut sowas an? Um Gottes Willen. Geh mal Pinterest runter."
+    },
+    {
+      "peak": 1279.5,
+      "start": 1244.5,
+      "ende": 1299.5,
+      "score": 0.276,
+      "quelle": "lautheit",
+      "modus_anteil": 0.556,
+      "text": "Bruder geh mal auf Chat. nichts nichts dabei gewesen, sogar ein Typ. Warum schreibt dir ein Joss Alejandro, Bruder? Keine [gelächter] Ahnung. Ist nicht so krass. Be [räuspern] geh raus, geh raus, geh aus geh mal auf Reddit. Reddit. Ja. French White Nails Foot Toast. Tors. Was ist Tor? Wolltest du echt to schreiben und hast Tor geschrieben? Autokorrektur einfach T von Windland Sagerland der hat uns mach mal X drück mal X bei den da kommt nichts mehr glaub ich hast du gelöscht alles nein war ich warte range was zum suchst du da du warum oder warum tut mir leid wie tut mir leid was hast du da probiert Ich"
+    },
+    {
+      "peak": 643.0,
+      "start": 608.0,
+      "ende": 663.0,
+      "score": 0.254,
+      "quelle": "lautheit",
+      "modus_anteil": 0.25,
+      "text": "Nein, nein, nicht. Mach mal, ma weiter. Try not. Was ist? Warum bin ich, Bruder? Er hat aus gemacht. Try not to come Bruder. Er hat jede Challenge gemacht. Was hast du gemacht, Bruder? Ich wollte versuchen, wie lange ich kann. [musik] Bruder, er hat nichts übrig gelassen, ne? Er hat nichts übrig. Er hat alles geschaut, was man schauen kann. Ich saber schon, Bruder. Er muss stinken. Geh mal geh mal geh mal bei geh mal noch mal auf 3. Geh mal raus hier. Geh mal auf dein Profil und bei du geh mal bei aktiv"
+    },
+    {
+      "peak": 897.0,
+      "start": 862.0,
+      "ende": 917.0,
+      "score": 0.245,
+      "quelle": "lautheit",
+      "modus_anteil": 0.964,
+      "text": "zurück wieder. Kein Trauben mit Steel essen. Gratis G. Geh mal runter. Boldt ist guter Code. Lachen Emoji Bruder, wenn du wenn du 18 bist, ich jetzt sofort einen geh weiter runter. Hast du Oh, hast du Prime dagelassen? Bis du. Ja. Ja. Ja. Bravo. Gute Pirat. Geh weiter runter, Amigo und Max Handy LT be nicht. Xiaomi Tuning Tips. Geh mal geh mal da rein. Hey, ich möchte mein Xiaomi tun natürlich auf Privatgelände. Wie kann ich das machen? Kostenlos auseinandergeschrieben und es soll auf iOS geben. Bruder, sei ehrlich. Du kannst du musst doch nicht 18 sein bei dem Format. Doch, doch. Warum musst du 18 sein? Nein, du musst nicht 18 sein. Ich bin 18. [schnauben] Tamam. Geh mal raus. Geh mal raus."
+    },
+    {
+      "peak": 37.75,
+      "start": 2.75,
+      "ende": 57.75,
+      "score": 0.217,
+      "quelle": "lautheit",
+      "modus_anteil": 0.926,
+      "text": "bin da. So mein Bruder diese Was war das? Was ist gerade deine Kacke in Toilette gefallen? Bist am kacken? Nein. Bist du sicher L? Ja Bruder war doch ein Plumser gerade oder bin ich bist denn du für ein ekliger Bruder hast du gerade gekackt L? Nein. Mach jetzt. Komm, mach jetzt Kamera einmal noch kurz, Bruder. Nein, nein, nein. Du hast gerade nicht Kacke in Toilette plumsen lassen, während du mit mir auf Discord bist, Bruder. Nein, nein, habe ich nicht. Ja, ne? So weit sind wir gekommen. Nein, Bruder, ich Was haben wir was haben wir, ja nebrig gelassen, Bruder? Aber warum beim Plums konntest du nicht noch z Sekunden länger gestummt lassen, Bruder? Das war ein Pipi. Das war ein Plums beim Kackenland. Ich bin doch nicht gespiel 25 M Bruder. Ich meins ernst, es war keine Kacke. Muss ich jetzt meine meine Toilette zeigen? Egal, egal, egal, egal, egal. Scheiß drauf."
+    },
+    {
+      "peak": 372.0,
+      "start": 337.0,
+      "ende": 392.0,
+      "score": 0.2,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "um 3:45 Uhr. Hey Handbremse löst sich. Geh weiter runter. Ab wann wie Hodenkrebs erkennen? [schreien] Warum Hotrebs? Bruder was passiert hier? Geh mal da rein Bruder. Was? Geh mal hoch. Wie erkennt man Hodenkrebs? Um 4:32 Uhr, Bruder. Hey, was ist denn bei dir los in der Nacht, Bruder? Was für Gedanken? Was passiert Samstagabends bei dir? Ich glaube, wir müssen diesen Spieltag abbrechen. HentiS erkennt man oft selbst vor allem durch Veränderung am Hoden. Wichtig früh Anzeichen sind häufig schmerzlos. Deshalb sollte man aufmerksam sein. Knotenverhärtung. Tamam. Geh mal bisschen runter. Irgendwo stand doch gerade was beim und so. Was ist das? Warum brennt es, wenn die Frau Bruder? Was?"
+    },
+    {
+      "peak": 539.0,
+      "start": 504.0,
+      "ende": 559.0,
+      "score": 0.182,
+      "quelle": "lautheit",
+      "modus_anteil": 0.964,
+      "text": "Erweiz, er fragt Deutschland, er fragt Tunesien, er wollte ganze er wollte von ganzer Welt wissen, wo in welche Liga der spielt. Er wollte wissen in welche in welche Liga der spielt. In jeder Land in jeder Land wollte der wissen, wo der ist, Bruder. Nicht Land nicht mal Tom fragt nach so vielen Ländern. Hast du mich, Bruder? Tomt Navigation. Geh mal raus. Geh mal raus. Geh mal raus. Die Leute haben was entdeckt. Nein, nein. Bei Chat. Geh mal mit Geh mal geh mal hoch geh mal hoch vor Ehe geh mal da rein. Darf man im Christentum vor der Ehe Geschlechtsverkehr haben oder ich hatte Diskussion mit paar Freunden, dass man vor der Ehe als Christ nicht auch nicht darf machen. Auch nicht darf machen. [schreien] Ja. Ja. Wie hast du Christen geschrieben nicht, Bruder? Du hast nichts übrig gelassen. Mach weiter da. Geh mal raus. Geh mal Freddy dreimal besser."
+    },
+    {
+      "peak": 779.75,
+      "start": 744.75,
+      "ende": 799.75,
+      "score": 0.129,
+      "quelle": "lautheit",
+      "modus_anteil": 0.185,
+      "text": "und er kackt mein Bruder. Danke du da warst mein Bruder. Ich bin schockiert heute Abend. Ich muss auch Goon Challenge machen. Try not go. Wir sind Bruder hol dir Bruder ohne W du Hilfe brauchst gib bescheid Bruder. Nicht Hilfe beim Hilfe davon wegzukommen. Guck mal guck guck guck mal. Der ist am einfach braune Fleck immer noch Land, weil du so viel gek hast und drauf gedrückt hast und zu waschen. Warum zeigst du dich aber so lange? Hallo mein Bester. Hallo. Wir brauchen wir brauchen hier echt eine wir brauchen jemanden, der die der die Leute hier therapiert. Das war so viel gerade. Wie geht's dir mein Bruder? Gut und dir? Gut, Bruder. Wie alt bist du denn? 18. Okay. Und du bist jetzt hier bereit für die Handykontrolle. Ja. Ja. Dann fangen wir mal bei dir auch an. Ganz simpel mit TikTok. Mein Beste. Mein TikTok. Ich habe gestern PUBG gespielt, meine Beste. Bravo. PUBG war gestern echt sehr coch gestern zur ersten meinem Leben. Kommt da bei dir auch so Dinger?"
+    },
+    {
+      "peak": 132.5,
+      "start": 97.5,
+      "ende": 152.5,
+      "score": 0.127,
+      "quelle": "lautheit",
+      "modus_anteil": 0.857,
+      "text": "hier Bys? Geh mal da drauf. 65 Beiträge. 65 Beiträge von Frauen full auf TikTok. Bruder, hast du mal was von gehört? Hast du mal was von Hast du mal was von Seiten gehört? Von Reddit gehört? Alles kostenlos. Was bist du für ein G? Du geh mal bisschen runter. Sogar Filmedit mal. Hey Bruder, was ist das? 50 Millionen. Warte mal. Ach du Bruder. Geisteskrank. Okay, geh mal raus. Geh mal auf Silent Repost. Oh, er kriegt schon. Geh mal das erste Geh das nächste"
+    },
+    {
+      "peak": 0.75,
+      "start": 0.0,
+      "ende": 20.75,
+      "score": 0.108,
+      "quelle": "lautheit",
+      "modus_anteil": 0.909,
+      "text": "Da w mal besser Ich bin da ich bin da. So mein Bruder diese Was war das? Was ist gerade deine Kacke in Toilette gefallen? Bist am kacken? Nein. Bist du sicher L? Ja Bruder war doch ein Plumser gerade oder bin ich bist denn du für ein ekliger Bruder hast du gerade gekackt L? Nein."
+    }
+  ]
+}

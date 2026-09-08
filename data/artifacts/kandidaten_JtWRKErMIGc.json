@@ -1,0 +1,546 @@
+{
+  "video_id": "JtWRKErMIGc",
+  "profil": "COACHLIM_REACT_YT",
+  "modus_name": "REACT",
+  "modus_anteil_gesamt": 0.8674242424242424,
+  "dauer": 1590.0,
+  "modus_laeufe": [
+    {
+      "modus": "SOLO",
+      "start": 0.0,
+      "ende": 18.0
+    },
+    {
+      "modus": "REACT",
+      "start": 18.0,
+      "ende": 20.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 20.0,
+      "ende": 22.0
+    },
+    {
+      "modus": "REACT",
+      "start": 22.0,
+      "ende": 32.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 32.0,
+      "ende": 38.0
+    },
+    {
+      "modus": "REACT",
+      "start": 38.0,
+      "ende": 44.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 44.0,
+      "ende": 50.0
+    },
+    {
+      "modus": "REACT",
+      "start": 50.0,
+      "ende": 118.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 118.0,
+      "ende": 124.0
+    },
+    {
+      "modus": "REACT",
+      "start": 124.0,
+      "ende": 126.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 126.0,
+      "ende": 128.0
+    },
+    {
+      "modus": "REACT",
+      "start": 128.0,
+      "ende": 198.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 198.0,
+      "ende": 206.0
+    },
+    {
+      "modus": "REACT",
+      "start": 206.0,
+      "ende": 384.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 384.0,
+      "ende": 402.0
+    },
+    {
+      "modus": "REACT",
+      "start": 402.0,
+      "ende": 442.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 442.0,
+      "ende": 460.0
+    },
+    {
+      "modus": "REACT",
+      "start": 460.0,
+      "ende": 590.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 590.0,
+      "ende": 596.0
+    },
+    {
+      "modus": "REACT",
+      "start": 596.0,
+      "ende": 628.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 628.0,
+      "ende": 646.0
+    },
+    {
+      "modus": "REACT",
+      "start": 646.0,
+      "ende": 712.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 712.0,
+      "ende": 730.0
+    },
+    {
+      "modus": "REACT",
+      "start": 730.0,
+      "ende": 968.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 968.0,
+      "ende": 974.0
+    },
+    {
+      "modus": "REACT",
+      "start": 974.0,
+      "ende": 1118.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1118.0,
+      "ende": 1144.0
+    },
+    {
+      "modus": "REACT",
+      "start": 1144.0,
+      "ende": 1184.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1184.0,
+      "ende": 1214.0
+    },
+    {
+      "modus": "REACT",
+      "start": 1214.0,
+      "ende": 1430.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1430.0,
+      "ende": 1440.0
+    },
+    {
+      "modus": "REACT",
+      "start": 1440.0,
+      "ende": 1482.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1482.0,
+      "ende": 1492.0
+    },
+    {
+      "modus": "REACT",
+      "start": 1492.0,
+      "ende": 1582.0
+    },
+    {
+      "modus": "SOLO",
+      "start": 1582.0,
+      "ende": 1584.0
+    }
+  ],
+  "kandidaten": [
+    {
+      "peak": 1496.25,
+      "start": 1461.25,
+      "ende": 1516.25,
+      "score": 0.855,
+      "quelle": "lautheit",
+      "modus_anteil": 0.821,
+      "text": "Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey."
+    },
+    {
+      "peak": 85.25,
+      "start": 50.25,
+      "ende": 105.25,
+      "score": 0.851,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "die hier reinläuft, ist sehr gute. Wie geht's? Wie geht's? Wie geht's? Was ist dein Name? Trinady. Trinady. So kass können diese Placements"
+    },
+    {
+      "peak": 1458.75,
+      "start": 1423.75,
+      "ende": 1478.75,
+      "score": 0.842,
+      "quelle": "lautheit",
+      "modus_anteil": 0.821,
+      "text": "Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey."
+    },
+    {
+      "peak": 440.25,
+      "start": 405.25,
+      "ende": 460.25,
+      "score": 0.818,
+      "quelle": "lautheit",
+      "modus_anteil": 0.679,
+      "text": "other like this? Why are we looking at each other like this? Why are you going"
+    },
+    {
+      "peak": 1022.25,
+      "start": 987.25,
+      "ende": 1042.25,
+      "score": 0.81,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "still fresh. I don't know what I was going to know. I was like, I was like, I was like, I was like,"
+    },
+    {
+      "peak": 699.5,
+      "start": 664.5,
+      "ende": 719.5,
+      "score": 0.801,
+      "quelle": "lautheit",
+      "modus_anteil": 0.852,
+      "text": "you passed on me? Oh, you just said I passed on you? No, you said yeah, because I changed your mind for you. I said no, my bad. It's all good. It's all good. I'll take that. I'll take that. Hey, what's up? How do you like your dick suck, slappy meat or you don't care? Slippery. Excuse me. Please me. Tight here. What's up? What's up? How do you like your dick suck, slappy meat or you don't care?"
+    },
+    {
+      "peak": 530.25,
+      "start": 495.25,
+      "ende": 550.25,
+      "score": 0.761,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "one yes. I didn't expect that question. She said, how you like your steak? From the grills alone, I was going to say yes from jump, but I want to make this kind of hard for you. So, you're from Atlanta, right? What's your go-to Waffle House order? All-star meal. Why do you want to make this? Why do you want to make this? I want to"
+    },
+    {
+      "peak": 1290.75,
+      "start": 1255.75,
+      "ende": 1310.75,
+      "score": 0.759,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "is what I'm remembering. Goldie. Okay. That's a four piece. Let's go. Let's go. Let's go. Let's go. Let's go."
+    },
+    {
+      "peak": 856.5,
+      "start": 821.5,
+      "ende": 876.5,
+      "score": 0.752,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "Hey, I don't care. Hey, brother. Hey, brother. Hey, brother. Hey, brother."
+    },
+    {
+      "peak": 1532.0,
+      "start": 1497.0,
+      "ende": 1552.0,
+      "score": 0.743,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey."
+    },
+    {
+      "peak": 821.5,
+      "start": 786.5,
+      "ende": 841.5,
+      "score": 0.73,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "Hey, brother. Hey, I don't care. Hey, I don't care. Hey,"
+    },
+    {
+      "peak": 625.75,
+      "start": 590.75,
+      "ende": 645.75,
+      "score": 0.715,
+      "quelle": "lautheit",
+      "modus_anteil": 0.593,
+      "text": "Yes. Yes. Yes. Yes. Yes. Yes. Yes. Yes. Yes. Yes. Yes. Yes. Yes. Yes. I feel like there was a little boring. I don't know. I got to ask you some questions and figure it out. Okay. Stay with steer. You just can't"
+    },
+    {
+      "peak": 1174.75,
+      "start": 1139.75,
+      "ende": 1194.75,
+      "score": 0.702,
+      "quelle": "lautheit",
+      "modus_anteil": 0.714,
+      "text": "I don't know. Die letzten zwei? Die letzten zwei."
+    },
+    {
+      "peak": 955.75,
+      "start": 920.75,
+      "ende": 975.75,
+      "score": 0.701,
+      "quelle": "lautheit",
+      "modus_anteil": 0.889,
+      "text": "Hey, brother. Hey, brother. Hey, brother. Hey, brother. Hey, brother. Hey. They don't even know me. I'm trying to be honest. Two weeks ago. Two weeks ago."
+    },
+    {
+      "peak": 148.75,
+      "start": 113.75,
+      "ende": 168.75,
+      "score": 0.7,
+      "quelle": "lautheit",
+      "modus_anteil": 0.857,
+      "text": "boh. Oh, man muss sich ihm, na. Oh, man muss sich ihm. Gesicht sieht zwar ein bisschen aus wie Jason Love, bruder. Ja, die hat ein bisschen diese gefährliche Touch im Gesicht. Was soll dein Tattoo sagen? I got a whole lot. I'm from L.A. What did you say? What did you say right here? Be friends? Best friends. Best friends? Who best friend? You got a best friend? Yeah. Who? Lolly. Me? You now. She can hang out with us. She can hang out with us. Habt ihr gecheckt, chat? Er checkt direkt ab für 3er-Fierat. Ja, den Schosen-The-Unternehmen. Hey."
+    },
+    {
+      "peak": 891.5,
+      "start": 856.5,
+      "ende": 911.5,
+      "score": 0.7,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "brother. Hey, brother. Hey, brother. Hey, brother. Hey, brother. Hey, brother. Hey, brother. Hey, brother. Hey, brother. Hey, brother."
+    },
+    {
+      "peak": 1146.0,
+      "start": 1111.0,
+      "ende": 1166.0,
+      "score": 0.669,
+      "quelle": "lautheit",
+      "modus_anteil": 0.519,
+      "text": "up. I don't know."
+    },
+    {
+      "peak": 359.5,
+      "start": 324.5,
+      "ende": 379.5,
+      "score": 0.658,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "each other like this? Why are we looking at each other like this? Why are we looking at each other like this? Why are we looking at each other like this?"
+    },
+    {
+      "peak": 410.25,
+      "start": 375.25,
+      "ende": 430.25,
+      "score": 0.644,
+      "quelle": "lautheit",
+      "modus_anteil": 0.679,
+      "text": "other like this? Why are we looking at each other like this? Why are we looking at each other like this? Why are we looking"
+    },
+    {
+      "peak": 561.25,
+      "start": 526.25,
+      "ende": 581.25,
+      "score": 0.641,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "do you want to make this? I want to make this? I want to"
+    },
+    {
+      "peak": 489.5,
+      "start": 454.5,
+      "ende": 509.5,
+      "score": 0.636,
+      "quelle": "lautheit",
+      "modus_anteil": 0.926,
+      "text": "you going at each other like this? medium, medium, medium, medium rare. Well done. Okay. Yeah, it's a yes. You must be finna cook him some steak or something. Would you like that? A little stir fry. Okay, yeah, no, I can do some stir fry. How about you, man? What do you want? All right, bet. All right, so that's one yes. I didn't expect that question. She said, how you like your steak? From the grills alone, I was going to say yes from jump, but I want to make this kind of hard for you. So, you're from Atlanta, right? What's your go-to Waffle House order? All-star meal."
+    },
+    {
+      "peak": 177.0,
+      "start": 142.0,
+      "ende": 197.0,
+      "score": 0.616,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "hang out with us. She can hang out with us. Habt ihr gecheckt, chat? Er checkt direkt ab für 3er-Fierat. Ja, den Schosen-The-Unternehmen. Hey. Um, yeah, you can. You can. You can. I just want to be certain. You can. I just want to be certain. You can. I just want to ask more questions on the next round. I just want to ask more questions on the next round. So I'm just passing. You know what I'm saying. I can't judge a book by a cover. Sometimes personality. You know what I'm saying. You know what I'm saying? I can't judge"
+    },
+    {
+      "peak": 114.5,
+      "start": 79.5,
+      "ende": 134.5,
+      "score": 0.612,
+      "quelle": "lautheit",
+      "modus_anteil": 0.857,
+      "text": "Trinady. Trinady. So kass können diese Placements nicht sein, boh. Oh, man muss sich ihm, na. Oh, man muss sich ihm. Gesicht sieht zwar ein bisschen aus wie Jason Love, bruder. Ja, die hat ein bisschen diese gefährliche Touch im Gesicht. Was soll dein Tattoo sagen? I got a whole lot. I'm from L.A. What did you say? What did you say right"
+    },
+    {
+      "peak": 1569.0,
+      "start": 1534.0,
+      "ende": 1589.0,
+      "score": 0.599,
+      "quelle": "lautheit",
+      "modus_anteil": 0.96,
+      "text": "Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey."
+    },
+    {
+      "peak": 1428.0,
+      "start": 1393.0,
+      "ende": 1448.0,
+      "score": 0.594,
+      "quelle": "lautheit",
+      "modus_anteil": 0.815,
+      "text": "Definitely a seafood. No, definitely steak. I don't get the biggest one. Some oysters. What you like? Some crab legs. I ain't gonna eat messy. What kind of drink you order? Definitely a lemon drop. A lemon drop? That's it? Just a little. You don't want no wine? No, no. No, just give me like two, three lemon drops and I'll be. Okay. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey. Hey."
+    },
+    {
+      "peak": 249.25,
+      "start": 214.25,
+      "ende": 269.25,
+      "score": 0.593,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "up with him? What's up with nothing?"
+    },
+    {
+      "peak": 1317.25,
+      "start": 1282.25,
+      "ende": 1337.25,
+      "score": 0.565,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "Let's go. Let's go. Let's go. Let's go."
+    },
+    {
+      "peak": 767.25,
+      "start": 732.25,
+      "ende": 787.25,
+      "score": 0.556,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "care. I don't care. I just want to know. I just want to know. I just want to know. I just want to know why you passed me. I just want to know why you passed me. I just want to know why you passed me. Hey, brother. Hey, brother. Hey, brother."
+    },
+    {
+      "peak": 38.5,
+      "start": 3.5,
+      "ende": 58.5,
+      "score": 0.547,
+      "quelle": "lautheit",
+      "modus_anteil": 0.5,
+      "text": "Wir reagieren heute auf Quavo gegen 20 Frauenjahr. Nehmt euch was zu trinken, holt euch was zu essen. Nehmt mein Sch**en und ihr fische Reichland-City-Gate. Nehmt das, nehmt das, nehmt was ihr wollt. Schaut das Video an, lasst ein Like da, lasst ein Abo da, bevor ich euch f***** an. 100.000 Leute sehen diese Videos, Reaktion ins Kanal, 3.000 Abonnenten an. Lasst mich euch nicht beleidigen. Cool. Let's get it. Introducing the first lady. Hallo. Ich muss gleich sagen, ein Elite-Chopper. Und hier? Ich sehe hier einen sehr großen Unterschied, meine Besten. Okay? Die erste Maus, die hier reinläuft, ist sehr gute."
+    },
+    {
+      "peak": 1376.0,
+      "start": 1341.0,
+      "ende": 1396.0,
+      "score": 0.545,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "go. I'm 22. I'm 22. Not that young. Not that young. No. You know like a little bit. You know like a little bit. You know like half a little 25 piece like. I'm almost there. I'll be waiting. Okay. We go to Korea together. What questions you got for me? What's your name again? Trinity. Where you from? I'm from Atlanta, Northside. What part? Gwinnick. Okay, I like that, you know. I didn't go to high school here. I went to high school. I don't know. I was born and raised down here. I was born and raised down here. Yeah, so I was born and raised down here. Yeah, so I'm just, I've been moving around. Okay, so if I took you out on a day, where you, where you want to go like to eat? I really like steak houses. What you'll get? Definitely a seafood. No, definitely steak. I don't get the"
+    },
+    {
+      "peak": 666.25,
+      "start": 631.25,
+      "ende": 686.25,
+      "score": 0.543,
+      "quelle": "lautheit",
+      "modus_anteil": 0.75,
+      "text": "was a little boring. I don't know. I got to ask you some questions and figure it out. Okay. Stay with steer. You just can't get that answer right now. I'll come back. I'll wait for the questions. I got the real question for you. What up? I got a question. Why you passed on me? Oh, you just said I passed on you? No, you said yeah, because I changed your"
+    },
+    {
+      "peak": 745.0,
+      "start": 710.0,
+      "ende": 765.0,
+      "score": 0.537,
+      "quelle": "lautheit",
+      "modus_anteil": 0.679,
+      "text": "here. What's up? What's up? How do you like your dick suck, slappy meat or you don't care? I don't care. I don't care. I don't care. I just want to know. I just want to know. I just want to know. I just want to know why you passed me. I just want"
+    },
+    {
+      "peak": 318.5,
+      "start": 283.5,
+      "ende": 338.5,
+      "score": 0.524,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "at me like that? Because I can't see. Why are you looking at me like that? Because I can't see. You can't see? No. Why are we looking at each other like this? Why are we looking at each other like this? Why are we looking at each other like this? Why are we looking at each other like this? Why are we looking at each other like this? Why are we looking"
+    },
+    {
+      "peak": 463.0,
+      "start": 428.0,
+      "ende": 483.0,
+      "score": 0.519,
+      "quelle": "lautheit",
+      "modus_anteil": 0.679,
+      "text": "at each other like this? Why are you going at each other like this? medium, medium, medium, medium rare. Well done. Okay."
+    },
+    {
+      "peak": 1123.5,
+      "start": 1088.5,
+      "ende": 1143.5,
+      "score": 0.512,
+      "quelle": "lautheit",
+      "modus_anteil": 0.519,
+      "text": "minutes just to go get some cheesecake. What's up. I don't"
+    },
+    {
+      "peak": 1219.25,
+      "start": 1184.25,
+      "ende": 1239.25,
+      "score": 0.512,
+      "quelle": "lautheit",
+      "modus_anteil": 0.481,
+      "text": "Die letzten zwei. Die Reihe ist vorbei, wir gehen. Hör auf, weil du sicher nicht antwortest. War das ein Ja oder nicht? Ich gebe dir ein Ja, weil wenn ich einen Hügel gebe, ist es wie ein Ja. Sie hat mich die letzte Reihe genommen und hat mich wieder genommen genommen. Ich liebe dich. Sie hat die Teeth whitening und ischen. Sie hat emotion. All right, Quavo, so we made it to the final round, right? I'm going to bring in every lady that"
+    },
+    {
+      "peak": 1062.5,
+      "start": 1027.5,
+      "ende": 1082.5,
+      "score": 0.505,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "like, I was like, I was like, I was like, but years ago, so no, not really. I would"
+    },
+    {
+      "peak": 1092.0,
+      "start": 1057.0,
+      "ende": 1112.0,
+      "score": 0.494,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "ago, so no, not really. I would drive 30 minutes just to go get some cheesecake. What's"
+    },
+    {
+      "peak": 271.25,
+      "start": 236.25,
+      "ende": 291.25,
+      "score": 0.488,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "What's up with nothing? Why are you? Why are you? Why are you? Why are you? Why are you? Why are you looking at me like that? Why are you looking at me like that? Because I can't see. Why are you looking at me like that? Because I can't see. Why are you looking at me like that? Because I can't see. You"
+    },
+    {
+      "peak": 993.5,
+      "start": 958.5,
+      "ende": 1013.5,
+      "score": 0.486,
+      "quelle": "lautheit",
+      "modus_anteil": 0.889,
+      "text": "They don't even know me. I'm trying to be honest. Two weeks ago. Two weeks ago. Two weeks ago. She could stay, because it's like, it's still fresh. I don't know what I was going to know."
+    }
+  ]
+}

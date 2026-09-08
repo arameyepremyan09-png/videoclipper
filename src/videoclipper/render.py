@@ -139,25 +139,31 @@ def filtergraph(plan: EditPlan, tmpl: dict) -> str:
     return ";".join(teile)
 
 
-def _overlay_bilder(plan: EditPlan, tmpl: dict, ziel: Path) -> list[Path]:
-    """Alle PNGs in der Reihenfolge, die ``ueberlagerungen`` erwartet."""
+def _overlay_bilder(plan: EditPlan, tmpl: dict, bilder_dir: Path) -> list[Path]:
+    """Alle PNGs in der Reihenfolge, die ``ueberlagerungen`` erwartet.
+
+    ``bilder_dir`` ist der PNG-Ordner des Laufes, nicht der Ordner der MP4:
+    Die Overlays sind Zwischenschritt, nicht Ergebnis, und liegen deshalb
+    getrennt von dem, was hochgeladen wird (siehe ``ausgabe.py``).
+    """
     r = plan.resolved
-    bilder = [headline_bauen(plan.headline, tmpl, ziel.with_suffix(".headline.png"))]
+    bilder_dir.mkdir(parents=True, exist_ok=True)
+    bilder = [headline_bauen(plan.headline, tmpl,
+                             bilder_dir / f"{plan.clip_id}.headline.png")]
 
     if r.untertitel:
         cues = [untertitel.Cue(c["text"], c["ab"], c["bis"]) for c in r.untertitel]
-        bilder += untertitel.baue(cues, tmpl, ziel.parent / "overlays", plan.clip_id)
+        bilder += untertitel.baue(cues, tmpl, bilder_dir, plan.clip_id)
     if r.follow:
-        bilder.append(follow.baue(tmpl, ziel.parent / "overlays"
-                                  / f"{plan.clip_id}.follow.png"))
+        bilder.append(follow.baue(tmpl, bilder_dir / f"{plan.clip_id}.follow.png"))
     return bilder
 
 
 def rendere(plan: EditPlan, tmpl: dict, video: Path, ziel: Path,
-            vorschau: bool = False) -> Path:
+            vorschau: bool = False, bilder_dir: Path | None = None) -> Path:
     r = plan.resolved
     ziel.parent.mkdir(parents=True, exist_ok=True)
-    bilder = _overlay_bilder(plan, tmpl, ziel)
+    bilder = _overlay_bilder(plan, tmpl, bilder_dir or ziel.parent)
 
     e = einstellungen()
     encoder = e["platform"]["preview_encoder" if vorschau else "encoder"]
@@ -254,15 +260,18 @@ def filtergraph_countdown(plan, tmpl: dict, lufs: float) -> str:
 
 
 def rendere_countdown(plan, tmpl: dict, videos: dict[str, Path], ziel: Path,
-                      vorschau: bool = False) -> Path:
+                      vorschau: bool = False, bilder_dir: Path | None = None) -> Path:
     """Stage 12 fuer Compilations: ein Durchlauf, N Quellen, N Listenzustaende."""
     from .liste import baue_alle
 
     r = plan.aufgeloest
     ziel.parent.mkdir(parents=True, exist_ok=True)
+    bilder_dir = bilder_dir or ziel.parent
+    bilder_dir.mkdir(parents=True, exist_ok=True)
 
-    kopf_png = headline_bauen(plan.titel, tmpl, ziel.with_suffix(".headline.png"))
-    listen = baue_alle(plan, tmpl, ziel.parent)
+    kopf_png = headline_bauen(plan.titel, tmpl,
+                              bilder_dir / f"{plan.clip_id}.headline.png")
+    listen = baue_alle(plan, tmpl, bilder_dir)
 
     e = einstellungen()
     encoder = e["platform"]["preview_encoder" if vorschau else "encoder"]
@@ -280,7 +289,7 @@ def rendere_countdown(plan, tmpl: dict, videos: dict[str, Path], ziel: Path,
         cmd += ["-i", str(p)]
     if r.follow:
         cmd += ["-i", str(follow.baue(
-            tmpl, ziel.parent / "overlays" / f"{plan.clip_id}.follow.png"))]
+            tmpl, bilder_dir / f"{plan.clip_id}.follow.png"))]
 
     cmd += [
         "-filter_complex", filtergraph_countdown(plan, tmpl, lufs),
