@@ -61,7 +61,10 @@ headline:
 #   UI-Zone ab     1728
 
 follow_hinweis:
-  y: 582
+  # 620 statt 582: Der runde Knopf ist mit 150 px Kantenmass deutlich groesser
+  # als die alte Pille (94 px) und stiess bei 582 an die Headline. Er bleibt in
+  # derselben freien Flaeche zwischen Headline und Bildband.
+  y: 620
 
 untertitel:
   y: 1420

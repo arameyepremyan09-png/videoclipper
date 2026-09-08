@@ -103,3 +103,31 @@ def test_panel_bis_zum_bildrand_wird_gemeldet(tmpl):
                          "passung": "einpassen"}]
     hinweise = countdown.sicherheitszone_pruefen(kaputt)
     assert len(hinweise) == 1 and "y=1920" in hinweise[0]
+
+
+# --- Renderpfad ------------------------------------------------------------
+
+def test_filtergraph_hat_je_stueck_der_klickszene_einen_eingang(tmpl):
+    """Die Follow-Szene ist seit dem 2026-09-08 eine Bildfolge, kein Bild.
+
+    Der Compilation-Pfad baut seinen Graphen von Hand und zaehlt die Eingaenge
+    selbst hoch. Zaehlt er falsch, greift ein ``overlay`` auf den falschen
+    Eingang — im fertigen Video steht dann die Countdown-Liste dort, wo der
+    Knopf sein sollte, und niemand sieht dem Graphen das an.
+    """
+    from videoclipper import follow, render
+
+    plan = countdown.loese_auf(_plan(), tmpl)
+    r = plan.aufgeloest
+    assert r.follow, "Der Countdown traegt die Aufforderung"
+
+    h = follow.Hinweis(r.follow["text"], r.follow["ab"], r.follow["bis"])
+    stuecke = follow.szene(h, tmpl)
+    graph = render.filtergraph_countdown(plan, tmpl, -14.0)
+
+    # Eingaenge: N Segmente, 1 Headline, N Listenzustaende, dann die Szene.
+    n = len(r.segmente)
+    erster = n + 1 + n
+    for j in range(len(stuecke)):
+        assert f"[{erster + j}:v]" in graph, j
+    assert f"[{erster + len(stuecke)}:v]" not in graph

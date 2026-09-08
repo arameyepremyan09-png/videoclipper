@@ -244,13 +244,66 @@ def test_pille_hat_gerade_masse(tmpl):
     assert pw % 2 == 0 and ph % 2 == 0
 
 
-def test_einflug_und_ausflug_enden_in_der_ruhelage(tmpl):
-    h = follow.Hinweis("X", 10.0, 14.0)
-    a = follow.x_ausdruck(h, 346, 1080, 388, tmpl["follow_hinweis"])
-    assert _eval(a, t=10.0) > 1080 - 388          # startet ausserhalb rechts
-    assert _eval(a, t=10.28) == pytest.approx(346)
-    assert _eval(a, t=12.0) == pytest.approx(346)
-    assert _eval(a, t=14.0) > 1080 - 388          # verlaesst das Bild rechts
+# --- Die Klickszene --------------------------------------------------------
+#
+# Seit dem 2026-09-08 ist die Aufforderung kein einzelnes Bild mehr, sondern
+# eine Folge: Knopfzustaende plus ein Mauszeiger, der hereinfaehrt und drueckt.
+# Geprueft wird, was im fertigen Clip sonst niemand mehr sieht.
+
+def test_zeiger_kommt_von_ausserhalb_und_landet_auf_dem_knopf(tmpl):
+    h = follow.Hinweis("X", 10.0, 13.0)
+    cw, _ = tmpl["canvas"]
+    cx, cy = cw // 2, tmpl["follow_hinweis"]["y"]
+    anflug = [s for s in follow.szene(h, tmpl) if s.name == "zeiger"][0]
+
+    assert _eval(anflug.x, t=anflug.ab) > cw, "Zeiger startet im Bild"
+    # Am Ende der Fahrt steht die Spitze auf dem Knopf. Die Ausdruecke geben
+    # die Bildecke zurueck, die Spitze liegt um das Polster versetzt darin.
+    _, _, polster = follow._zeiger_masse(tmpl["follow_hinweis"])
+    spitze_x = _eval(anflug.x, t=anflug.bis) + polster
+    spitze_y = _eval(anflug.y, t=anflug.bis) + polster
+    assert abs(spitze_x - cx) < 40 and abs(spitze_y - cy) < 40
+
+
+def test_zeiger_verlaesst_das_bild_wieder(tmpl):
+    h = follow.Hinweis("X", 10.0, 13.0)
+    cw, _ = tmpl["canvas"]
+    abflug = [s for s in follow.szene(h, tmpl) if s.name == "zeiger"][-1]
+    assert _eval(abflug.x, t=abflug.bis) > cw
+
+
+def test_knopfzustaende_ueberlappen_sich_nie(tmpl):
+    """Zwei Zustaende gleichzeitig waeren ein doppelt gezeichneter Knopf."""
+    h = follow.Hinweis("X", 10.0, 13.0)
+    knoepfe = [s for s in follow.szene(h, tmpl) if s.name.startswith("knopf_")]
+    for a, b in zip(knoepfe, knoepfe[1:]):
+        assert a.bis < b.ab, (a.name, b.name)
+
+
+def test_knopf_ist_ueber_das_ganze_fenster_zu_sehen(tmpl):
+    """Zwischen den Zustaenden darf keine Luecke stehen, sonst blinkt er."""
+    h = follow.Hinweis("X", 10.0, 13.0)
+    knoepfe = [s for s in follow.szene(h, tmpl) if s.name.startswith("knopf_")]
+    assert knoepfe[0].ab == pytest.approx(h.ab)
+    assert knoepfe[-1].bis == pytest.approx(h.bis, abs=0.01)
+    for a, b in zip(knoepfe, knoepfe[1:]):
+        assert b.ab - a.bis < 0.01, (a.name, b.name)
+
+
+def test_knopf_wird_rot_und_endet_weiss(tmpl):
+    h = follow.Hinweis("X", 10.0, 13.0)
+    knoepfe = [s for s in follow.szene(h, tmpl) if s.name.startswith("knopf_")]
+    assert not knoepfe[0].zeichnung["weiss"]
+    assert knoepfe[-1].zeichnung["weiss"]
+    # Genau ein Wechsel: was einmal weiss ist, bleibt weiss.
+    weiss = [bool(s.zeichnung["weiss"]) for s in knoepfe]
+    assert weiss == sorted(weiss)
+
+
+def test_szene_bleibt_im_fenster(tmpl):
+    h = follow.Hinweis("X", 10.0, 13.0)
+    for s in follow.szene(h, tmpl):
+        assert h.ab - 1e-6 <= s.ab < s.bis <= h.bis + 1e-6, s.name
 
 
 # --- Countdown -------------------------------------------------------------

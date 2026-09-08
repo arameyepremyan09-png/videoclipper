@@ -71,7 +71,7 @@ headline:
 #
 # Frei sind zwei Streifen, und beide werden benutzt:
 #   Naht / Headline           606
-#   Follow-Pille       713..807   oberer Rand des Videos, ueber dem Gesicht
+#   Follow-Knopf       715..865   oberer Rand des Videos, ueber dem Gesicht
 #   Gesichtszone      965..1501   bleibt leer
 #   Untertitelband   1556..1724   so tief wie erlaubt, 4 px ueber der UI-Zone
 #   UI-Zone ab         1728
@@ -86,7 +86,9 @@ headline:
 # fuer sich allein.
 
 follow_hinweis:
-  y: 760
+  # 790 statt 760: Der runde Knopf misst 150 px statt der 94 px der alten
+  # Pille und braucht nach oben Abstand zur Headline auf der Naht.
+  y: 790
 
 untertitel:
   y: 1640

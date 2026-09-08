@@ -79,6 +79,16 @@ untertitel:
 
 follow_hinweis:
   y: 1097
+  # KLEINER ALS ueberall sonst, und das ist gemessen, nicht Geschmack: Frei ist
+  # bei diesem Template nur das Wandband zwischen Headline (endet 1031) und
+  # Untertitelband (beginnt 1155) — 124 px. Der Standardknopf braucht 150 px
+  # Kantenmass und passt dort nicht. 64 px Durchmesser ergeben 92 px, also
+  # 1051..1143, und lassen oben wie unten Luft.
+  #
+  # Die Alternative waere gewesen, den Knopf woanders hinzulegen. Es gibt kein
+  # Woanders: Ober- und unterhalb dieses Bandes stehen Gesichter, und genau
+  # deshalb liegt hier ueberhaupt etwas.
+  durchmesser: 64
 
 branding: { aktiv: false, text: "TODO", y: 1790 }
 audio:    { normalisieren: true, ziel_lufs: -14.0 }

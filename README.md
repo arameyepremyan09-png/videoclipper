@@ -132,10 +132,13 @@ weder ein zusätzliches Bild noch einen zusätzlichen Filter. Gebrochen wird an
 Sprechpause, Satzende, Zeichenzahl oder Standzeit; `[gelächter]` wird nie
 gesetzt.
 
-**2. Follow-Aufforderung.** Eine Pille, die von rechts einfliegt, ~2,6 s steht
-und rechts wieder hinausfliegt — dorthin, wo auf TikTok der Folgen-Knopf liegt.
-Sie steht bei 35 % der Cliplänge, nie im Hook und nie auf der Pointe. Auch hier
-ein einziges PNG, die Bewegung im `x`-Ausdruck.
+**2. Follow-Aufforderung.** Der runde Folgen-Knopf der App: Er poppt auf, ein
+Mauszeiger fährt von rechts unten herein und drückt ihn, der Knopf wird mit
+einem verpuffenden Ring weiß und trägt einen Haken, dann fährt der Zeiger
+hinaus und der Knopf poppt weg. Rund 3 s, bei 35 % der Cliplänge, nie im Hook
+und nie auf der Pointe. Die Bewegung des Zeigers steckt in den x/y-Ausdrücken;
+Größe und Zustand können das nicht und sind deshalb eine Folge kurz
+geschalteter Standbilder — dieselbe Mechanik wie die Countdown-Liste.
 
 Beide bleiben über TikToks UI-Zone (unterste 192 px); `untertitel.band` und
 `follow.masse` brechen ab, wenn ein Template sie hineinschiebt. Alle Werte

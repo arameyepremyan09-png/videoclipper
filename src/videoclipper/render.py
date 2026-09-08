@@ -91,15 +91,18 @@ def ueberlagerungen(plan: EditPlan, tmpl: dict) -> list[dict]:
             })
 
     if r.follow:
-        conf = tmpl["follow_hinweis"]
-        x0, y0, pw, _ = follow.masse(tmpl)
+        # Die Klickszene ist keine einzelne Einblendung mehr, sondern eine
+        # Folge: Knopfzustaende (Pop, Druck, Umschlag, Wegpoppen) und darueber
+        # der Mauszeiger. Ein Eintrag je Stueck, in der Reihenfolge, in der
+        # ``follow.baue`` die Bilder liefert.
         h = follow.Hinweis(r.follow["text"], r.follow["ab"], r.follow["bis"])
-        eintraege.append({
-            "art": "follow",
-            "x": follow.x_ausdruck(h, x0, cw, pw, conf),
-            "y": str(y0),
-            "enable": f"between(t,{h.ab:.3f},{h.bis:.3f})",
-        })
+        for s in follow.szene(h, tmpl):
+            eintraege.append({
+                "art": "follow",
+                "x": s.x,
+                "y": s.y,
+                "enable": f"between(t,{s.ab:.3f},{s.bis:.3f})",
+            })
 
     return eintraege
 
@@ -155,7 +158,8 @@ def _overlay_bilder(plan: EditPlan, tmpl: dict, bilder_dir: Path) -> list[Path]:
         cues = [untertitel.Cue(c["text"], c["ab"], c["bis"]) for c in r.untertitel]
         bilder += untertitel.baue(cues, tmpl, bilder_dir, plan.clip_id)
     if r.follow:
-        bilder.append(follow.baue(tmpl, bilder_dir / f"{plan.clip_id}.follow.png"))
+        h = follow.Hinweis(r.follow["text"], r.follow["ab"], r.follow["bis"])
+        bilder += follow.baue(tmpl, bilder_dir, plan.clip_id, h)
     return bilder
 
 
@@ -244,16 +248,17 @@ def filtergraph_countdown(plan, tmpl: dict, lufs: float) -> str:
                      f"overlay=0:0:enable='between(t,{seg['ab']:.3f}{bis})'[{raus}]")
         vorher = raus
 
-    # Die Follow-Pille liegt ueber allem und kommt deshalb als letzter Eingang.
+    # Die Klickszene liegt ueber allem und kommt deshalb als letzte Eingaenge —
+    # ein Eingang je Stueck, gleiche Reihenfolge wie ``follow.baue``.
     if r.follow:
-        conf = tmpl["follow_hinweis"]
-        x0, y0, pw, _ = follow.masse(tmpl)
         h = follow.Hinweis(r.follow["text"], r.follow["ab"], r.follow["bis"])
-        teile.append(
-            f"[{vorher}][{kopf + 1 + n}:v]"
-            f"overlay=x='{follow.x_ausdruck(h, x0, r.canvas[0], pw, conf)}':"
-            f"y='{y0}':enable='between(t,{h.ab:.3f},{h.bis:.3f})'[o_follow]")
-        vorher = "o_follow"
+        for j, s in enumerate(follow.szene(h, tmpl)):
+            raus = f"o_follow{j}"
+            teile.append(
+                f"[{vorher}][{kopf + 1 + n + j}:v]"
+                f"overlay=x='{s.x}':y='{s.y}':"
+                f"enable='between(t,{s.ab:.3f},{s.bis:.3f})'[{raus}]")
+            vorher = raus
 
     teile.append(f"[{vorher}]format=yuv420p[v]")
     return ";".join(teile)
@@ -288,8 +293,9 @@ def rendere_countdown(plan, tmpl: dict, videos: dict[str, Path], ziel: Path,
     for p in listen:
         cmd += ["-i", str(p)]
     if r.follow:
-        cmd += ["-i", str(follow.baue(
-            tmpl, bilder_dir / f"{plan.clip_id}.follow.png"))]
+        h = follow.Hinweis(r.follow["text"], r.follow["ab"], r.follow["bis"])
+        for pfad in follow.baue(tmpl, bilder_dir, plan.clip_id, h):
+            cmd += ["-i", str(pfad)]
 
     cmd += [
         "-filter_complex", filtergraph_countdown(plan, tmpl, lufs),

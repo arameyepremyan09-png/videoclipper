@@ -95,41 +95,61 @@ untertitel:
 # scoring.yaml "das Ziel des Accounts" — Follows pro View. Dieses Overlay ist
 # die einzige Stelle der Pipeline, die direkt darauf einzahlt.
 #
-# Die Pille fliegt von rechts ein und rechts wieder hinaus: Auf TikTok liegt
-# dort die Buttonleiste mit dem Folgen-Knopf, die Bewegung zeigt also dorthin,
-# wohin geklickt werden soll. Auch das steckt im ``x``-Ausdruck des
-# overlay-Filters — keine zweite Bilddatei, kein zweiter Filter.
+# WAS SEIT DEM 2026-09-08 IM BILD STEHT: der runde Folgen-Knopf der App. Ein
+# Mauszeiger faehrt von rechts unten herein — dort liegt auf TikTok die
+# Buttonleiste —, drueckt den roten Knopf, und der wird mit einem verpuffenden
+# Ring weiss und traegt einen Haken. Danach faehrt der Zeiger wieder hinaus und
+# der Knopf poppt weg.
+#
+# Bewegung steckt weiterhin in den x/y-Ausdruecken und kostet nichts. Groesse
+# und Zustand koennen das nicht: ``scale`` laesst sich nicht ueber die Zeit
+# ausdruecken. Pop, Druck und Wegpoppen sind deshalb eine Folge kurz
+# geschalteter Standbilder — dasselbe Verfahren wie die Countdown-Liste.
+# Siehe follow.py, Abschnitt "Die Szene".
 
 follow_hinweis:
   aktiv: true
 
-  text: "FOLGEN FÜR MEHR"
-  schrift: Anton
-  schriftgroesse: 46
-  versalien: true
-  farbe: "#000000"           # Text auf der Pille
-  pille_farbe: "#01FC19"     # gemessener Akzent aus TOP5_COUNTDOWN
-  pille_rand_farbe: "#000000"
-  pille_rand_staerke: 5
-  polsterung_x: 42
-  polsterung_y: 22
-  radius: 26
+  # Nur noch Protokoll: Im Bild steht seit dem 2026-09-08 kein Text mehr,
+  # sondern der runde Knopf. Der Wortlaut bleibt, damit im EditPlan nachlesbar
+  # ist, welche Aufforderung gemeint war.
+  text: "FOLGEN"
 
-  # y ist die Mitte der Pille. 1290 haelt sie ueber dem Untertitelband
-  # (beginnt bei 1424) und unter der Bildmitte.
+  # --- Der Knopf ---
+  # Durchmesser des Kreises in Ruhe. TikToks eigener Folgen-Knopf misst auf
+  # 1080 px Breite rund 50 px; das ist als alleinstehendes Overlay zu klein,
+  # 112 px liest sich auf dem Handy noch als Knopf und nicht als Punkt.
+  durchmesser: 112
+  farbe_vorher: "#FE2C55"     # das Rot der App
+  farbe_nachher: "#FFFFFF"
+  zeichen_vorher: "#FFFFFF"   # Plus
+  zeichen_nachher: "#12121A"  # Haken
+  rand_farbe: "#000000"
+  rand_staerke: 6
+  ring_farbe: "#FFFFFF"       # der Ring, der beim Klick nach aussen verpufft
+
+  # y ist die Mitte des Knopfes.
   y: 1290
+
+  cursor:
+    hoehe: 104
+    farbe: "#FFFFFF"
+    rand_farbe: "#000000"
+    # Wo die Spitze auf dem Knopf landet: leicht rechts unter der Mitte, so
+    # wie ein Mensch zielt — genau auf die Mitte sieht nach Rasterung aus.
+    ziel_dx: 14
+    ziel_dy: 16
+    # Wie weit unterhalb des Knopfes er das Bild betritt. Waagerecht kommt er
+    # immer von rechts: Dort liegt auf TikTok die Buttonleiste.
+    start_dy: 520
 
   # --- Zeitfenster ---
   # ab_anteil ist der Anteil der Cliplaenge, an dem sie erscheint; die
   # Schranken davor und danach gewinnen, wenn der Clip kurz ist.
   ab_anteil: 0.35
-  dauer: 2.6
-  min_dauer: 1.6             # darunter wird nicht gestaucht, sondern gemeldet
+  dauer: 3.0
+  min_dauer: 1.8             # darunter wird nicht gestaucht, sondern gemeldet
   nicht_vor: 3.0             # der Hook gehoert dem Clip
   nicht_nach_ende: 2.0       # die Pointe auch
-
-  animation:
-    art: einflug_rechts
-    dauer: 0.28
 
   renderer: png_overlay

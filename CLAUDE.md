@@ -719,11 +719,48 @@ Ueber alle neun lokalen Transkripte bleibt danach kein Ueberhang ueber der
 
 ### 2. Follow-Aufforderung waehrend des Clips
 
-Eine Pille im gemessenen Gruen `#01FC19`, die von rechts einfliegt, rund
-2,6 s steht und rechts wieder hinausfliegt — auf TikTok liegt dort die
-Buttonleiste mit dem Folgen-Knopf, die Bewegung zeigt also dorthin, wo
-geklickt werden soll. Auch das ist ein einziges PNG; die Bewegung steckt im
-`x`-Ausdruck.
+**Seit dem 2026-09-08 eine Klickszene, keine Pille.** Der runde Folgen-Knopf
+der App — roter Kreis `#FE2C55` mit weissem Plus — poppt auf, ein Mauszeiger
+faehrt von rechts unten herein, drueckt ihn, und der Knopf wird mit einem
+nach aussen verpuffenden Ring weiss und traegt einen Haken. Danach faehrt der
+Zeiger wieder hinaus und der Knopf poppt weg. Rund 3 s. Entscheidung des
+Nutzers; die Wahl zwischen Textpille, rundem App-Knopf und Pille mit
+Plus-Icon wurde ihm vorgelegt.
+
+**Was das ueber den Renderpfad sagt, ist der eigentliche Punkt.** Es gibt
+genau ein Mittel: ein PNG, geschaltet ueber `enable`, mit Ausdruecken fuer x
+und y. Daraus folgt die Aufteilung zwangslaeufig:
+
+| | |
+|---|---|
+| **Bewegung** | ein Ausdruck. Der Zeiger ist EIN Bild, das ueber x/y faehrt — kostet einen Eingang, wie die alte Pille. |
+| **Groesse und Zustand** | Bilder. `scale` laesst sich nicht ueber die Zeit ausdruecken; Pop, Druck und Wegpoppen sind eine FOLGE kurz geschalteter Standbilder, 1-2 Frames je Zustand. |
+
+Das sind 23 Eingaenge statt einem. Vertretbar, weil sie klein sind und
+`enable` sie ausserhalb ihres Fensters nicht komponiert — die Untertitel
+eines 47-s-Clips bringen zum Vergleich 39 mit.
+
+Drei Dinge, die beim Bauen nicht offensichtlich waren:
+
+- **Der Klickring muss groesser sein als der Knopf.** In der ersten Fassung
+  lag der erste Ringzustand bei 1.10 gegen einen Knopf bei 1.16 — also
+  darunter und unsichtbar. Und seine Deckkraft lief linear auf **null** aus,
+  womit der letzte Ringzustand ein leeres Bild war. Von drei Ringzustaenden
+  war einer zu sehen.
+- **`between` schliesst beide Raender ein.** Ohne 1 ms Abzug am Ende jedes
+  Zustandsfensters sind an der Nahtstelle zwei Knoepfe verschiedener Groesse
+  gleichzeitig aktiv.
+- **Ein Exponent von 3 sieht aus wie ein Hänger.** Beim Anflug des Zeigers
+  sind mit `pow(1-p,3)` bei halber Zeit schon 87 % der Strecke zurueckgelegt;
+  der Rest kriecht. 2.2 verteilt die Bewegung sichtbar und bremst trotzdem ab.
+
+Der Knopf ist mit 150 px Kantenmass deutlich groesser als die alte Pille
+(94 px) und passte deshalb in mehreren Templates nicht mehr an seinen Platz.
+`COUCH_FULL`, `VLOG_FULL` und `FULLCAM_169` ruecken von 582 auf 620,
+`REACT_STACK` von 760 auf 790. **`OME_SPLIT` bekommt einen kleineren Knopf**
+(64 px statt 112): Frei ist dort nur das Wandband zwischen Headline und
+Untertitelband, gemessene 124 px — und ein Woanders gibt es nicht, weil
+ober- und unterhalb Gesichter stehen.
 
 **Warum nicht am Ende:** `scoring.yaml` gewichtet `retention` mit 0,40, und
 genau `completion_rate` ist die Zahl, die in jeder bisherigen Messung fehlt —
@@ -748,14 +785,14 @@ alle Templates, dass sie sich nicht beruehren:
 | Ebene | Lage (Standard) |
 |---|---|
 | Headline | je Template, 170..1031 |
-| Follow-Pille | 1243..1337 |
+| Follow-Knopf | 1215..1365 |
 | Untertitelband | 1424..1688 |
 | UI-Zone ab | 1728 |
 
 `TOP5_COUNTDOWN` ist der einzige dokumentierte Ausnahmefall: Untertitel
 `aktiv: false` mit Grund — die Segmente kommen aus bis zu fuenf Quellen,
 deren Transkripte der `CountdownPlan` gar nicht mitfuehrt; der Textkanal des
-Formats ist die mitwachsende Liste. Die Follow-Pille hat es trotzdem, tiefer
+Formats ist die mitwachsende Liste. Der Follow-Knopf sitzt trotzdem drin, tiefer
 gesetzt (y=1650), weil zwischen Liste (endet 765) und Panel (beginnt 812)
 keine freie Flaeche liegt.
 
