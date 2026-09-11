@@ -81,6 +81,17 @@ def _stille_ab(pegel: Pegel, von: float, bis: float) -> float | None:
 EINSATZ_SPANNE = 1.0
 TAL_DB = 10.0
 
+# GEMESSEN am 2026-09-12 an 8haLC71kEDg: Endet das gewuenschte Fenster auf
+# einem Marker, ist dessen Ende das naechste Wortende — und hinter
+# [gelaechter] 3303.86-3304.56 setzt sofort "Richtig" ein. Ohne Messung lief
+# der Nachlauf von 0.35 s hinein, der Teaser endete bei 3304.91 mitten im Wort.
+# Die erste Pause im Marker ist aber kein Ende, sie kann zum Lachen gehoeren
+# (test_lachen_am_ende_wird_nicht_gekuerzt). Es zaehlt deshalb nur eine
+# Luecke, in der das gewuenschte Ende liegt und die hoechstens MARKER_AUSKLANG
+# vor dem Markerende beginnt. Gemessen: 0.26 s davor (Senke bei 3304.30),
+# 0.24 s dahinter (Senke bei 648.10 hinter [gelaechter] bis 647.86).
+MARKER_AUSKLANG = 0.5
+
 
 def _einsatz(pegel: Pegel, t: float, spanne: float = EINSATZ_SPANNE) -> float | None:
     """Wo der Ton einsetzt, zu dem das erste Wort gehoert (laut Transkript bei ``t``).
@@ -226,6 +237,15 @@ def snappe(tr: Transkript, start: float, ende: float,
     if pegel is not None and gesnappt:
         letztes = next((w for w in tr.woerter
                         if abs(w.ende - en_wort) < 1e-6 and not w.ist_marker), None)
+        marker = next((w for w in tr.woerter
+                       if abs(w.ende - en_wort) < 1e-6 and w.ist_marker), None)
+        if letztes is None and marker is not None:
+            # Begruendung bei MARKER_AUSKLANG. Keine erste Pause wie beim
+            # Wort: Die Stille im Marker kann das Lachen sein.
+            luecke = _luecke(pegel, ende, max(marker.start + 0.1,
+                                              marker.ende - MARKER_AUSKLANG))
+            if luecke is not None:
+                en = min(en, luecke)
         if letztes is not None:
             # Liegt das gewuenschte Ende in einer Luecke hinter dem letzten
             # Wort, ist genau diese gemeint — auch wenn davor noch ein Lacher

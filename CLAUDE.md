@@ -536,6 +536,57 @@ Nicht geschnitten, mit Grund: die Erklaerung Standesamt gegen Feier
 Person" verweist auf den Clip davor, Regel 1a) und die Fotostrecke 628-675 s
 (Karussell, kein Lacher).
 
+### Nachtrag 2026-09-12: Among Us bei EliasN97 — drei Bilder, die Signatur trennt eins
+
+Vermessen an 8haLC71kEDg ("WIEDERWAERTIGER LETZTE REIHE SQUAD! Among Us Chaos
+mit Mert, Coach, Danny & Co.", Kanal EliasN97, 3878 s, 1920x1080@60). Profil
+`ELIASN97_AMONGUS`, Templates `ELI_SPIEL_STACK` und `FULLCAM_169`.
+
+Im Spiel sitzt Elis Facecam als Bild im Bild unten mittig, im selben silbernen
+OBS-Rahmen mit FOKUS-Plakette wie bei `ELIASN97_STREAM`. Der Rahmen ist oben
+dicker als an den Seiten, die Plakette ragt unten ins Bild; die Box
+`[700,688,528,268]` liegt innen an allen Zierecken. Die Signatur ist die linke
+Innenkante (x=696) und trennt ueber 7757 Punkte sauber: Median 114.6 im Spiel,
+22 % unter 12.
+
+**Fullcam und Browser sind fuer die Signatur dasselbe.** Zwischen den Runden
+zeigt der Stream Eli im Vollbild, das Gluecksrad oder das Streamlabs-Dashboard;
+die beiden letzten mit der Facecam unten LINKS. Unterschieden werden sie hier
+an der rosa Abo-Ziel-Box: in Fullcam oben links, sonst oben mittig. Gemessen
+alle 0.5 s: Fullcam 3248.0-3357.5 s, davor Dashboard, danach Rad. Die Box
+rutscht dazwischen kurz aus dem Bild (3253.0-3254.5) — das ist kein Wechsel.
+
+Zwei der besten Stellen enden deshalb vor ihrem Lacher: "Aufmerksamkeitsspanne
+von 8 Sekunden" vor "Poet werden" (Rad ab 3357.5), "Ein Alibi braucht nur ein
+Moerder" vor dem Lacher bei 3616 (Spiel endet 3602.5). Die Mitspieler sind nur
+im Ton; wo einer auf die Webcam eines anderen reagiert ("Er schwitzt, sein
+Gesicht ist rot"), sieht der Zuschauer nur Eli.
+
+**Vier Grenzen lagen im Wort, alle im QC unsichtbar.** Nachgemessen in 10- und
+50-ms-Fenstern an jeder Grenze des Entwurfs, beide Segmente je Clip:
+
+- `_004` endete bei 3356.51 mitten in "jetzt?" (-16 dB; die Senke kommt erst
+  bei 3356.66), der Hauptteil von `_003` bei 3598.51 in "Ja". Beide Enden
+  liegen jetzt in der gemessenen Senke.
+- Der Teaser von `_005` endete bei 3304.91, 0.35 s in "Richtig". Das naechste
+  Wortende zum gewuenschten Ende war das eines `[gelaechter]`-Markers, und
+  Marker waren von der Pegelmessung ausgenommen. `snappe` misst jetzt auch
+  dort, aber nur eine Luecke, die in den letzten 0.5 s des Markers beginnt
+  (`MARKER_AUSKLANG`) — die Stille mitten im Marker kann das Lachen sein.
+- Der Hauptteil von `_002` begann 0.25 s in einem gerufenen "Wo ist Maus?",
+  das YouTube gar nicht transkribiert hat; im Transkript steht dort nur das
+  ueberlange "safe." des Ereignisses davor.
+
+Die Schnittsperre zog das Ende von `_001` vor "Cam" (486.17), weil 0.1 s
+spaeter "GAME COMPLETE" einblendet. Der Wechsel liegt nur im Spielpanel, die
+Facecam laeuft durch — gerendert ist deshalb mit `--ohne-schnittpruefung`.
+
+Was bleibt: `snappe` kennt als Einsatz nur Stille unter -50 dB, keine Senke.
+Wo zwei Woerter nur durch ein Tal getrennt sind, beginnt ein Segment deshalb
+0.20 s vor dem Wort, auch wenn das im vorigen liegt. Beim Hauptteil von
+`_005` faellt das mit der OBS-Blende vom Dashboard in die Fullcam zusammen
+(3247.73-3247.93): Er beginnt mit 0.08 s ausklingendem "Okay".
+
 ## Bildschnitte — Stage 04b, gemessen am 2026-09-07
 
 Der Modus sagt, *welches Layout* vorliegt. Er sagt nicht, ob das Bild

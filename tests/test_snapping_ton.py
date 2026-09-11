@@ -66,6 +66,21 @@ def test_lacher_nach_kurzer_pause_gehoert_zum_clip():
     assert e == pytest.approx(735.25)
 
 
+def test_ende_hinter_einem_lacher_marker_liegt_in_der_senke():
+    """GEMESSEN an 8haLC71kEDg: [gelaechter] 3303.86-3304.56, direkt dahinter
+    "Richtig", dazwischen eine Senke bei 3304.30. Das naechste Wortende zum
+    gewuenschten Ende 3304.3 war das des Markers; ohne Messung endete der
+    Teaser bei 3304.91, mitten in "Richtig"."""
+    tr = _tr(*_rede(700.0, 720.0), ("Bruder.", 720.0, 720.4),
+             ("[gelächter]", 720.4, 721.1), ("Richtig", 721.1, 721.6))
+    pegel = _pegel((720.4, 720.85, -12.0), (720.85, 721.0, -40.0),
+                   (721.0, 721.6, -12.0))
+    _, ohne, _ = snappe(tr, 700.0, 720.9)
+    assert ohne == pytest.approx(721.45)            # "Richtig" im Clip
+    _, e, _ = snappe(tr, 700.0, 720.9, pegel=pegel)
+    assert 720.85 <= e < 721.05
+
+
 def test_ende_im_ton_schneidet_an_der_ersten_pause():
     """Liegt das gewuenschte Ende mitten im Lacher, ist keine Luecke gemeint —
     dann gilt die Regel aus saiJDq9DM_Y: erste Pause nach dem letzten Wort."""

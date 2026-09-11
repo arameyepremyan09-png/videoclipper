@@ -1,0 +1,72 @@
+# Materialprofil: EliasN97 / Among-Us-Stream
+#
+# Gemessen am 2026-09-12 an 8haLC71kEDg ("WIEDERWAERTIGER LETZTE REIHE SQUAD!
+# Among Us Chaos mit Mert, Coach, Danny & Co.", Kanal EliasN97, 3878 s,
+# 1920x1080@60). Die Mitspieler sind nur im Ton (Discord), im Bild ist nur Eli.
+#
+# DREI BILDER, ZWEI MODI IM PROFIL:
+#   SPIEL     Among Us im Vollbild, Elis Facecam als Bild im Bild unten mittig,
+#             silberner Rahmen mit FOKUS-Plakette, Liga-Ticker am unteren Rand.
+#             Rund 74 % der Laufzeit.
+#   FULLCAM   Eli im Vollbild, Abo-Ziel-Box oben links.
+#   Browser   Gluecksrad oder Streamlabs-Dashboard, Facecam unten LINKS. Die
+#             Signatur unten trennt ihn NICHT von FULLCAM — beides ist "sonst".
+#             Gemessen an 3230 s (Dashboard) und 2440 s / 3362 s (Rad). Fuer
+#             FULLCAM-Clips die Grenzen deshalb eigens pruefen: In FULLCAM steht
+#             die rosa Abo-Ziel-Box oben links (x 20..380), sonst oben mittig.
+#
+# FACECAM IM SPIEL: Kantenmessung ueber 30 Bilder im Abstand von 126 s,
+# Spalten 682/696 und 1233/1247, Zeilen 667/684 und 965 dominant. Pixelprofile
+# bei 640 s und 2460 s: Der Rahmen ist oben dicker (Bild ab x 697, bis 1233)
+# als an den Seiten (ab 689, bis 1240), das Bild reicht von y 685 bis 965, und
+# die FOKUS-Plakette ragt unten mittig ein paar Pixel hinein. Die Box liegt
+# deshalb innen an allen Zierecken: 528x268, auf 1080 Breite 548 hoch.
+#
+# SIGNATUR: die linke Innenkante der Facecam, x=696 zwischen y 700 und 950.
+# Ueber 7757 Punkte im Abstand von 0.5 s klar zweigipflig: Median 114.6 im
+# Spiel, 22 % unter 12, dazwischen wenige Uebergaenge. Schwelle 50.
+
+name: ELIASN97_AMONGUS
+beschreibung: Among-Us-Stream, Facecam unten mittig im Spielbild, dazwischen Fullcam und Browser
+gueltig_ab: 2026-09-12
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [EliasN97]
+  sprache: de
+
+signatur:
+  modus: SPIEL
+  kante_x: 696
+  bereich: [700, 950]
+  schwelle: 50.0
+  sonst: FULLCAM
+
+modi:
+  SPIEL:
+    zonen:
+      # fokus: Elis Gesicht, gemessen an der Vergroesserung bei 640 s.
+      facecam: { box: [700, 688, 528, 268], rolle: creator, fokus_x: 990, fokus_y: 805 }
+      # Ohne den Liga-Ticker am unteren Rand (ab y 1030). Die kleine Facecam
+      # bleibt im Spielbild: Sie liegt unten mittig, wo in der Abstimmung kein
+      # Name steht, und eine Spielzone ohne sie waere nur das obere Drittel.
+      spiel: { box: [0, 0, 1920, 1028], rolle: inhalt }
+    muellzonen:
+      - { box: [0, 1030, 1920, 50], hinweis: Liga-Ticker }
+      - { box: [820, 0, 300, 76], hinweis: Abo-Ziel-Box }
+  FULLCAM:
+    zonen:
+      # fokus: Elis Gesicht, gemittelt ueber fuenf Bilder zwischen 3250 und 3345 s.
+      voll: { box: [0, 0, 1920, 1080], rolle: creator, fokus_x: 960, fokus_y: 560 }
+    muellzonen:
+      - { box: [0, 0, 400, 80], hinweis: Abo-Ziel-Box oben links }
+
+datenschutz:
+  fremdinhalt_blur: false
+
+signale:
+  # 43 [gelaechter] in 3878 s — der Textkanal traegt.
+  lachmarker: 1.0
+  loudness_peak: 0.8
+  sprechtempo: 0.5

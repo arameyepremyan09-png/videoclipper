@@ -1,0 +1,66 @@
+# Template: ELI_SPIEL_STACK
+#
+# Spielstream mit Facecam als Bild im Bild: Facecam oben an der Naht, das
+# ganze Spielbild darunter. SCHNITTREGELN.md Regel 2, Fall 3 ("Gaming:
+# Facecam oben, Spiel unten").
+#
+# WARUM NICHT GAME_STACK: Dort ist die Facecam 16:9 und die Spielzone endet an
+# ihrer Kante (COACHLIM_GAME). Hier sitzt die Facecam unten MITTIG im Spielbild
+# (ELIASN97_AMONGUS) — eine Spielzone ohne sie waere nur das obere Drittel.
+# Das Spielbild bleibt deshalb ganz, mit der kleinen Facecam darin; bei Among
+# Us liegt dort in der Abstimmung ohnehin kein Name.
+#
+# Geometrie wie DUO_STACK: beide Panels an der Naht (``ausrichtung``), Blur
+# oben und unten.
+#
+#   Headline        145..315
+#   Facecam         412..960   (Quelle 528x268 -> 1080x548)
+#   Follow-Knopf    885..1035  auf der Naht
+#   Spielbild       960..1538  (1920x1028 ohne Liga-Ticker -> 1080x578)
+#   Untertitel     1573..1723
+#   UI-Zone ab     1728
+
+name: ELI_SPIEL_STACK
+beschreibung: Facecam oben an der Naht, Spielbild darunter vollstaendig, Headline oben
+default_fuer: [ELIASN97_AMONGUS]
+gilt_fuer_modus: SPIEL
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: facecam
+    ziel: [0, 0, 1080, 960]
+    passung: einpassen
+    ausrichtung: unten
+  - quelle: spiel
+    ziel: [0, 960, 1080, 960]
+    passung: einpassen
+    ausrichtung: oben
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: editplan.headline
+  schrift: Anton
+  schriftgroesse: 76
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 9
+  y: 230
+  max_breite: 1000
+  max_zeilen: 2
+  renderer: png_overlay
+
+follow_hinweis:
+  y: 960
+
+untertitel:
+  y: 1648
+  band_hoehe: 150
+
+branding: { aktiv: false, text: "TODO", y: 1790 }
+audio:    { normalisieren: true, ziel_lufs: -14.0 }

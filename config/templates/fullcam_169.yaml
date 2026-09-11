@@ -25,8 +25,9 @@ name: FULLCAM_169
 beschreibung: Vollbild 16:9 vollstaendig eingepasst, Blur ringsum, Headline ueber dem Bild
 # ELIASN97_STREAM: Eli allein am Schreibtisch — Regel 2, Fall 2 gilt ausdruecklich
 # auch fuer eine Person allein in Fullcam. COACHLIM_KAESE_SNAP: derselbe Fall,
-# Coachlim allein in der Vollbild-Cam.
-default_fuer: [COACHLIM_ABU_TIKTOK, ELIASN97_STREAM, COACHLIM_KAESE_SNAP]
+# Coachlim allein in der Vollbild-Cam. ELIASN97_AMONGUS: Eli zwischen den Runden
+# im Vollbild.
+default_fuer: [COACHLIM_ABU_TIKTOK, ELIASN97_STREAM, COACHLIM_KAESE_SNAP, ELIASN97_AMONGUS]
 gilt_fuer_modus: FULLCAM
 
 canvas: [1080, 1920]
