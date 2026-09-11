@@ -1,0 +1,99 @@
+# Materialprofil: EliasN97 / Stream-Mitschnitt, hochgeladen von Elijello
+#
+# Gemessen am 2026-09-11 an saiJDq9DM_Y ("Bleibt Sidney fuer immer Single?!
+# Eli ueber Sidneys Zukunft", 708.4 s, 1920x1080@60, Kanal Elijello).
+#
+# ZWEI STREAMS IN EINEM VIDEO. Bis 394.25 s traegt Eli das blaue Delay-Trikot,
+# danach ein gestreiftes Hemd und Sonnenbrille — der Cutter hat zwei Streams
+# aneinandergesetzt, und im zweiten schaut Eli bei 398-451 s einen fremden
+# Clip des ersten ("Eli macht sich Sorgen um Sids Zukunft"). Kamera, Raum und
+# OBS-Layout sind in beiden gleich; fuer das Profil ist es ein Material.
+#
+# KANTENMESSUNG ueber 40 Frames: staerkste persistente Spalte 5.4 (x=1111),
+# staerkste Zeile 9.3 (y=2, der Bildrand) — "nichts zu trennen", wie Couch
+# (13.3) oder BMW-Vlog (4.9). Der zweite Modus hat trotzdem scharfe Boxen; sie
+# sind nur nicht persistent, weil der Browser 32 % der Laufzeit steht.
+#
+# MODI, ueber 2833 Abtastpunkte im Abstand von 0.25 s:
+#   FULLCAM   15.7-137.7, 249.0-398.0, 451.0-627.6, 675.1-708.4 s
+#   BROWSER   137.7-249.0, 398.0-451.0, 627.6-675.1 s
+# Die Wechsel sind OBS-Ueberblendungen von rund 0.3 s, bildgenau gemessen
+# (627.55-627.90, 674.85-675.15, 248.85-249.05). Sie fallen exakt auf die
+# Schnittmeldungen aus Stage 04b.
+#
+# WAS DER BROWSER ZEIGT — drei verschiedene Seiten, und nur eine passt zur Box:
+#   137.7-246.5  Instagram-Post von Willys Hochzeit (Karussell); ab 147.5 s
+#                steht dort das Foto von Sidney mit der Traene. Box stimmt.
+#   627.6-675.1  derselbe Post, andere Fotos des Karussells. Box stimmt.
+#   246.5-249.0  fussball.de-Tabelle, die Facecam steht dort OBEN RECHTS.
+#   398.0-451.0  YouTube-Shorts-Player mittig: anderer Inhalt, andere Box.
+# Die Signatur erkennt "Browser", nicht "Instagram-Post" — dieselbe Grenze wie
+# bei COACHLIM_ABU_TIKTOK. BROWSER-Clips gehoeren in die beiden Post-Strecken.
+#
+# DAS INTRO (0-15.683 s) ist ein Zusammenschnitt aus anderen Videos mit
+# Voice-over. Es endet mit einem harten Schnitt 0.04 s vor dem ersten Wort des
+# Streams, wird nie geclippt und von der Signatur als BROWSER gelesen.
+
+name: ELIASN97_STREAM
+beschreibung: Stream-Mitschnitt, Vollbild-Cam wechselnd mit Browser (Instagram) plus Facecam unten rechts
+gueltig_ab: 2026-09-11
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [Elijello]
+  sprache: de
+
+# WIE ERKANNT WIRD: ueber die Kantenenergie links unten im Bild. In der Cam
+# liegt dort die dunkle, glatte Zimmerwand, im Browser die Instagram-
+# Navigationsleiste mit ihren Symbolen.
+#
+# Gemessen ueber 2833 Punkte:
+#   FULLCAM  0.61 .. 1.76   (p99 0.75)
+#   BROWSER  2.68 .. 9.93   (p1 3.08)
+#   dazwischen KEIN EINZIGER Punkt
+#
+# Helligkeit trennt hier nicht: Wand und Browser-Hintergrund liegen beide bei
+# 17-24. Deshalb Struktur statt Pegel, wie bei MARLI_PHONE.
+signatur:
+  modus: BROWSER
+  flaeche: [20, 300, 200, 500]
+  kantenenergie: true
+  schwelle: 2.2
+  sonst: FULLCAM
+
+modi:
+  FULLCAM:
+    # Eli allein am Schreibtisch. SCHNITTREGELN.md Regel 2, Fall 2: auch allein
+    # in Fullcam wird das 16:9-Bild vollstaendig gezeigt (FULLCAM_169).
+    zonen:
+      voll: { box: [0, 0, 1920, 1080], rolle: creator }
+    muellzonen:
+      - { box: [1518, 0, 402, 100], hinweis: Abo-Ziel-Box oben rechts }
+  BROWSER:
+    zonen:
+      # Innenraum des Facecam-Rahmens. Der Rahmen selbst liegt auf
+      # [1289, 691, 618, 345] und traegt unten die FOKUS-Plakette; die inneren
+      # Kanten sitzen ueber 12 Frames auf denselben Pixel (x 1304|1891,
+      # y 709|1016). 588x308 ist 1.91:1 — der Rahmen beschneidet die Cam.
+      facecam: { box: [1304, 709, 588, 308], rolle: creator }
+      # Das Postfoto. 674x899 ist 3:4; die Kanten liegen ueber 12 Frames bei
+      # x 336|1009 und y 118|1016 — auch ueber verschiedene Karussellfotos.
+      foto: { box: [336, 118, 674, 899], rolle: inhalt }
+    muellzonen:
+      - { box: [0, 0, 1920, 90], hinweis: Browser-Tab- und Adressleiste }
+      - { box: [836, 0, 346, 88], hinweis: Abo-Ziel-Box }
+      - { box: [0, 90, 336, 955], hinweis: Instagram-Navigation und Nachbarposts }
+      - { box: [1010, 118, 563, 925], hinweis: Kommentarspalte des Posts }
+      - { box: [0, 1045, 1920, 35], hinweis: Windows-Taskleiste }
+
+datenschutz:
+  fremdinhalt_blur: false
+
+signale:
+  # 10 Marker, davon 4 [gelächter] (221, 409, 427, 688 s). Die bei 409 und 427
+  # stammen aus dem fremden Clip, den Eli im zweiten Stream abspielt. Der
+  # Textkanal traegt also kaum; ausgewaehlt wird durch Lesen (Stage 06).
+  lachmarker: 0.3
+  loudness_peak: 1.0
+  sprechtempo: 0.6

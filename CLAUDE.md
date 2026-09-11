@@ -449,6 +449,77 @@ des Follow-Knopfes. Bei y=620 lag er 38 px im Bild und sass auf der LED-Leiste.
 Headlinezeilen reicht die Headline bis 520 und der Knopf passt nicht mehr
 darueber. Seit Regel 3 sind Headlines ohnehin kurz.
 
+### Nachtrag 2026-09-11: Stream mit Instagram-Browser, vier Grenzfehler
+
+Vermessen an saiJDq9DM_Y ("Bleibt Sidney fuer immer Single?! Eli ueber
+Sidneys Zukunft", Kanal Elijello, 708.4 s, 1920x1080@60). Profil
+`ELIASN97_STREAM`, Templates `FULLCAM_169` und neu `FOTO_STACK`. Acht Clips,
+zwei davon Tier A (74.8 s und 69.5 s, beide ohne Streckung).
+
+Das Video sind **zwei aneinandergesetzte Streams** (blaues Trikot bis 394 s,
+danach gestreiftes Hemd) mit denselben zwei Modi: Eli allein in Fullcam und
+ein Browser mit Instagram-Post plus Facecam unten rechts. Die Signatur misst
+wie bei `MARLI_PHONE` Struktur statt Pegel — links unten liegt in der Cam eine
+glatte Wand, im Browser die Instagram-Navigation. Ueber 2833 Punkte: FULLCAM
+0.61..1.76, BROWSER 2.68..9.93, dazwischen kein einziger Wert. Die Helligkeit
+trennt nicht, beide liegen bei 17..24.
+
+Der Browser zeigt drei verschiedene Seiten, und nur eine passt zur Box: den
+Hochzeitspost (ab 147.5 s Sidneys Foto), eine fussball.de-Tabelle mit der
+Facecam **oben rechts** (246.4-249.0 s) und einen YouTube-Shorts-Player
+(398-451 s). Dieselbe Grenze wie bei `COACHLIM_ABU_TIKTOK`: Die Signatur
+erkennt "Browser", nicht "Post". Im Shorts-Player laeuft ein fremder Clip
+genau des Moments, den `_003` zeigt — ein Beleg, dass die Stelle traegt, und
+der Grund, sie nicht ein zweites Mal zu schneiden.
+
+`FOTO_STACK` ist die Komposition von `REACT_STACK` mit anderen Massen: Die
+Facecam ist vom OBS-Rahmen auf 1.91:1 beschnitten, das obere Panel deshalb
+566 statt 606 hoch. Am gerenderten Frame liegt Sidneys Gesicht auf 900..1185,
+der Follow-Knopf auf Fliege und Kragen (1267..1413), der Untertitel auf der
+Brust. Mittig zwischen Naht und Band waere Gesicht — der Knopf steht immer
+bei x=540 und darf laut `tests/test_overlays.py` nicht ueber die Headline.
+
+### Vier Fehler an den Clipgrenzen, alle im QC unsichtbar
+
+1. **Der Vorlauf kannte keine Bilder.** Das Intro endet mit einem harten
+   Schnitt 0.04 s vor dem ersten Wort; 0.20 s Vorlauf zeigten zehn Bilder
+   Intro — im ersten Bild, also im Vorschaubild. Ein zweiter Anfang lag im
+   Rest einer 0.3-s-Ueberblendung von OBS. `schnitte.uebergaenge` misst die
+   Schnitte aus Stage 04b jetzt bildgenau nach (ruhiges Bild 0.1..0.3 je
+   Bildwechsel, Blende 3..9, harter Schnitt 30..40), und
+   `snappe(sperren=...)` zieht Vor- und Nachlauf aus ihnen heraus. Das ist
+   der Fehler aus dem BMW-Vlog vom 2026-09-06, jetzt im Code statt in der
+   Handkontrolle.
+2. **Der Nachlauf haengte Stille an.** "angreifen." steht im Transkript bis
+   543.12 s, gesprochen ist es um 541.0 zu Ende, danach hat der Cutter 1.8 s
+   stummgeschaltet. `snappe(pegel=...)` endet jetzt an der ersten Pause von
+   0.2 s unter -50 dBFS hinter dem letzten Wort; eine einzelne leise Stelle
+   ist nur eine Silbenluecke ("an-grei-fen" fiel auf -53). Das Ende wandert
+   nur nach vorn. Vier von acht Clips hatten bis zu 2.5 s Stille am Ende.
+3. **Dann fehlte das Wort der Pointe.** Mit dem ehrlichen Ende sah der letzte
+   Cue aus wie ein vom Clipende abgeschnittener Fetzen und wurde verworfen —
+   "passen.", "zusammen.", "verschieben.", "angreifen.". Ein kurzer letzter
+   Cue haengt jetzt am Cue davor, wenn kein Satzende dazwischenliegt; nur ein
+   neuer Satz bleibt draussen. Spiegelbildlich standen Woerter, die vor dem
+   Clip gesprochen waren, im ersten Cue ("Sternen, ob Sydney Friede"), weil
+   ihr Transkriptende bis zum naechsten Wort reicht. Sie fallen jetzt raus.
+4. **Die Hookpruefung las YouTubes Schreibweise.** Die ASR schreibt
+   "Sydney", Titel und Headline "Sidney" — jede Headline mit dem Namen galt
+   als lose. `hook.pruefe` wendet jetzt dieselben Korrekturregeln an wie die
+   Untertitel (`untertitel.korrigiere_text`).
+
+Was bleibt: Wo zwei Woerter ohne Pause ineinanderlaufen, erreicht kein
+Wortzeitstempel den Verschluss dazwischen. Bei `_007` liegt er in
+10-ms-Fenstern gemessen bei 627.09..627.13 s ("aus" | "Guck"); das Ende sitzt
+bei 627.03 im "s", weil der naechste erreichbare Punkt (627.19) ein "G"
+mitnaehme. Und `clip rangliste` rechnet ohne Video, also ohne beide Zusaetze:
+Dort ist `_005` 77.8 s lang, gerendert 74.8 s.
+
+Nicht geschnitten, mit Grund: die Erklaerung Standesamt gegen Feier
+(333-393 s, kein Lacher, Regel 1c), "Sie ist ein Phantom" (555-595 s, "diese
+Person" verweist auf den Clip davor, Regel 1a) und die Fotostrecke 628-675 s
+(Karussell, kein Lacher).
+
 ## Bildschnitte — Stage 04b, gemessen am 2026-09-07
 
 Der Modus sagt, *welches Layout* vorliegt. Er sagt nicht, ob das Bild

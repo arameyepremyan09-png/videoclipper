@@ -115,6 +115,59 @@ def _overlay(vorher: str, eingang: int, u: dict, raus: str) -> str:
     return teil + f"[{raus}]"
 
 
+def _einschub_ketten(r, blur: int, vorher: str,
+                     eingang: int) -> tuple[list[str], str]:
+    """Filterglieder fuer die Einschuebe (siehe ``layout.einschuebe``).
+
+    Zwei Arten Panel, zwei Arten Quelle:
+
+    * **Ersatz** kommt live aus dem Video (``0:v``), nur aus einer anderen
+      Zone. Alle Einschuebe eines Clips nutzen dieselbe Zone — deshalb EINE
+      Kette je Panel, eingeblendet ueber die Summe der Fenster. Eine Kette je
+      Einschub hiesse eine eigene Skalierung mit Blur ueber alle Bilder des
+      Clips, je Einschub.
+    * **Halten** kommt aus einem Standbild, einem eigenen Eingang je
+      Einschub. Es laeuft durch dieselbe ``_panel_kette`` wie das Live-Panel —
+      Zuschnitt, Einpassen, Blur —, sonst saehe das gehaltene Bild anders aus
+      als das Bild davor, und genau dieser Uebergang soll nicht auffallen.
+
+    ``eingang`` ist der Index des ersten Haltebildes. Gibt die Glieder und das
+    Label danach zurueck.
+    """
+    teile: list[str] = []
+    if not r.einschuebe:
+        return teile, vorher
+
+    panels: dict[tuple, dict] = {}
+    fenster: dict[tuple, list[str]] = {}
+    for e in r.einschuebe:
+        for p in e["ersatz"]:
+            k = (p["name"], tuple(p["src"]))
+            panels[k] = p
+            fenster.setdefault(k, []).append(
+                f"between(t,{e['ab']:.3f},{e['bis']:.3f})")
+    for i, (k, p) in enumerate(panels.items()):
+        kette, label = _panel_kette("0:v", dict(p, name=f"ers{i}_{p['name']}"), blur)
+        teile.append(kette)
+        teile.append(f"[{vorher}][{label}]overlay=x={p['dst'][0]}:y={p['dst'][1]}:"
+                     f"enable='{'+'.join(fenster[k])}'[{label}_auf]")
+        vorher = f"{label}_auf"
+
+    for n, e in enumerate(r.einschuebe):
+        if not e["halten"]:
+            continue
+        for p in e["halten"]:
+            kette, label = _panel_kette(f"{eingang}:v",
+                                        dict(p, name=f"halt{n}_{p['name']}"), blur)
+            teile.append(kette)
+            teile.append(f"[{vorher}][{label}]overlay=x={p['dst'][0]}:y={p['dst'][1]}:"
+                         f"enable='between(t,{e['ab']:.3f},{e['bis']:.3f})'"
+                         f"[{label}_auf]")
+            vorher = f"{label}_auf"
+        eingang += 1
+    return teile, vorher
+
+
 def filtergraph(plan: EditPlan, tmpl: dict) -> str:
     r = plan.resolved
     blur = (tmpl.get("hintergrund") or {}).get("staerke", 24)
@@ -131,12 +184,16 @@ def filtergraph(plan: EditPlan, tmpl: dict) -> str:
         teile.append("".join(f"[{l}]" for l in labels)
                      + f"vstack=inputs={len(labels)}[buehne]")
 
-    # Eingang 0 ist das Video, ab 1 folgen die PNGs in der Reihenfolge, in der
-    # ``rendere`` sie anhaengt.
-    vorher = "buehne"
+    # Eingang 0 ist das Video. Danach kommt je Einschub mit gehaltenen Panels
+    # ein Haltebild, danach die PNGs in der Reihenfolge, in der ``rendere`` sie
+    # anhaengt. Die Einschuebe liegen UNTER Headline, Untertiteln und Follow:
+    # Sie ersetzen Teile der Buehne, nicht die Schrift darauf.
+    haltebilder = sum(1 for e in r.einschuebe if e["halten"])
+    glieder, vorher = _einschub_ketten(r, blur, "buehne", 1)
+    teile += glieder
     for i, u in enumerate(ueberlagerungen(plan, tmpl)):
         raus = f"ov{i}"
-        teile.append(_overlay(vorher, i + 1, u, raus))
+        teile.append(_overlay(vorher, 1 + haltebilder + i, u, raus))
         vorher = raus
     teile.append(f"[{vorher}]format=yuv420p[v]")
     return ";".join(teile)
@@ -163,11 +220,42 @@ def _overlay_bilder(plan: EditPlan, tmpl: dict, bilder_dir: Path) -> list[Path]:
     return bilder
 
 
+def _haltebild(video: Path, start: float, t: float, ziel: Path) -> Path:
+    """Das Standbild eines Einschubs als PNG, in voller Quellaufloesung.
+
+    Gesucht wird nah am Bild (eine Sekunde davor) statt ab Clipbeginn — sonst
+    dekodierte jeder Einschub den halben Clip. Die Zeitachse bleibt dabei
+    dieselbe: Mit ``-ss`` vor ``-i`` ist ``t`` im Filter immer die Quellzeit
+    minus Suchpunkt, das Bild bei ``start + t`` liegt also bei ``t - lokal``.
+    ``select`` nimmt das erste Bild ab dort; die 4 ms Vorhalt fangen die
+    Rundung ab, das Bild davor liegt 16.7 ms frueher.
+    """
+    lokal = max(t - 1.0, 0.0)
+    subprocess.run(
+        ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
+         "-ss", f"{start + lokal:.4f}", "-i", str(video),
+         "-vf", rf"select='gte(t\,{max(t - lokal - 0.004, 0.0):.4f})'",
+         "-frames:v", "1", "-fps_mode", "passthrough", str(ziel)],
+        check=True)
+    return ziel
+
+
+def _haltebilder(plan: EditPlan, video: Path, bilder_dir: Path) -> list[Path]:
+    """Ein Standbild je Einschub mit gehaltenen Panels, Reihenfolge wie im Graphen."""
+    r = plan.resolved
+    bilder_dir.mkdir(parents=True, exist_ok=True)
+    return [_haltebild(video, r.start, e["halten_bei"],
+                       bilder_dir / f"{plan.clip_id}.halt{k:02d}.png")
+            for k, e in enumerate(r.einschuebe) if e["halten"]]
+
+
 def rendere(plan: EditPlan, tmpl: dict, video: Path, ziel: Path,
             vorschau: bool = False, bilder_dir: Path | None = None) -> Path:
     r = plan.resolved
     ziel.parent.mkdir(parents=True, exist_ok=True)
-    bilder = _overlay_bilder(plan, tmpl, bilder_dir or ziel.parent)
+    ordner = bilder_dir or ziel.parent
+    halte = _haltebilder(plan, video, ordner)
+    bilder = _overlay_bilder(plan, tmpl, ordner)
 
     e = einstellungen()
     encoder = e["platform"]["preview_encoder" if vorschau else "encoder"]
@@ -177,7 +265,8 @@ def rendere(plan: EditPlan, tmpl: dict, video: Path, ziel: Path,
         "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
         "-ss", f"{r.start:.3f}", "-t", f"{r.dauer:.3f}", "-i", str(video),
     ]
-    for bild in bilder:
+    # Reihenfolge der Eingaenge wie in ``filtergraph``: Haltebilder, dann PNGs.
+    for bild in halte + bilder:
         cmd += ["-i", str(bild)]
     cmd += [
         "-filter_complex", filtergraph(plan, tmpl),

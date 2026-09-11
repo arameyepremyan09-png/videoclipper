@@ -1,0 +1,191 @@
+{
+  "video_id": "saiJDq9DM_Y",
+  "hinweis": "Handkorrekturen am Untertiteltext (SCHNITTREGELN Regel 4). Das Transkript bleibt unangetastet, es traegt die Zeitachse — korrigiert wird der fertige Cue, jede Regel muss deshalb vollstaendig in EINEN Cue passen. Gegengeprueft mit whisper.cpp (large-v3-turbo) ueber das ganze Video; an zwei unklaren Stellen (171 s, 490 s) zusaetzlich mit Beam-Search 5 auf dem Einzelfenster. Bei 97-150 s und 628-690 s hing whisper in einer Wiederholungsschleife und liefert dort keine Zweitmeinung. REIHENFOLGE ZAEHLT: Die Regeln greifen je Cue nacheinander. Die allgemeinen Namensregeln stehen am Ende, sonst aendern sie den Text, bevor die spezifischen Regeln ihn finden. Seit 2026-09-11 liest auch hook.pruefe diese Regeln, damit die Headline gegen die korrigierte Schreibweise geprueft wird.",
+  "regeln": [
+    {
+      "suche": "Hochzeiten von Willly war super Chat habe",
+      "ersetze": "Hochzeit von Willy war super, Chat, habe",
+      "grund": "whisper: 'Hochzeit von Willi war super. Chat habe ich schon am Donnerstag gesagt'"
+    },
+    {
+      "suche": "halt auch es muss halt passen.",
+      "ersetze": "halt auch, es muss halt passen.",
+      "grund": "Satzabbruch ('sie muss halt auch — es muss halt passen') lesbar machen"
+    },
+    {
+      "suche": "Asiat für für",
+      "ersetze": "Asiatin für",
+      "grund": "'hübsche Asiat' ist ungrammatisch und wiederholt 'reiche, nette Asiatin' von 106 s; 'für für' ist ein Stotterer. Keine Zweitmeinung, whisper hing hier in einer Schleife"
+    },
+    {
+      "suche": "Ich schwö es dir",
+      "ersetze": "Ich schwör's dir",
+      "grund": "whisper: 'Ich schwöre es dir'"
+    },
+    {
+      "suche": "sichert.",
+      "ersetze": "...",
+      "grund": "Drei verschiedene Hoerungen desselben Wortes: YouTube 'sichert', whisper 'Er ist nicht wie...' und 'nicht wie es handelt'. Nichts erfinden — Eli bricht den Satz dort ab"
+    },
+    {
+      "suche": "Dig am Ende Goldjunge.",
+      "ersetze": "Am Ende Goldjunge.",
+      "grund": "whisper hoert viermal 'Am Ende ein Goldjunge', kein 'Dig'"
+    },
+    {
+      "suche": "Der die muss immer gute Laune",
+      "ersetze": "Die muss immer gute Laune",
+      "grund": "whisper: 'Die muss immer gute Laune haben'"
+    },
+    {
+      "suche": "sagen: \"Ey,",
+      "ersetze": "sagen: Ey,",
+      "grund": "Anfuehrungszeichen, das erst zwei Cues spaeter schliesst"
+    },
+    {
+      "suche": "nebenan.\"",
+      "ersetze": "nebenan.",
+      "grund": "schliessendes Anfuehrungszeichen ohne sichtbares oeffnendes"
+    },
+    {
+      "suche": "Bock auf mich auf dich.",
+      "ersetze": "Bock auf mich, auf dich.",
+      "grund": "Selbstkorrektur lesbar machen; whisper: 'keinen Bock auf mich. Auf dich.'"
+    },
+    {
+      "suche": "Es steht in den Stern.",
+      "ersetze": "Es steht in den Sternen.",
+      "grund": "whisper: 'Es steht in den Sternen'"
+    },
+    {
+      "suche": "Es gibt ein Unterschied",
+      "ersetze": "Es gibt einen Unterschied",
+      "grund": "whisper: 'Es gibt einen Unterschied'"
+    },
+    {
+      "suche": "Das es kann ganz doll",
+      "ersetze": "Das kann ganz doll",
+      "grund": "whisper: 'Das kann ganz doll nach hinten losgehen'"
+    },
+    {
+      "suche": "losgehen, Chat auch fürs Herz",
+      "ersetze": "losgehen, Chat, auch fürs Herz",
+      "grund": "Anrede abtrennen"
+    },
+    {
+      "suche": "ah, mir geht so",
+      "ersetze": "ah, mir geht's so",
+      "grund": "whisper: 'Ah, mir geht's so schlecht'"
+    },
+    {
+      "suche": "sagt: \"Oh,",
+      "ersetze": "sagt: Oh,",
+      "grund": "Anfuehrungszeichen, das erst drei Cues spaeter schliesst"
+    },
+    {
+      "suche": "Fresse und Spiel kannst du spielen oder",
+      "ersetze": "Fresse und spiel! Kannst du spielen oder",
+      "grund": "whisper: 'Fresse und spiele. Kannst du spielen oder kannst du nicht spielen?'"
+    },
+    {
+      "suche": "spielen?\" Und bei ihm kann",
+      "ersetze": "spielen? Und bei ihm kann",
+      "grund": "schliessendes Anfuehrungszeichen ohne sichtbares oeffnendes"
+    },
+    {
+      "suche": "Sney Friede",
+      "ersetze": "Sidney Friede",
+      "grund": "Name; whisper: 'Sydney Friede auf der Bank'"
+    },
+    {
+      "suche": "Ich sag wir die Hochzeit verschieben.",
+      "ersetze": "Ich sag, wir die Hochzeit verschieben.",
+      "grund": "Komma; der Satz ist so gesprochen, beide ASRs hoeren dasselbe"
+    },
+    {
+      "suche": "Ja, ich den nt es nicht",
+      "ersetze": "Ja, ich... den juckt es nicht",
+      "grund": "Drei Hoerungen mit derselben Lautform: YouTube 'ich den nt es nicht so', whisper 'Die nügt es nicht so', whisper Beam 5 'Ja, ich... Den nögt das nicht so'. Eli sagt im selben Video zweimal 'ihn juckt es nicht'"
+    },
+    {
+      "suche": "Dame hat S auch",
+      "ersetze": "Dame, hat Sidney auch",
+      "grund": "whisper: 'Es gab eine Dame. Hat Sidney auch, glaube ich, mal erzählt'"
+    },
+    {
+      "suche": "erzählt, haben wir das ist",
+      "ersetze": "erzählt, das ist",
+      "grund": "whisper: 'mal erzählt. Das ist jetzt ungefähr zwei Jahre her'"
+    },
+    {
+      "suche": "Korinder Kopf.",
+      "ersetze": "Corinna Kopf?",
+      "grund": "whisper: 'Corinna Kopf, Corinna Kopf.' — Eli liest einen Tipp aus dem Chat vor"
+    },
+    {
+      "suche": "Koriner Kopf.",
+      "ersetze": "Corinna Kopf?",
+      "grund": "wie oben"
+    },
+    {
+      "suche": "sie wä es gewesen",
+      "ersetze": "sie wär's gewesen",
+      "grund": "whisper: 'sie wäre es gewesen für Fritte'"
+    },
+    {
+      "suche": "aber sie sie hätte",
+      "ersetze": "aber sie hätte",
+      "grund": "Stotterer; whisper: 'Aber sie hätte gepasst'"
+    },
+    {
+      "suche": "Ich fand es ist auch ein richtig ist ein",
+      "ersetze": "Ich fand, es ist auch ein",
+      "grund": "whisper: 'Ich fand, es ist auch ein richtig schönes Paar'"
+    },
+    {
+      "suche": "Props an meinem BR.",
+      "ersetze": "Props an meinen Bro.",
+      "grund": "whisper: 'Props an mein Bro'"
+    },
+    {
+      "suche": "Ich fande Willly",
+      "ersetze": "Ich fand, Willy",
+      "grund": "whisper: 'Ich fand, Willi sah richtig geil aus'"
+    },
+    {
+      "suche": "Ich h jetzt mit eingerechnet.",
+      "ersetze": "Ich hätte jetzt mit eingerechnet.",
+      "grund": "whisper: 'Ich hätte jetzt mit eingerechnet'"
+    },
+    {
+      "suche": "Wie soll ich den das einteilen?",
+      "ersetze": "Wie soll ich denn das einteilen?",
+      "grund": "'den' statt 'denn'; whisper: 'Wie soll ich das einteilen?'"
+    },
+    {
+      "suche": "maßgeschneideter Anzug",
+      "ersetze": "maßgeschneiderter Anzug",
+      "grund": "Schreibweise"
+    },
+    {
+      "suche": "maßges geschneidert?",
+      "ersetze": "maßgeschneidert?",
+      "grund": "ASR hat das Wort zerteilt"
+    },
+    {
+      "suche": "Sydney",
+      "ersetze": "Sidney",
+      "grund": "Name. Die ASR schreibt durchgehend 'Sydney', Videotitel und Kanalbeschreibung 'Sidney'"
+    },
+    {
+      "suche": "Willi",
+      "ersetze": "Willy",
+      "grund": "Name wie in der Kanalbeschreibung; macht aus 'Willis' zugleich 'Willys'"
+    },
+    {
+      "suche": "Frette",
+      "ersetze": "Fritte",
+      "grund": "Spitzname von Sidney Friede, sonst durchgehend 'Fritte' transkribiert"
+    }
+  ]
+}

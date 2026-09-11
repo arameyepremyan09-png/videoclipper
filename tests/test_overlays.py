@@ -41,24 +41,54 @@ def test_jedes_template_traegt_beide_overlays():
         assert qc.pflichtelemente(layout.template(name)) == [], name
 
 
+def _schneiden(a: tuple, b: tuple) -> bool:
+    """Ueberlappen sich zwei Rechtecke (x, y, breite, hoehe)?"""
+    ax, ay, aw, ah = a
+    bx, by, bw, bh = b
+    return ax < bx + bw and bx < ax + aw and ay < by + bh and by < ay + ah
+
+
 def test_kein_template_laesst_die_drei_textebenen_kollidieren():
-    """Headline, Follow-Pille und Untertitelband duerfen sich nie beruehren.
+    """Headline, Follow-Knopf und Untertitelband duerfen sich nie beruehren.
 
     Sie stehen an drei verschiedenen Orten: Headline im Template, die beiden
-    anderen in config/overlays.yaml. Wer eine Headline tiefer setzt, sieht die
-    Pille nicht — und im fertigen Clip liegt dann Text auf Text.
+    anderen in config/overlays.yaml. Wer eine Headline tiefer setzt, sieht den
+    Knopf nicht — und im fertigen Clip liegt dann Text auf Text.
+
+    Geprueft werden Rechtecke, nicht die Reihenfolge von oben nach unten. Die
+    stand hier bis zum 2026-09-11 als Zusage (Headline -> Knopf -> Band); bei
+    PHONE_STACK sitzt der Knopf seitdem im Facecam-Panel und damit UEBER der
+    Headline, weil im Handypanel nichts frei ist (siehe Template).
     """
     import yaml
     from videoclipper.layout import ROOT
     for pfad in (ROOT / "config" / "templates").glob("*.yaml"):
         t = layout.template(yaml.safe_load(pfad.read_text(encoding="utf-8"))["name"])
+        cw, _ = t["canvas"]
         hc = t["headline"]
         zh = int(hc["schriftgroesse"] * 1.12)
-        headline_unten = hc["y"] + zh * hc.get("max_zeilen", 2) // 2
-        _, fy, _, fh = follow.masse(t)
-        assert headline_unten < fy, t["name"]
+        halb = zh * hc.get("max_zeilen", 2) // 2
+        mb = int(hc.get("max_breite", cw))
+        headline = ((cw - mb) // 2, hc["y"] - halb, mb, 2 * halb)
+        knopf = follow.masse(t)
+        assert not _schneiden(headline, knopf), t["name"]
         if t["untertitel"].get("aktiv", True):
-            assert fy + fh <= untertitel.band(t)[0], t["name"]
+            oben, hoehe = untertitel.band(t)
+            band = (0, oben, cw, hoehe)
+            assert not _schneiden(knopf, band), t["name"]
+            assert not _schneiden(headline, band), t["name"]
+
+
+def test_knopf_darf_seitlich_stehen():
+    """PHONE_STACK setzt ``x`` — Knopf und Zielpunkt des Zeigers wandern mit."""
+    t = layout.template("PHONE_STACK")
+    x, _, k, _ = follow.masse(t)
+    assert x + k // 2 == t["follow_hinweis"]["x"]
+    h = follow.Hinweis("X", 10.0, 13.0)
+    anflug = [s for s in follow.szene(h, t) if s.name == "zeiger"][0]
+    _, _, polster = follow._zeiger_masse(t["follow_hinweis"])
+    assert abs(_eval(anflug.x, t=anflug.bis) + polster - t["follow_hinweis"]["x"]) < 40
+    assert _eval(anflug.x, t=anflug.ab) > t["canvas"][0], "Zeiger startet im Bild"
 
 
 def test_abschalten_ohne_grund_ist_ein_fehler(tmpl):
@@ -138,6 +168,28 @@ def test_abgeschnittener_letzter_cue_faellt_weg(tmpl):
     tr = _tr(("Das", 0.0, 0.5), ("reicht.", 0.5, 1.0), ("Und", 1.9, 2.1))
     cues = untertitel.schneide(tr, 0.0, 2.05, tmpl["untertitel"])
     assert [c.text for c in cues] == ["Das reicht."]
+
+
+def test_kurzes_letztes_wort_haengt_am_satz_statt_zu_verschwinden(tmpl):
+    """GEMESSEN an saiJDq9DM_Y: Seit ``snappe`` am echten Wortende schneidet,
+    ist der kurze letzte Cue oft das Wort der Pointe selbst — "angreifen."
+    steht im Transkript bis 543.12 s, gesprochen ist es um 541.0 zu Ende."""
+    tr = _tr(("Der", 0.0, 0.2), ("soll", 0.2, 0.4), ("da", 0.4, 0.6),
+             ("noch", 0.6, 0.8), ("mal", 0.8, 1.0), ("angreifen.", 1.0, 3.6))
+    cues = untertitel.schneide(tr, 0.0, 1.5, tmpl["untertitel"])
+    assert [c.text for c in cues] == ["Der soll da noch mal angreifen."]
+    assert cues[-1].bis == pytest.approx(1.5)
+
+
+def test_wort_vor_dem_clip_steht_nicht_im_ersten_cue(tmpl):
+    """GEMESSEN an saiJDq9DM_Y: "Sternen," war vor dem Clipanfang zu Ende
+    gesprochen, sein Transkriptende reicht aber bis zum naechsten Wort — der
+    erste Cue lautete "Sternen, ob Sydney Friede"."""
+    tr = _tr(("Sternen,", 0.0, 0.92), ("ob", 0.92, 1.2), ("Sydney", 1.2, 1.64),
+             ("Friede", 1.64, 2.0), ("spielen", 2.0, 2.32), ("kann.", 2.32, 2.8))
+    cues = untertitel.schneide(tr, 0.76, 3.3, tmpl["untertitel"])
+    assert cues[0].text.startswith("ob ")
+    assert "Sternen" not in " ".join(c.text for c in cues)
 
 
 def test_vollstaendiger_letzter_cue_bleibt(tmpl):
@@ -350,3 +402,16 @@ def test_korrekturregeln_werden_ueber_den_ganzen_lauf_gezaehlt(tmpl, monkeypatch
     # Ueber den Lauf bleibt genau die eine uebrig, die wirklich nie greift.
     offen = untertitel.ungenutzte("v", t1 | t2)
     assert len(offen) == 1 and "kommt nirgends vor" in offen[0]
+
+
+def test_hookpruefung_liest_die_korrigierte_schreibweise(monkeypatch):
+    """GEMESSEN an saiJDq9DM_Y: Die ASR schreibt "Sydney", Headline und
+    Kanaltitel "Sidney". Ohne die Korrektur galt jede Headline mit dem Namen
+    als lose, obwohl er im Clip dutzendfach faellt."""
+    from videoclipper import hook
+    tr = _tr(("Was", 0.0, 0.3), ("ist", 0.3, 0.5), ("mit", 0.5, 0.7),
+             ("Sydney?", 0.7, 1.2), ("Keine", 5.0, 5.3), ("Ahnung.", 5.3, 5.8))
+    assert not hook.pruefe("WAS IST MIT SIDNEY", tr, 0.0, 6.0).verankert
+    monkeypatch.setattr(untertitel, "regeln",
+                        lambda _vid: [{"suche": "Sydney", "ersetze": "Sidney"}])
+    assert hook.pruefe("WAS IST MIT SIDNEY", tr, 0.0, 6.0).verankert

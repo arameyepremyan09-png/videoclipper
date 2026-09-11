@@ -95,8 +95,14 @@ def schneide(tr: Transkript, start: float, ende: float, conf: dict) -> list[Cue]
 
     # ``[gelaechter]`` und Geschwister sind Annotationen von YouTube, keine
     # gesprochenen Woerter. Als Untertitel gesetzt waeren sie schlicht falsch.
+    #
+    # Ein Wort, das VOR dem Clip beginnt, gehoert nicht hinein. GEMESSEN am
+    # 2026-09-11 an saiJDq9DM_Y: "Sternen," war 0.1 s vor dem Clipanfang zu
+    # Ende gesprochen, sein Transkriptende reicht aber bis zum naechsten Wort —
+    # der erste Cue lautete "Sternen, ob Sydney Friede", obwohl im Ton nur
+    # "ob Sidney Friede" zu hoeren ist. Die Toleranz faengt Rundung ab.
     woerter = [w for w in tr.woerter
-               if w.start < ende and w.ende > start and not w.ist_marker
+               if start - 0.05 <= w.start < ende and not w.ist_marker
                and w.text.strip()]
 
     gruppen: list[list[Wort]] = []
@@ -142,6 +148,18 @@ def schneide(tr: Transkript, start: float, ende: float, conf: dict) -> list[Cue]
         # verschiebt die Grenze, die Stage 06 bewusst gesetzt hat, und laeuft
         # bei diesem Material in den naechsten Gespraechspartner.
         if letzter and bis >= fenster - 1e-6 and bis - c.ab < min_dauer:
+            # GEMESSEN am 2026-09-11 an saiJDq9DM_Y: Seit ``snappe`` am echten
+            # Wortende schneidet, ist der kurze letzte Cue oft kein Fetzen des
+            # naechsten Satzes mehr, sondern das letzte Wort selbst, dessen
+            # Transkriptende weit hinter dem Clip liegt — "passen.",
+            # "verschieben.", "angreifen.". Weggeworfen fehlte in vier von acht
+            # Clips genau das Wort der Pointe. Laeuft die Rede ohne Satzende in
+            # ihn hinein, gehoert er an den Cue davor; nur ein neuer Satz
+            # bleibt draussen.
+            vorher = cues[-1] if cues else None
+            if (vorher is not None and not _satzende(vorher.text.split()[-1])
+                    and c.ab - vorher.bis < pause):
+                cues[-1] = Cue(f"{vorher.text} {c.text}", vorher.ab, round(bis, 3))
             continue
         # SPIEGELBILDLICH DAZU, gemessen am 2026-09-08 an ErYc_3POazo: Derselbe
         # Fetzen entsteht am ANFANG. ``snappe`` setzt 0.20 s Vorlauf, und bei
@@ -300,3 +318,15 @@ def ungenutzte(video_id: str, getroffen: set[int]) -> list[str]:
     return [f"Korrekturregel ohne Treffer: {r['suche']!r} — falsch geschrieben, "
             f"oder steht sie ueber einer Cuegrenze?"
             for i, r in enumerate(rs) if i not in getroffen]
+
+
+def korrigiere_text(text: str, video_id: str) -> str:
+    """Dieselben Regeln auf einen Fliesstext statt auf Cues.
+
+    Fuer Pruefungen, die den Wortlaut des Clips lesen (``hook.pruefe``). Die
+    sollen mit dem vergleichen, was der Zuschauer liest — und das ist der
+    korrigierte Untertitel, nicht YouTubes Schreibweise.
+    """
+    for r in regeln(video_id):
+        text = _ersetze(text, r)
+    return text

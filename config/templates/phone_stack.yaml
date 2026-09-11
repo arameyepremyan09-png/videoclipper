@@ -11,6 +11,18 @@
 # Bildschirmhoehe kosten — bei einem Format, in dem der Handyinhalt die Pointe
 # ist. Der Blur ist der guenstigere Preis.
 #
+# NACHGEMESSEN AM 2026-09-11 an jd9bSJ7mshM (COACHLIM_KAESE_SNAP, 1:1 Kaese
+# ueber Snapchat). SCHNITTREGELN.md Regel 2 liess offen, ob dieses Template wie
+# REACT_STACK auf `fuellen` umgestellt wird — "gemessen am naechsten Video
+# dieses Typs". Das ist dieses Video, und es bleibt bei `einpassen`:
+#   1. Der Nutzer hat fuer genau dieses Video vorgegeben: "Achte drauf das
+#      immer die Volle länge des Inhalts ist." `fuellen` schnitte oben und
+#      unten zusammen 15 % vom Chat weg — die aelteste sichtbare Nachricht und
+#      die untere Tastaturzeile.
+#   2. Es kostet hier fast nichts: Der Chat ist 486x694 (0.70) und damit kaum
+#      schmaler als das Panel (0.82). Eingepasst wird er 920x1314; links und
+#      rechts bleiben je 80 px Blur statt 236. Das ist praktisch Kante zu Kante.
+#
 # UI-Zone: Die unteren 192 px verdeckt TikTok mit Caption und Buttons. Sie
 # liegen hier auf dem unteren Rand des Handybildes, also auf Home-Indikator und
 # Tastaturzeile. Das ist die informationsaermste Zone des Handys — bewusst
@@ -18,7 +30,7 @@
 
 name: PHONE_STACK
 beschreibung: Facecam oben, gespiegeltes Handy unten eingepasst, statische Headline auf der Naht
-default_fuer: [MARLI_PHONE, COACHLIM_HANDYS]
+default_fuer: [MARLI_PHONE, COACHLIM_HANDYS, COACHLIM_KAESE_SNAP]
 gilt_fuer_modus: PHONE
 
 canvas: [1080, 1920]
@@ -48,6 +60,52 @@ headline:
   max_breite: 1000
   max_zeilen: 2
   renderer: png_overlay
+
+# --- Pflicht-Overlays ------------------------------------------------------
+# SCHNITTREGELN.md Regel 4. GEMESSEN an jd9bSJ7mshM: Im Handypanel ist nichts
+# frei. Von oben nach unten liegen dort
+#   Nachrichten        606..1428   der Inhalt, die neueste ganz unten
+#   Eingabezeile      1432..1557   hier erscheint, was gerade diktiert wird
+#   Tastatur          1560..1920   Vorschlagszeile und Tasten
+#   UI-Zone ab        1728
+# Die Standardlagen aus overlays.yaml setzten das Untertitelband auf
+# 1424..1688, also ueber die Eingabezeile, und den Follow-Knopf auf
+# 1215..1365 — mitten auf die NEUESTEN Nachrichten, genau die, auf die gerade
+# reagiert wird.
+#
+# Untertitel: auf die Tastatur, 1560..1728. Die Tasten sind die
+#   informationsaermste Flaeche des ganzen Clips. Das Band ist 168 px hoch
+#   statt 264 — aus demselben Grund wie bei REACT_STACK: Der Text steht im
+#   Band zentriert, schmaler heisst tiefer.
+# Follow-Knopf: ins Facecam-Panel, rechts neben den Creator (855..1005 x
+#   255..405). Dort liegen Poster und Sofa; der Creator sitzt mittig, sein
+#   Kopf gemessen bei x=380..626. Damit steht der Knopf als einzige Textebene
+#   UEBER der Headline — der Kollisionstest in tests/test_overlays.py prueft
+#   deshalb Rechtecke statt der Reihenfolge von oben nach unten.
+follow_hinweis:
+  x: 930
+  y: 330
+
+untertitel:
+  y: 1644
+  band_hoehe: 168
+
+# --- Einschub --------------------------------------------------------------
+# Wie lange ein Clip in diesem Layout ueber eine Strecke eines ANDEREN Modus
+# laufen darf (siehe layout.einschuebe). OB ueberhaupt, und aus welcher Zone
+# das obere Panel dann kommt, steht im Profil unter `modi.<Modus>.einschub` —
+# das ist Geometrie der Quelle. Hier steht nur die Kompositionsfrage: Wie
+# lange darf das Handypanel ein gehaltenes Standbild zeigen, bevor es wie ein
+# Haenger aussieht?
+#
+# 10 s, gemessen an jd9bSJ7mshM: 24 der 28 Vollbild-Strecken sind hoechstens
+# 7.8 s lang und sind die Reaktion auf die Nachricht, die gerade im Chat
+# steht. Die vier langen (17-39 s) sind etwas anderes — Intro, Scrollen
+# durch alte Chats, die Nachbesprechung am Ende — und werden nicht
+# ueberbrueckt. Profile ohne `einschub`-Eintrag bleiben unberuehrt: Dort
+# bricht ein Clip ueber einem Moduswechsel weiterhin ab.
+einschub:
+  max_dauer: 10.0
 
 branding: { aktiv: false, text: "TODO", y: 1790 }
 audio:    { normalisieren: true, ziel_lufs: -14.0 }

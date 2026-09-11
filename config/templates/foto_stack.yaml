@@ -1,0 +1,77 @@
+# Template: FOTO_STACK
+#
+# Facecam oben, das gezeigte Foto unten auf voller Breite, Headline auf der Naht.
+#
+# WOFUER: Der Streamer zeigt im Browser ein Foto und redet darueber. Gemessen an
+# saiJDq9DM_Y: Eli blaettert durch den Instagram-Post von Willys Hochzeit und
+# spricht ueber Sidney, waehrend Sidneys Foto im Bild steht. Das Foto ist hier
+# der Kontext (SCHNITTREGELN Regel 1a: worauf reagiert wird, muss zu sehen
+# sein), das Gesicht oben die Reaktion.
+#
+# WARUM NICHT REACT_STACK: dieselbe Komposition, andere Masse, andere Gesichter.
+# Die Facecam ist hier 1.91:1 statt 16:9 (der OBS-Rahmen beschneidet sie), das
+# obere Panel deshalb 566 statt 606 hoch — sonst fielen links und rechts je
+# 3.5 % der Cam weg. Und die Overlaylagen von REACT_STACK sind fuer ein Gesicht
+# auf y=965..1501 im TikTok-Player vermessen; hier liegt es woanders.
+#
+# BEIDE PANELS `fuellen`: Der Hausstil laeuft von Kante zu Kante (Regel 2). Das
+# Foto ist 3:4, die Flaeche 1080x1354 ist 0.80 — oben und unten fallen je 27
+# Quellpixel weg, 3 % der Hoehe. Dort liegen im Foto die Karussellpunkte.
+
+name: FOTO_STACK
+beschreibung: Facecam oben, gezeigtes Foto unten auf voller Breite, statische Headline auf der Naht
+default_fuer: [ELIASN97_STREAM]
+gilt_fuer_modus: BROWSER
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: facecam
+    ziel: [0, 0, 1080, 566]     # 1.91:1 wie der Rahmeninnenraum
+    passung: fuellen
+  - quelle: foto
+    ziel: [0, 566, 1080, 1354]
+    passung: fuellen
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: editplan.headline
+  schrift: Anton
+  schriftgroesse: 64
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 9
+  y: 566                        # auf der Naht
+  max_breite: 1000
+  max_zeilen: 2
+  renderer: png_overlay
+
+# --- Pflicht-Overlays ------------------------------------------------------
+# SCHNITTREGELN Regel 4, nachgemessen am ersten gerenderten Clip
+# (saiJDq9DM_Y_003, Sidneys Hochzeitsfoto):
+#
+#   Elis Gesicht (Cam)    180..405   oberes Panel, x ~600..800
+#   Naht / Headline            566
+#   Sidneys Haaransatz         774
+#   Sidneys Gesicht       900..1185  im Foto, x ~450..700
+#   Follow-Knopf         1267..1413  auf Fliege und Kragen, 80 px unter dem Kinn
+#   Untertitel (Text)    1500..1620  im Standardband 1424..1688, auf der Brust
+#   UI-Zone ab           1728
+#
+# Die beiden anderen Gaeste im Foto (x 120..360 und 810..990, y ~990..1260)
+# liegen seitlich neben Knopf und Text.
+#
+# Der Knopf steht immer mittig (x 467..613) und darf laut
+# tests/test_overlays.py nicht ueber die Headline. Mittig zwischen Naht und
+# Band liegt aber Sidneys Gesicht — frei ist erst die Strecke unter dem Kinn.
+
+follow_hinweis:
+  y: 1340
+
+branding: { aktiv: false, text: "TODO", y: 1790 }
+audio:    { normalisieren: true, ziel_lufs: -14.0 }

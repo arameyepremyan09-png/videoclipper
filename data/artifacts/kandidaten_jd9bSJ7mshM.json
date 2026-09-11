@@ -1,0 +1,622 @@
+{
+  "video_id": "jd9bSJ7mshM",
+  "profil": "COACHLIM_KAESE_SNAP",
+  "modus_name": "PHONE",
+  "modus_anteil_gesamt": 0.8161512027491409,
+  "dauer": 1165.799,
+  "modus_laeufe": [
+    {
+      "modus": "PHONE",
+      "start": 0.0,
+      "ende": 2.0
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 2.0,
+      "ende": 18.02
+    },
+    {
+      "modus": "PHONE",
+      "start": 18.02,
+      "ende": 20.02
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 20.02,
+      "ende": 22.02
+    },
+    {
+      "modus": "PHONE",
+      "start": 22.02,
+      "ende": 28.03
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 28.03,
+      "ende": 48.05
+    },
+    {
+      "modus": "PHONE",
+      "start": 48.05,
+      "ende": 74.07
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 74.07,
+      "ende": 80.08
+    },
+    {
+      "modus": "PHONE",
+      "start": 80.08,
+      "ende": 84.08
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 84.08,
+      "ende": 88.09
+    },
+    {
+      "modus": "PHONE",
+      "start": 88.09,
+      "ende": 94.09
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 94.09,
+      "ende": 98.1
+    },
+    {
+      "modus": "PHONE",
+      "start": 98.1,
+      "ende": 184.18
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 184.18,
+      "ende": 188.19
+    },
+    {
+      "modus": "PHONE",
+      "start": 188.19,
+      "ende": 214.21
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 214.21,
+      "ende": 220.22
+    },
+    {
+      "modus": "PHONE",
+      "start": 220.22,
+      "ende": 256.25
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 256.26,
+      "ende": 258.26
+    },
+    {
+      "modus": "PHONE",
+      "start": 258.26,
+      "ende": 328.33
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 328.33,
+      "ende": 332.33
+    },
+    {
+      "modus": "PHONE",
+      "start": 332.33,
+      "ende": 356.35
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 356.36,
+      "ende": 358.36
+    },
+    {
+      "modus": "PHONE",
+      "start": 358.36,
+      "ende": 366.36
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 366.37,
+      "ende": 392.39
+    },
+    {
+      "modus": "PHONE",
+      "start": 392.39,
+      "ende": 394.39
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 394.39,
+      "ende": 400.4
+    },
+    {
+      "modus": "PHONE",
+      "start": 400.4,
+      "ende": 430.43
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 430.43,
+      "ende": 432.43
+    },
+    {
+      "modus": "PHONE",
+      "start": 432.43,
+      "ende": 502.5
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 502.5,
+      "ende": 510.51
+    },
+    {
+      "modus": "PHONE",
+      "start": 510.51,
+      "ende": 604.6
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 604.6,
+      "ende": 608.61
+    },
+    {
+      "modus": "PHONE",
+      "start": 608.61,
+      "ende": 658.66
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 658.66,
+      "ende": 664.66
+    },
+    {
+      "modus": "PHONE",
+      "start": 664.66,
+      "ende": 702.7
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 702.7,
+      "ende": 708.71
+    },
+    {
+      "modus": "PHONE",
+      "start": 708.71,
+      "ende": 864.86
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 864.86,
+      "ende": 868.87
+    },
+    {
+      "modus": "PHONE",
+      "start": 868.87,
+      "ende": 876.87
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 876.88,
+      "ende": 888.89
+    },
+    {
+      "modus": "PHONE",
+      "start": 888.89,
+      "ende": 928.93
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 928.93,
+      "ende": 936.93
+    },
+    {
+      "modus": "PHONE",
+      "start": 936.94,
+      "ende": 984.98
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 984.98,
+      "ende": 988.99
+    },
+    {
+      "modus": "PHONE",
+      "start": 988.99,
+      "ende": 1047.04
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 1047.05,
+      "ende": 1051.05
+    },
+    {
+      "modus": "PHONE",
+      "start": 1051.05,
+      "ende": 1057.05
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 1057.06,
+      "ende": 1065.06
+    },
+    {
+      "modus": "PHONE",
+      "start": 1065.06,
+      "ende": 1091.09
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 1091.09,
+      "ende": 1097.09
+    },
+    {
+      "modus": "PHONE",
+      "start": 1097.1,
+      "ende": 1125.12
+    },
+    {
+      "modus": "FULLCAM",
+      "start": 1125.12,
+      "ende": 1165.16
+    }
+  ],
+  "kandidaten": [
+    {
+      "peak": 501.0,
+      "start": 466.0,
+      "ende": 521.0,
+      "score": 1.5,
+      "quelle": "lacher",
+      "modus_anteil": 0.857,
+      "text": "warum hat aber so wenig Elan? Warum hat so wenig Elan? Mein Vater bringt mehr Elan. Man muss richtig einen. Soll ich mal ein ich mein reinstecke? Was für ein denkt Traktor ein doch schon Baby? Warte mal. Sehr gute sehr gut. Diese Baby gefällt mir. Schreib Baby ist gut. Ich schreib Baby ist gut. Baby ist gut. Aber [musik] Daddy gefällt mir mehr. Gut. Bravo. Und jetzt fra sind deine Nägel gemacht? Sind deine Nägel gemacht? Kommt noch keine Sorge. Opa [gelächter] [schreien] Alter Jubelt wie mein Vater als mich damals in Luft geschmissen hat. Was war denn das? Das ist die Türken. Bra. Schreib. Ja, natürlich. Soll ich sagen? Ja. Schick B. Schreib schreib. Ich brauch schreib schreib schreib. Ich brauche eine Bestätigung. Ich brauche eine Bestätigung. Muss auch gucken. Muss auch gucken,"
+    },
+    {
+      "peak": 1150.0,
+      "start": 1115.0,
+      "ende": 1165.8,
+      "score": 1.428,
+      "quelle": "lacher",
+      "modus_anteil": 0.2,
+      "text": "Ja. Gewöhn dich an Nudeln ohne Soße. Du bist Bruder, [schreien] du bist du bist Ich wollte dir helfen. Ich wollte dir helfen, mein Bruder. Ich wollte dir helfen. Hier gab es nichts zu helfen. Du hast dich du hast du hast du hast dir selber eine Falle gestellt. Beende einfach die selb. Geh einfach raus aus diese Chat, mein Bruderini. Geh einfach rausini. Ja. Ja. Du kannst eigent echt schreiben. Liebe Grüße an die Gruppe, das war nur Spaß. Schreib liebe liebe Grüße an die Gruppe, das war nur Spaß. Irgendwas, du bist Geh geh kalte dusche. Geh kalt duschen, mein Bruder. Bring dein Kortisur runter. Ich habe noch noch was was noch ein [schreien] Wie du hast noch ein Käse. Wie du hast noch ein Käse, mein Bruder? Ja, nee, war nicht genug gerade. H war wie war nicht genug gerade Knastgruppe? Weil eine nicht läuft. Die hat mir so ihre Nummer geschickt."
+    },
+    {
+      "peak": 573.25,
+      "start": 538.25,
+      "ende": 593.25,
+      "score": 1.426,
+      "quelle": "lacher",
+      "modus_anteil": 1.0,
+      "text": "Kar wollst du schreiben? Du denkst an mein Kar vielleicht [musik] was ein Bild von dein Nägel. Ja. Bruder, welche Schule geht? Ich glaub Bild von deinen Nägeln. Schick ab und auch gerne und auch gerne von deinem und auch gerne er soll ein soll schreiben ich und auch gerne von deinem Schlafanzug nachher. Bravo. Schreib ich. Sag sag ich geb dir abends Geld. Sag ich geb dir abends Geld. Ich geb dir abends Geld. Was kostet das? Ich geb dir abends Geld. Was kostet das? [schreien] Wie willst mitkommen? Was willst du mitkommen? Willst du ihre Fuß oder was? L Nein, ich schreib willst du mitkommen in Nägeln? Hallo. Hallo. Was passiert da im Hintergrund? Schu für Fußnel nicht Bruder kostet 50 € Land. Schu schu wie 50 €. Was sieg den Bruder? Das sind schon teure Nägel."
+    },
+    {
+      "peak": 869.5,
+      "start": 834.5,
+      "ende": 889.5,
+      "score": 1.416,
+      "quelle": "lacher",
+      "modus_anteil": 0.714,
+      "text": "ich sportlich stöhnt wieder. Danke schön für dein Rap, mein Bester. Warte mal, habe ich gerade gerappt? Das gefällt mir. Gefällt, dass ich sportlich bin. Hol hol Fernbedienung. Holbedien. Wir schicken Bild von Fernbedienung und dann fragen wir, ob es der auch gefällt. Schick, hol. Ja, dann gehe ich gleich auch direkt auf Toilette. Warum auf Toilette, du? Willst du beim Schwanzbild schicken oder was? Wie ich muss pissen da se warten, bis du pisst oder was? Ja, dann kannst du nebenbei den anderen mein Bruder mach der andere der andere. Ach Bruder. [schreien] Ach Bruder. Ja Bruder Bruder du warst auch maximal bester Leute Schule Bruder. Wie dumm kann man sein? Tu mal das in Hose. Tu mal biss in Hose. Tu mal das in Hose. Geh mal hier auf Kamera. Mach mal Kamera. Ich sitze gerade am Stuhl. Ja, mach doch mal. Was ist das für ein Tro Headset, Bruder? Er leuchtet einfach komplett, Bruder. Trom Headset. Wir sind H, wenn du alleine bist."
+    },
+    {
+      "peak": 354.0,
+      "start": 319.0,
+      "ende": 374.0,
+      "score": 1.411,
+      "quelle": "lacher",
+      "modus_anteil": 0.741,
+      "text": "und schreib noch und schreib das so. Ja ja ja und schreib oben noch und bravo. Bravo, bravo. Und schreib und oben links. Hallo du oben links bevor du abschickst. Und wie was schreibst denn du? Reicht doch. Was machst du? Reicht. Wie extrem ist dein Wereiz? Und und deine willst du über dein Reiz reden? Schreib das was du sagst. Du hättest schreiben sollen. Und wie extrem ist dein WGreiz? [musik] [schreien] Wir sind drin. Wir sind drin. sch gute. Wir bauen aber ein ganz schnell, ganz schnell ganz schnell. Geh mal weiter, weiter weiter weiter, weiter schneller, schneller, schneller. Weiter Leute, weiter Leute, ich zeig gerade nicht im Stream. Geh hoch, geh hoch. Ah, warte mal, wo war die? Ja, aber das ist"
+    },
+    {
+      "peak": 1120.5,
+      "start": 1085.5,
+      "ende": 1140.5,
+      "score": 1.406,
+      "quelle": "lacher",
+      "modus_anteil": 0.593,
+      "text": "So eine Lücke. Das ist so eine Lücke. Nein. [musik] [musik] Mach dich gefasst. Ja. Gewöhn dich an Nudeln ohne Soße. Du bist Bruder, [schreien] du bist du bist Ich wollte dir helfen. Ich wollte dir helfen, mein Bruder. Ich wollte dir helfen. Hier gab es nichts zu helfen. Du hast dich du hast du hast du hast dir selber eine Falle gestellt. Beende einfach die selb. Geh einfach raus aus diese Chat, mein Bruderini. Geh einfach rausini. Ja. Ja. Du kannst eigent echt schreiben. Liebe Grüße an die Gruppe, das war nur Spaß. Schreib liebe liebe Grüße an die Gruppe, das war nur Spaß. Irgendwas,"
+    },
+    {
+      "peak": 245.5,
+      "start": 210.5,
+      "ende": 265.5,
+      "score": 1.386,
+      "quelle": "lacher",
+      "modus_anteil": 0.852,
+      "text": "musst du dir Zeit nehmen. Gute das, was ich mit dir vorhabe musst du dir Zeit nehmen. Sehr gute. Ist die freaky oder nicht? Ich weiß nicht. Ja, du weißt nicht. Du schreibst uns seit zwei Tage mit was über was hast du geschrieben Bruder? Gott und die Welt Hobbys und so. Was ich mit der Farbe musst du dir Zeit nehmen. Wir testen das Wasser. Lande landen. Wir testen das Wasser. Me wir testen das Wasser. Hol Schneuchel raus. Hol Schneuchel raus. Wir gehen tauchen. Hol Schneuchel raus. Okay. Coach. Coach. Ja. Ja. Me nach. Ja. [gelächter] Wann spielst du wie der Bob? Was ist Bob? Du bist bist du meine Bob und willst oder was? Bob Gan. Was ist das Bruder? Pakistanische Version oder was? Was hast du denn vor? Was hast du denn vor? Uh, schreib schreib schreib schreib mit dir sehr viel. Schreib mit dir sehr viel. Die Frage ist, was hältst du aus? Gut."
+    },
+    {
+      "peak": 813.5,
+      "start": 778.5,
+      "ende": 833.5,
+      "score": 1.378,
+      "quelle": "lacher",
+      "modus_anteil": 1.0,
+      "text": "kann niemand hinter das Licht führen. Ja, Fischer lang und de Füßen sehen, damit ich ein vorher nachher vergleich hab. Ja. Ja. Die soll Schuhe ausziehen. Auto. Mer. Gute gute [musik] soll Schuhe ein Auto ausziehen. Stinke Fuß. Oh, die ist wirklich immer nicht. Ja. Ja. Bravo. Ganze Auto stinkt. Nein, das ist einer zu viel. Wie wie wie viel gerade ohne Hände alles hat einverstanden Fü zeig zu viel ja ist nicht zu viel sch bin mit Freundin schreibt die soll auch Füße sein. Nein [gelächter] schreib schreib die soll Füße schicken damit ich vergleich schreibt sollen wir nicht ja ja schreibt die soll auch Füße zeigen. Die soll Füße schicken. Dann bewerte ich eure Dann bewert [gelächter] und dann schreibst wir machen ein Jok da aus. Wir machen ein Jog da aus. Schreib ich bin nicht nur lustig,"
+    },
+    {
+      "peak": 72.0,
+      "start": 37.0,
+      "ende": 92.0,
+      "score": 1.371,
+      "quelle": "lacher",
+      "modus_anteil": 0.63,
+      "text": "Bravo. Gute Pirat. Geh mal hoch. Geh mal hoch. Wie lange schreibst du schon mit der? Zwei. Hast du schon über Type und so geredet? Ja. Ja. Ja. Und was ging's jetzt in der letzten Sekunde, mein Bruder? Oder in der letzten Minute? Pass auf, ich bin im Chat, ich zeig gerade im Stream. Okay. Wegen Type. Type? Was ist hier Type? Ja, sie hat geschrieben brünet schwarzen Augen. Brunet schwarze Auge. Und das das hast du auch mein besser oder schwarze Ja, ist ja gleiche Brzählt do dazu. Ja, dann hat sie geschrieben, was ist mein Typ du hast du geschrieben du oder was [schreien] soll ich schreiben? Ja. Beschreib doch wenigstens die Aussehen was für du an. Was das für ein was das für ein Move? L Rizler oder was hat die echt geschrieben? Rizler oder was? Habe ich geschrieben Teilzeit. Was hat? Geh mal weiter runter. Geh mal runter. Und jetzt mal runter oder Bruder. Hängt dein Internet, Bruder. Hallo. Oder"
+    },
+    {
+      "peak": 613.5,
+      "start": 578.5,
+      "ende": 633.5,
+      "score": 1.349,
+      "quelle": "lacher",
+      "modus_anteil": 0.929,
+      "text": "in Nägeln? Hallo. Hallo. Was passiert da im Hintergrund? Schu für Fußnel nicht Bruder kostet 50 € Land. Schu schu wie 50 €. Was sieg den Bruder? Das sind schon teure Nägel. Schreib schreib schreib schreib schreib schreib schreib schreib. Geht dir rein die sagen geht direkt. [gelächter] Ach so, ich soll das nicht schreiben. Na, was du jetzt? Was willst du schreiben? Ich geh direkt oder was? Bist du verrückt? Hast du gerade e schreiben? Ich gehe direkt kaputter. Hallo. Sorry, sorry, sorry. [schreien] Schreib, schreib, schreib, schreib. Aha, dann musst du, dann schuldest du mir abends aber was? Gute. Bravo. Sehr gute Kise. Dann schuldest du mir abends aber was? Mhm. M. Ja, ja, ja, ja, ja. Bravo. Und jetzt rein."
+    },
+    {
+      "peak": 685.0,
+      "start": 650.0,
+      "ende": 705.0,
+      "score": 1.347,
+      "quelle": "lacher",
+      "modus_anteil": 0.821,
+      "text": "du denn hier als Return on Investment, mein Bester? Hm. Was siehst du denn? Wo? Was ist dein Gewinn? 69. Was? Was für 69 my 649 oder was? Was redest du jetzt 69? Kennst du es nicht? Mein 69 ersten Mal MT einer Frau, der wollte ihr einfach sagen, ich sag Musik, aber das kann man nicht so schreiben. 69 schreiben oder was? Woll schreiben [gelächter] Beispiel. Schreib bl ohne Hände. Sehr gute Käse. Sehr gute Käse ohne Hände. Bravo. Das ist hart, ne? Das ist hart. Ich sehe schon diesen Screen. Schreib, weil ich will ja deine schönen Fingernägel nicht dreckig machen. Gute gute. Wir sind da, wir sind da. Schreib schreib schreib schreib schreib schreib."
+    },
+    {
+      "peak": 453.0,
+      "start": 418.0,
+      "ende": 473.0,
+      "score": 1.269,
+      "quelle": "lacher",
+      "modus_anteil": 0.964,
+      "text": "weggeschmissen. Gerade ist Tor passiert hab mein Handy weggeschmissen. Wie schreibst du Tor? Du einer jubelt in Snapchat Chat an schreib schick doch gleich Video wie in Luft springst schreibt er was ein bin gerade aufgeregt. Schreib, schreib, schreib, schreib, schreib. Bruder, hab reicht, reicht. Da steht wieder. Hör auf. Nein, nein, steht nichts. Soll nicht denken, dass ich Sonderschüler. Ja, okay. Schreib. Hä? Hä, aber wieso fragst du wieso fragst du, ob s deine Hand mit dem irakischen Filter schicken? [gelächter] Ich hab Aber wieso fragst du, ob wir so sind? Ich dachte, wir sind schon lange so gut. Ich dachte, wir sind schon lange so gut. Bruder, warum hat aber so wenig Elan? Warum hat so wenig Elan? Mein Vater bringt mehr Elan. Man muss richtig einen."
+    },
+    {
+      "peak": 1070.0,
+      "start": 1035.0,
+      "ende": 1090.0,
+      "score": 1.241,
+      "quelle": "lacher",
+      "modus_anteil": 0.786,
+      "text": "Herzrassen? Einer denkt ist Formel 1 Fahrer was hast du Rasen vor die macht Screenshot und dann bin ich trotzdem in Gruppe Bruder wer ist das Land James oder was hast mich doch gesehen. Das kann do nicht sein. Ich muss jetzt sofort ein Bild von Account ein Check. Wir bauen noch mal zweite Wercheck Screenshot. Das war's mein Bruder. Du bist Brand. [gelächter] [schreien] Sreib schreib schreib schreib wie aus Versehen. Schreib wie aus Versehen. Schreib wie aus Versehen. Schreib wie aus Versehen. [musik] So eine Lücke. Das ist so eine Lücke."
+    },
+    {
+      "peak": 913.25,
+      "start": 878.25,
+      "ende": 933.25,
+      "score": 1.113,
+      "quelle": "lacher",
+      "modus_anteil": 0.714,
+      "text": "mal Kamera. Ich sitze gerade am Stuhl. Ja, mach doch mal. Was ist das für ein Tro Headset, Bruder? Er leuchtet einfach komplett, Bruder. Trom Headset. Wir sind H, wenn du alleine bist. Das wird dir, das wird dir glaube ich auch gefallen. Schreib, das wird dir glaube ich auch gefallen. Bravo. Bravo. Das wird dir glaube ich auch gefallen. Aulung, die hat geöffnet. Du bist in Gruppe. Du bist Du bist in Gruppe. Du bist [gelächter] Du bist in Gruppe, Bruder. Zini, Bruder, du bist in Gruppe. Ich hab gesagt, ich lande in Zeitung. Du bist in Gruppe mein Bruder. Du bist die macht gerade mit Handy von Freund, aber egal. Wenigstens ist er grü"
+    },
+    {
+      "peak": 311.25,
+      "start": 276.25,
+      "ende": 331.25,
+      "score": 0.644,
+      "quelle": "lautheit",
+      "modus_anteil": 0.929,
+      "text": "M4 Competition XDF rein da. M2 Modus. Heiß ich glaube wir sind nicht. Wir rot zurück. Wir roden zurück. Wir roden zurück. Wir sind nicht klar. Wir roden zurück. Wir roden zurück. Schreib ja. Wie scharf? Wie scharf? Wie scharf kann dein Essen sein? Wir roden zurück. Kan mit zwei N. Was für Kan? Wollst du gerade dein Cousiner werden oder was? Wie scharf kann dein Essen sein? Vielleicht, dass wir den chinesisch essen gehen so auf Romant. Genau. Genau. Und schreib wie extrem ist dein Würgeris Kack rein. Der gute schreib schreib kack. Wie wie wie extrem ist Hallo, hallo hallo. Was schreibst du da? Wie extrem ist dein Wirkereiz? Und schreib und schreib und schreib noch und schreib das so. Ja ja ja und schreib oben noch und bravo. Bravo, bravo. Und schreib und oben links. Hallo du oben links bevor du abschickst."
+    },
+    {
+      "peak": 778.25,
+      "start": 743.25,
+      "ende": 798.25,
+      "score": 0.562,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "schreiben? Was siegt dir? Das gefällt mir gerade nicht. Das gefällt mir gerade nicht. Irgendwas ist irgendwas stinkt dir irgendwas stinkt dir. Schreib schreib schreib schreib schreib schreib schreib schreib. Natürlich erfährt es niemand. Z ich mal meine Cousin natürlich schreibt natürlich natürlich natürlich nicht schreibt natürlich nicht schib natürlich nicht schreib natürlich nicht aber ich muss jetzt ein Bild von deinen Füßen sehen, damit ich ein vorher nachher Vergleich habe. Gute, guter Lan, ich bin parat. Ich bin parat. Du Fischland. Ich bin parat. Ich schlaf mit Augen auf diese Leben. M kann niemand hinter das Licht führen. Ja, Fischer lang und de Füßen sehen, damit ich ein vorher nachher vergleich hab. Ja. Ja. Die soll Schuhe ausziehen. Auto. Mer. Gute gute [musik] soll Schuhe ein Auto ausziehen. Stinke Fuß. Oh, die ist wirklich immer nicht. Ja. Ja. Bravo. Ganze"
+    },
+    {
+      "peak": 271.75,
+      "start": 236.75,
+      "ende": 291.75,
+      "score": 0.488,
+      "quelle": "lautheit",
+      "modus_anteil": 0.963,
+      "text": "Hol Schneuchel raus. Hol Schneuchel raus. Wir gehen tauchen. Hol Schneuchel raus. Okay. Coach. Coach. Ja. Ja. Me nach. Ja. [gelächter] Wann spielst du wie der Bob? Was ist Bob? Du bist bist du meine Bob und willst oder was? Bob Gan. Was ist das Bruder? Pakistanische Version oder was? Was hast du denn vor? Was hast du denn vor? Uh, schreib schreib schreib schreib mit dir sehr viel. Schreib mit dir sehr viel. Die Frage ist, was hältst du aus? Gut. Gute gute gibt's kein romantische gibt's kein romantische. Die Frage ist, was hältst du aus? Bravo, bravo. Ja, ja, ja, ja, ja. Wir landen. Wir wir krachen rein. M4 Competition XDF rein da. M2 Modus. Heiß ich glaube wir sind nicht. Wir rot zurück. Wir roden zurück. Wir roden zurück. Wir sind nicht klar. Wir"
+    },
+    {
+      "peak": 136.5,
+      "start": 101.5,
+      "ende": 156.5,
+      "score": 0.471,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "wir müssen die Situation auszen. Schau gerade. Hallo nicht schau. Was für Schau willst du, dass die Champions League schader oder was du sch Bruder. Ja schau Champions League. Schnell schnell schnell schnell. [musik] Ah, gute gute. Schreib schreib schreib schreib schreib schreib. Was machst du gerade? Slowly slowly slowly. Ich muss mal kurz, ich muss mal kurz, ich muss mal kurz, was machst du gerade? Fragezeichen oder? Ja. Ah, sie ist draußen mit ihrer Freundin. Ich weiß nicht, ob sie schei Mhm. Mhm. Egal. Das gute gute. Das ist gute. Das ist gut. Warte, warte, warte. Ja, das musst du doch mir sagen, du dass du schon weißt. L schreib schreib. Ich hab's vergessen. Schreib. Oh, was habe ich gemacht? Schreib: \"Ich dachte vielleicht du bist schon nach Hause.\" Na, vielleicht bist schon nach Hause. Nein, nein, nein. Chill, chill, chill, chill. Vielleicht bist du schon zu Hause und wir können bisschen FaceTime machen. Gute. Und wir können bisschen Faceime machen. Gute mit diese Zunge raus. Mit diese Zunge raus. Mit diese Zunge raus. K rein. Und wir können ein bisschen"
+    },
+    {
+      "peak": 999.75,
+      "start": 964.75,
+      "ende": 1019.75,
+      "score": 0.419,
+      "quelle": "lautheit",
+      "modus_anteil": 0.929,
+      "text": "oder was ist India Platz für mich? Bravo. Warum mit Komma Bruder? Wir fragen gerade ob die Planz für deinen Schwanz hat. Einmal auf Deutschlehrer du. Hey, der gebildete, das ist sehr gut. Der geht ihr seht nur nicht die Vision die Vision dahinter sieht nicht Fischer was schreib schreib schreib schreib schreib schreib schreib in deinem auch frag frag frag in deinem auch. Schreib schreib schreib schreib ich liebe schreib ich liebe schreib in deinem auch ich liebe. Sehr gut. Bravo, bravo, bravo. Ich habe gesagt, heute wir krachen rein. Heute wir krachen komplett rein. [musik]"
+    },
+    {
+      "peak": 174.5,
+      "start": 139.5,
+      "ende": 194.5,
+      "score": 0.415,
+      "quelle": "lautheit",
+      "modus_anteil": 0.929,
+      "text": "schreib. Ich hab's vergessen. Schreib. Oh, was habe ich gemacht? Schreib: \"Ich dachte vielleicht du bist schon nach Hause.\" Na, vielleicht bist schon nach Hause. Nein, nein, nein. Chill, chill, chill, chill. Vielleicht bist du schon zu Hause und wir können bisschen FaceTime machen. Gute. Und wir können bisschen Faceime machen. Gute mit diese Zunge raus. Mit diese Zunge raus. Mit diese Zunge raus. K rein. Und wir können ein bisschen Facetime machen. Mit Zunge raus. Die soll wissen. Die soll wissen. Die soll wissen, was es hier geht. [musik] Ja. Bravo, bravo. Bravo, [glocke] Bruder. Bruder, aber wo ist die anscheinend mit ihrer Freundin draußen? Um 22 Uhr so lange wie lang wie hä weiß ne nicht, dass es an nicht, dass es ähm sch ist ist sie freaky? Ist sie freaky oder nicht? Ich weiß nicht. schreiben. H dachte morgen können wir uns schon vielleicht treffen. Dachte morgen können wir uns schon vielleicht treffen. Können wir uns schon"
+    },
+    {
+      "peak": 476.25,
+      "start": 441.25,
+      "ende": 496.25,
+      "score": 0.41,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "Nein, nein, steht nichts. Soll nicht denken, dass ich Sonderschüler. Ja, okay. Schreib. Hä? Hä, aber wieso fragst du wieso fragst du, ob s deine Hand mit dem irakischen Filter schicken? [gelächter] Ich hab Aber wieso fragst du, ob wir so sind? Ich dachte, wir sind schon lange so gut. Ich dachte, wir sind schon lange so gut. Bruder, warum hat aber so wenig Elan? Warum hat so wenig Elan? Mein Vater bringt mehr Elan. Man muss richtig einen. Soll ich mal ein ich mein reinstecke? Was für ein denkt Traktor ein doch schon Baby? Warte mal. Sehr gute sehr gut. Diese Baby gefällt mir. Schreib Baby ist gut. Ich schreib Baby ist gut. Baby ist gut. Aber [musik] Daddy gefällt mir mehr. Gut. Bravo. Und jetzt fra sind deine Nägel"
+    },
+    {
+      "peak": 726.0,
+      "start": 691.0,
+      "ende": 746.0,
+      "score": 0.408,
+      "quelle": "lautheit",
+      "modus_anteil": 0.889,
+      "text": "ohne Hände. Bravo. Das ist hart, ne? Das ist hart. Ich sehe schon diesen Screen. Schreib, weil ich will ja deine schönen Fingernägel nicht dreckig machen. Gute gute. Wir sind da, wir sind da. Schreib schreib schreib schreib schreib schreib. Ich will deine schönen Fingernägel nicht dreckig machen. Und jetzt lass uns lang. Schellig schneller schneller schnell. Sehe schon diesen Screenshot und die ganze Stadt. Weiß schon Bescheid morgen. Ich ich komme in die Nachricht. Du kommst höstens in Nachrichten, weil du abgeschoben wirst. Jam, weil dein deutschim Lade. Ich bin ja noch sicher. Warum habe ich Angst eigentlich? Warte mal, lass uns mal landen. So park mal hier. Opa. [gelächter][japst] Also, wenn das keiner fährt, dann bin einverstanden. Was? Wie ist das? L hat i gerade Auto gekauft. An Bruder hat gerade Auto gekauft. L Was für ein Bruder? Dann bin ich ein Was ist schreiben? Was siegt dir?"
+    },
+    {
+      "peak": 405.25,
+      "start": 370.25,
+      "ende": 425.25,
+      "score": 0.356,
+      "quelle": "lautheit",
+      "modus_anteil": 0.5,
+      "text": "Geh hoch, geh hoch. Ah, warte mal, wo war die? Ja, aber das ist von damals. Geh mal runter. Ist es die? Sind ja. Nein, nein, wir sind ja gemeinsam die. Wer ist das da im Club? Unten im Club. Hallo, wer ist es? Geh doch nicht drauf. Da steht Screenshot, du Schwanz. Ist es die? Nein, das ist Cousin. Da steht der Screenshot erstmal im Chat. Du bist jetzt ist hier sofort. Geh mal runter. Zweimal. Was? Schreib schreib schib. Musst du Screenshot von der Nachricht machen, damit ich dir morgen diese Nachricht noch mal zeige, um dich zu erinnern, dass wir soweit sind. Gut, da steht sogar noch Bildschirmaufnahme. Schreibt dir steht da immer dran. Schreibt steht lösch lösch lösch lösch lösch komplett schreib gerade ist Tor passiert gerade ist Tor passiert hab mein Handy weggeschmissen. Gerade ist Tor passiert hab mein Handy weggeschmissen. Wie schreibst du Tor? Du einer jubelt in Snapchat Chat an"
+    },
+    {
+      "peak": 533.0,
+      "start": 498.0,
+      "ende": 553.0,
+      "score": 0.335,
+      "quelle": "lautheit",
+      "modus_anteil": 0.857,
+      "text": "Kommt noch keine Sorge. Opa [gelächter] [schreien] Alter Jubelt wie mein Vater als mich damals in Luft geschmissen hat. Was war denn das? Das ist die Türken. Bra. Schreib. Ja, natürlich. Soll ich sagen? Ja. Schick B. Schreib schreib. Ich brauch schreib schreib schreib. Ich brauche eine Bestätigung. Ich brauche eine Bestätigung. Muss auch gucken. Muss auch gucken, ob die zu meiner Hand passt. Muss auch gucken, ob die zu meiner Hand passen. Ob die zu meiner Hand passen. Bravo. Gucken. Hey, mit Gut. Lass lass lass lass. Egal, egal egal. Schreiben mit euch schreibt man anders, Bruder. Andere andere du denn ja Kar wollst du schreiben? Du denkst an mein Kar vielleicht [musik] was ein Bild von dein Nägel. Ja. Bruder, welche Schule geht? Ich glaub Bild von deinen Nägeln."
+    },
+    {
+      "peak": 971.25,
+      "start": 936.25,
+      "ende": 991.25,
+      "score": 0.328,
+      "quelle": "lautheit",
+      "modus_anteil": 0.929,
+      "text": "lag Tor in Bayern Land. Schreib schreib schreib schreib. Und die Frage ist, ist in dir Platz für mich gute Käseland? Sehr gute Käeland. Hallo. Hallo. Hallo. Aber wie schreibst du das? Er schreibt mit mit Wie schreibst du das da gerade oben? Hey, denkst du das Gedicht von Göte? Die Frage ist kommt gut. Nein, so kommt nicht gut. Wer ist Schlange auf einmal oder was ist India Platz für mich? Bravo. Warum mit Komma Bruder? Wir fragen gerade ob die Planz für deinen Schwanz hat. Einmal auf Deutschlehrer du. Hey, der gebildete, das ist sehr gut. Der geht ihr seht nur nicht die Vision die Vision dahinter sieht nicht Fischer"
+    },
+    {
+      "peak": 660.25,
+      "start": 625.25,
+      "ende": 680.25,
+      "score": 0.299,
+      "quelle": "lautheit",
+      "modus_anteil": 0.889,
+      "text": "abends aber was? Mhm. M. Ja, ja, ja, ja, ja. Bravo. Und jetzt rein. Jetzt ken wir rein. Jetzt ist sie fin. Jetzt ist sie fin. Jetzt ist sie fin. [musik] Was denn? Erzähl. Was denn? Erzähl. Mein Bester. Was ist denn 45 € wert in dein Auge? Was siehst du denn hier als Return on Investment, mein Bester? Hm. Was siehst du denn? Wo? Was ist dein Gewinn? 69. Was? Was für 69 my 649 oder was? Was redest du jetzt 69? Kennst du es nicht? Mein 69 ersten Mal MT einer Frau, der wollte ihr einfach sagen, ich sag Musik, aber das kann man nicht so schreiben. 69 schreiben oder was? Woll"
+    },
+    {
+      "peak": 44.75,
+      "start": 9.75,
+      "ende": 64.75,
+      "score": 0.296,
+      "quelle": "lautheit",
+      "modus_anteil": 0.464,
+      "text": "Ja Bruder ma mal besser. Ich komme rein Bruder. D was ist das für ein Freak hinter? Wie alt ist die Name mein Bruder bevor wir anfangen? Sie ist 18. Sie ist 18. Ich bin drin im Stream Bruder. Du musst aufpassen, gell? Ja. Ja. Sehr schön. Me Bruder kannst du kannst du mal hoch in Chat gehen und mich abholen, Bruder? Wer ist die Dame? Wer ist das hin? Ich mach kurz weg. Kennen seit zwei Tagen. Da ist ein Bild von mir. Ja. Ja, ich hab wegemacht. Stream. Ich hab weggemacht. Ich hab weggemacht. Ich hab geschrieben. Geh mal h mal wie aussiehst. Meerb. Bravo. Gute Pirat. Geh mal hoch. Geh mal hoch. Wie lange schreibst du schon mit der? Zwei. Hast du schon über Type und so geredet? Ja. Ja. Ja. Und was ging's jetzt in der letzten Sekunde, mein Bruder? Oder in der letzten Minute? Pass auf, ich bin im Chat, ich zeig gerade im Stream. Okay. Wegen Type. Type? Was ist hier Type? Ja, sie hat geschrieben brünet schwarzen Augen. Brunet schwarze Auge. Und das das hast du auch mein besser oder schwarze Ja, ist ja gleiche"
+    },
+    {
+      "peak": 938.0,
+      "start": 903.0,
+      "ende": 958.0,
+      "score": 0.288,
+      "quelle": "lautheit",
+      "modus_anteil": 0.852,
+      "text": "Aulung, die hat geöffnet. Du bist in Gruppe. Du bist Du bist in Gruppe. Du bist [gelächter] Du bist in Gruppe, Bruder. Zini, Bruder, du bist in Gruppe. Ich hab gesagt, ich lande in Zeitung. Du bist in Gruppe mein Bruder. Du bist die macht gerade mit Handy von Freund, aber egal. Wenigstens ist er grü lag Tor in Bayern Land. Schreib schreib schreib schreib. Und die Frage ist, ist in dir Platz für mich gute Käseland? Sehr gute Käeland. Hallo. Hallo. Hallo. Aber wie schreibst du das? Er schreibt mit mit Wie schreibst du das da gerade oben? Hey, denkst du das Gedicht von"
+    },
+    {
+      "peak": 843.75,
+      "start": 808.75,
+      "ende": 863.75,
+      "score": 0.277,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "ist nicht zu viel sch bin mit Freundin schreibt die soll auch Füße sein. Nein [gelächter] schreib schreib die soll Füße schicken damit ich vergleich schreibt sollen wir nicht ja ja schreibt die soll auch Füße zeigen. Die soll Füße schicken. Dann bewerte ich eure Dann bewert [gelächter] und dann schreibst wir machen ein Jok da aus. Wir machen ein Jog da aus. Schreib ich bin nicht nur lustig, ich bin nicht nur lustig, ich sportlich stöhnt wieder. Danke schön für dein Rap, mein Bester. Warte mal, habe ich gerade gerappt? Das gefällt mir. Gefällt, dass ich sportlich bin. Hol hol Fernbedienung. Holbedien. Wir schicken Bild von Fernbedienung und dann fragen wir, ob es der auch gefällt. Schick, hol. Ja, dann gehe ich gleich auch direkt auf Toilette. Warum auf Toilette, du? Willst du beim Schwanzbild schicken oder was? Wie ich muss pissen da se warten, bis du pisst oder was? Ja, dann kannst du nebenbei den anderen"
+    },
+    {
+      "peak": 95.5,
+      "start": 60.5,
+      "ende": 115.5,
+      "score": 0.27,
+      "quelle": "lautheit",
+      "modus_anteil": 0.741,
+      "text": "Und das das hast du auch mein besser oder schwarze Ja, ist ja gleiche Brzählt do dazu. Ja, dann hat sie geschrieben, was ist mein Typ du hast du geschrieben du oder was [schreien] soll ich schreiben? Ja. Beschreib doch wenigstens die Aussehen was für du an. Was das für ein was das für ein Move? L Rizler oder was hat die echt geschrieben? Rizler oder was? Habe ich geschrieben Teilzeit. Was hat? Geh mal weiter runter. Geh mal runter. Und jetzt mal runter oder Bruder. Hängt dein Internet, Bruder. Hallo. Oder hängt mein Internet. Was passiert hier? Hallo. Schreib überall aus Österreich auf Berg Bruder. Schreib schreib schreib Airplay auf Fernseher. Schau gerade Champions League. Gute wir müssen die Situation auszen. Schau gerade. Hallo nicht schau. Was für Schau willst du, dass die Champions League schader oder was du sch Bruder. Ja schau Champions League. Schnell schnell schnell schnell. [musik] Ah, gute"
+    },
+    {
+      "peak": 5.5,
+      "start": 0.0,
+      "ende": 25.5,
+      "score": 0.267,
+      "quelle": "lautheit",
+      "modus_anteil": 0.308,
+      "text": "Hallo Jungs. Alikum meer. Wie geht's euch? Wie geht's euch? Hallo. Hallo. Hallo. Hallo. Und dir? Hamd. Me habt ihr eins zu ein gesehen? Ja Bruder ma mal besser. Ich komme rein Bruder. D was ist das für ein Freak hinter? Wie alt ist die Name mein Bruder bevor wir anfangen? Sie ist 18. Sie ist 18. Ich bin drin im Stream Bruder. Du musst aufpassen, gell? Ja. Ja. Sehr schön. Me Bruder kannst du kannst du mal hoch"
+    },
+    {
+      "peak": 1043.5,
+      "start": 1008.5,
+      "ende": 1063.5,
+      "score": 0.245,
+      "quelle": "lautheit",
+      "modus_anteil": 0.786,
+      "text": "bravo, bravo. Ich habe gesagt, heute wir krachen rein. Heute wir krachen komplett rein. [musik] Wir holen alles raus, was es rauszolas zu Herzrassen. Was für Herzrassen? Einer denkt ist Formel 1 Fahrer was hast du Rasen vor die macht Screenshot und dann bin ich trotzdem in Gruppe Bruder wer ist das Land James oder was hast mich doch gesehen. Das kann do nicht sein. Ich muss jetzt sofort ein Bild von Account ein Check. Wir bauen noch mal zweite Wercheck"
+    },
+    {
+      "peak": 380.75,
+      "start": 345.75,
+      "ende": 400.75,
+      "score": 0.224,
+      "quelle": "lautheit",
+      "modus_anteil": 0.393,
+      "text": "schreiben sollen. Und wie extrem ist dein WGreiz? [musik] [schreien] Wir sind drin. Wir sind drin. sch gute. Wir bauen aber ein ganz schnell, ganz schnell ganz schnell. Geh mal weiter, weiter weiter weiter, weiter schneller, schneller, schneller. Weiter Leute, weiter Leute, ich zeig gerade nicht im Stream. Geh hoch, geh hoch. Ah, warte mal, wo war die? Ja, aber das ist von damals. Geh mal runter. Ist es die? Sind ja. Nein, nein, wir sind ja gemeinsam die. Wer ist das da im Club? Unten im Club. Hallo, wer ist es? Geh doch nicht drauf. Da steht Screenshot, du Schwanz. Ist es die? Nein, das ist Cousin. Da steht der Screenshot erstmal im Chat. Du bist jetzt ist hier sofort. Geh mal runter. Zweimal. Was? Schreib schreib schib."
+    },
+    {
+      "peak": 427.75,
+      "start": 392.75,
+      "ende": 447.75,
+      "score": 0.224,
+      "quelle": "lautheit",
+      "modus_anteil": 0.852,
+      "text": "Was? Schreib schreib schib. Musst du Screenshot von der Nachricht machen, damit ich dir morgen diese Nachricht noch mal zeige, um dich zu erinnern, dass wir soweit sind. Gut, da steht sogar noch Bildschirmaufnahme. Schreibt dir steht da immer dran. Schreibt steht lösch lösch lösch lösch lösch komplett schreib gerade ist Tor passiert gerade ist Tor passiert hab mein Handy weggeschmissen. Gerade ist Tor passiert hab mein Handy weggeschmissen. Wie schreibst du Tor? Du einer jubelt in Snapchat Chat an schreib schick doch gleich Video wie in Luft springst schreibt er was ein bin gerade aufgeregt. Schreib, schreib, schreib, schreib, schreib. Bruder, hab reicht, reicht. Da steht wieder. Hör auf. Nein, nein, steht nichts. Soll nicht denken, dass ich Sonderschüler."
+    },
+    {
+      "peak": 221.0,
+      "start": 186.0,
+      "ende": 241.0,
+      "score": 0.21,
+      "quelle": "lautheit",
+      "modus_anteil": 0.857,
+      "text": "Ist sie freaky oder nicht? Ich weiß nicht. schreiben. H dachte morgen können wir uns schon vielleicht treffen. Dachte morgen können wir uns schon vielleicht treffen. Können wir uns schon Bravo. Schick ab. Schick ab. Ist okay, ist okay. Ist okay. Wir müssen noch mit kleinen Häppchen klar kommmen. Schreib schreib schreib schreib schreib schreib Chat. Ne, das ist gut. Für das was ich mit dir vorhabe musst du dir Zeit nehmen. Gute das, was ich mit dir vorhabe musst du dir Zeit nehmen. Sehr gute. Ist die freaky oder nicht? Ich weiß nicht. Ja, du weißt nicht. Du schreibst uns seit zwei Tage mit was über was hast du geschrieben Bruder? Gott und die Welt Hobbys und so. Was ich mit der Farbe musst du dir Zeit nehmen. Wir testen das Wasser. Lande landen. Wir testen das Wasser. Me wir testen das Wasser. Hol Schneuchel raus. Hol Schneuchel raus. Wir gehen tauchen. Hol Schneuchel raus. Okay."
+    },
+    {
+      "peak": 1095.5,
+      "start": 1060.5,
+      "ende": 1115.5,
+      "score": 0.142,
+      "quelle": "lautheit",
+      "modus_anteil": 0.821,
+      "text": "Check. Wir bauen noch mal zweite Wercheck Screenshot. Das war's mein Bruder. Du bist Brand. [gelächter] [schreien] Sreib schreib schreib schreib wie aus Versehen. Schreib wie aus Versehen. Schreib wie aus Versehen. Schreib wie aus Versehen. [musik] So eine Lücke. Das ist so eine Lücke. Nein. [musik] [musik] Mach dich gefasst. Ja."
+    },
+    {
+      "peak": 756.0,
+      "start": 721.0,
+      "ende": 776.0,
+      "score": 0.052,
+      "quelle": "lautheit",
+      "modus_anteil": 1.0,
+      "text": "So park mal hier. Opa. [gelächter][japst] Also, wenn das keiner fährt, dann bin einverstanden. Was? Wie ist das? L hat i gerade Auto gekauft. An Bruder hat gerade Auto gekauft. L Was für ein Bruder? Dann bin ich ein Was ist schreiben? Was siegt dir? Das gefällt mir gerade nicht. Das gefällt mir gerade nicht. Irgendwas ist irgendwas stinkt dir irgendwas stinkt dir. Schreib schreib schreib schreib schreib schreib schreib schreib. Natürlich erfährt es niemand. Z ich mal meine Cousin natürlich schreibt natürlich natürlich natürlich nicht schreibt natürlich nicht schib natürlich nicht schreib natürlich nicht aber ich muss jetzt ein Bild von deinen Füßen sehen, damit ich ein vorher nachher Vergleich habe. Gute, guter Lan, ich bin parat. Ich bin parat. Du Fischland. Ich"
+    },
+    {
+      "peak": 636.25,
+      "start": 601.25,
+      "ende": 656.25,
+      "score": 0.045,
+      "quelle": "lautheit",
+      "modus_anteil": 0.926,
+      "text": "Ach so, ich soll das nicht schreiben. Na, was du jetzt? Was willst du schreiben? Ich geh direkt oder was? Bist du verrückt? Hast du gerade e schreiben? Ich gehe direkt kaputter. Hallo. Sorry, sorry, sorry. [schreien] Schreib, schreib, schreib, schreib. Aha, dann musst du, dann schuldest du mir abends aber was? Gute. Bravo. Sehr gute Kise. Dann schuldest du mir abends aber was? Mhm. M. Ja, ja, ja, ja, ja. Bravo. Und jetzt rein. Jetzt ken wir rein. Jetzt ist sie fin. Jetzt ist sie fin. Jetzt ist sie fin. [musik] Was denn? Erzähl. Was denn? Erzähl. Mein Bester. Was ist denn 45 € wert in dein Auge? Was siehst du denn hier als Return on Investment, mein Bester? Hm. Was siehst du denn? Wo? Was ist dein Gewinn? 69."
+    },
+    {
+      "peak": 198.5,
+      "start": 163.5,
+      "ende": 218.5,
+      "score": 0.04,
+      "quelle": "lautheit",
+      "modus_anteil": 0.821,
+      "text": "Ja. Bravo, bravo. Bravo, [glocke] Bruder. Bruder, aber wo ist die anscheinend mit ihrer Freundin draußen? Um 22 Uhr so lange wie lang wie hä weiß ne nicht, dass es an nicht, dass es ähm sch ist ist sie freaky? Ist sie freaky oder nicht? Ich weiß nicht. schreiben. H dachte morgen können wir uns schon vielleicht treffen. Dachte morgen können wir uns schon vielleicht treffen. Können wir uns schon Bravo. Schick ab. Schick ab. Ist okay, ist okay. Ist okay. Wir müssen noch mit kleinen Häppchen klar kommmen. Schreib schreib schreib schreib schreib schreib Chat. Ne, das ist gut. Für das was ich mit dir vorhabe musst du dir Zeit nehmen. Gute das, was ich mit dir vorhabe musst du dir Zeit nehmen. Sehr gute. Ist die freaky oder nicht? Ich"
+    }
+  ]
+}

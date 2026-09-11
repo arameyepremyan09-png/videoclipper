@@ -176,8 +176,8 @@ def masse(tmpl: dict) -> tuple[int, int, int, int]:
     rand = int(conf.get("rand_staerke", 6))
 
     k = _gerade(d * max(POP_EIN) + 2 * rand + 4)
-    x = (breite - k) // 2
-    y = int(conf["y"]) - k // 2
+    cx, cy = _zentrum(tmpl)
+    x, y = cx - k // 2, cy - k // 2
 
     unten_frei = hoehe - int((tmpl.get("sicherheitszone") or {}).get("unten", 0))
     if y + k > unten_frei:
@@ -186,12 +186,22 @@ def masse(tmpl: dict) -> tuple[int, int, int, int]:
             f"die UI-Zone beginnt bei y={unten_frei}")
     if y < 0:
         raise ValueError(f"{tmpl['name']}: Follow-Knopf beginnt bei y={y}")
+    if x < 0 or x + k > breite:
+        raise ValueError(
+            f"{tmpl['name']}: Follow-Knopf liegt bei x={x}..{x + k}, "
+            f"die Canvas ist {breite} px breit")
     return x, y, k, k
 
 
 def _zentrum(tmpl: dict) -> tuple[int, int]:
+    """Mitte des Knopfes. Ohne ``x`` steht er waagerecht mittig — der Regelfall.
+
+    ``x`` gibt es seit dem 2026-09-11 fuer PHONE_STACK: Dort ist im Handypanel
+    keine Flaeche frei, und im Facecam-Panel sitzt der Creator in der Mitte.
+    """
     breite, _ = tmpl["canvas"]
-    return breite // 2, int(tmpl["follow_hinweis"]["y"])
+    conf = tmpl["follow_hinweis"]
+    return int(conf.get("x", breite // 2)), int(conf["y"])
 
 
 def _zeiger_masse(conf: dict) -> tuple[int, int, int]:

@@ -12,6 +12,7 @@ Blueprint nimmt statische Boxen an; fuer diese Quellen stimmt das nicht.
 from __future__ import annotations
 
 import io
+import re
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
@@ -193,6 +194,53 @@ def modus_verlauf(video: Path, sig: ModusSignatur, dauer: float,
     d = np.abs(np.diff(stapel.astype(np.float32), axis=achse + 1))
     w = d.max(axis=achse + 1).mean(axis=1).astype(np.float32)
     return np.arange(anzahl) * (K / fps), w
+
+
+def modus_je_bild(video: Path, sig: ModusSignatur, start: float,
+                  dauer: float) -> tuple[np.ndarray, np.ndarray]:
+    """Signaturwert fuer JEDES Bild eines Clipfensters, auf der Zeitachse des Renderers.
+
+    WOZU: ``modus_verlauf`` tastet im Raster ab — genug, um Laeufe zu finden,
+    zu grob fuer einen Einschub (``layout.einschuebe``). Dort muss der Wechsel
+    auf das Bild genau sitzen: Kommt das Ersatzpanel ein Bild zu frueh, steht
+    fuer diesen Frame das ganze Chatlayout verkleinert im oberen Panel; kommt
+    es zu spaet, ein Ausschnitt mitten aus der Vollbild-Cam.
+
+    Deshalb dieselbe Suche wie ``render.rendere`` (``-ss`` vor ``-i``): Die
+    Zeitstempel, die ``showinfo`` hier meldet, sind genau die ``t``, die im
+    Filtergraph des Renderers in ``enable`` stehen. Kein Umrechnen ueber die
+    Bildrate, keine Annahme darueber, wo das erste Bild nach der Suche liegt.
+
+    Nur fuer Flaechensignaturen. Eine Kante hat bisher kein Profil mit
+    Einschub gebraucht, und ungetesteter Code dafuer waere schlechter als ein
+    klarer Fehler.
+    """
+    if sig.flaeche is None:
+        raise ValueError(
+            f"{sig.name}: bildgenaue Moduserkennung braucht eine Flaechensignatur")
+    x, y, w, h = sig.flaeche
+    # Massstab wie in ``_flaechen_verlauf`` — die Schwellen im Profil gelten
+    # fuer genau diesen.
+    bw, bh = ((w // 4) // 2 * 2, (h // 4) // 2 * 2) if sig.kantenenergie else (16, 16)
+
+    p = subprocess.run(
+        ["ffmpeg", "-hide_banner", "-nostats", "-loglevel", "info",
+         "-ss", f"{start:.3f}", "-t", f"{dauer:.3f}", "-i", str(video),
+         "-vf", f"format=gray,crop={w}:{h}:{x}:{y},scale={bw}:{bh},showinfo",
+         "-fps_mode", "passthrough", "-an", "-f", "rawvideo", "-"],
+        capture_output=True, check=True)
+    zeiten = np.array([float(z) for z in re.findall(rb"pts_time:\s*(-?[\d.]+)", p.stderr)],
+                      dtype=np.float64)
+    n = bw * bh
+    anzahl = min(len(zeiten), len(p.stdout) // n)
+    st = np.frombuffer(p.stdout[:anzahl * n], dtype=np.uint8) \
+        .reshape(anzahl, bh, bw).astype(np.float32)
+    if sig.kantenenergie:
+        werte = (np.abs(np.diff(st, axis=2)).mean(axis=(1, 2))
+                 + np.abs(np.diff(st, axis=1)).mean(axis=(1, 2)))
+    else:
+        werte = st.mean(axis=(1, 2))
+    return zeiten[:anzahl], werte.astype(np.float32)
 
 
 # ---------------------------------------------------------------- Zusammenfuehrung

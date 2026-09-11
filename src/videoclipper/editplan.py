@@ -57,6 +57,10 @@ class Aufgeloest(BaseModel):
     # was tatsaechlich im Bild landet, und nicht erst im fertigen Video.
     untertitel: list[dict] = Field(default_factory=list)
     follow: dict | None = None
+    # Strecken, in denen die Quelle in einem anderen Modus steht und der Clip
+    # trotzdem weiterlaeuft, mit Fenster, Haltebild und Ersatzpanels — siehe
+    # ``layout.einschuebe``. Leer, wo das Template keine vorsieht.
+    einschuebe: list[dict] = Field(default_factory=list)
 
 
 class EditPlan(BaseModel):

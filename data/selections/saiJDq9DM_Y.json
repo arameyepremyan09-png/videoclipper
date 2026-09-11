@@ -1,0 +1,218 @@
+[
+  {
+    "clip_id": "saiJDq9DM_Y_001",
+    "quelle": {
+      "video_id": "saiJDq9DM_Y",
+      "kanal": "Elijello",
+      "orig_start": 15.72
+    },
+    "tier": "B",
+    "profil": "ELIASN97_STREAM",
+    "template": "FULLCAM_169",
+    "template_grund": "Eli allein in Fullcam — SCHNITTREGELN Regel 2, Fall 2: auch allein wird das 16:9-Bild vollstaendig gezeigt. FULLCAM-Lauf 15.7-137.7 s.",
+    "modus": "FULLCAM",
+    "modus_anteil": 1.0,
+    "timing": {
+      "start": 15.72,
+      "ende": 49.0
+    },
+    "headline": "UND WAS IST MIT SIDNEY 🥀🫩",
+    "sprache": "de",
+    "score": {
+      "overall": 0.78,
+      "reaktion": 0.7,
+      "klarheit": 0.9,
+      "payoff": 0.72
+    },
+    "grund": "Die Titelfrage des Videos, woertlich. Regel 1a Kontext: Der Clip oeffnet mit 'Hochzeit von Willy war super' und legt in 15 s die ganze Lage hin — Standesamt, Sidney hat geweint, 'Eli ist verlobt, Willy ist verheiratet'. Dann die Frage 'Was ist mit Sidney?'. Regel 1b Ende: Elis Antwort 'Ich glaube, Sidney wird auch irgendwann eine Frau kennenlernen, aber es muss halt passen' schliesst den Bogen; danach beginnt die Nebengeschichte um Willy und Lexi. Regel 1c: 'Sidney hat geweint. Also, es kam eine kleine Traene' — die Zuruecknahme ist der Witz, kein Lautheitspeak. Grenzen: Anfang bildgenau hinter dem harten Schnitt aus dem Intro (15.683 s), Ende am echten Wortende von 'passen' (47.7 s) statt am Transkriptende 49.84 s — dazwischen 2 s Stille."
+  },
+  {
+    "clip_id": "saiJDq9DM_Y_002",
+    "quelle": {
+      "video_id": "saiJDq9DM_Y",
+      "kanal": "Elijello",
+      "orig_start": 101.3
+    },
+    "tier": "B",
+    "profil": "ELIASN97_STREAM",
+    "template": "FULLCAM_169",
+    "template_grund": "Eli allein in Fullcam — Regel 2, Fall 2. Das Ende liegt 0.4 s vor der Ueberblendung in den Browser (137.67 s).",
+    "modus": "FULLCAM",
+    "modus_anteil": 1.0,
+    "timing": {
+      "start": 101.3,
+      "ende": 137.8
+    },
+    "headline": "AUF WAS SIDNEY WIRKLICH STEHT 💀🙏",
+    "sprache": "de",
+    "score": {
+      "overall": 0.74,
+      "reaktion": 0.72,
+      "klarheit": 0.8,
+      "payoff": 0.75
+    },
+    "grund": "Elis Loesung fuer Sidney. Regel 1a: Der erste Satz nennt Person und Sache — 'Sidney Friede, er steht auf Asiatinnen'. Regel 1b: Das Thema schliesst mit 'er wird jemanden kennenlernen, ich bin mir sicher. Aber selbst wenn nicht, ihn juckt es gar nicht so sehr' (137.1 s); 0.6 s spaeter blendet der Stream in den Browser ueber, der Clip endet davor. Regel 1c: 'Am besten reiche, nette Asiatin. Besser wird's nicht' und 'vielleicht Urlaub in Japan machen'. Einschraenkung: Bei 111 s antwortet Eli drei Sekunden lang dem Chat ('Fussball.de, ich gucke mir das gleich an') — kein neuer Gegenstand im Bild, das Thema laeuft danach weiter."
+  },
+  {
+    "clip_id": "saiJDq9DM_Y_003",
+    "quelle": {
+      "video_id": "saiJDq9DM_Y",
+      "kanal": "Elijello",
+      "orig_start": 148.0
+    },
+    "tier": "B",
+    "profil": "ELIASN97_STREAM",
+    "template": "FOTO_STACK",
+    "template_grund": "Browser mit Instagram-Post, Facecam unten rechts — im Bild steht Sidneys Hochzeitsfoto, ueber das Eli redet. FOTO_STACK: Facecam oben, Foto unten auf voller Breite. BROWSER-Lauf 137.7-246.4 s, das Karussell steht ab 147.5 s auf Sidneys Foto.",
+    "modus": "BROWSER",
+    "modus_anteil": 1.0,
+    "timing": {
+      "start": 148.0,
+      "ende": 182.0
+    },
+    "headline": "SIDNEY IST NICHT WIE JEDER 🥀💀",
+    "sprache": "de",
+    "score": {
+      "overall": 0.85,
+      "reaktion": 0.82,
+      "klarheit": 0.86,
+      "payoff": 0.85
+    },
+    "grund": "Der Moment, den ein fremder Clipper schon als 'Eli macht sich Sorgen um Sids Zukunft' geschnitten hat — Eli spielt diesen Clip bei 398 s im zweiten Stream selbst ab. Regel 1a: Im Bild steht Sidneys Hochzeitsfoto mit der Traene, im Ton 'Ich glaube, Sidney ist sehr sonderbar. Er hatte noch nie eine Freundin'. Regel 1b: endet auf 'Er ist mein bester Freund, mit Willy zusammen' — die Zuruecknahme nach dem Spott, danach eine Pause. Regel 1c: 'Er ist kein normaler Ork. Er ist aber nett.'"
+  },
+  {
+    "clip_id": "saiJDq9DM_Y_004",
+    "quelle": {
+      "video_id": "saiJDq9DM_Y",
+      "kanal": "Elijello",
+      "orig_start": 205.0
+    },
+    "tier": "B",
+    "profil": "ELIASN97_STREAM",
+    "template": "FOTO_STACK",
+    "template_grund": "Derselbe BROWSER-Lauf wie 003, Sidneys Foto steht durchgehend. Ab 246.4 s wechselt der Browser auf eine Fussballtabelle mit der Facecam oben rechts — der Clip endet 3 s davor.",
+    "modus": "BROWSER",
+    "modus_anteil": 1.0,
+    "timing": {
+      "start": 205.0,
+      "ende": 243.6
+    },
+    "headline": "WIE SIDNEYS FRAU SEIN SOLL 🙏🫩",
+    "sprache": "de",
+    "score": {
+      "overall": 0.86,
+      "reaktion": 0.8,
+      "klarheit": 0.84,
+      "payoff": 0.9
+    },
+    "grund": "Was fuer eine Frau Sidney braeuchte. Regel 1a: 'Ich weiss, dass er Kinder haben will' — Sidneys Foto steht im Bild, der Name faellt im Clip. Regel 1b: endet auf der Pointe 'Ich geh kurz nebenan' am echten Wortende (243.4 s); das anschliessende 'Ja, guck mal hier, Fussball' ist ein neuer Gegenstand und bleibt draussen. Regel 1c: die ausgemalte Szene 'Ey Sidney, nimmst mir nicht uebel, aber ich hab gerade keinen Bock auf dich. Ich geh kurz nebenan.' Davor der Aufbau 'Die muesste so richtig trocken sein ... der muss alles scheissegal sein'."
+  },
+  {
+    "clip_id": "saiJDq9DM_Y_005",
+    "quelle": {
+      "video_id": "saiJDq9DM_Y",
+      "kanal": "Elijello",
+      "orig_start": 249.16
+    },
+    "tier": "A",
+    "profil": "ELIASN97_STREAM",
+    "template": "FULLCAM_169",
+    "template_grund": "Eli allein in Fullcam — Regel 2, Fall 2. FULLCAM-Lauf 249.0-398.0 s; der Anfang liegt bildgenau hinter der Ueberblendung aus dem Browser.",
+    "modus": "FULLCAM",
+    "modus_anteil": 1.0,
+    "timing": {
+      "start": 249.16,
+      "ende": 325.5
+    },
+    "headline": "WER HIER DIE MEMME IST 💀🙏",
+    "sprache": "de",
+    "score": {
+      "overall": 0.84,
+      "reaktion": 0.82,
+      "klarheit": 0.86,
+      "payoff": 0.85
+    },
+    "grund": "Sidney beim Fussball. Regel 1a: Der Clip beginnt mit 'ob Sidney Friede spielen kann. Es steht in den Sternen. Er ist auch bisschen angekraenkelt' — die Lage steht in den ersten vier Sekunden. Regel 1b: Aufbau (ernsthafter Rat: krank nicht spielen) -> Umschlag ('Aber man muss auch sagen, Sidney Friede ist ...') -> Pointe 'Er ist eine Memme' -> Nachschlag 'Sidney Friede auf der Bank' -> Schluss 'Ich sag, wir die Hochzeit verschieben' (323.6 s). Danach 2.5 s Stille und ein lautes Geraeusch ohne Wort, das draussen bleibt. Regel 1c: 'Oh, mein Knie tut weh' — 'Fresse und spiel!'. Tier A natuerlich gewachsen, 74.8 s ohne Streckung."
+  },
+  {
+    "clip_id": "saiJDq9DM_Y_006",
+    "quelle": {
+      "video_id": "saiJDq9DM_Y",
+      "kanal": "Elijello",
+      "orig_start": 471.9
+    },
+    "tier": "A",
+    "profil": "ELIASN97_STREAM",
+    "template": "FULLCAM_169",
+    "template_grund": "Eli allein in Fullcam (zweiter Stream, gestreiftes Hemd) — Regel 2, Fall 2. FULLCAM-Lauf 451.1-627.5 s.",
+    "modus": "FULLCAM",
+    "modus_anteil": 1.0,
+    "timing": {
+      "start": 471.9,
+      "ende": 542.5
+    },
+    "headline": "WARUM SIDNEY NOCH SINGLE IST 🥀🫩",
+    "sprache": "de",
+    "score": {
+      "overall": 0.82,
+      "reaktion": 0.72,
+      "klarheit": 0.88,
+      "payoff": 0.8
+    },
+    "grund": "Die eigentliche Antwort auf den Titel. Regel 1a: 'Sidney stoert es auch gar nicht so ... er steht nicht so auf Beziehungen', dann Elis Liste (Geld, Hingucker, Sicherheit, lustiger Typ) und 'er persoenlich ist nicht so der Beziehungsmensch'. Regel 1b: 'Es gab eine Dame im Leben von Sidney Friede ... sie haette gepasst. Ich muss mal noch mal mit dem reden. Der soll da noch mal angreifen.' (541.0 s) — geschlossener Bogen; danach hat der Cutter 1.8 s stummgeschaltet, dann folgt ein Chat-Einschub zur Hochzeitseinladung, der draussen bleibt. Regel 1c: 'Geld hat er auch. Geld hat er.' und 'Corinna Kopf? — Man hat sie noch nie gesehen.' Tier A natuerlich gewachsen, 69.5 s."
+  },
+  {
+    "clip_id": "saiJDq9DM_Y_007",
+    "quelle": {
+      "video_id": "saiJDq9DM_Y",
+      "kanal": "Elijello",
+      "orig_start": 600.64
+    },
+    "tier": "B",
+    "profil": "ELIASN97_STREAM",
+    "template": "FULLCAM_169",
+    "template_grund": "Eli allein in Fullcam — Regel 2, Fall 2. Ab 627.53 s blendet der Stream in den Browser mit den Hochzeitsfotos ueber; der Clip endet 0.5 s davor.",
+    "modus": "FULLCAM",
+    "modus_anteil": 1.0,
+    "timing": {
+      "start": 600.64,
+      "ende": 626.7
+    },
+    "headline": "WIE ELI WILLYS HOCHZEIT FAND 🙏🫩",
+    "sprache": "de",
+    "score": {
+      "overall": 0.72,
+      "reaktion": 0.7,
+      "klarheit": 0.84,
+      "payoff": 0.72
+    },
+    "grund": "Willys Hochzeit aus Elis Sicht. Regel 1a: 'Ich wurde auch emotional bei Willys Hochzeit, aber ich habe nicht geweint' — Anlass und Person im ersten Satz. Regel 1b: endet auf der Pointe 'So richtig zum Anbeissen sah der aus.'; direkt danach ('Guck mal, wie er aussah') blendet der Stream in den Browser — zweiter Gegenstand und Layoutwechsel. Regel 1c: 'Ich gebe jetzt Props an meinen Bro ... so richtig zum Anbeissen'. Grenze: 'aus' und 'Guck' gehen ohne Pause ineinander (Verschluss 627.09-627.13 s, gemessen in 10-ms-Fenstern). Das Ende sitzt deshalb bei 627.03 s im 's' von 'aus' statt im 'G' von 'Guck'."
+  },
+  {
+    "clip_id": "saiJDq9DM_Y_008",
+    "quelle": {
+      "video_id": "saiJDq9DM_Y",
+      "kanal": "Elijello",
+      "orig_start": 676.24
+    },
+    "tier": "B",
+    "profil": "ELIASN97_STREAM",
+    "template": "FULLCAM_169",
+    "template_grund": "Eli allein in Fullcam — Regel 2, Fall 2. FULLCAM-Lauf ab 675.08 s (Ende der Ueberblendung aus dem Browser) bis zum Videoende.",
+    "modus": "FULLCAM",
+    "modus_anteil": 1.0,
+    "timing": {
+      "start": 676.24,
+      "ende": 707.2
+    },
+    "headline": "WIESO ELI VIER ANZÜGE BRAUCHT 💀🙏",
+    "sprache": "de",
+    "score": {
+      "overall": 0.8,
+      "reaktion": 0.78,
+      "klarheit": 0.86,
+      "payoff": 0.8
+    },
+    "grund": "Die vier Anzuege. Regel 1a: 'Eli, du brauchst vier Anzuege' — die Frage steht in der ersten Sekunde. Regel 1b: Aufloesung 'ein Standesamt, einen vor der Hochzeit, einen an der Hochzeit und einen nach der Hochzeit', Schluss 'ich werde mich in Schale werfen. Okay, fuer euch.' (706.8 s); das Video endet 1.4 s spaeter mitten in einem Satz. Regel 1c: [gelaechter] bei 687.8 s auf der Aufzaehlung. Grenze: 'Mir wurde gesagt' liegt noch in der Ueberblendung aus dem Browser (bis 675.08 s) und bleibt draussen."
+  }
+]

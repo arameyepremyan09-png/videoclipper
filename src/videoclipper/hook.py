@@ -82,9 +82,17 @@ def pruefe(headline: str, tr: Transkript, start: float, ende: float,
     # ausgerechnet die Headlines, die die Regel richtig umsetzen.
     eigene = _inhaltswoerter(headline) - OFFEN
 
+    # Verglichen wird mit dem, was im Bild steht: den korrigierten Untertiteln,
+    # nicht YouTubes Schreibweise. GEMESSEN am 2026-09-11 an saiJDq9DM_Y — die
+    # ASR schreibt durchgehend "Sydney", Headline und Kanaltitel "Sidney". Ohne
+    # die Korrektur galt jede Headline mit dem Namen als lose, obwohl er im
+    # Clip dutzendfach faellt. Lokal importiert: untertitel zieht PIL nach
+    # sich, und ``clip rangliste`` braucht sonst nichts davon.
+    from .untertitel import korrigiere_text
+
     grenze = start + (ende - start) * payoff_ab
-    vorn = _inhaltswoerter(tr.text_zwischen(start, grenze))
-    hinten = _inhaltswoerter(tr.text_zwischen(grenze, ende))
+    vorn = _inhaltswoerter(korrigiere_text(tr.text_zwischen(start, grenze), tr.video_id))
+    hinten = _inhaltswoerter(korrigiere_text(tr.text_zwischen(grenze, ende), tr.video_id))
 
     # Verraeter: steht in der Pointe, aber nicht im Aufbau. Woerter, die vorn
     # ohnehin fallen, verraten nichts — sie beschreiben nur, worum es geht.

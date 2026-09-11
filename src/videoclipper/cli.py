@@ -37,7 +37,7 @@ from . import asr, ausgabe, countdown, follow, frames, hook, rangliste, schnitte
 from .qc import overlays_vorhanden, pflichtelemente, pruefe
 from .render import rendere, rendere_countdown
 from .settings import arbeitsverzeichnis, einstellungen
-from .signals import ModusSignatur, sammle
+from .signals import ModusSignatur, lautheit, modus_je_bild, sammle
 from .snapping import snappe
 from .transcript import lade_json3
 
@@ -55,22 +55,31 @@ def _artefakte() -> Path:
     return p
 
 
+def _signatur(prof: dict) -> ModusSignatur:
+    """Die Modussignatur eines Profils.
+
+    Gebraucht von ``analyse`` (Laeufe im Raster) und von ``rendere``, wenn ein
+    Template Einschuebe ueberbrueckt (bildgenau im Clipfenster).
+    """
+    s = prof["signatur"]
+    return ModusSignatur(s["modus"], kante_x=s.get("kante_x"),
+                         kante_y=s.get("kante_y"),
+                         flaeche=tuple(s["flaeche"]) if s.get("flaeche") else None,
+                         kantenenergie=bool(s.get("kantenenergie", False)),
+                         bereich=tuple(s.get("bereich") or (0, 0)),
+                         schwelle=s.get("schwelle", 12.0),
+                         invertiert=bool(s.get("invertiert", False)),
+                         immer=bool(s.get("immer", False)),
+                         sonst=s.get("sonst", "SOLO"))
+
+
 def cmd_analyse(args: argparse.Namespace) -> None:
     video = Path(args.video).expanduser()
     prof = layout.profil(args.profil)
     tr = lade_json3(Path(args.transkript).expanduser(), args.video_id,
                     prof["quelle"].get("sprache", "de"))
 
-    s = prof["signatur"]
-    sig = ModusSignatur(s["modus"], kante_x=s.get("kante_x"),
-                        kante_y=s.get("kante_y"),
-                        flaeche=tuple(s["flaeche"]) if s.get("flaeche") else None,
-                        kantenenergie=bool(s.get("kantenenergie", False)),
-                        bereich=tuple(s.get("bereich") or (0, 0)),
-                        schwelle=s.get("schwelle", 12.0),
-                        invertiert=bool(s.get("invertiert", False)),
-                        immer=bool(s.get("immer", False)),
-                        sonst=s.get("sonst", "SOLO"))
+    sig = _signatur(prof)
 
     print(f"Transkript: {len(tr.woerter)} Woerter, {tr.dauer:.0f}s, "
           f"{len(tr.marker())} Marker")
@@ -156,6 +165,12 @@ def cmd_rendere(args: argparse.Namespace) -> None:
     # Ein Durchlauf ueber die Quelle fuer alle Clips, nicht einer je Clip.
     # Ein Bildwechsel mitten im Clip ist im QC der Datei nicht mehr messbar.
     bildwechsel = [] if args.ohne_schnittpruefung else schnitte.finde(video)
+    # Dieselben Wechsel bildgenau. ``snappe`` zieht Anfang und Ende aus ihnen
+    # heraus — sonst beginnt ein Clip mit dem Rest einer Ueberblendung.
+    sperren = schnitte.uebergaenge(video, bildwechsel)
+    # Der Ton dazu: Wo das letzte Wort eines Clips wirklich endet, weiss das
+    # Transkript vor einer Pause nicht — ``snappe`` misst es nach.
+    pegel = lautheit(video, fenster=0.05)
     # Korrekturregeln gelten je Video, gerendert werden mehrere Clips daraus.
     # Ausgewertet wird deshalb ueber den ganzen Lauf, nicht je Clip.
     kor_getroffen: set[int] = set()
@@ -171,12 +186,32 @@ def cmd_rendere(args: argparse.Namespace) -> None:
         if fehler := pflichtelemente(tmpl):
             raise SystemExit("\n".join(fehler))
 
-        start, ende, tier = snappe(tr, roh["timing"]["start"], roh["timing"]["ende"])
+        start, ende, tier = snappe(tr, roh["timing"]["start"], roh["timing"]["ende"],
+                                   sperren=sperren, pegel=pegel)
         roh["template"] = tmpl["name"]
         plan = EditPlan.model_validate(roh)
         plan.tier = tier
 
         dauer = round(ende - start, 3)
+
+        # Laeuft das Fenster ueber eine Strecke eines anderen Modus? Gefragt
+        # wird nur, wo das Template Einschuebe ueberbrueckt — dann bildgenau,
+        # auf derselben Zeitachse wie der Filtergraph (layout.einschuebe).
+        einschuebe: list[dict] = []
+        if tmpl.get("einschub"):
+            sig = _signatur(prof)
+            zeiten, werte = modus_je_bild(video, sig, start, dauer)
+            treffer = sig.aktiv(werte)
+            eigen = treffer if modus == sig.name else ~treffer
+            fremd = sig.sonst if modus == sig.name else sig.name
+            try:
+                einschuebe = layout.einschuebe(prof, tmpl, modus, fremd,
+                                               zeiten, eigen, dauer)
+            except ValueError as fehler:
+                print(f"  {plan.clip_id}  NICHT gerendert: {fehler}")
+                continue
+            anteil = round(float(eigen.mean()), 3)
+
         ut_conf = tmpl["untertitel"]
         cues = (untertitel.schneide(tr, start, ende, ut_conf)
                 if ut_conf.get("aktiv", True) else [])
@@ -199,6 +234,7 @@ def cmd_rendere(args: argparse.Namespace) -> None:
             untertitel=[{"text": c.text, "ab": c.ab, "bis": c.bis} for c in cues],
             follow=({"text": hinweis.text, "ab": hinweis.ab, "bis": hinweis.bis}
                     if hinweis else None),
+            einschuebe=einschuebe,
         )
 
         ziel = lauf.clip(plan.clip_id)
@@ -206,6 +242,17 @@ def cmd_rendere(args: argparse.Namespace) -> None:
               f"{ende-start:5.1f}s  {tmpl['name']:12s} Tier {tier}  {plan.headline}")
         fw = f"{hinweis.ab:.1f}-{hinweis.bis:.1f}s" if hinweis else "keine"
         print(f"      Overlays: {len(cues)} Untertitel, Follow {fw}")
+        if einschuebe:
+            strecken = ", ".join(f"{max(e['ab'], 0.0):.1f}-{min(e['bis'], dauer):.1f}s"
+                                 for e in einschuebe)
+            print(f"      Einschuebe {einschuebe[0]['modus']}: {strecken}  "
+                  f"({modus}-Anteil {anteil:.0%}, Layout steht)")
+        # Wechsel, die ein Einschub ueberbrueckt, springen im fertigen Clip
+        # nicht — sie gehoeren nicht in die Meldung. Die Abtastung der Schnitte
+        # liegt im 0.25-s-Raster, daher der Spielraum.
+        grenzen = [start + g for e in einschuebe for g in (e["ab"], e["bis"])]
+        wechsel = [s for s in bildwechsel
+                   if not any(abs(s - g) <= 0.3 for g in grenzen)]
         # Die Headline ist das einzige Textfeld der AI und im fertigen Clip
         # nicht mehr korrigierbar. Verraet sie die Pointe, faellt das sonst
         # erst auf, wenn der Clip schon draussen ist.
@@ -216,7 +263,7 @@ def cmd_rendere(args: argparse.Namespace) -> None:
         for m in (fw_meldungen
                   + overlays_vorhanden(plan.resolved, tmpl)
                   + hb.hinweise + st.verstoesse
-                  + schnitte.melde(plan.clip_id, start, ende, bildwechsel)):
+                  + schnitte.melde(plan.clip_id, start, ende, wechsel)):
             print(f"      ! {m}")
 
         rendere(plan, tmpl, video, ziel, vorschau=args.vorschau,

@@ -1,0 +1,106 @@
+# Materialprofil: Coachlim / 1:1 Kaese ueber Snapchat
+#
+# Gemessen am 2026-09-11 an jd9bSJ7mshM ("ER LANDET ZU 100% IM GRUPPENCHAT WEGEN
+# MIR 💀 1ZU1 KÄSE GEHT SCHIEF", 1164.9 s, 1920x1080@59.94). 4660 Abtastpunkte
+# im Abstand von 0.25 s, Boxkanten an 20 Vollbildern aus Chatstrecken.
+#
+# Das Format: Ein Zuschauer teilt sein Handy, auf dem er mit einem Maedchen
+# schreibt, und Coachlim diktiert ihm die Nachrichten. Gespiegelt wird Snapchat
+# im Dunkelmodus; der Name des Maedchens ist im Chat durch ein Kaese-Emoji
+# ersetzt. Darueber sitzt die Facecam. Sobald Coachlim sich zuruecklehnt,
+# aufsteht oder schreit, schaltet der Stream auf die Vollbild-Cam — 28-mal in
+# 19 Minuten, meist fuer 2-8 s, und fast immer genau auf der Reaktion.
+#
+# GEMESSENE BOXEN
+#   Facecam  [706, 0, 680, 382]   680/382 = 1.780, also 16:9.
+#            Links x=706 und rechts x=1385 ueber alle 20 Frames auf den Pixel.
+#            Die Unterkante ist weich: Zeilenbelegung 0.98 bei y=381, 0.55 bei
+#            383, 0.0 ab 386.
+#   Handy    [800, 386, 486, 694]
+#            Tastatur und Chat belegen x=801..1277 (Median 810..1275); die Box
+#            nimmt links und rechts wenige Pixel Rand dazu. Sie beginnt bei
+#            y=386 und nicht bei 382, weil die weiche Facecam-Kante bis 385 ins
+#            Handybild laeuft — sonst stuende oben im Chatpanel eine helle Linie.
+#            Unten laeuft das Handy aus dem Bild.
+#            486/694 = 0.70. Das ist deutlich breiter als bei COACHLIM_HANDYS
+#            (0.45) oder MARLI_PHONE (0.46): Dort war der ganze Bildschirm im
+#            Bild, hier nur Chat plus Tastatur — der Kopf des Handys liegt unter
+#            der Facecam.
+#
+# DIE FACECAM IST DIE VOLLBILD-CAM, NUR KLEINER. Gitarren links, Klimaanlage,
+# Poster und Sofa liegen in beiden an denselben relativen Stellen, Faktor
+# 1920/680 = 2.82 in beide Richtungen. Kein Ausschnitt, kein anderer Winkel.
+# Genau das macht den Einschub unten moeglich: Das obere Panel kann waehrend
+# der Vollbild-Strecke aus der Vollbild-Cam gespeist werden und zeigt dann
+# denselben Bildausschnitt wie vorher, nur schaerfer.
+
+name: COACHLIM_KAESE_SNAP
+beschreibung: Snapchat-Chat eines Zuschauers unter der Facecam, wechselnd mit kurzen Vollbild-Strecken
+gueltig_ab: 2026-09-11
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [Coachlim]
+  sprache: de
+
+# WIE ERKANNT WIRD: ueber die schwarze Flaeche RECHTS vom Handy. Die linke
+# Flaeche taugt hier nicht, obwohl sie bei COACHLIM_HANDYS und COACHLIM_ABU_TIKTOK
+# die Signatur traegt: Der Kanal blendet dort Alerts ein ("ist ab jetzt ein
+# Pirat der Kaeseleg Bande!", Spenden) — eine graue Kachel auf etwa
+# [0, 250, 345, 260], die die linke Flaeche 128-mal auf 6..8 hob.
+#
+# Gemessen ueber 4660 Punkte an [1450, 150, 400, 600]:
+#   PHONE      3807 Punkte unter 1.0
+#   FULLCAM     832 Punkte ueber 30
+#   dazwischen   16 Punkte — Uebergangsbilder an zwei Wechseln und die
+#                Abblende am Videoende (1162.7-1164.7 s)
+# Die Schwelle steht mitten in der Luecke. Unter der Flaeche liegt in der
+# Vollbild-Cam Wand und Poster, im Chatlayout der leere Discord-Grund; der
+# Twitch-Chat rechts unten beginnt erst bei y=820 und bleibt draussen.
+signatur:
+  modus: PHONE
+  flaeche: [1450, 150, 400, 600]
+  schwelle: 15.0
+  invertiert: true          # PHONE aktiv, wo die Flaeche SCHWARZ ist
+  sonst: FULLCAM
+
+modi:
+  PHONE:
+    zonen:
+      facecam: { box: [706, 0, 680, 382], rolle: creator }    # 16:9
+      handy:   { box: [800, 386, 486, 694], rolle: inhalt }   # Chat + Tastatur
+    muellzonen:
+      - { box: [0, 0, 706, 1080], hinweis: schwarzer Grund links mit Piraten-Zaehler, Alerts und Sponsorlogo }
+      - { box: [1386, 0, 534, 1080], hinweis: schwarzer Grund rechts, unten der Twitch-Chat }
+  FULLCAM:
+    # Coachlim allein in der Vollbild-Cam. SCHNITTREGELN.md Regel 2, Fall 2:
+    # auch dann 16:9 vollstaendig zeigen — deshalb kein fokus_x.
+    zonen:
+      voll: { box: [0, 0, 1920, 1080], rolle: creator }
+    muellzonen:
+      - { box: [0, 0, 460, 50], hinweis: Piraten-Zaehler oben links }
+      - { box: [1780, 10, 140, 50], hinweis: Sponsorlogo oben rechts }
+      - { box: [1690, 820, 230, 210], hinweis: Twitch-Chat rechts unten }
+    # EINSCHUB: Diese Strecken sind hier keine eigene Szene, sondern die
+    # Reaktion auf das, was gerade im Chat steht. Ein PHONE-Clip darf deshalb
+    # ueber sie hinweglaufen (wie lange, entscheidet das Template). Waehrend
+    # des Einschubs wird das Panel `facecam` aus der Zone `voll` gespeist —
+    # dieselbe Kamera, siehe Kopf —, und alle anderen Panels halten ihr
+    # letztes Bild aus dem Chat. Das Layout springt also nie.
+    einschub:
+      in: PHONE
+      ersatz: { facecam: voll }
+
+datenschutz:
+  # Das Handy gehoert einem Zuschauer, der es selbst freigegeben hat; der Name
+  # des Maedchens steht nicht im Bild (Kaese-Emoji statt Name). Unveraenderte
+  # Entscheidung des Nutzers wie in den anderen Profilen.
+  fremdinhalt_blur: false
+
+signale:
+  # 31 Marker im Transkript: 9 [gelächter], 1 [gelächter][japst], 9 [schreien],
+  # 11 [musik], 1 [glocke]. Der Textkanal traegt also, wenn auch duenn.
+  lachmarker: 1.0
+  loudness_peak: 0.8
+  sprechtempo: 0.5

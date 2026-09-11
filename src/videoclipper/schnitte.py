@@ -99,6 +99,85 @@ def finde(video: Path, schritt: float = SCHRITT,
     return [round(float(t), 2) for t in zeiten[treffer]]
 
 
+# ---------------------------------------------------------------------------
+# Bildgenaue Uebergaenge — fuer die Grenzen in ``snappe``
+# ---------------------------------------------------------------------------
+#
+# ``finde`` tastet im 0.25-s-Raster: Ein Schnitt bei c heisst nur, dass sich
+# das Bild irgendwo zwischen c-0.25 und c geaendert hat. Fuer die Meldung "da
+# springt etwas" reicht das, fuer eine Clipgrenze nicht. GEMESSEN am
+# 2026-09-11 an saiJDq9DM_Y: Der Kanal blendet zwischen Cam und Browser in
+# rund 0.3 s ueber, und das Intro endet mit einem harten Schnitt 0.04 s vor
+# dem ersten Wort. Beides liegt innerhalb eines einzigen Rasterschritts.
+
+def _bildabstaende(video: Path, von: float, bis: float,
+                   fps: float) -> tuple[np.ndarray, np.ndarray]:
+    """Jedes Bild zwischen ``von`` und ``bis`` mit seinem Abstand zum Vorgaenger.
+
+    ``abstand[i]`` gehoert zu ``zeiten[i]``, also zu dem Bild, das sich
+    veraendert hat — bei einem harten Schnitt ist das das erste neue Bild.
+    """
+    n = max(2, int(np.ceil((bis - von) * fps)) + 1)
+    roh = subprocess.run(
+        ["ffmpeg", "-hide_banner", "-loglevel", "error", "-ss", f"{von:.3f}",
+         "-i", str(video), "-frames:v", str(n),
+         "-vf", "format=gray,scale=96:54", "-f", "rawvideo", "-"],
+        check=True, capture_output=True).stdout
+    bilder = np.frombuffer(roh, dtype=np.uint8).reshape(-1, 54, 96).astype(np.float32)
+    t0 = np.ceil(von * fps - 1e-6) / fps
+    zeiten = t0 + np.arange(len(bilder)) / fps
+    abstand = np.r_[0.0, np.abs(np.diff(bilder, axis=0)).mean(axis=(1, 2))]
+    return zeiten, abstand
+
+
+def _spanne(zeiten: np.ndarray, abstand: np.ndarray, von: float, bis: float,
+            schwelle_min: float = 1.0, faktor: float = 4.0
+            ) -> tuple[float, float] | None:
+    """Erstes und letztes veraendertes Bild zwischen ``von`` und ``bis``.
+
+    Die Schwelle steht relativ zum Rauschen des Fensters, mindestens aber bei
+    ``schwelle_min``. Gemessen an saiJDq9DM_Y (96x54, Graustufen): ruhiges
+    Bild 0.1-0.3 je Bildwechsel, Ueberblendung 3-9, harter Schnitt 30-40.
+    """
+    schwelle = max(schwelle_min, faktor * float(np.median(abstand)))
+    idx = np.flatnonzero((zeiten >= von - 1e-6) & (zeiten <= bis + 1e-6)
+                         & (abstand > schwelle))
+    if not len(idx):
+        return None
+    return round(float(zeiten[idx[0]]), 3), round(float(zeiten[idx[-1]]), 3)
+
+
+def uebergaenge(video: Path, schnitte: list[float],
+                schritt: float = SCHRITT) -> list[tuple[float, float]]:
+    """Die Schnitte aus ``finde`` bildgenau: (erstes veraendertes, erstes neues Bild).
+
+    Benachbarte Meldungen gehoeren zu einem Uebergang — eine Ueberblendung
+    ueber 0.3 s erzeugt im 0.25-s-Raster zwei. Findet sich im Fenster kein
+    Bild ueber der Schwelle (sehr weiche Blende), gilt das grobe Raster:
+    lieber eine Viertelsekunde zu vorsichtig als ein halber Uebergang im Clip.
+    """
+    if not schnitte:
+        return []
+    fps = _fps(video)
+    gruppen: list[list[float]] = []
+    for c in sorted(schnitte):
+        if gruppen and c - gruppen[-1][-1] <= 2 * schritt + 1e-6:
+            gruppen[-1].append(c)
+        else:
+            gruppen.append([c])
+
+    spannen = []
+    for g in gruppen:
+        # Der Wechsel liegt hinter dem Abtastpunkt vor der ersten Meldung; eine
+        # Blende kann ein halbes Raster ueber die letzte hinaus nachlaufen.
+        von, bis = max(0.0, g[0] - schritt), g[-1] + schritt / 2
+        # 0.3 s Ruhe links und rechts, damit der Median das Rauschen misst und
+        # nicht die Blende selbst.
+        zeiten, abstand = _bildabstaende(video, max(0.0, von - 0.3), bis + 0.3, fps)
+        spannen.append(_spanne(zeiten, abstand, von, bis) or (von, g[-1]))
+    return spannen
+
+
 def pruefe(start: float, ende: float, schnitte: list[float],
            rand: float = 0.30) -> list[float]:
     """Schnitte, die INNERHALB des Clipfensters liegen.
