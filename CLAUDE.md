@@ -39,12 +39,23 @@ wurden drei abgelehnt, und **die abgelehnten hatten die hoeheren AI-Scores**
 ## Material
 
 - **Zielmaterial:** GTA-6-Content. Existiert noch nicht (Stand September 2026).
-- **Testfeld:** deutscher Reaction-/OME.TV-Content von Coachlim, Quelle sind fremde
-  YouTube-Videos.
+- **Testfeld:** deutscher Reaction-/OME.TV-Content von Coachlim.
 - Ausgabe: TikTok, Reels, YouTube Shorts. Betrieb täglich, möglichst automatisiert.
 
 Das Briefing sprach von GTA, das Referenzmaterial ist Reaction-Streaming. Beides gilt:
 Reaction ist das Testfeld, GTA das Ziel.
+
+**Immer fremde Creator, nie eigene Aufnahmen** — auch nach dem GTA-6-Release wird
+nicht selbst gespielt. Zwei Quellplattformen:
+
+| | YouTube | Twitch |
+|---|---|---|
+| Transkript | `de-orig` vorhanden, Primärquelle | **keins — ASR ist Pflicht** |
+| Verfügbarkeit | dauerhaft | VOD läuft je nach Kanalstatus nach 7–60 Tagen ab |
+| Besonderheit | — | DMCA-Stummschaltungen, Twitch-Clips als Signal |
+
+Der Twitch-Pfad ist damit **nicht** der YouTube-Pfad mit anderer URL. Er braucht
+eigene ASR, hat ein Zeitfenster und eigene Fallstricke.
 
 ## Layout ist nicht statisch — gemessen am 2026-09-04
 
@@ -1060,6 +1071,25 @@ waere genau der alte Zustand, nur mit Ordnern drumherum.
 `--ausgabe` benennt seither den **Basisordner**, nicht das Ziel selbst. Der
 Altbestand in `clips/` bleibt unangetastet liegen: `ausgabe.zuletzt` erkennt
 einen Lauf am `mp4/`-Unterordner und uebergeht alles andere.
+
+### Twitch
+
+- **Keine Untertitel, keine Audio-Ereignisse.** ASR ist auf diesem Pfad Pflicht, und
+  damit auch der Lachmarker-Ersatz: Gelächter muss aus dem Audiosignal kommen, nicht
+  aus dem Transkript. Die Signalgewichte im Materialprofil müssen das abbilden.
+- **VODs sind vergänglich** (je nach Kanalstatus etwa 7 bis 60 Tage — vor dem
+  Produktivbetrieb gegen die aktuellen Twitch-Bedingungen prüfen). Daraus folgt eine
+  Priorität, die YouTube nicht hat: Ein VOD, das bald abläuft, wird zuerst geholt.
+  Das gehört in die Job-Priorisierung, nicht in einen Cronjob nach Gefühl.
+- **DMCA-Stummschaltungen**: Twitch schaltet Audio bei erkannter Musik stumm — teils
+  minutenlang. Solche Bereiche zerstören ASR und Momenterkennung lautlos. Sie müssen
+  vor der Kandidatenbildung erkannt (durchgehende digitale Stille bei laufendem Bild)
+  und ausgeschlossen werden.
+- **Twitch-Clips sind ein geschenktes Signal.** Die Community erstellt selbst Clips der
+  besten Momente, mit Viewcount und Zeitbezug zum VOD (`twitch:clips` in yt-dlp). Das
+  ist erstens ein kostenloser Momentdetektor und zweitens die Lösung für das
+  Kaltstartproblem beim Ranking: echte Popularitätsdaten statt geratener Scores.
+  Vor eigener Detektion immer zuerst prüfen, ob Clips existieren.
 
 ## Look
 
