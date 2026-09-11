@@ -193,6 +193,48 @@ Ausgelegt als:
 
 ---
 
+## Regel 6 — Kurzformat: der lustigste Moment zuerst, dann die Geschichte (ab 2026-09-11, in Erprobung)
+
+Erster Auftrag: *"Lass uns das so bauen, dass die Clips sehr kurz sind,
+maximal 30 Sekunden, am besten 10-15 Sekunden. [...] Der Lacher-Moment soll
+direkt in den ersten 3-5 Sekunden sein. Die Visual Hook soll eine
+Übertreibung des Szenarios sein."*
+
+Rueckmeldung auf fuenf Beispiele davon, am selben Tag: *"Die Clips sind oft zu
+kurz, man versteht nicht, was der Kontext hinter denen ist. Lieber einfach die
+sehr lustigen Momente am Anfang und dann das Video bis mindestens 30 Sekunden
+oder drüber laufen lassen, dadurch hat man eine gute Hook und der Zuschauer
+ist mehr bereit, das Video zu schauen."*
+
+Gebaut als Teaser plus Geschichte:
+
+- **Teaser (2-7 s).** Der lustigste Moment laeuft zuerst. Die Selektion nennt
+  ihn als eigenes Quellfenster (`teaser`) und die Pointe darin (`pointe.t`);
+  liegt die Pointe nicht im Teaser, wird nicht gerendert.
+- **Dann die Geschichte.** Harter Schnitt an den Anfang des Gespraechs; von
+  dort laeuft der Clip mit Kontext ueber die Pointe hinaus (`timing`). Der
+  Moment kommt also zweimal. Einfach ab dem Lacher weiterlaufen haette den
+  Kontext nicht geliefert — der liegt vor der Pointe, nicht dahinter.
+- **Mindestens 30 s**, darunter wird nicht gerendert. Ziel 30-60 s, darueber
+  ein Hinweis.
+- **Die Headline bleibt die Uebertreibung des Szenarios**, Regel 3 gilt
+  weiter. `hook.pruefe` meldet bei diesem Stil "kein offenes Element" — das
+  ist erwartet, eine Uebertreibung ist eine Aussage.
+- **Punch-in** (harter Zoom 1.3x auf die Gesichter) auf der Pointe, im Teaser
+  und an ihrer Stelle im Hauptteil. Die Follow-Szene steht im Hauptteil, nie
+  im Teaser.
+
+**Verhaeltnis zu Regel 1a:** gilt wieder uneingeschraenkt — der Hauptteil
+traegt seinen Kontext selbst. Der Teaser steht davor, er ersetzt ihn nicht.
+
+**Verworfen:** die erste Fassung (10-15 s, Pointe bei 3-5 s, Kontext nur in
+der Headline). Ergebnis laut Nutzer: zu kurz, kein Kontext.
+
+Stand: Fuenf Beispiele der zweiten Fassung aus 0-OqdAjLq_0 am 2026-09-11,
+Rueckmeldung steht aus.
+
+---
+
 ## Ablaufprotokoll je Lauf
 
 1. Quelle laden, `de-orig` vorher pruefen (`yt-dlp --list-subs`).

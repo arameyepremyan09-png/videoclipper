@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 # Overlays, die in jedem Clip gleich aussehen und deshalb nicht elfmal im
 # Template stehen. Ein Template darf einzelne Werte ueberschreiben.
-UEBERALL = ("sicherheitszone", "untertitel", "follow_hinweis")
+UEBERALL = ("sicherheitszone", "untertitel", "follow_hinweis", "kurzformat")
 
 
 def _lade(ordner: str, name: str) -> dict[str, Any]:
@@ -95,9 +95,51 @@ def panels(prof: dict, tmpl: dict, modus: str) -> list[dict]:
             "src": list(zone["box"]),
             "dst": list(p["ziel"]),
             "passung": p.get("passung", "fuellen"),
+            "ausrichtung": p.get("ausrichtung", "mitte"),
             "fokus_x": zone.get("fokus_x"),
+            "fokus_y": zone.get("fokus_y"),
         })
     return out
+
+
+def _gerade(n: float) -> int:
+    i = int(round(n))
+    return i - (i % 2)
+
+
+def sichtbar(p: dict) -> tuple[tuple[int, int, int, int], tuple[int, int, int, int]]:
+    """Welcher Quellausschnitt eines Panels wo auf der Canvas steht.
+
+    Gibt (Quellrechteck, Canvasrechteck) zurueck, beide als (x, y, w, h).
+    ``render._panel_kette`` baut daraus den Filter, ``kurzformat`` den
+    Punch-in — beide aus derselben Rechnung, sonst saesse der Zoom um ein paar
+    Pixel neben dem Bild, das er vergroessern soll.
+
+    ``fuellen``   auf das Zielverhaeltnis beschnitten, um ``fokus_x``; das
+                  Canvasrechteck ist das ganze Panel.
+    ``einpassen`` die ganze Zone; das Canvasrechteck ist der Inhalt ohne
+                  Blurreste, gesetzt nach ``ausrichtung`` (mitte, oben, unten).
+    """
+    sx, sy, sw, sh = p["src"]
+    dx, dy, dw, dh = p["dst"]
+
+    if p.get("passung", "fuellen") == "fuellen":
+        ziel_ar, quell_ar = dw / dh, sw / sh
+        if quell_ar > ziel_ar:                      # zu breit: seitlich schneiden
+            nw, nh = _gerade(sh * ziel_ar), _gerade(sh)
+            fokus = p.get("fokus_x")
+            mitte = (fokus - sx) if fokus is not None else sw / 2
+            ox, oy = int(min(max(mitte - nw / 2, 0), sw - nw)), 0
+        else:                                        # zu hoch: oben/unten schneiden
+            nw, nh = _gerade(sw), _gerade(sw / ziel_ar)
+            ox, oy = 0, int((sh - nh) / 2)
+        return (sx + ox, sy + oy, nw, nh), (dx, dy, dw, dh)
+
+    skala = min(dw / sw, dh / sh)
+    fw, fh = _gerade(sw * skala), _gerade(sh * skala)
+    y = {"oben": 0, "unten": dh - fh}.get(p.get("ausrichtung", "mitte"),
+                                          (dh - fh) // 2)
+    return (sx, sy, sw, sh), (dx + (dw - fw) // 2, dy + y, fw, fh)
 
 
 # ---------------------------------------------------------------------------

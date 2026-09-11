@@ -33,7 +33,8 @@ from pathlib import Path
 from . import layout
 from .candidates import bilde
 from .editplan import Aufgeloest, EditPlan
-from . import asr, ausgabe, countdown, follow, frames, hook, rangliste, schnitte, untertitel
+from . import (asr, ausgabe, countdown, follow, frames, hook, kurzformat, rangliste,
+               schnitte, untertitel)
 from .qc import overlays_vorhanden, pflichtelemente, pruefe
 from .render import rendere, rendere_countdown
 from .settings import arbeitsverzeichnis, einstellungen
@@ -194,6 +195,31 @@ def cmd_rendere(args: argparse.Namespace) -> None:
 
         dauer = round(ende - start, 3)
 
+        # Kurzformat (overlays.yaml, ab 2026-09-11): erst der Teaser mit dem
+        # lustigsten Moment, dann die Geschichte mit Kontext. Die Regeln gelten
+        # fuer den gesnappten Clip, nicht fuer den Plan.
+        kconf = tmpl.get("kurzformat") or {}
+        k_hinweise: list[str] = []
+        segs = [{"art": "haupt", "start": start, "ende": ende, "dauer": dauer,
+                 "ab": 0.0}]
+        if plan.teaser is not None:
+            if tmpl.get("einschub"):
+                print(f"  {plan.clip_id}  NICHT gerendert: Teaser und Einschuebe "
+                      f"zusammen sind nicht gebaut")
+                continue
+            # Ein Teaser ist ein Moment, kein Satz: ``snappe`` darf ihn kurz lassen.
+            t_start, t_ende, _ = snappe(tr, plan.teaser.start, plan.teaser.ende,
+                                        sperren=sperren, pegel=pegel, min_laenge=1.0)
+            segs = kurzformat.segmente((t_start, t_ende), (start, ende))
+            fehler, k_hinweise = kurzformat.pruefe(segs, plan.pointe, kconf)
+            if fehler:
+                print(f"  {plan.clip_id}  NICHT gerendert: {'; '.join(fehler)}")
+                continue
+        gesamt = round(sum(s["dauer"] for s in segs), 3)
+        if len(segs) > 1:
+            schwelle = einstellungen()["monetarisierung"]["tier_a_min_sekunden"]
+            tier = plan.tier = "A" if gesamt >= schwelle else "B"
+
         # Laeuft das Fenster ueber eine Strecke eines anderen Modus? Gefragt
         # wird nur, wo das Template Einschuebe ueberbrueckt — dann bildgenau,
         # auf derselben Zeitachse wie der Filtergraph (layout.einschuebe).
@@ -213,21 +239,41 @@ def cmd_rendere(args: argparse.Namespace) -> None:
             anteil = round(float(eigen.mean()), 3)
 
         ut_conf = tmpl["untertitel"]
-        cues = (untertitel.schneide(tr, start, ende, ut_conf)
-                if ut_conf.get("aktiv", True) else [])
+        cues: list[untertitel.Cue] = []
+        if ut_conf.get("aktiv", True):
+            # Je Segment geschnitten und auf die Clipachse verschoben — ein Cue
+            # ueber den Rueckschnitt hinweg waere Text aus zwei Stellen.
+            for seg in segs:
+                cues += [untertitel.Cue(c.text, c.ab + seg["ab"], c.bis + seg["ab"])
+                         for c in untertitel.schneide(tr, seg["start"], seg["ende"],
+                                                      ut_conf)]
         # SCHNITTREGELN.md Regel 4: Untertitel muessen korrekt sein. YouTubes
         # ASR verschreibt sich; die Handkorrekturen liegen je Video in
         # data/korrekturen/ und greifen erst hier, nach dem Schnitt der Cues.
         cues, treffer = untertitel.korrigiere(cues, args.video_id)
         kor_getroffen |= treffer
         fw_conf = tmpl["follow_hinweis"]
-        hinweis, fw_meldungen = (follow.platziere(dauer, fw_conf)
+        panels = layout.panels(prof, tmpl, modus)
+        punch: list[dict] = []
+        if plan.pointe is not None:
+            try:
+                punch = kurzformat.punch_in(plan.pointe, segs, panels, kconf)
+            except ValueError as fehler:
+                print(f"  {plan.clip_id}  NICHT gerendert: {fehler}")
+                continue
+        # Die Follow-Szene gehoert in die Geschichte, nicht in den Teaser.
+        fw_conf = kurzformat.follow_conf(fw_conf, segs, kconf)
+        hinweis, fw_meldungen = (follow.platziere(gesamt, fw_conf)
                                  if fw_conf.get("aktiv", True) else (None, []))
+        if hinweis:
+            fw_meldungen += kurzformat.verdeckt(hinweis.ab, hinweis.bis, punch)
 
         plan.resolved = Aufgeloest(
-            start=start, ende=ende, dauer=dauer,
+            start=start, ende=ende, dauer=gesamt,
             modus=modus, modus_anteil=anteil,
-            panels=layout.panels(prof, tmpl, modus),
+            panels=panels,
+            punch_in=punch,
+            segmente=segs if len(segs) > 1 else [],
             canvas=tuple(tmpl["canvas"]),
             fps=int(einstellungen()["output"]["fps"]),
             headline_y=tmpl["headline"]["y"],
@@ -242,6 +288,14 @@ def cmd_rendere(args: argparse.Namespace) -> None:
               f"{ende-start:5.1f}s  {tmpl['name']:12s} Tier {tier}  {plan.headline}")
         fw = f"{hinweis.ab:.1f}-{hinweis.bis:.1f}s" if hinweis else "keine"
         print(f"      Overlays: {len(cues)} Untertitel, Follow {fw}")
+        if len(segs) > 1:
+            t = segs[0]
+            print(f"      Teaser {t['start']:.2f}-{t['ende']:.2f} ({t['dauer']:.1f}s), "
+                  f"Hauptteil ab {segs[1]['ab']:.2f}s, gesamt {gesamt:.1f}s")
+        if punch:
+            fenster = sorted({(e["ab"], e["bis"]) for e in punch})
+            print("      Punch-in " + ", ".join(f"{a:.2f}-{b:.2f}s" for a, b in fenster)
+                  + f" auf {', '.join(sorted({e['panel'] for e in punch}))}")
         if einschuebe:
             strecken = ", ".join(f"{max(e['ab'], 0.0):.1f}-{min(e['bis'], dauer):.1f}s"
                                  for e in einschuebe)
@@ -256,14 +310,19 @@ def cmd_rendere(args: argparse.Namespace) -> None:
         # Die Headline ist das einzige Textfeld der AI und im fertigen Clip
         # nicht mehr korrigierbar. Verraet sie die Pointe, faellt das sonst
         # erst auf, wenn der Clip schon draussen ist.
-        hb = hook.pruefe(plan.headline, tr, start, ende)
+        # Mit Teaser steht die Pointe in Sekunde null; ein Wort aus ihr in der
+        # Headline verraet dann nichts mehr — keine Verratszone.
+        hb = hook.pruefe(plan.headline, tr, start, ende,
+                         payoff_ab=1.0 if len(segs) > 1 else 0.66)
         # Formregeln aus SCHNITTREGELN.md Regel 3 — kurz, keine Satzzeichen,
         # Emoji-Paar am Ende. Mechanisch pruefbar, also geprueft.
         st = hook.stil(plan.headline)
-        for m in (fw_meldungen
+        for m in (fw_meldungen + k_hinweise
                   + overlays_vorhanden(plan.resolved, tmpl)
                   + hb.hinweise + st.verstoesse
-                  + schnitte.melde(plan.clip_id, start, ende, wechsel)):
+                  + [m for s in segs
+                     for m in schnitte.melde(plan.clip_id, s["start"], s["ende"],
+                                             wechsel)]):
             print(f"      ! {m}")
 
         rendere(plan, tmpl, video, ziel, vorschau=args.vorschau,

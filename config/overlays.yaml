@@ -153,3 +153,49 @@ follow_hinweis:
   nicht_nach_ende: 2.0       # die Pointe auch
 
   renderer: png_overlay
+
+# ---------------------------------------------------------------------------
+# Kurzformat — ab 2026-09-11
+# ---------------------------------------------------------------------------
+#
+# Zwei Auftraege des Nutzers am selben Tag, der zweite korrigiert den ersten.
+# Erst: Clips sehr kurz, 10-15 s, der Lacher in den ersten 3-5 Sekunden. Dann
+# die Rueckmeldung auf fuenf Beispiele: "zu kurz, man versteht nicht, was der
+# Kontext dahinter ist. Lieber die sehr lustigen Momente am Anfang und dann das
+# Video bis mindestens 30 Sekunden oder drueber laufen lassen."
+#
+# Daraus der Aufbau: ein kurzer TEASER mit dem lustigsten Moment, dann ein
+# harter Schnitt zurueck an den Anfang der Geschichte, und die laeuft mit
+# Kontext ueber die Pointe hinaus (siehe kurzformat.py). Gilt fuer jeden Plan,
+# der einen ``teaser`` nennt; ohne ihn bleibt alles wie bisher. Die Headline
+# bleibt eine Uebertreibung des Szenarios.
+#
+# WARUM HIER: Es ist eine Hausregel fuer jede Zielkomposition, keine
+# Eigenschaft einer Quelle — dieselbe Begruendung wie fuer Untertitel und
+# Follow. Ein Template darf einzelne Werte ueberschreiben, etwa einen
+# staerkeren Zoom, wo das Bild klein steht.
+
+kurzformat:
+  dauer_min: 30.0              # "mindestens 30 Sekunden oder drueber" — darunter kein Render
+  dauer_ziel: [30.0, 60.0]     # darueber ein Hinweis, kein Abbruch
+  teaser:
+    min: 2.0                   # kuerzer ist es ein Wort, kein Moment
+    # Laenger erzaehlt der Teaser schon die Geschichte. 8 statt der zuerst
+    # angesetzten 7: Ein Teaser muss einen ganzen Witz tragen, und der aus
+    # 0-OqdAjLq_0_004 (Satz, Echo, Pointe, Reaktion) braucht gemessen 7.7 s.
+    max: 8.0
+
+  # Die Uebertreibung im Bild: ein harter Zoom auf die Gesichter, genau auf
+  # der Pointe, danach zurueck. Hart statt gleitend: Ein Schnitt auf einen
+  # engeren Ausschnitt braucht nur crop und scale mit festen Massen, eine
+  # Fahrt braeuchte Groessen, die sich je Frame aendern.
+  punch_in:
+    zoom: 1.3
+    dauer: 1.6                 # wenn die Selektion kein Ende nennt
+    min_dauer: 0.6
+    max_dauer: 2.5
+
+  # Die Follow-Szene gehoert in die Geschichte, nicht in den Teaser: Dort hat
+  # der Zuschauer noch nicht entschieden, ob er bleibt.
+  follow_hinweis:
+    abstand: 1.0               # so lange nach dem Rueckschnitt fruehestens

@@ -61,6 +61,33 @@ class Aufgeloest(BaseModel):
     # trotzdem weiterlaeuft, mit Fenster, Haltebild und Ersatzpanels — siehe
     # ``layout.einschuebe``. Leer, wo das Template keine vorsieht.
     einschuebe: list[dict] = Field(default_factory=list)
+    # Kurzformat: je gezoomtem Panel Fenster, Quell- und Canvasrechteck —
+    # siehe ``kurzformat.punch_in``. Leer, wo der Plan keine Pointe nennt.
+    punch_in: list[dict] = Field(default_factory=list)
+    # Kurzformat mit Teaser: die Quellfenster in Clipreihenfolge, je mit
+    # ``start``/``ende``/``dauer`` in der Quelle und ``ab`` im fertigen Clip.
+    # Leer bei einem Clip aus einem Stueck. Ist es gesetzt, meinen ``start``
+    # und ``ende`` den Hauptteil und ``dauer`` den ganzen Clip.
+    segmente: list[dict] = Field(default_factory=list)
+
+
+class Pointe(BaseModel):
+    """Der Moment, fuer den der Clip da ist. Kurzformat, ab 2026-09-11.
+
+    Die AI nennt WANN der Lacher faellt und WER dabei ins Bild gehoert. Wie
+    stark gezoomt wird und wie lange hoechstens, steht im Template
+    (``kurzformat.punch_in``) — keine Geometrie vom Modell.
+    """
+    model_config = ConfigDict(extra="forbid")
+    t: float = Field(ge=0)                  # Quellzeit, an der die Pointe faellt
+    bis: float | None = None                # Ende des Moments, Quellzeit
+    fokus: list[str] = Field(default_factory=list)   # Zonennamen; leer = alle
+
+    @model_validator(mode="after")
+    def _reihenfolge(self):
+        if self.bis is not None and self.bis <= self.t:
+            raise ValueError("pointe.bis muss nach pointe.t liegen")
+        return self
 
 
 class EditPlan(BaseModel):
@@ -78,6 +105,10 @@ class EditPlan(BaseModel):
     sprache: str = "de"
     score: Score
     grund: str
+    # Kurzformat: Welcher Moment zuerst laeuft (Quellfenster), und wo darin die
+    # Pointe faellt. Ohne Teaser gelten die alten Regeln.
+    teaser: Zeit | None = None
+    pointe: Pointe | None = None
 
     resolved: Aufgeloest | None = None
 

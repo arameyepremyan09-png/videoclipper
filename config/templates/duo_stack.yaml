@@ -1,0 +1,75 @@
+# Template: DUO_STACK
+#
+# Zwei 16:9-Cams, die in der Quelle nebeneinander stehen, uebereinander
+# gestapelt: Coachlim oben, Gast unten, beide auf voller Breite (1080x608).
+#
+# WARUM NICHT FULLCAM_169: Dort landet das ganze 16:9-Bild als 1080x606-Band.
+# Bei COACHLIM_DUO sind die Cams in der Quelle nur 860 px breit — im Band
+# waeren es 484 px je Gesicht, der Rest Schwarz. Gestapelt ist jedes Gesicht
+# mehr als doppelt so gross, und nichts wird beschnitten.
+#
+# WARUM NICHT OME_SPLIT: Der Aufbau ist derselbe (zwei Cams nebeneinander ->
+# uebereinander), aber OME_SPLIT legt jede Cam mittig in ihre 960-px-Haelfte.
+# Mit 16:9-Cams stuende dann in der Bildmitte eine 352 px hohe Blurluecke, und
+# die untere Cam liefe bis y=1744 in TikToks UI-Zone. Hier sitzen beide Cams
+# an der Naht (``ausrichtung``), der Blur liegt oben und unten.
+#
+#   Headline        145..315   in der freien Flaeche ueber den Cams
+#   Cam oben        352..960
+#   Follow-Knopf    885..1035  auf der Naht: Coachlims Brust, Elis Regalwand
+#   Cam unten       960..1568
+#   Untertitel     1573..1723  unter der unteren Cam
+#   UI-Zone ab     1728
+#
+# Die Gesichter liegen bei y~646 (oben) und y~1345 (unten), gemessen an acht
+# Pointenbildern. Keins der drei Overlays beruehrt sie.
+
+name: DUO_STACK
+beschreibung: Zwei Cams uebereinander an der Naht, Blur oben und unten, Headline oben
+default_fuer: [COACHLIM_DUO]
+gilt_fuer_modus: DUO
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: cam_links
+    ziel: [0, 0, 1080, 960]
+    passung: einpassen
+    ausrichtung: unten          # an die Naht, Blur darueber
+  - quelle: cam_rechts
+    ziel: [0, 960, 1080, 960]
+    passung: einpassen
+    ausrichtung: oben           # an die Naht, Blur darunter
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: editplan.headline
+  schrift: Anton
+  schriftgroesse: 76
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 9
+  # 230 statt hoeher: TikToks Reiter "Folge ich | Fuer dich" liegen oben bei
+  # rund 60..140. Zweizeilig reicht die Headline so von 145 bis 315.
+  y: 230
+  max_breite: 1000
+  max_zeilen: 2
+  renderer: png_overlay
+
+follow_hinweis:
+  y: 960
+
+untertitel:
+  # 150 statt 264: Zwischen Cam (endet 1568) und UI-Zone (1728) sind 160 px
+  # frei, zwei Zeilen brauchen 142. Das Band steht zentriert, schmaler heisst
+  # hier: naeher an der Cam.
+  y: 1648
+  band_hoehe: 150
+
+branding: { aktiv: false, text: "TODO", y: 1790 }
+audio:    { normalisieren: true, ziel_lufs: -14.0 }

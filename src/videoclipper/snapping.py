@@ -176,7 +176,8 @@ def _aus_uebergaengen(s: float, en: float,
 
 def snappe(tr: Transkript, start: float, ende: float,
            sperren: Sequence[tuple[float, float]] = (),
-           pegel: Pegel | None = None) -> tuple[float, float, str]:
+           pegel: Pegel | None = None,
+           min_laenge: float = 5.0) -> tuple[float, float, str]:
     """Auf Wortgrenzen ausrichten und Tier bestimmen.
 
     Tier A wird nur vergeben, wenn die Laenge natuerlich erreicht wird. Gestreckt
@@ -191,11 +192,14 @@ def snappe(tr: Transkript, start: float, ende: float,
     ``pegel``    Lautheit in 50-ms-Fenstern (``signals.lautheit``). Damit endet
                  der Clip, wo das letzte Wort wirklich endet — nie spaeter als
                  bisher, hoechstens frueher.
+    ``min_laenge`` darunter gilt das Fenster als vom Snapping zerdrueckt. Ein
+                 Teaser (``kurzformat``) ist absichtlich nur 2-7 s lang und
+                 braucht deshalb eine kleinere Grenze als ein ganzer Clip.
     """
     e = einstellungen()["monetarisierung"]
     s_wort = s = max(0.0, _naechste_wortgrenze(tr, start, "vor"))
     en_wort = en = min(tr.dauer, _naechste_wortgrenze(tr, ende, "zurueck"))
-    gesnappt = en - s >= 5.0
+    gesnappt = en - s >= min_laenge
     if not gesnappt:                       # Snapping hat das Fenster zerdrueckt
         s, en = start, ende
 
@@ -253,7 +257,7 @@ def snappe(tr: Transkript, start: float, ende: float,
         s2, en2 = _aus_uebergaengen(s, en, sperren)
         # Nie so weit, dass vom Clip nichts uebrig bleibt — dann lieber den
         # Uebergang zeigen und ``schnitte.melde`` ihn nennen lassen.
-        if en2 - s2 >= 5.0:
+        if en2 - s2 >= min_laenge:
             s, en = s2, en2
 
     tier = "A" if (en - s) >= e["tier_a_min_sekunden"] else "B"

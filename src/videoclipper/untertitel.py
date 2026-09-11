@@ -275,6 +275,13 @@ def regeln(video_id: str) -> list[dict]:
 
 
 def _ersetze(text: str, regel: dict) -> str:
+    # ``ganzer_cue``: nur, wenn der Cue genau so lautet. Fuer Fetzen wie
+    # "facha" (gemeint: "Fachabi machen"), die als Teilstring auch in richtigen
+    # Woertern stecken — als normale Regel machte sie aus jedem spaeteren
+    # "Fachabi" ein "Fachabi machenbi".
+    if regel.get("ganzer_cue"):
+        gleich = text.strip().lower() == regel["suche"].strip().lower()
+        return regel["ersetze"] if gleich else text
     return re.sub(re.escape(regel["suche"]), regel["ersetze"], text,
                   flags=re.IGNORECASE)
 

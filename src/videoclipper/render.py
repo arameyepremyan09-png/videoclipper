@@ -9,46 +9,32 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
-from . import follow, untertitel
+from . import follow, layout, untertitel
 from .editplan import EditPlan
 from .headline import baue as headline_bauen
 from .settings import einstellungen
 
 
-def _gerade(n: float) -> int:
-    i = int(round(n))
-    return i - (i % 2)
-
-
 def _panel_kette(quelle: str, p: dict, blur: int) -> tuple[str, str]:
-    """Filterkette fuer ein Panel. Gibt (Kette, Ausgangslabel) zurueck."""
+    """Filterkette fuer ein Panel. Gibt (Kette, Ausgangslabel) zurueck.
+
+    Die Geometrie rechnet ``layout.sichtbar`` — hier wird sie nur uebersetzt.
+    """
     sx, sy, sw, sh = p["src"]
-    _, _, dw, dh = p["dst"]
+    dx, dy, dw, dh = p["dst"]
     label = p["name"]
+    (qx, qy, qw, qh), (cx, cy, fw, fh) = layout.sichtbar(p)
 
     zone = f"crop={sw}:{sh}:{sx}:{sy}"
 
     if p["passung"] == "fuellen":
         # Auf das Zielverhaeltnis beschneiden, dann skalieren — nie verzerren.
-        ziel_ar, quell_ar = dw / dh, sw / sh
-        if quell_ar > ziel_ar:                      # zu breit: seitlich schneiden
-            nw, nh = _gerade(sh * ziel_ar), _gerade(sh)
-            fokus = p.get("fokus_x")
-            mitte = (fokus - sx) if fokus is not None else sw / 2
-            ox = int(min(max(mitte - nw / 2, 0), sw - nw))
-            oy = 0
-        else:                                        # zu hoch: oben/unten schneiden
-            nw, nh = _gerade(sw), _gerade(sw / ziel_ar)
-            ox, oy = 0, int((sh - nh) / 2)
-        kette = (f"[{quelle}]{zone},crop={nw}:{nh}:{ox}:{oy},"
+        kette = (f"[{quelle}]{zone},crop={qw}:{qh}:{qx - sx}:{qy - sy},"
                  f"scale={dw}:{dh},setsar=1[{label}]")
         return kette, label
 
     # "einpassen": Seitenverhaeltnis bleibt, die Reste tragen einen Blur der
     # eigenen Quelle. Nichts vom Inhalt geht verloren.
-    skala = min(dw / sw, dh / sh)
-    fw, fh = _gerade(sw * skala), _gerade(sh * skala)
-
     # Passt die Quelle ohnehin, entfaellt die Blurschicht ganz.
     if (fw, fh) == (dw, dh):
         return f"[{quelle}]{zone},scale={dw}:{dh},setsar=1[{label}]", label
@@ -57,7 +43,7 @@ def _panel_kette(quelle: str, p: dict, blur: int) -> tuple[str, str]:
         f"[{quelle}]{zone},scale={dw}:{dh}:force_original_aspect_ratio=increase,"
         f"crop={dw}:{dh},boxblur={blur}:1,setsar=1[{label}_bg];"
         f"[{quelle}]{zone},scale={fw}:{fh},setsar=1[{label}_fg];"
-        f"[{label}_bg][{label}_fg]overlay=(W-w)/2:(H-h)/2[{label}]"
+        f"[{label}_bg][{label}_fg]overlay={cx - dx}:{cy - dy}[{label}]"
     )
     return kette, label
 
@@ -168,21 +154,56 @@ def _einschub_ketten(r, blur: int, vorher: str,
     return teile, vorher
 
 
+def _punch_ketten(eintraege: list[dict], vorher: str, quelle: str = "0:v",
+                  versatz: float = 0.0,
+                  praefix: str = "punch") -> tuple[list[str], str]:
+    """Kurzformat: je Panel ein engerer Ausschnitt, nur im Fenster der Pointe.
+
+    Ein Punch-in ist nichts anderes als dasselbe Panel aus einer kleineren
+    Quellbox: ausgeschnitten, auf das Canvasrechteck des Panels skaliert und
+    dort daruebergelegt (siehe ``kurzformat.punch_in``). Er liegt unter
+    Headline, Untertiteln und Follow — gezoomt wird das Bild, nicht die Schrift.
+
+    ``versatz`` ist der Beginn des Segments auf der Clipachse: Eine Buehne je
+    Segment hat ihre eigene Zeit, die Eintraege stehen auf der des Clips.
+    """
+    teile: list[str] = []
+    for i, e in enumerate(eintraege):
+        qx, qy, qw, qh = e["quelle"]
+        cx, cy, cw, ch = e["ziel"]
+        teile.append(f"[{quelle}]crop={qw}:{qh}:{qx}:{qy},scale={cw}:{ch},"
+                     f"setsar=1[{praefix}{i}]")
+        teile.append(f"[{vorher}][{praefix}{i}]overlay=x={cx}:y={cy}:"
+                     f"enable='between(t,{e['ab'] - versatz:.3f},"
+                     f"{e['bis'] - versatz:.3f})'[{praefix}{i}_auf]")
+        vorher = f"{praefix}{i}_auf"
+    return teile, vorher
+
+
+def _buehne(quelle: str, r, blur: int, suffix: str = "") -> tuple[list[str], str]:
+    """Die Panels einer Quelle zur Buehne gestapelt. Gibt (Glieder, Label).
+
+    ``suffix`` haelt die Labels auseinander, wenn mehrere Segmente je eine
+    eigene Buehne bauen (``filtergraph_teile``).
+    """
+    teile, labels = [], []
+    for p in r.panels:
+        kette, label = _panel_kette(quelle, dict(p, name=p["name"] + suffix), blur)
+        teile.append(kette)
+        labels.append(label)
+    ziel = f"buehne{suffix}"
+    if len(labels) == 1:
+        teile.append(f"[{labels[0]}]null[{ziel}]")
+    else:
+        teile.append("".join(f"[{l}]" for l in labels)
+                     + f"vstack=inputs={len(labels)}[{ziel}]")
+    return teile, ziel
+
+
 def filtergraph(plan: EditPlan, tmpl: dict) -> str:
     r = plan.resolved
     blur = (tmpl.get("hintergrund") or {}).get("staerke", 24)
-
-    teile, labels = [], []
-    for p in r.panels:
-        kette, label = _panel_kette("0:v", p, blur)
-        teile.append(kette)
-        labels.append(label)
-
-    if len(labels) == 1:
-        teile.append(f"[{labels[0]}]null[buehne]")
-    else:
-        teile.append("".join(f"[{l}]" for l in labels)
-                     + f"vstack=inputs={len(labels)}[buehne]")
+    teile, _ = _buehne("0:v", r, blur)
 
     # Eingang 0 ist das Video. Danach kommt je Einschub mit gehaltenen Panels
     # ein Haltebild, danach die PNGs in der Reihenfolge, in der ``rendere`` sie
@@ -191,9 +212,52 @@ def filtergraph(plan: EditPlan, tmpl: dict) -> str:
     haltebilder = sum(1 for e in r.einschuebe if e["halten"])
     glieder, vorher = _einschub_ketten(r, blur, "buehne", 1)
     teile += glieder
+    glieder, vorher = _punch_ketten(r.punch_in, vorher)
+    teile += glieder
     for i, u in enumerate(ueberlagerungen(plan, tmpl)):
         raus = f"ov{i}"
         teile.append(_overlay(vorher, 1 + haltebilder + i, u, raus))
+        vorher = raus
+    teile.append(f"[{vorher}]format=yuv420p[v]")
+    return ";".join(teile)
+
+
+def filtergraph_teile(plan: EditPlan, tmpl: dict, lufs: float) -> str:
+    """Mehrere Quellfenster hintereinander — Teaser, dann Hauptteil.
+
+    Je Segment eine eigene Buehne aus seinem eigenen Eingang, mit seinem
+    Punch-in, dann ``concat``. Erst auf der fertigen Folge liegen Headline,
+    Untertitel und Follow, mit Zeiten auf der Clipachse. So bleibt jede Buehne
+    dieselbe Kette wie im Einzelpfad — nur der Eingang ist ein anderer.
+
+    Der Ton kommt je Segment aus seinem Eingang und laeuft durch ``concat``;
+    ``loudnorm`` steht deshalb im Graphen, weil ``-af`` Streams aus
+    ``filter_complex`` ablehnt (Exit 234, siehe CLAUDE.md).
+    """
+    r = plan.resolved
+    if r.einschuebe:
+        raise ValueError("Einschuebe und mehrere Segmente zusammen sind nicht gebaut")
+    blur = (tmpl.get("hintergrund") or {}).get("staerke", 24)
+    n = len(r.segmente)
+
+    teile, stufen = [], []
+    for k, seg in enumerate(r.segmente):
+        glieder, label = _buehne(f"{k}:v", r, blur, suffix=f"_s{k}")
+        teile += glieder
+        eigene = [e for e in r.punch_in if e.get("segment", 0) == k]
+        glieder, label = _punch_ketten(eigene, label, quelle=f"{k}:v",
+                                       versatz=seg["ab"], praefix=f"punch_s{k}_")
+        teile += glieder
+        stufen.append(label)
+    teile.append("".join(f"[{s}]" for s in stufen)
+                 + f"concat=n={n}:v=1:a=0[buehne]")
+    teile.append("".join(f"[{k}:a]" for k in range(n))
+                 + f"concat=n={n}:v=0:a=1,loudnorm=I={lufs}:TP=-1.5:LRA=11[a]")
+
+    vorher = "buehne"
+    for i, u in enumerate(ueberlagerungen(plan, tmpl)):
+        raus = f"ov{i}"
+        teile.append(_overlay(vorher, n + i, u, raus))
         vorher = raus
     teile.append(f"[{vorher}]format=yuv420p[v]")
     return ";".join(teile)
@@ -261,17 +325,25 @@ def rendere(plan: EditPlan, tmpl: dict, video: Path, ziel: Path,
     encoder = e["platform"]["preview_encoder" if vorschau else "encoder"]
     lufs = (tmpl.get("audio") or {}).get("ziel_lufs", e["output"]["target_lufs"])
 
-    cmd = [
-        "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
-        "-ss", f"{r.start:.3f}", "-t", f"{r.dauer:.3f}", "-i", str(video),
-    ]
-    # Reihenfolge der Eingaenge wie in ``filtergraph``: Haltebilder, dann PNGs.
+    cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"]
+    if r.segmente:
+        # Teaser und Hauptteil: ein Eingang je Quellfenster, der Ton im Graphen.
+        for seg in r.segmente:
+            cmd += ["-ss", f"{seg['start']:.3f}", "-t", f"{seg['dauer']:.3f}",
+                    "-i", str(video)]
+        graph = filtergraph_teile(plan, tmpl, lufs)
+        karten = ["-map", "[v]", "-map", "[a]"]
+    else:
+        cmd += ["-ss", f"{r.start:.3f}", "-t", f"{r.dauer:.3f}", "-i", str(video)]
+        graph = filtergraph(plan, tmpl)
+        karten = ["-map", "[v]", "-map", "0:a",
+                  "-af", f"loudnorm=I={lufs}:TP=-1.5:LRA=11"]
+    # Reihenfolge der Eingaenge wie im Graphen: Haltebilder, dann PNGs.
     for bild in halte + bilder:
         cmd += ["-i", str(bild)]
     cmd += [
-        "-filter_complex", filtergraph(plan, tmpl),
-        "-map", "[v]", "-map", "0:a",
-        "-af", f"loudnorm=I={lufs}:TP=-1.5:LRA=11",
+        "-filter_complex", graph,
+        *karten,
         "-r", str(r.fps),
         "-c:v", encoder, "-b:v", "1500k" if vorschau else "8000k",
         "-c:a", "aac", "-b:a", "160k",

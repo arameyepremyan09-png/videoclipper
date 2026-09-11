@@ -26,6 +26,11 @@ Punkt fuer Punkt abgearbeitet, nicht nur bei neuem Material. Kurzfassung:
 4. **Untertitel** verdecken nie ein Gesicht — je Template nachgemessen, am
    gerenderten Frame kontrolliert.
 5. **Qualitaet halten, dynamisch schneiden.**
+6. **Kurzformat** (ab 2026-09-11, in Erprobung): erst ein Teaser mit dem
+   lustigsten Moment (2-7 s, `EditPlan.teaser`), dann harter Schnitt an den
+   Anfang der Geschichte, zusammen mindestens 30 s mit vollem Kontext (1a
+   gilt). Headline als Uebertreibung, Punch-in auf der Pointe. Die erste
+   Fassung (10-15 s, Pointe bei 3-5 s) war laut Nutzer "zu kurz, kein Kontext".
 
 Der Anlass ist gemessen und steht in der Datei: Von neun ausgelieferten Clips
 wurden drei abgelehnt, und **die abgelehnten hatten die hoeheren AI-Scores**

@@ -1,0 +1,67 @@
+# Materialprofil: Coachlim / zwei Cams nebeneinander
+#
+# Gemessen am 2026-09-11 an 0-OqdAjLq_0 ("THERAPIESTUNDE FUER MEINE ZUSCHAUER
+# MIT ELI", Kanal Coachlim, 2247 s, 1920x1080@60). Zuschauer rufen an, Coachlim
+# und Eli antworten.
+#
+# LAYOUT: zwei gleich grosse 16:9-Cams nebeneinander auf Schwarz, jede mit
+# duennem gruenem Rahmen. Links Coachlim (NY-Cap, Kanalinhaber, sein
+# Piraten-Zaehler oben links), rechts Eli (Fussball, Trikot). Kantenmessung
+# ueber 30 Bilder im Abstand von 75 s: Spalten 15/878 und 887/1749, Zeilen
+# 255/740 — in jedem Bild dieselben Pixel. Pixelprofil bei y=500: links Inhalt
+# ab x=16 bis 878, rechts ab 888 bis 1749; bei x=400 Inhalt ab y=256 bis 740.
+#
+# Die Crop-Boxen liegen innen am Rahmen, mit geraden Kanten, und sind so
+# gewaehlt, dass sie auf 1080 px Breite exakt 608 px hoch werden (860x484 ->
+# 1080x607.8). Kein Blurbalken zwischen Cam und Panel.
+#
+# EINMODIG: Ueber alle 30 Messbilder steht dasselbe Layout, und kein Bild
+# zeigt einen anderen Aufbau. Stage 04 spart sich den Bilddurchlauf.
+#
+# FAST EINMODIG — nachgemessen am 2026-09-11: Der Cutter des Originals zoomt
+# stellenweise auf eine Cam im Vollbild, dieselbe Art Schnitt wie bei
+# COACHLIM_COUCH. Gefunden bei 317.25-322.00 s (Elis Cam, er lacht mit den
+# Haenden vorm Gesicht), gemeldet von ``schnitte.finde``; das 75-s-Raster der
+# Kantenmessung sah es nicht. Der Duo-Crop zeigt dort zwei Ausschnitte aus
+# Elis Zimmer. Solange es dafuer keinen Modus mit Einschub gibt, gehoeren
+# Clipgrenzen davor oder dahinter — die Schnittmeldung von ``clip rendere``
+# ist bei diesem Profil ein Abbruchgrund, kein Hinweis.
+
+name: COACHLIM_DUO
+beschreibung: Zwei 16:9-Cams nebeneinander auf Schwarz (Coachlim links, Gast rechts)
+gueltig_ab: 2026-09-11
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [Coachlim]
+  sprache: de
+
+signatur:
+  modus: DUO
+  immer: true
+  sonst: DUO
+
+modi:
+  DUO:
+    zonen:
+      # fokus_x/fokus_y: Gesichtsmitte in Quellpixeln, gemittelt ueber acht
+      # Standbilder an den Pointen. Der Punch-in (Kurzformat) zoomt um diesen
+      # Punkt statt um die Boxmitte — Eli sitzt rechts unterhalb der Mitte
+      # (61 % / 63 % der Box), ein mittiger Zoom schnitte ihn an.
+      cam_links:  { box: [18, 256, 860, 484], rolle: creator, fokus_x: 445, fokus_y: 490 }
+      cam_rechts: { box: [888, 256, 860, 484], rolle: gast, fokus_x: 1412, fokus_y: 563 }
+    muellzonen:
+      - { box: [0, 0, 400, 30], hinweis: Piraten-Zaehler oben links }
+      - { box: [1640, 830, 280, 250], hinweis: Twitch-Chat unten rechts }
+      - { box: [40, 990, 220, 70], hinweis: Instant-Gaming-Logo unten links }
+
+datenschutz:
+  fremdinhalt_blur: false
+
+signale:
+  # 27 Marker, davon 16 [gelaechter] — der Textkanal traegt hier. Die Anrufer
+  # sind nicht im Bild, nur im Ton; gelacht wird in den Cams.
+  lachmarker: 1.0
+  loudness_peak: 0.8
+  sprechtempo: 0.5

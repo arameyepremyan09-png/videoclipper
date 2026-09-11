@@ -404,6 +404,17 @@ def test_korrekturregeln_werden_ueber_den_ganzen_lauf_gezaehlt(tmpl, monkeypatch
     assert len(offen) == 1 and "kommt nirgends vor" in offen[0]
 
 
+def test_regel_fuer_den_ganzen_cue_trifft_keine_teilstrings(monkeypatch):
+    """GEMESSEN an 0-OqdAjLq_0: YouTube schreibt "Ich woll" | "facha" in zwei
+    Cues. Als Teilstring-Regel machte "facha" aus jedem spaeteren "Fachabi"
+    ein "Fachabi machenbi"."""
+    regel = {"suche": "facha", "ersetze": "Fachabi machen", "ganzer_cue": True}
+    monkeypatch.setattr(untertitel, "regeln", lambda _vid: [regel])
+    cues, _ = untertitel.korrigiere([untertitel.Cue("facha", 0, 1),
+                                     untertitel.Cue("mach doch Fachabi", 1, 2)], "v")
+    assert [c.text for c in cues] == ["Fachabi machen", "mach doch Fachabi"]
+
+
 def test_hookpruefung_liest_die_korrigierte_schreibweise(monkeypatch):
     """GEMESSEN an saiJDq9DM_Y: Die ASR schreibt "Sydney", Headline und
     Kanaltitel "Sidney". Ohne die Korrektur galt jede Headline mit dem Namen
