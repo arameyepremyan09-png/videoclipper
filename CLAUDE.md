@@ -587,6 +587,60 @@ Wo zwei Woerter nur durch ein Tal getrennt sind, beginnt ein Segment deshalb
 `_005` faellt das mit der OBS-Blende vom Dashboard in die Fullcam zusammen
 (3247.73-3247.93): Er beginnt mit 0.08 s ausklingendem "Okay".
 
+### Nachtrag 2026-09-13: Essens-Vlog bei AbuGoku — kein Marker, der Lacher steht im Bild
+
+Vermessen an OUR-LdR97fE ("ALI ZEIGT MIR DIE BESTE KÖFTE IN BERLIN", Kanal
+AbuGoku, 1046 s, 1920x1080@59.94). Profil `ABUGOKU_VLOG`, Template
+`FULLCAM_169`.
+
+Einmodig wie der Tuersteher-Vlog (staerkste persistente Spalte 6.0 gegen
+Median 3.9, Zeile 6.0 gegen 4.6, nie geletterboxt), aber anders als dort
+**montiert**: Totale auf den Tisch, Nahaufnahmen, Essen von oben. Die
+Einstellung wechselt alle paar Sekunden, der Gegenstand nicht. Gerendert ist
+deshalb MIT Schnittpruefung — sie haelt die Grenzen aus den Uebergaengen
+heraus, und die gemeldeten Wechsel im Clip sind Kamerawechsel im selben
+Gespraech, kein zweiter Gegenstand (Regel 1b). Werbung (Wolt, Einblendung
+"Code: ABU") liegt bei 525-543 s.
+
+**Kein einziger Marker in 3171 Woertern, und der Pegel ersetzt ihn nicht.**
+Vier Stimmen am Tisch plus Strasse, kaum eine wortlose Stelle. Jeder der fuenf
+Lacher ist am Standbild belegt (Kontaktbogen genau an der Pointe), nur einer
+auch im Ton: Nach "Ihre Bestellung ist da" zeigt der 10-ms-Pegel bei
+156.7-157.7 s Stoesse im Abstand von 0.2 s mit Taelern dazwischen — das Muster
+von Lachen, in 0.1-s-Fenstern nicht zu sehen. Und das Bild entscheidet auch
+andersherum: Beim Trainingsanzug (942-982 s) lacht der Tisch laut, aber ohne
+Bild ist nicht zu verstehen, wer wem was angetan hat. Der Kandidat fiel nach
+Regel 1a weg.
+
+**Der Ingest hat sich wieder bewegt.** Am 2026-09-13 lieferte
+`player_client=web_embedded` nur noch Vorschaubilder (n-Challenge ungeloest),
+`tv` brach ab, `android_vr`, `mweb` und `ios` hatten kein 1080p-avc1. Der
+Default-Client ohne Extractor-Args lud Format 299 (1080p60 avc1) vollstaendig.
+
+**Drei Grenzen lagen im Wort, alle erst am Pegel sichtbar:**
+
+- Der Teaser von `_003` endete auf "Krass, das heißt,". Hinter "Krass" liegt
+  gemessen eine Luecke (347.00-347.34, -29..-32 dB), aber `snappe` erkennt sie
+  nicht — auch dann nicht, wenn das gewuenschte Ende genau in ihr steht. Das
+  json3-Ende von "Krass" reicht bis 347.80, und das Tal wird gegen das laute
+  Viertel seiner Umgebung gemessen. Die ist hinter dem Ausruf selbst leise
+  (Lachen, Atmen): p75 -20.9, Tal-Grenze also -30.9, die Luecke bei -29.2 —
+  1.7 dB zu wenig. **Eine Luecke in leiser Umgebung ist fuer `snappe` kein
+  Tal.** Geendet wird jetzt ueber das Wort davor: Ein gewuenschtes Ende bei
+  346.95 snappt auf "sie." (346.56), die 0.35 s Nachlauf enden bei 346.91 —
+  "Krass" ist drin, "das heißt" nicht. Der Pegel kann das Ende nur nach vorn
+  ziehen, deshalb muss der Nachlauf des Wortes davor schon passen.
+- Der Teaser von `_001` begann mit "sagt,": 0.20 s Vorlauf vor "ich" (52.28)
+  lagen in "sagt" (51.90-52.19). Verankert ist er jetzt am Wort danach
+  ("weiß", 52.36); der Vorlauf endet dann in der Luecke dahinter.
+- Der Hauptteil von `_002` begann in "Berlin": Bei 124.2 laufen "Berlin",
+  "Krass" und "Ali" ohne Luecke ineinander. Er beginnt jetzt zwei Saetze
+  frueher in der Luecke nach "wissen." (122.14).
+
+`clip rangliste` kennt den Teaser nicht und meldet dort "VERRAET", wo das
+Kurzformat die Pointe absichtlich zuerst zeigt. Beim Rendern prueft
+`hook.pruefe` mit Teaser und meldet es nicht.
+
 ## Bildschnitte — Stage 04b, gemessen am 2026-09-07
 
 Der Modus sagt, *welches Layout* vorliegt. Er sagt nicht, ob das Bild

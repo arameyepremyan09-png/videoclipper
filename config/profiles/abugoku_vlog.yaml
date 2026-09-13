@@ -1,0 +1,59 @@
+# Materialprofil: AbuGoku / Essens-Vlog
+#
+# Gemessen am 2026-09-13 an OUR-LdR97fE ("ALI ZEIGT MIR DIE BESTE KÖFTE IN
+# BERLIN", Kanal AbuGoku, 1046 s, 1920x1080 bei 59.94 fps). Drei Personen an
+# einem Aussentisch vor dem Laden, dazu Anfang und Ende auf dem Gehweg.
+#
+# EINMODIG. Die Kantenmessung ueber 40 Bilder zwischen 30 s und 1015 s findet
+# keine Box: staerkste persistente Spalte 6.0 (x=548) gegen einen Median von
+# 3.9, staerkste Zeile 6.0 gegen 4.6 — auf der Hoehe des BMW-Vlogs (4.9 / 11.1),
+# weit unter der Couch-Runde (13.3). Geletterboxt wird nie: oberes Bildband
+# min 109.1 / Median 139.5, unteres min 40.8 / Median 92.6.
+#
+# ABER GESCHNITTEN. Anders als die Handkamera bei AGAAMUZA_TUERSTEHER ist das
+# ein fertig montiertes Video: Totale auf den Tisch, Nahaufnahmen der drei,
+# Essen von oben, dazwischen Handkamera. Die Einstellung wechselt alle paar
+# Sekunden, der Gegenstand nicht — das ist kein Moduswechsel und nach
+# SCHNITTREGELN 1b auch kein Abbruchgrund, solange das Gespraech dasselbe
+# bleibt. Gerendert wird deshalb MIT Schnittpruefung: Sie haelt die Clipgrenzen
+# aus den Uebergaengen heraus, damit kein Clip mit zwei Bildern der naechsten
+# Einstellung endet.
+#
+# Werbung: Wolt-Einblendung ("Code: ABU", unten links) um 537 s, gesprochen
+# 525-543 s. Kein Clip darf dort liegen.
+
+name: ABUGOKU_VLOG
+beschreibung: Essens-Vlog am Aussentisch, drei Personen, montiert aus mehreren Einstellungen
+gueltig_ab: 2026-09-13
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [AbuGoku]
+  sprache: de
+
+signatur:
+  modus: FULLCAM
+  immer: true               # gemessen einmodig, siehe Kopf
+  sonst: FULLCAM
+
+modi:
+  FULLCAM:
+    zonen:
+      # Drei Personen ueber die volle Breite (links x ~0..600, Mitte ~700..1100,
+      # rechts ~1150..1920 in der Totalen). fokus auf die Tischmitte.
+      voll: { box: [0, 0, 1920, 1080], rolle: creator, fokus_x: 960, fokus_y: 480 }
+
+datenschutz:
+  # Passanten und der Ladenbesitzer sind im Bild; der Kanal veroeffentlicht
+  # das Video selbst so.
+  fremdinhalt_blur: false
+
+signale:
+  # KEIN EINZIGER MARKER in 3171 Woertern — kein [gelächter], nichts. Stage 05
+  # ist hier ein Lautheitsdetektor, und der Ton traegt auch dafuer wenig: Vier
+  # Stimmen am Tisch plus Strasse, kaum eine wortlose Stelle. Die Lacher sind
+  # am Standbild belegt, nicht am Pegel.
+  lachmarker: 0.0
+  loudness_peak: 0.6
+  sprechtempo: 0.7
