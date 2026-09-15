@@ -27,7 +27,10 @@ beschreibung: Vollbild 16:9 vollstaendig eingepasst, Blur ringsum, Headline uebe
 # auch fuer eine Person allein in Fullcam. COACHLIM_KAESE_SNAP: derselbe Fall,
 # Coachlim allein in der Vollbild-Cam. ELIASN97_AMONGUS: Eli zwischen den Runden
 # im Vollbild. ABUGOKU_VLOG: drei Personen am Tisch, Regel 2 Fall 2 woertlich.
-default_fuer: [COACHLIM_ABU_TIKTOK, ELIASN97_STREAM, COACHLIM_KAESE_SNAP, ELIASN97_AMONGUS, ABUGOKU_VLOG]
+# COACHLIM_TIKTOK_WEB: Coach allein im Zimmer — und Clips, die vom TikTok in
+# die Fullcam wechseln: ein Clip hat ein Template, und nur dieses zeigt beide
+# Bilder unbeschnitten.
+default_fuer: [COACHLIM_ABU_TIKTOK, ELIASN97_STREAM, COACHLIM_KAESE_SNAP, ELIASN97_AMONGUS, ABUGOKU_VLOG, COACHLIM_TIKTOK_WEB]
 gilt_fuer_modus: FULLCAM
 
 canvas: [1080, 1920]

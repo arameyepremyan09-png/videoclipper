@@ -1,0 +1,76 @@
+# Materialprofil: Coachlim / TikTok-Reaction mit Foto-Beitraegen, Webseiten und Fullcam
+#
+# Gemessen am 2026-09-13 an gRvhvBJExEE ("COACH RUFT SEINEN VATER AN WEIL
+# ALBERT EINSTEIN ALBANER IST", TikTok reaction #22, Kanal Coachlim Reactions,
+# 1020.5 s, 1920x1080 bei 59.94 fps).
+#
+# VIER BILDER, EINE SIGNATUR TRENNT ZWEI DAVON:
+#   REACT     TikTok im Browser, Creator-Cam unten rechts
+#   BROWSER   andere Webseite (Kuschel-Anbieter, Berner Zeitung, KI-Antwort)
+#             mit derselben Cam unten rechts
+#   WEB       Webseite ganz ohne Cam (Google-Suche, Kuschelseite)
+#   FULLCAM   Coach allein im lila Zimmer, 43 % der Laufzeit
+#
+# DER PLAYER STEHT NICHT FEST. COACHLIM_TIKTOK_REACT (wxCFBR1_3to) nennt die
+# rechte Playerkante x=1076 als Signatur — hier liegt sie dort nie: Kanten
+# ueber 17 TikTok-Bilder finden nur die Cam (x=1226, y=689). Ein Video-TikTok
+# ist 9:16, ein Foto-Beitrag breiter; TikTok setzt beide verschieden. Die
+# Playerbox unten ist am Merkel-Foto-Beitrag (938-992 s) gemessen, ueber
+# sieben Bilder als Minimum: linke Kante x=438 (Staerke 138), rechte x=1199,
+# unten y=1000. Oben blaettert der Beitrag, die Kante y=108 ist am Standbild
+# abgelesen. Sie gilt fuer Foto-Beitraege, nicht fuer Video-TikToks.
+#
+# FULLCAM WIRD UEBER FARBE ERKANNT, NICHT UEBER HELLIGKEIT. Die Helligkeit der
+# linken Flaeche trennt Fullcam nicht von dunklen Webseiten (Google im
+# Dunkelmodus, KI-Antwort). Coachs Zimmer ist lila: (Blau - Gruen) links
+# [80,250,340,650] liegt in Fullcam bei 54..80, ueberall sonst unter 10 —
+# ueber 4078 Punkte im Abstand von 0.25 s zweigipflig, dazwischen 32 Werte.
+# ModusSignatur kann keine Farbe; die Signatur unten misst deshalb die
+# Flaeche als Helligkeit und erkennt "dunkler Browser" als REACT. Clips aus
+# diesem Video sind gegen die Farbmessung gelegt, nicht gegen die Signatur.
+
+name: COACHLIM_TIKTOK_WEB
+beschreibung: TikTok-Reaction mit Foto-Beitraegen und Webseiten, Creator-Cam unten rechts, wechselnd mit Fullcam
+gueltig_ab: 2026-09-13
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [Coachlim Reactions]
+  sprache: de
+
+signatur:
+  modus: REACT
+  flaeche: [80, 250, 340, 650]
+  schwelle: 20.0
+  invertiert: true          # REACT, wo die Flaeche dunkel ist (TikTok-Seitenleiste)
+  sonst: FULLCAM
+
+modi:
+  REACT:
+    zonen:
+      # Foto-Beitrag, siehe Kopf. Fast so breit wie hoch (758x892), gefuellt auf
+      # 1080x1314 kostet das nur die Raender.
+      tiktok_player: { box: [440, 108, 758, 892], rolle: inhalt }
+      creator_cam:   { box: [1228, 691, 692, 389], rolle: creator }   # exakt 16:9
+    muellzonen:
+      - { box: [0, 0, 1920, 100], hinweis: Browser-Tabs und Adresszeile }
+      - { box: [0, 100, 440, 932], hinweis: TikTok-Seitenleiste }
+      - { box: [1228, 100, 692, 591], hinweis: Empfehlungen und Kommentare }
+      - { box: [0, 1032, 1920, 48], hinweis: Windows-Taskleiste }
+  FULLCAM:
+    zonen:
+      # fokus: Coachs Gesicht, abgelesen an sechs Fullcam-Bildern zwischen 385 und 877 s.
+      voll: { box: [0, 0, 1920, 1080], rolle: creator, fokus_x: 1080, fokus_y: 540 }
+    muellzonen:
+      - { box: [1790, 0, 130, 45], hinweis: Instant-Gaming-Logo oben rechts }
+      - { box: [1700, 820, 220, 260], hinweis: Chat-Einblendung unten rechts }
+
+datenschutz:
+  fremdinhalt_blur: false   # unveraenderte Entscheidung des Nutzers
+
+signale:
+  # KEIN MARKER in 2145 Woertern. Die Lacher sind am Standbild belegt.
+  lachmarker: 0.0
+  loudness_peak: 0.8
+  sprechtempo: 0.5

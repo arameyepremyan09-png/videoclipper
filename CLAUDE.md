@@ -10,6 +10,10 @@ Es enthält die fünfzehn Stages, das EditPlan-Schema, die Materialprofile, Temp
 das Kostenmodell und die Tabelle aller getroffenen Entscheidungen. Architekturfragen
 werden dort nachgelesen und dort aktualisiert, nicht neu verhandelt.
 
+**Arbeitsstand: [ARBEITSSTAND.md](ARBEITSSTAND.md)** — offene Aufträge mit den
+Befunden des letzten Entwurfs, Befehle, Prüfwerkzeuge (`werkzeuge/`) und der
+bewährte Ablauf je Video. In einem neuen Chat zuerst lesen.
+
 ## SCHNITTREGELN.md — vor jedem Clip abarbeiten
 
 **[SCHNITTREGELN.md](SCHNITTREGELN.md) ist die Auftragslage des Nutzers und steht
@@ -640,6 +644,41 @@ Default-Client ohne Extractor-Args lud Format 299 (1080p60 avc1) vollstaendig.
 `clip rangliste` kennt den Teaser nicht und meldet dort "VERRAET", wo das
 Kurzformat die Pointe absichtlich zuerst zeigt. Beim Rendern prueft
 `hook.pruefe` mit Teaser und meldet es nicht.
+
+### Nachtrag 2026-09-13: TikTok-Reaction #22 — Farbe statt Kante, und gemischte Clips
+
+Vermessen an gRvhvBJExEE ("COACH RUFT SEINEN VATER AN WEIL ALBERT EINSTEIN
+ALBANER IST", TikTok reaction #22, Kanal Coachlim Reactions, 1020.5 s,
+1920x1080@59.94). Profil `COACHLIM_TIKTOK_WEB`, Templates `FULLCAM_169` und
+`REACT_STACK`. Zehn Clips.
+
+**Das Profil vom 2026-09-04 passt auf dieselbe Serie nicht mehr.**
+`COACHLIM_TIKTOK_REACT` erkennt REACT an der rechten Playerkante x=1076 —
+hier liegt dort nie eine. Ueber 17 TikTok-Bilder steht nur die Cam fest
+(x=1226, y=689); der Player sitzt je nach Beitrag woanders, der
+Merkel-Foto-Beitrag reicht von x=438 bis 1199. Und das Video hat vier Bilder
+statt zwei: TikTok mit Cam, andere Webseite mit Cam (Kuschel-Anbieter, Berner
+Zeitung, KI-Antwort), Webseite ohne Cam (Google), Coach allein.
+
+**Fullcam erkennt die Farbe, nicht die Helligkeit.** Die Helligkeit der
+linken Flaeche hielt 602-753 s fuer Fullcam; darin liegen 52 s Google und
+Berner Zeitung, beide dunkel wie das Zimmer. Coachs Zimmer ist lila:
+(Blau - Gruen) ueber [80,250,340,650] liegt in Fullcam bei 54..80, sonst unter
+10, ueber 4078 Punkte zweigipflig. `ModusSignatur` kann keine Farbe — die
+Clips sind gegen diese Messung gelegt, nicht gegen die Signatur im Profil.
+
+**Die besten Stellen wechseln mitten im Gedanken das Bild.** Coach sieht ein
+TikTok und schimpft danach in der Fullcam. Ein Clip hat ein Template: Ein
+`REACT_STACK` schnitte in der Fullcam Coachs Zimmer als "Player" zurecht, ein
+`FULLCAM_169` zeigt das TikTok nur kleiner. Vier der zehn Clips laufen deshalb
+ganz in `FULLCAM_169` — das ist die Abwaegung Kontext gegen Bildgroesse, und
+der Kontext gewinnt (Regel 1a). Nur der Merkel-Clip liegt ganz im TikTok und
+bekommt `REACT_STACK`.
+
+Nicht geschnitten, mit Grund: "Christin, Alhamdulillah" (213-245 s, zwischen
+TikTok und Reaktion 11.7 s ohne ein Wort, Regel 5), "Knast wegen Datenschutz"
+(190-212 s, mit Kontext keine 30 s), Georg auf dem Sofa (523-551 s, der Witz
+ist zu explizit).
 
 ## Bildschnitte — Stage 04b, gemessen am 2026-09-07
 
