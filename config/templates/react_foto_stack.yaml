@@ -1,0 +1,82 @@
+# Template: REACT_FOTO_STACK
+#
+# REACT_STACK fuer TikToks aus Fotos mit eingeblendeter Beschriftung — gleiche
+# Panels, andere Lage fuer Follow-Knopf und Untertitel.
+#
+# WARUM EIN EIGENES TEMPLATE: Die Overlay-Lagen von REACT_STACK sind fuer
+# TikTok-VIDEOS gemessen, bei denen das Gesicht mittig liegt (965..1501) und
+# unten nichts steht. Coachs Glow-up-TikTok (dwitch_j9snk5q6, 1387-1527 s) ist
+# eine Diashow aus Fotos, und jedes Foto traegt eine Jahreszahl und eine
+# Bildunterschrift. Am gerenderten Entwurf (Lauf 2026-09-15_13-17-29)
+# vermessen, alle Werte in Canvas-Pixeln:
+#
+#   Folie   Gesicht     Jahreszahl (rechts)   Bildunterschrift
+#   1996    620..900    1025..1240, x 555..960   1485..1620
+#   2013    620..1050   1200..1325, x 783..1080  1730..1920
+#   2019    620..890    —                        1540..1660
+#   2026    675..1135   1215..1375, x 783..1080  1460..1730 (schraeg, links)
+#
+# Mit REACT_STACK stand der Follow-Knopf (715..865) auf Mund und Kinn, und
+# das Untertitelband (1556..1724) lag auf "Der dicke Bankwaermer" und "Coach
+# war Stamm Spieler" — die Bildunterschrift ist der Kontext der Folie
+# (SCHNITTREGELN Regel 4). Frei ist auf allen vier Folien:
+#
+#   Headline / Naht           606
+#   Follow-Knopf     1150..1300   links (x 175..325): Pullover, Hemd, Jacke;
+#                                 rechts stuende er auf der Jahreszahl
+#   Untertitelband   1340..1482   zwischen Jahreszahl und Unterschrift
+#   UI-Zone ab       1728
+#
+# Bei 2026 beruehrt das Band die Unterkante der Jahreszahl (bis 1375, nur
+# rechts) und die Spitze der schraegen Unterschrift (ab 1460, nur links) —
+# enger geht es auf dieser Folie nicht, zwei Zeilen brauchen 142 px.
+
+name: REACT_FOTO_STACK
+beschreibung: Creator-Cam oben, Foto-TikTok unten auf voller Breite, Untertitel zwischen Jahreszahl und Bildunterschrift
+default_fuer: [COACHLIM_TWITCH]
+gilt_fuer_modus: REACT_FOTO
+
+canvas: [1080, 1920]
+
+panels:
+  - quelle: creator_cam
+    ziel: [0, 0, 1080, 606]
+    passung: einpassen
+  - quelle: tiktok_player
+    ziel: [0, 606, 1080, 1314]
+    passung: fuellen
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: editplan.headline
+  schrift: Anton
+  schriftgroesse: 64
+  versalien: true
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 9
+  y: 606
+  max_breite: 1000
+  max_zeilen: 2
+  renderer: png_overlay
+
+follow_hinweis:
+  y: 1225
+  x: 250
+
+untertitel:
+  y: 1411
+  band_hoehe: 142
+
+branding:
+  aktiv: false
+  text: "TODO"
+  y: 1790
+
+audio:
+  normalisieren: true
+  ziel_lufs: -14.0

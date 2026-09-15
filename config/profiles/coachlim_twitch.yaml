@@ -1,0 +1,107 @@
+# Materialprofil: Coachlim / Twitch-Stream (Fullcam, TikTok im Browser, Discord)
+#
+# Gemessen am 2026-09-15 an dwitch_j9snk5q6 (Twitch-VOD, vom Nutzer als Datei
+# geliefert, 3599.7 s, 1920x1080 bei 60 fps). Sonntagsstream: Plaudern, ab
+# 648 s TikTok-Reactions, ab 1637 s "Try not to laugh" mit Zuschauern aus
+# Discord (50 Euro, wer Coach zum Lachen bringt).
+#
+# DER ERSTE TWITCH-PFAD IM REPO. Kein Transkript, ASR ist Pflicht
+# (asr.py, whisper.cpp mit -mc 0 — mit Kontext verschluckten Schleifen
+# rund 20 Minuten Rede). Und eine DMCA-Stummschaltung: 899.7-1081.4 s ist
+# digitales Null (Peak -inf ueber 181.7 s), obwohl Coach redet und TikToks
+# laufen. Dort wird nichts geschnitten.
+#
+# DREI BILDER, gemessen alle 0.25 s ueber 14382 Punkte (flaechen_serie.py):
+#   FULLCAM   Coach allein im lila Zimmer, Chat unten rechts, 0-648 s und ab
+#             1637 s fast durchgehend
+#   REACT     TikTok im Browser, Cam unten rechts, 648-1637 s mit kurzen
+#             Fullcam-Einschueben
+#   DUO       Discord: zwei Cams nebeneinander auf Schwarz, 1768-1833 s und
+#             2032-2139 s, je Gast eine andere Cam
+# Getrennt ueber drei Flaechen: (Blau - Gruen) links [80,250,340,650] liegt in
+# FULLCAM bei 49..89 (Zimmer lila), in REACT unter 8 (TikTok-Seitenleiste);
+# DUO hat oben [0,0,1920,100] UND im Band [300,110,1300,150] Schwarz (< 8),
+# REACT oben die graue Browserleiste (17..52), FULLCAM oben die LED-Leiste
+# (> 139). Die Signatur unten kann nur zwei davon trennen, siehe dort.
+#
+# Dazu Einzelbilder, die in keinen Modus passen: bei 2789-2808 s ein vom
+# Zuschauer geteiltes Video mit Coachs Cam oben rechts, bei 2449 s ein kleines
+# eingeblendetes Video oben links in der Fullcam. Clips aus diesem Video sind
+# gegen die Flaechenmessung gelegt, nicht gegen die Signatur.
+
+name: COACHLIM_TWITCH
+beschreibung: Coachlim-Twitch-Stream, Fullcam mit Chat, TikTok im Browser mit Cam unten rechts, Discord-Splitscreen
+gueltig_ab: 2026-09-15
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [Coachlim]
+  plattform: twitch
+  sprache: de
+
+signatur:
+  # Helligkeit der linken Flaeche wie bei COACHLIM_TIKTOK_WEB: dunkel ist die
+  # TikTok-Seitenleiste. p5 4.3 / p50 66.2 ueber alle Punkte. DUO faellt dabei
+  # auf FULLCAM — Coachs Cam liegt links in derselben Flaeche und ist lila.
+  modus: REACT
+  flaeche: [80, 250, 340, 650]
+  schwelle: 20.0
+  invertiert: true
+  sonst: FULLCAM
+
+modi:
+  FULLCAM:
+    zonen:
+      # fokus: Coachs Gesicht, am Raster ueber acht Standbilder zwischen 150 und
+      # 3450 s abgelesen — meist x 960..1100, einmal 800 (vorgebeugt), y 540..620.
+      voll: { box: [0, 0, 1920, 1080], rolle: creator, fokus_x: 1000, fokus_y: 570 }
+    muellzonen:
+      - { box: [0, 0, 460, 50], hinweis: Piraten-Zaehler oben links }
+      - { box: [1750, 10, 170, 60], hinweis: Instant-Gaming-Logo oben rechts }
+      - { box: [1620, 740, 300, 320], hinweis: Twitch-Chat unten rechts }
+  REACT:
+    zonen:
+      # Kanten ueber 24 Bilder in zwei Strecken (1110-1180, 1545-1630 s):
+      # Spalten 562/1075 (Staerke 130/130), Zeilen 102/1015. Dieselbe Box wie
+      # COACHLIM_TIKTOK_REACT vom 2026-09-04, auf gerade Masse gebracht.
+      tiktok_player: { box: [563, 103, 512, 912], rolle: inhalt }
+      # Cam am Standbild 1250 s: x 1206..1920, y 678..1080 — exakt 16:9.
+      # fokus: Coachs Gesicht am selben Bild (x ~1560, y ~940), fuer den Punch-in.
+      creator_cam:   { box: [1206, 678, 714, 402], rolle: creator, fokus_x: 1560, fokus_y: 930 }
+    muellzonen:
+      - { box: [0, 0, 1920, 86], hinweis: Browser-Tabs und Adresszeile }
+      - { box: [0, 86, 563, 946], hinweis: TikTok-Seitenleiste }
+      - { box: [1503, 86, 417, 592], hinweis: Kommentare, Werbung, Chat }
+      - { box: [0, 1031, 1206, 49], hinweis: Windows-Taskleiste }
+  REACT_FOTO:
+    # Dieselbe Geometrie wie REACT. Ein eigener Modus nur, weil ein Foto-TikTok
+    # mit Jahreszahl und Bildunterschrift eine andere Overlay-Lage braucht als
+    # ein TikTok-Video (REACT_FOTO_STACK, dort vermessen). Die Signatur kennt
+    # ihn nicht; die Clips nennen ihn im Plan.
+    zonen:
+      tiktok_player: { box: [563, 103, 512, 912], rolle: inhalt }
+      creator_cam:   { box: [1206, 678, 714, 402], rolle: creator, fokus_x: 1560, fokus_y: 930 }
+    muellzonen:
+      - { box: [0, 0, 1920, 86], hinweis: Browser-Tabs und Adresszeile }
+      - { box: [0, 86, 563, 946], hinweis: TikTok-Seitenleiste }
+      - { box: [1503, 86, 417, 592], hinweis: Kommentare, Werbung, Chat }
+      - { box: [0, 1031, 1206, 49], hinweis: Windows-Taskleiste }
+  DUO:
+    zonen:
+      # Kanten ueber 16 Bilder 2035-2125 s: Zeilen 299/847, Spalten 6/982/991.
+      # Die Gast-Cam laeuft rechts aus dem Bild (991..1920 statt 16:9).
+      cam_links:  { box: [6, 299, 976, 548], rolle: creator }
+      cam_rechts: { box: [992, 299, 928, 548], rolle: gast }
+    muellzonen:
+      - { box: [40, 990, 220, 70], hinweis: Instant-Gaming-Logo unten links }
+      - { box: [1640, 850, 280, 230], hinweis: Twitch-Chat unten rechts }
+
+datenschutz:
+  fremdinhalt_blur: false   # unveraenderte Entscheidung des Nutzers
+
+signale:
+  # ASR-Material: Whisper schreibt keine Marker. Lacher am Standbild belegt.
+  lachmarker: 0.0
+  loudness_peak: 0.8
+  sprechtempo: 0.5

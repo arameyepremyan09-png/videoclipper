@@ -1,0 +1,458 @@
+[
+  {
+    "clip_id": "dwitch_j9snk5q6_001",
+    "quelle": {
+      "video_id": "dwitch_j9snk5q6",
+      "kanal": "Coachlim (Twitch)",
+      "orig_start": 190.4
+    },
+    "tier": "A",
+    "profil": "COACHLIM_TWITCH",
+    "template": "FULLCAM_169",
+    "template_grund": "Coach allein in der Fullcam, 0-648 s durchgehend FULLCAM (Regel 2, Fall 2).",
+    "modus": "FULLCAM",
+    "modus_anteil": 1.0,
+    "teaser": {
+      "start": 252.1,
+      "ende": 259.9
+    },
+    "timing": {
+      "start": 190.4,
+      "ende": 259.95
+    },
+    "pointe": {
+      "t": 254.81,
+      "bis": 256.1,
+      "fokus": [
+        "voll"
+      ]
+    },
+    "headline": "KLOPAPIER IST NUR FÜR FISCHE 💀🙏",
+    "sprache": "de",
+    "score": {
+      "overall": 0.8,
+      "reaktion": 0.7,
+      "klarheit": 0.9,
+      "payoff": 0.8
+    },
+    "grund": "Teaser: 'Warum geht da mit Toilettenpapier? Simple Mathematik, ihr Fische. Simple Mathematik, geht nicht. Geht nicht.' (Endet in derselben Senke wie der Hauptteil: dazwischen liegt ein Grundton um -30 dB, in dem snappe kein Tal findet.) Hauptteil ab 'Ich war noch kurz kacken': unterwegs kann er nicht, er braucht seine 1-Liter-Giesskanne, dann die 'ganz simple Frage' — ihr fallt mit den Haenden in Scheisse, putzt ihr die mit Klopapier? Endet auf 'Simple Mathematik, geht nicht', vor dem Soundcheck (260.7 s)."
+  },
+  {
+    "clip_id": "dwitch_j9snk5q6_002",
+    "quelle": {
+      "video_id": "dwitch_j9snk5q6",
+      "kanal": "Coachlim (Twitch)",
+      "orig_start": 832.45
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TWITCH",
+    "template": "FULLCAM_169",
+    "template_grund": "FULLCAM ab 830.75 s; das Heiratsantrag-TikTok davor laeuft nur 744-758 s und steht waehrend Coachs Rant schon nicht mehr im Player, deshalb nur der Fullcam-Teil.",
+    "modus": "FULLCAM",
+    "modus_anteil": 1.0,
+    "teaser": {
+      "start": 856.3,
+      "ende": 862.5
+    },
+    "timing": {
+      "start": 832.45,
+      "ende": 887.6
+    },
+    "pointe": {
+      "t": 858.2,
+      "bis": 862.2,
+      "fokus": [
+        "voll"
+      ]
+    },
+    "headline": "SAGT SIE NEIN IST ER SINGLE 🥀💀",
+    "sprache": "de",
+    "score": {
+      "overall": 0.75,
+      "reaktion": 0.75,
+      "klarheit": 0.85,
+      "payoff": 0.75
+    },
+    "grund": "Teaser: 'Von dort gehe ich direkt in Perkins Park rein. Alle Flaschen auf den Tisch.' — Coach steht auf und spielt es vor. Hauptteil ab 'Wenn ich auf Knie gehe, ich habe geplant Hochzeitsantrag': sagt sie Nein, ist er ab diesem Moment Single; sagt sie 'lass noch warten', geht er mit; lacht sie noch, 'c'est fini'. Endet in digitaler Stille nach 'Gib's nicht', vor dem Chat-Lesen (890 s)."
+  },
+  {
+    "clip_id": "dwitch_j9snk5q6_003",
+    "quelle": {
+      "video_id": "dwitch_j9snk5q6",
+      "kanal": "Coachlim (Twitch)",
+      "orig_start": 1105.74
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TWITCH",
+    "template": "REACT_STACK",
+    "template_grund": "TikTok 'Beweis, dass die Schweiz den besten Wettermoderator hat' mit Cam unten rechts, REACT 1096.5-1190.5 s.",
+    "modus": "REACT",
+    "modus_anteil": 1.0,
+    "teaser": {
+      "start": 1129.5,
+      "ende": 1134.7
+    },
+    "timing": {
+      "start": 1105.74,
+      "ende": 1136.95
+    },
+    "pointe": {
+      "t": 1129.68,
+      "bis": 1134.4,
+      "fokus": [
+        "creator_cam"
+      ]
+    },
+    "headline": "ULI HOENEß MACHT DAS WETTER 💀🙏",
+    "sprache": "de",
+    "score": {
+      "overall": 0.75,
+      "reaktion": 0.8,
+      "klarheit": 0.8,
+      "payoff": 0.75
+    },
+    "grund": "Teaser: 'Aber Jupp Heynckens und Uli Hoeness in Fusion, mit langen Haaren, sowas habe ich noch nie gesehen.' (Nicht 'Das sieht aus wie ... fusioniert': dahinter folgt ein tuerkischer Fluch ohne Transkript, das Teaser-Ende liesse sich dort nicht an ein Wort legen.) Hauptteil ab der Begruessung des Schweizer Wettermoderators ('als mutig toller Wetterprophet'), Coach lacht, dann Hoeness-Heynckens-Fusion 'mit langen Haaren, sowas habe ich noch nie gesehen'. Endet auf 'Tschuess, Bruder', bevor die Wetterfrauen kommen (die sind _004)."
+  },
+  {
+    "clip_id": "dwitch_j9snk5q6_004",
+    "quelle": {
+      "video_id": "dwitch_j9snk5q6",
+      "kanal": "Coachlim (Twitch)",
+      "orig_start": 1137.05
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TWITCH",
+    "template": "REACT_STACK",
+    "template_grund": "Dasselbe TikTok, zweiter Teil mit den Wetterfrauen, REACT bis 1190.5 s.",
+    "modus": "REACT",
+    "modus_anteil": 1.0,
+    "teaser": {
+      "start": 1149.42,
+      "ende": 1156.97
+    },
+    "timing": {
+      "start": 1137.05,
+      "ende": 1187.8
+    },
+    "pointe": {
+      "t": 1155.16,
+      "bis": 1156.9,
+      "fokus": [
+        "creator_cam"
+      ]
+    },
+    "headline": "WETTERFRAU MIT ZWEI SCHICHTEN 🥀💀",
+    "sprache": "de",
+    "score": {
+      "overall": 0.75,
+      "reaktion": 0.7,
+      "klarheit": 0.8,
+      "payoff": 0.8
+    },
+    "grund": "Teaser: 'Hat die zwei Schichten? 12 Uhr mittags Wetterdienst, 12 Stunden spaeter Sport 1 oder was?' Hauptteil ab 'Aber warte mal. Was sind das fuer Wetterfrauen eigentlich?', dann die Schichten, 'Susi live', 'Diese Jacke kriegt nicht mal Thanos zu'. Endet auf 'Was hat die Jacke hier fuer einen Effekt?', vor dem Fullcam-Einschub (1190.5 s)."
+  },
+  {
+    "clip_id": "dwitch_j9snk5q6_005",
+    "quelle": {
+      "video_id": "dwitch_j9snk5q6",
+      "kanal": "Coachlim (Twitch)",
+      "orig_start": 1277.65
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TWITCH",
+    "template": "REACT_STACK",
+    "template_grund": "Zitat-TikTok (Adler, Text im Bild) mit Cam, REACT 1277.0-1319.5 s.",
+    "modus": "REACT",
+    "modus_anteil": 1.0,
+    "teaser": {
+      "start": 1288.15,
+      "ende": 1291.65
+    },
+    "timing": {
+      "start": 1277.65,
+      "ende": 1309.3
+    },
+    "pointe": {
+      "t": 1288.34,
+      "bis": 1291.4,
+      "fokus": [
+        "creator_cam"
+      ]
+    },
+    "headline": "VERTRAUE NIEMALS EINEM SCHAF 🥀🫩",
+    "sprache": "de",
+    "score": {
+      "overall": 0.75,
+      "reaktion": 0.75,
+      "klarheit": 0.85,
+      "payoff": 0.75
+    },
+    "grund": "Teaser: 'Das Leben ist wie eine Tuer, vertraue niemals einem Schaf, weil der Mond kann nicht schwimmen.' Hauptteil ab 'Kein Zitat trifft mich hier mal so hart wie dieses': das Zitat, Coachs 'Was?', er liest es ungläubig noch einmal, 'Eamon haette besser ein Zitat gesagt', dann 'Wir waren mal ein Land von Dichtern und Denkern, jetzt sind wir nur noch Blaeser und Lenker'. Endet in digitaler Stille direkt nach der Pointe. Das Setup fehlte im Stundenlauf der ASR und kommt aus der Fensterneutranskription."
+  },
+  {
+    "clip_id": "dwitch_j9snk5q6_006",
+    "quelle": {
+      "video_id": "dwitch_j9snk5q6",
+      "kanal": "Coachlim (Twitch)",
+      "orig_start": 1387.05
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TWITCH",
+    "template": "REACT_FOTO_STACK",
+    "template_grund": "Coachs eigenes Glow-up-TikTok (Fotos mit Jahreszahl), REACT 1384.25-1529.5 s. REACT_FOTO_STACK statt REACT_STACK: Die Folien tragen Jahreszahl und Bildunterschrift, dort lagen Untertitel und Follow-Knopf (am Entwurf gemessen, siehe Template).",
+    "modus": "REACT_FOTO",
+    "modus_anteil": 1.0,
+    "teaser": {
+      "start": 1399.75,
+      "ende": 1404.75
+    },
+    "timing": {
+      "start": 1387.05,
+      "ende": 1428.65
+    },
+    "pointe": {
+      "t": 1401.56,
+      "bis": 1404.4,
+      "fokus": [
+        "creator_cam"
+      ]
+    },
+    "headline": "1996 WAR ER NOCH IN PAPAS EIERN 💀🙏",
+    "sprache": "de",
+    "score": {
+      "overall": 0.8,
+      "reaktion": 0.8,
+      "klarheit": 0.85,
+      "payoff": 0.8
+    },
+    "grund": "Teaser: 'Was fuer 1996, Bruder? Hier bin ich noch friedlich in den Eiern von meinem Vater rumgeschwommen.' Hauptteil ab dem Titel des TikToks und der Folie '1996 Der dicke Bankwaermer': Hochzeit vom Onkel, 'einer wie du ist 1996 geboren', 'ich war froh, dass mir ueberhaupt irgendwelche Jeans gepasst haben, ganze Leben Jogginghose'. Endet mit der 2001-Folie auf 'hat Coach nicht gut getan' bei 1429.03 s — genau vor dem ersten Bild des Wischs zur 2013-Folie (bildgenau gemessen). Einzeln ohne Schnittpruefung gerendert: Die misst den Uebergang am ganzen Bild samt Seitenleiste und zog das Ende vor 'gut getan'."
+  },
+  {
+    "clip_id": "dwitch_j9snk5q6_007",
+    "quelle": {
+      "video_id": "dwitch_j9snk5q6",
+      "kanal": "Coachlim (Twitch)",
+      "orig_start": 1430.75
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TWITCH",
+    "template": "REACT_FOTO_STACK",
+    "template_grund": "Dasselbe Glow-up-TikTok, Folie 2013 'Coach als er zum ersten Mal ins Club ging'. REACT_FOTO_STACK statt REACT_STACK: Die Folien tragen Jahreszahl und Bildunterschrift, dort lagen Untertitel und Follow-Knopf (am Entwurf gemessen, siehe Template).",
+    "modus": "REACT_FOTO",
+    "modus_anteil": 1.0,
+    "teaser": {
+      "start": 1457.55,
+      "ende": 1462.5
+    },
+    "timing": {
+      "start": 1430.75,
+      "ende": 1462.5
+    },
+    "pointe": {
+      "t": 1459.16,
+      "bis": 1462.2,
+      "fokus": [
+        "creator_cam"
+      ]
+    },
+    "headline": "DIESES HEMD WAR PURE AURA 🥀💀",
+    "sprache": "de",
+    "score": {
+      "overall": 0.7,
+      "reaktion": 0.7,
+      "klarheit": 0.8,
+      "payoff": 0.75
+    },
+    "grund": "Teaser: 'Dieses Hemd damals, Bruder? Das war Aura und Praesenz.' Hauptteil ab '2013': 'ich war ein Dembele, Linksfuss, Rechtsfuss, dribbeln, passen, flanken', 'maechtig, ein Loewe, eine Majestaet', dann das goldene Hemd. Endet in digitaler Stille vor der 2019-Folie (1463 s)."
+  },
+  {
+    "clip_id": "dwitch_j9snk5q6_008",
+    "quelle": {
+      "video_id": "dwitch_j9snk5q6",
+      "kanal": "Coachlim (Twitch)",
+      "orig_start": 1467.4
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TWITCH",
+    "template": "REACT_FOTO_STACK",
+    "template_grund": "Dasselbe Glow-up-TikTok, Folien 2019 'Coach war Stamm Spieler' und 2026; endet vor dem naechsten TikTok (1528.6 s). REACT_FOTO_STACK statt REACT_STACK: Die Folien tragen Jahreszahl und Bildunterschrift, dort lagen Untertitel und Follow-Knopf (am Entwurf gemessen, siehe Template).",
+    "modus": "REACT_FOTO",
+    "modus_anteil": 1.0,
+    "teaser": {
+      "start": 1513.4,
+      "ende": 1518.6
+    },
+    "timing": {
+      "start": 1467.4,
+      "ende": 1521.7
+    },
+    "pointe": {
+      "t": 1516.11,
+      "bis": 1518.4,
+      "fokus": [
+        "creator_cam"
+      ]
+    },
+    "headline": "ZIEGENBART WIE BEI STEVE 💀🙏",
+    "sprache": "de",
+    "score": {
+      "overall": 0.7,
+      "reaktion": 0.7,
+      "klarheit": 0.75,
+      "payoff": 0.75
+    },
+    "grund": "Teaser: 'Ich wusste nicht mal, wie man Ziegenbart macht, deswegen geht er hier so quadratisch runter wie bei Steve.' Hauptteil ab 'Mit kurzen Haaren, auf diese aggressive Kaese': 'Wallah ist kein KI', goldene Michael Kors 'die habe ich bis heute', Dsquared-Jeans 'bisschen eng, aber das war damals Style', dann 2026 'von Sorgen und Problemen uebertrumpelt', Ziegenbart wegen kreisrundem Haarausfall. Endet auf 'Kein Geld auf Konto', in digitaler Stille."
+  },
+  {
+    "clip_id": "dwitch_j9snk5q6_009",
+    "quelle": {
+      "video_id": "dwitch_j9snk5q6",
+      "kanal": "Coachlim (Twitch)",
+      "orig_start": 1545.05
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TWITCH",
+    "template": "REACT_STACK",
+    "template_grund": "Samsung-Werbe-TikTok ('Zu gut, um es nicht zu kopieren') mit Cam, REACT 1534.75-1637 s.",
+    "modus": "REACT",
+    "modus_anteil": 1.0,
+    "teaser": {
+      "start": 1578.9,
+      "ende": 1585.1
+    },
+    "timing": {
+      "start": 1545.05,
+      "ende": 1591.82
+    },
+    "pointe": {
+      "t": 1580.03,
+      "bis": 1584.9,
+      "fokus": [
+        "creator_cam"
+      ]
+    },
+    "headline": "SAMSUNG IST NUR FÜR JUNKIES 💀🙏",
+    "sprache": "de",
+    "score": {
+      "overall": 0.8,
+      "reaktion": 0.75,
+      "klarheit": 0.9,
+      "payoff": 0.8
+    },
+    "grund": "Teaser: 'Ja ne, nur fuer Junkie-Aktivitaeten ist es besser.' Hauptteil ab 'Ich mache jetzt den Call: wer heutzutage immer noch glaubt, dass Samsung besser ist als ein iPhone' — besser zum Jailbreaken, Gameboy spielen, Snapchat Plus gecrackt aus dem Alt-Store. Endet auf 'aber als ein Adam brauchst du iPhone, Bruder'; der zweite Teil des Rants ist _010."
+  },
+  {
+    "clip_id": "dwitch_j9snk5q6_010",
+    "quelle": {
+      "video_id": "dwitch_j9snk5q6",
+      "kanal": "Coachlim (Twitch)",
+      "orig_start": 1591.87
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TWITCH",
+    "template": "REACT_STACK",
+    "template_grund": "Dasselbe Samsung-TikTok, REACT bis 1637 s.",
+    "modus": "REACT",
+    "modus_anteil": 1.0,
+    "teaser": {
+      "start": 1603.4,
+      "ende": 1609.3
+    },
+    "timing": {
+      "start": 1591.87,
+      "ende": 1627.6
+    },
+    "pointe": {
+      "t": 1606.44,
+      "bis": 1608.9,
+      "fokus": [
+        "creator_cam"
+      ]
+    },
+    "headline": "ONKEL ALS SAMSUNG EMOJI 💀🙏",
+    "sprache": "de",
+    "score": {
+      "overall": 0.75,
+      "reaktion": 0.75,
+      "klarheit": 0.8,
+      "payoff": 0.8
+    },
+    "grund": "Teaser: 'Danach du schreibst, Emoji sieht aus wie Gesicht von meinem Onkel.' Hauptteil ab 'Alleine wenn ich Bilder mache auf Snapchat und einer Chaya ein Bild schicke mit Samsung-Handy': du darfst nicht mal Emojis schicken, der Kollege muss dir iPhone-Emojis zum Kopieren schicken, 'sonst ist es vorbei. Wenn die Maus sieht, Emojis — tot.' Endet vor 'Geht nicht' und dem Chat."
+  },
+  {
+    "clip_id": "dwitch_j9snk5q6_011",
+    "quelle": {
+      "video_id": "dwitch_j9snk5q6",
+      "kanal": "Coachlim (Twitch)",
+      "orig_start": 2766.85
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TWITCH",
+    "template": "FULLCAM_169",
+    "template_grund": "Fullcam bis 2792 s, danach das Profilbild des Anrufers (Farid-Bang-Imitator) mit Coachs Cam oben rechts; FULLCAM_169 zeigt beide Bilder ganz, ein Clip hat ein Template.",
+    "modus": "FULLCAM",
+    "modus_anteil": 1.0,
+    "teaser": {
+      "start": 2798.35,
+      "ende": 2805.58
+    },
+    "timing": {
+      "start": 2766.85,
+      "ende": 2810.7
+    },
+    "pointe": {
+      "t": 2802.97,
+      "bis": 2805.4,
+      "fokus": [
+        "voll"
+      ]
+    },
+    "headline": "FARID BANG VON WISH RUFT AN 🙏🫩",
+    "sprache": "de",
+    "score": {
+      "overall": 0.75,
+      "reaktion": 0.8,
+      "klarheit": 0.8,
+      "payoff": 0.75
+    },
+    "grund": "Teaser: 'Bruder, das ist nicht Farid Bang, oder?' — 'Ja, das ist Farid Bang. Ein bisschen mit Mische von Wish, aber das ist gar kein Problem.' Hauptteil ab 'Farid ist da': der Anrufer 'Farid' begruesst Coach, schickt sein Profilbild, Coach schlaegt die Hand vors Gesicht (2789.5 s), dann das Bild im Stream. Endet auf 'Welches Video hast du mir geschickt?', in digitaler Stille; der Song danach ist sexuell und nicht im Clip."
+  },
+  {
+    "clip_id": "dwitch_j9snk5q6_012",
+    "quelle": {
+      "video_id": "dwitch_j9snk5q6",
+      "kanal": "Coachlim (Twitch)",
+      "orig_start": 3441.1
+    },
+    "tier": "B",
+    "profil": "COACHLIM_TWITCH",
+    "template": "FULLCAM_169",
+    "template_grund": "Coach allein in der Fullcam, der Anrufer AZ nur im Ton.",
+    "modus": "FULLCAM",
+    "modus_anteil": 1.0,
+    "teaser": {
+      "start": 3466.2,
+      "ende": 3472.0
+    },
+    "timing": {
+      "start": 3441.1,
+      "ende": 3482.45
+    },
+    "pointe": {
+      "t": 3467.47,
+      "bis": 3471.9,
+      "fokus": [
+        "voll"
+      ]
+    },
+    "headline": "ER HÄLT SICH FÜR EINEN RAPPER 💀🙏",
+    "sprache": "de",
+    "score": {
+      "overall": 0.75,
+      "reaktion": 0.85,
+      "klarheit": 0.75,
+      "payoff": 0.8
+    },
+    "grund": "Teaser: 'Du koenntest doch anfangen mit Rap, warum rapst du nicht?' — 'Bruder, ich bin Rapper.' Hauptteil ab dem Ende von AZs Freestyle ('Trefft mich in Monaco auf einer Lamborghini-Jacht'), Coach lacht sich weg (Standbild 3457-3468 s), dann die Frage und die Antwort. Beginnt bewusst erst dort: Der Freestyle davor hat 'Ghetto Amphetamine' und 'Schlampe', AZs erster Rap ist explizit sexuell."
+  }
+]

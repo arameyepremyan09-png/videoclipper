@@ -680,6 +680,103 @@ TikTok und Reaktion 11.7 s ohne ein Wort, Regel 5), "Knast wegen Datenschutz"
 (190-212 s, mit Kontext keine 30 s), Georg auf dem Sofa (523-551 s, der Witz
 ist zu explizit).
 
+### Nachtrag 2026-09-15: der erste Twitch-VOD — ASR braucht eine eigene Zeitachse
+
+Vermessen an dwitch_j9snk5q6 (Coachlim-Twitch-Stream, vom Nutzer als Datei
+geliefert, 3599.7 s, 1920x1080@60). Profil `COACHLIM_TWITCH`, Templates
+`FULLCAM_169` und `REACT_STACK`. Zwoelf Clips.
+
+Drei Bilder, alle 0.25 s ueber 14382 Punkte vermessen (`flaechen_serie.py`):
+Fullcam im lila Zimmer, TikTok im Browser mit Cam unten rechts (648-1637 s,
+Player exakt die Box von `COACHLIM_TIKTOK_REACT`) und ein Discord-Splitscreen
+(1768-1833 s, 2032-2139 s). Keine einzelne Flaeche trennt alle drei; die
+Signatur im Profil trennt nur "TikTok-Seitenleiste" von "Rest", die Clips sind
+gegen die Flaechenmessung gelegt. **Twitch hat 899.7-1081.4 s stummgeschaltet**
+— digitales Null (Peak -inf) ueber 181.7 s, waehrend Coach redet. Genau der
+Fall, den der Twitch-Abschnitt unten vorhersagt; `silencedetect` findet ihn in
+Sekunden, dort wird nichts geschnitten.
+
+**Der eigentliche Aufwand war die ASR, und keiner ihrer vier Fehler war am
+Transkript zu erkennen.** Jeder sah aus wie ein brauchbarer Text:
+
+1. **Schleifen.** Mit Textkontext blieb whisper.cpp nach Musik und Stille haengen
+   ("Warte." 60-mal, "Wallah." 29-mal) und schleppte das ueber gesprochene
+   Strecken — Minute 15-21 und 50-59 hatten 4-11 Woerter je Minute. `-mc 0`.
+2. **Drift ueber die Stunde.** In einem Lauf lag die Zeitachse 5-13 s daneben;
+   Woerter standen in gemessener Stille. Seither in Stuecken unter 30 s, in
+   Pausen geschnitten (`asr.stuecke`), alle in einem Aufruf.
+3. **Auch in Stuecken sind Whispers Segmentzeiten falsch** — bis 12 s, und am
+   Stueckende stapelten sich 1428 von 4647 Woertern auf einer Zeit. Die
+   Wortzeiten kommen jetzt aus DTW je Token (`-dtw large.v3.turbo`). **Das geht
+   nur mit `-nfa`:** Mit Flash-Attention liefert whisper.cpp fuer jeden Token
+   -1, ohne jede Meldung. DTW folgt der Lautheit, liegt aber systematisch
+   0.15-0.6 s hinter dem Einsatz; `snappe._einsatz` holt das zurueck, wo davor
+   Stille liegt. Wo Musik darunter liegt, bleiben die 0.2 s Vorlauf.
+4. **Whisper laesst Rede aus, und nicht jedes Mal dieselbe.** Das Setup des
+   Zitat-Clips ("Kein Zitat trifft mich ...") fehlte im Stundenlauf, in einem
+   frueheren Lauf war es da. `werkzeuge/asr_fenster.py` transkribiert jedes
+   Clipfenster ein zweites Mal, legt beide Fassungen nebeneinander und setzt die
+   bessere ein. Von zwoelf Fenstern war die zweite Fassung achtmal besser und
+   viermal schlechter ("kracken" statt "kacken", "Tod oder Tod?") — deshalb
+   entscheidet der Vergleich, nicht der Code.
+
+Dazu: Whisper schreibt Geraeuschangaben in den Text ("*Klatschen*",
+"* Musik *"). Sie werden jetzt zu Markern und stehen damit nicht im Untertitel.
+Die Stunde braucht so 11.5 min auf dem M4.
+
+**Die DTW-Verspaetung trifft `snappe` genau dort, wo keine Stille liegt.**
+`_einsatz` findet den Toneinsatz nur hinter Stille unter -50 dB (zwei
+50-ms-Fenster), `_luecke` verwirft ein Tal, das vor Wortanfang + 0.1 s
+beginnt — und mit einem zu spaeten Wortanfang liegt das echte Tal genau dort.
+Im Entwurf lagen so vier Grenzen im Wort, am schlimmsten I1 und I2
+(`_009`/`_010`): "Alleine" setzt bei 1591.93 s ein, DTW sagt 1592.18, die
+einzige Senke ist 1591.82-1591.92 — `_009` endete 0.4 s in "Allei-". Fuer
+diesen Lauf sind sieben Wortanfaenge im Transkript von Hand an den gemessenen
+Einsatz gerueckt ("Kein" 1277.85, "Von" 856.60, "Hat" 1149.30, "Bruder."
+1591.55, "Alleine," 1592.08, "getan." 1428.85, "nicht." 259.50; das
+Transkript liegt deshalb unter `data/artifacts/`). Dazu eine Falle in
+`_luecke`: Liegt das gewuenschte Ende in einem Stillefenster, das kuerzer als
+`STILLE_MIN` ist, gibt es keinen Schnittpunkt — auch keinen Tal-Schnitt. Das
+Ende von `_009` steht deshalb auf 1591.82 (Tal) statt 1591.87 (50 ms Stille).
+Und ein Ende in einer langsam ausklingenden Senke nimmt deren TIEFSTEN Punkt,
+nicht ihren Anfang: Bei `_006` klingt "getan" ab 1429.05 aus, `snappe` schnitt
+bei 1429.62 — 0.4 s in den Wisch zur 2013-Folie, am fertigen Clip klar zu
+sehen. Gewuenscht ist deshalb das Wortende davor ("nicht"), und die 0.35 s
+Nachlauf enden genau vor dem Wisch: Der beginnt bildgenau bei 1429.033 s
+(Differenz im Player-Ausschnitt, 60 Bilder/s), "getan" klingt bei ~1429.06
+aus. **Mit Schnittpruefung ging das nicht:** `schnitte.uebergaenge` misst den
+Uebergang am GANZEN Bild, samt TikTok-Seitenleiste, und `_aus_uebergaengen`
+zog das Ende damit auf 1428.78 — vor "gut getan", der Clip endete auf "hat
+Coach nicht". `_006` ist deshalb als einziger Clip einzeln ohne
+Schnittpruefung gerendert; die des Fensters lief in drei Laeufen davor. Wie
+die falschen Bildwechsel-Meldungen oben: gemessen wird das Bild der Quelle,
+nicht das des Clips. Die eigentliche Loesung waere ein Einsatz auch im
+Tal, nicht nur in Stille — die Luecke steht schon im Nachtrag vom 2026-09-12.
+
+**Foto-TikToks brauchen eine andere Overlay-Lage als Video-TikToks.** Coachs
+Glow-up-TikTok ist eine Diashow mit Jahreszahl und Bildunterschrift je Foto.
+Mit `REACT_STACK` stand der Follow-Knopf auf Mund und Kinn und das
+Untertitelband auf "Der dicke Bankwaermer" und "Coach war Stamm Spieler" —
+beides am gerenderten Frame gemessen, nicht am Template. `REACT_FOTO_STACK`
+(Modus `REACT_FOTO`, dieselbe Geometrie) setzt den Knopf links auf den
+Oberkoerper und das Band zwischen Jahreszahl und Unterschrift; die Masse je
+Folie stehen im Template.
+
+Und `schnitte.finde` meldet im Browser-Layout Wechsel, die im Clip gar nicht
+zu sehen sind: Bei 1423.25 s und 1461.0 s wechselte die TikTok-Seitenleiste,
+im Player stand dieselbe Folie (am Kontaktbogen im 0.1-s-Raster geprueft).
+Gemessen wird das ganze Bild, gerendert werden nur Player und Cam.
+
+Was sonst bleibt: Was Whisper gar nicht hoert, kann `snappe` nicht treffen.
+Hinter "fusioniert" sagt Coach einen tuerkischen Fluch ohne Transkript, ein
+Ende dort haette auf dem naechsten Wort gelegen. Der Teaser von `_003` nimmt
+deshalb den Satz danach.
+
+Nicht geschnitten, mit Grund: die Songs der Discord-Anrufer (sexuell, das
+Alter der Anrufer ist unbekannt), der Schueler, der von der Schule geflogen ist,
+AZs erster Rap (explizit), die Scheidungsgeschichte (kein Lacher) und
+"24-Stunden-VOD um 2 Uhr nachts" (Regel 1c: am Standbild lacht niemand).
+
 ## Bildschnitte — Stage 04b, gemessen am 2026-09-07
 
 Der Modus sagt, *welches Layout* vorliegt. Er sagt nicht, ob das Bild

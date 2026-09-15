@@ -6,7 +6,10 @@ sys.path.insert(0, 'src')
 from videoclipper.transcript import lade_json3
 vid = sys.argv[1]
 V = str(Path('~/videoclipper/quellen/%s.mp4' % vid).expanduser())
-tr = lade_json3(Path('~/videoclipper/quellen/%s.de-orig.json3' % vid).expanduser(), vid)
+T = Path('~/videoclipper/quellen/%s.de-orig.json3' % vid).expanduser()
+if not T.exists():                  # Twitch: kein YouTube-Transkript, nur die eigene ASR
+    T = T.with_name('%s.de-asr.json3' % vid)
+tr = lade_json3(T, vid)
 for spec in sys.argv[2:]:
     name, a, b = spec.split(':'); a, b = float(a), float(b)
     raw = subprocess.run(['ffmpeg', '-v', 'error', '-ss', str(a), '-t', str(b - a), '-i', V, '-vn', '-ac', '1',

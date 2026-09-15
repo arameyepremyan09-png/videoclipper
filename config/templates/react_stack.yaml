@@ -26,7 +26,7 @@ beschreibung: Creator-Cam oben, TikTok-Player unten eingepasst, statische Headli
 # Dort ist der Player 484x860 statt 513x913 und die Cam auf exakt 16:9
 # beschnitten, damit sie das obere Panel fuellt. Beides steht im Profil,
 # das Template rechnet nur.
-default_fuer: [COACHLIM_TIKTOK_REACT, COACHLIM_ABU_TIKTOK, COACHLIM_TIKTOK_WEB]
+default_fuer: [COACHLIM_TIKTOK_REACT, COACHLIM_ABU_TIKTOK, COACHLIM_TIKTOK_WEB, COACHLIM_TWITCH]
 gilt_fuer_modus: REACT
 
 canvas: [1080, 1920]

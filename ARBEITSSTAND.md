@@ -7,6 +7,35 @@ Nutzers in [SCHNITTREGELN.md](SCHNITTREGELN.md). Beide gelten zuerst.
 
 ## Offene Auftraege
 
+### 0. dwitch_j9snk5q6 — Twitch-VOD, 12 Clips, Rueckmeldung steht aus
+
+Coachlim-Twitch-Stream, vom Nutzer als Datei geliefert
+(`~/Downloads/dwitch_j9snk5q6.mp4`, in `~/videoclipper/quellen/` verlinkt),
+3599.7 s. Auftrag: "Schau dir dieses Video an und erstelle viele gute Clips."
+Befunde: CLAUDE.md, "Nachtrag 2026-09-15: der erste Twitch-VOD".
+
+| Datei | Stand |
+|---|---|
+| `data/selections/dwitch_j9snk5q6.json` | Plan, 12 Clips (Teaser + Hauptteil) |
+| `config/profiles/coachlim_twitch.yaml` | Profil, Modi FULLCAM / REACT / REACT_FOTO / DUO |
+| `config/templates/react_foto_stack.yaml` | neu, fuer die Glow-up-Folien (`_006`-`_008`) |
+| `data/korrekturen/dwitch_j9snk5q6.json` | 43 Regeln |
+| `data/artifacts/dwitch_j9snk5q6.de-asr.json3` | eigene ASR, acht Fenster neu eingesetzt, sechs Wortanfaenge von Hand an den Einsatz geschoben |
+| Entwurf | `~/videoclipper/clips/2026-09-15_13-17-29` (lokal) |
+| Finaler Lauf | `~/videoclipper/clips/2026-09-15_20-45-55` (lokal) fuer alle Clips ausser `_006`; `_006` aus `2026-09-15_20-57-28` (einzeln, ohne Schnittpruefung — Grund in CLAUDE.md). Handy-Fassungen unter `handy/` in beiden |
+| ueberholt | `2026-09-15_20-33-06`: `_001` fehlte (Teaser 8.1 s), `_009` endete in "Allei-", `_006` im Wisch zur 2013-Folie |
+
+Clips: `_001` Klopapier-Mathematik (Tier A), `_002` Heiratsantrag, `_003`
+Hoeness-Heynckens-Wettermann, `_004` Wetterfrauen, `_005` Zitat "vertraue
+niemals einem Schaf", `_006`-`_008` Coachs Glow-up (1996 / 2013 / 2019-2026),
+`_009`-`_010` Samsung gegen iPhone, `_011` Farid Bang von Wish, `_012` "Bruder,
+ich bin Rapper". Nicht geschnitten (mit Grund in CLAUDE.md): Discord-Songs,
+Schueler-Anruf, AZs erster Rap, Scheidung, 24-Stunden-VOD.
+
+Offen: Follow-Szene liegt bei `_005` auf dem Punch-in (35 % der Laenge faellt
+genau auf die Pointe im Hauptteil). Folgeauftrag angelegt: Tal-basierter
+Einsatz in `snappe` statt der Hand-Verschiebungen im Transkript.
+
 ### 1. gRvhvBJExEE — 10 Clips, Entwurf gerendert, Korrektur offen
 
 "COACH RUFT SEINEN VATER AN WEIL ALBERT EINSTEIN ALBANER IST", TikTok
@@ -107,6 +136,16 @@ PYTHONPATH=src .venv/bin/python -m videoclipper.cli rendere --plan data/selectio
 # whisper.cpp-Zweitmeinung fuer ein Fenster
 ffmpeg -v error -ss 600 -t 50 -i ~/videoclipper/quellen/ID.mp4 -vn -ac 1 -ar 16000 /tmp/x.wav
 whisper-cli -m ~/videoclipper/models/ggml-large-v3-turbo-q5_0.bin -l de -bs 5 -f /tmp/x.wav
+
+# Twitch / Datei ohne Transkript: eigene ASR (Stuecke + DTW, 60 min ~ 11.5 min)
+PYTHONPATH=src .venv/bin/python -m videoclipper.cli transkribiere --video ~/videoclipper/quellen/ID.mp4 \
+  --modell ~/videoclipper/models/ggml-large-v3-turbo-q5_0.bin --ziel ~/videoclipper/quellen/ID.de-asr.json3
+# danach JEDES Clipfenster zweitmeinen und die bessere Fassung einsetzen
+PYTHONPATH=src .venv/bin/python werkzeuge/asr_fenster.py ~/videoclipper/quellen/ID.mp4 \
+  ~/videoclipper/quellen/ID.de-asr.json3 von:bis von:bis ...            # Vergleich
+PYTHONPATH=src .venv/bin/python werkzeuge/asr_fenster.py ... von:bis --schreiben   # einsetzen
+# DMCA-Stummschaltung finden (digitales Null, Peak -inf)
+ffmpeg -i ~/videoclipper/quellen/ID.mp4 -vn -af silencedetect=noise=-60dB:d=2 -f null -
 ```
 
 Lokale Pfade (nicht im Repo): Quellen `~/videoclipper/quellen/`, Laeufe
@@ -128,6 +167,12 @@ Repo-Ordner mit `PYTHONPATH=src .venv/bin/python werkzeuge/<skript>`.
 | `kanten.py <video> <von> <bis> <n>` | persistente Kanten: gibt es Boxen im Layout? |
 | `modus_serie.py <video> <K> <ziel.npz>` | Kante x=1076 und Flaechenhelligkeit alle K Bilder |
 | `lila_serie.py <video> <K> <ziel.npz>` | Fullcam ueber Farbe (Blau - Gruen), fuer Coachs lila Zimmer |
+| `flaechen_serie.py <video> <K> <ziel.npz> name=x,y,b,h ...` | mehrere Flaechen in einem Decodierlauf (RGB + Kantenenergie), wenn drei oder mehr Bilder zu trennen sind |
+| `lesbar.py <json3> [--modi m.npz] [--von] [--bis]` | Transkript als Zeilen mit Zeit und Bildtyp — zum Lesen der Kandidaten |
+| `asr_fenster.py <video> <json3> von:bis ... [--schreiben] [--neu]` | Clipfenster neu transkribieren, alt/neu vergleichen, bessere Fassung einsetzen |
+| `handy.py <lauf>` | jeden Clip des Laufs als 720x1280-Fassung unter 30 MiB nach `<lauf>/handy/` — groessere Dateien erreichen das Handy des Nutzers nicht |
+
+`pegel10.py` und `laute.py` nehmen `ID.de-asr.json3`, wenn es kein `ID.de-orig.json3` gibt.
 
 ## Ablauf je Video, wie er sich bewaehrt hat
 
