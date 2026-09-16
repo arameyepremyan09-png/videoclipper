@@ -31,7 +31,7 @@ beschreibung: Vollbild 16:9 vollstaendig eingepasst, Blur ringsum, Headline uebe
 # die Fullcam wechseln: ein Clip hat ein Template, und nur dieses zeigt beide
 # Bilder unbeschnitten. COACHLIM_TWITCH: dasselbe Zimmer im Twitch-Stream,
 # Coach allein und die Discord-Anrufer nur im Ton.
-default_fuer: [COACHLIM_ABU_TIKTOK, ELIASN97_STREAM, COACHLIM_KAESE_SNAP, ELIASN97_AMONGUS, ABUGOKU_VLOG, COACHLIM_TIKTOK_WEB, COACHLIM_TWITCH]
+default_fuer: [COACHLIM_ABU_TIKTOK, ELIASN97_STREAM, COACHLIM_KAESE_SNAP, ELIASN97_AMONGUS, ABUGOKU_VLOG, COACHLIM_TIKTOK_WEB, COACHLIM_TWITCH, COACHLIM_KAESE_GROSSCAM]
 gilt_fuer_modus: FULLCAM
 
 canvas: [1080, 1920]

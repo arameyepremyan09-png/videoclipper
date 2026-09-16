@@ -90,7 +90,14 @@ TAL_DB = 10.0
 # Luecke, in der das gewuenschte Ende liegt und die hoechstens MARKER_AUSKLANG
 # vor dem Markerende beginnt. Gemessen: 0.26 s davor (Senke bei 3304.30),
 # 0.24 s dahinter (Senke bei 648.10 hinter [gelaechter] bis 647.86).
-MARKER_AUSKLANG = 0.5
+#
+# 0.6 statt 0.5 seit dem 2026-09-16, GEMESSEN an I-mbVr4qgFs: [schreien] steht
+# bis 139.56 im Transkript (dort beginnt "Warum"), geschrien ist bis 139.05,
+# dazwischen 0.5 s Stille unter -58 dB. Die Stille beginnt 0.51 s vor dem
+# Markerende — 10 ms ausserhalb der alten Schranke —, und der Clip endete bei
+# 139.91 in "Warum macht". Weiter als 0.6 nicht: Je frueher im Marker eine
+# Luecke zaehlt, desto eher ist sie eine Atempause im Lachen.
+MARKER_AUSKLANG = 0.6
 
 
 def _einsatz(pegel: Pegel, t: float, spanne: float = EINSATZ_SPANNE) -> float | None:

@@ -203,10 +203,6 @@ def cmd_rendere(args: argparse.Namespace) -> None:
         segs = [{"art": "haupt", "start": start, "ende": ende, "dauer": dauer,
                  "ab": 0.0}]
         if plan.teaser is not None:
-            if tmpl.get("einschub"):
-                print(f"  {plan.clip_id}  NICHT gerendert: Teaser und Einschuebe "
-                      f"zusammen sind nicht gebaut")
-                continue
             # Ein Teaser ist ein Moment, kein Satz: ``snappe`` darf ihn kurz lassen.
             t_start, t_ende, _ = snappe(tr, plan.teaser.start, plan.teaser.ende,
                                         sperren=sperren, pegel=pegel, min_laenge=1.0)
@@ -223,20 +219,29 @@ def cmd_rendere(args: argparse.Namespace) -> None:
         # Laeuft das Fenster ueber eine Strecke eines anderen Modus? Gefragt
         # wird nur, wo das Template Einschuebe ueberbrueckt — dann bildgenau,
         # auf derselben Zeitachse wie der Filtergraph (layout.einschuebe).
+        # Je Segment gemessen: Mit Teaser hat jedes Quellfenster seine eigene
+        # Buehne. Die Fenster stehen danach wie der Punch-in auf der Clipachse
+        # und nennen ihr Segment; ``halten_bei`` bleibt in Segmentzeit.
         einschuebe: list[dict] = []
         if tmpl.get("einschub"):
             sig = _signatur(prof)
-            zeiten, werte = modus_je_bild(video, sig, start, dauer)
-            treffer = sig.aktiv(werte)
-            eigen = treffer if modus == sig.name else ~treffer
             fremd = sig.sonst if modus == sig.name else sig.name
+            eigen_s = 0.0
             try:
-                einschuebe = layout.einschuebe(prof, tmpl, modus, fremd,
-                                               zeiten, eigen, dauer)
+                for k, seg in enumerate(segs):
+                    zeiten, werte = modus_je_bild(video, sig, seg["start"], seg["dauer"])
+                    treffer = sig.aktiv(werte)
+                    eigen = treffer if modus == sig.name else ~treffer
+                    for e in layout.einschuebe(prof, tmpl, modus, fremd,
+                                               zeiten, eigen, seg["dauer"]):
+                        einschuebe.append(dict(e, segment=k,
+                                               ab=round(e["ab"] + seg["ab"], 3),
+                                               bis=round(e["bis"] + seg["ab"], 3)))
+                    eigen_s += float(eigen.mean()) * seg["dauer"]
             except ValueError as fehler:
                 print(f"  {plan.clip_id}  NICHT gerendert: {fehler}")
                 continue
-            anteil = round(float(eigen.mean()), 3)
+            anteil = round(eigen_s / gesamt, 3)
 
         ut_conf = tmpl["untertitel"]
         cues: list[untertitel.Cue] = []
@@ -261,6 +266,10 @@ def cmd_rendere(args: argparse.Namespace) -> None:
             except ValueError as fehler:
                 print(f"  {plan.clip_id}  NICHT gerendert: {fehler}")
                 continue
+            if einschuebe:
+                punch, p_hinweise = kurzformat.punch_im_einschub(punch, einschuebe,
+                                                                 kconf)
+                k_hinweise += p_hinweise
         # Die Follow-Szene gehoert in die Geschichte, nicht in den Teaser.
         fw_conf = kurzformat.follow_conf(fw_conf, segs, kconf)
         hinweis, fw_meldungen = (follow.platziere(gesamt, fw_conf)
@@ -297,14 +306,16 @@ def cmd_rendere(args: argparse.Namespace) -> None:
             print("      Punch-in " + ", ".join(f"{a:.2f}-{b:.2f}s" for a, b in fenster)
                   + f" auf {', '.join(sorted({e['panel'] for e in punch}))}")
         if einschuebe:
-            strecken = ", ".join(f"{max(e['ab'], 0.0):.1f}-{min(e['bis'], dauer):.1f}s"
+            strecken = ", ".join(f"{max(e['ab'], 0.0):.1f}-{min(e['bis'], gesamt):.1f}s"
                                  for e in einschuebe)
             print(f"      Einschuebe {einschuebe[0]['modus']}: {strecken}  "
                   f"({modus}-Anteil {anteil:.0%}, Layout steht)")
         # Wechsel, die ein Einschub ueberbrueckt, springen im fertigen Clip
         # nicht — sie gehoeren nicht in die Meldung. Die Abtastung der Schnitte
-        # liegt im 0.25-s-Raster, daher der Spielraum.
-        grenzen = [start + g for e in einschuebe for g in (e["ab"], e["bis"])]
+        # liegt im 0.25-s-Raster, daher der Spielraum. Zurueck auf die Quellzeit
+        # geht es ueber das Segment des Einschubs.
+        grenzen = [segs[e["segment"]]["start"] - segs[e["segment"]]["ab"] + g
+                   for e in einschuebe for g in (e["ab"], e["bis"])]
         wechsel = [s for s in bildwechsel
                    if not any(abs(s - g) <= 0.3 for g in grenzen)]
         # Die Headline ist das einzige Textfeld der AI und im fertigen Clip
@@ -406,16 +417,22 @@ def cmd_frames(args: argparse.Namespace) -> None:
 
 
 def _quellen(plan: countdown.CountdownPlan) -> dict[str, Path]:
-    """video_id -> Datei im Quellordner des Arbeitsverzeichnisses."""
-    quell_dir = arbeitsverzeichnis() / "source"
+    """video_id -> Datei in einem der Quellordner des Arbeitsverzeichnisses.
+
+    ``source/`` ist der alte Ort, ``quellen/`` der seit dem 2026-09-08
+    benutzte, ``referenz/top5/momente/`` der Vorrat aus den Top-5-Referenzen
+    (``werkzeuge/top5_referenz.py``, video_id dort ``<short>_platz<k>``).
+    """
+    basis = arbeitsverzeichnis()
+    ordner = [basis / "source", basis / "quellen", basis / "referenz" / "top5" / "momente"]
     gefunden = {}
     for e in plan.eintraege:
-        treffer = sorted(quell_dir.glob(f"{e.video_id}.*"))
-        treffer = [t for t in treffer if t.suffix in (".mp4", ".mkv", ".webm")]
+        treffer = [t for d in ordner for t in sorted(d.glob(f"{e.video_id}.*"))
+                   if t.suffix in (".mp4", ".mkv", ".webm")]
         if not treffer:
             raise FileNotFoundError(
-                f"{e.video_id} liegt nicht in {quell_dir}. "
-                f"Erst laden: clip frames <url> holt es ebenfalls dorthin.")
+                f"{e.video_id} liegt in keinem von {', '.join(str(d) for d in ordner)}. "
+                f"Erst laden: clip frames <url> holt es nach source/.")
         gefunden[e.video_id] = treffer[0]
     return gefunden
 

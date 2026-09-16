@@ -1,0 +1,105 @@
+# Materialprofil: Coachlim / 1:1 Kaese ueber Snapchat, grosse Facecam
+#
+# Gemessen am 2026-09-16 an I-mbVr4qgFs ("ZUSCHAUER WILL BEI EINER 19 JÄHRIGEN
+# MUTTER KÄSE LEGEN 💀 1ZU1 KÄSE", 2291 s, 1920x1080@59.94). 9155 Abtastpunkte
+# im Abstand von 0.25 s (werkzeuge/flaechen_serie.py), Boxkanten an sechs
+# Vollbildern aus Chatstrecken verschiedener Anrufer.
+#
+# DAS FORMAT ist dasselbe wie bei COACHLIM_KAESE_SNAP — Zuschauer teilen ihr
+# Handy, Coachlim diktiert —, die GEOMETRIE nicht. Die Facecam ist hier 14 %
+# breiter, der Chat beginnt 52 px tiefer. Das alte Profil schnitte die Facecam
+# links und rechts an und legte die Unterkante der Cam als helle Linie in den
+# Chat. Deshalb ein eigenes Profil statt einer Aenderung am alten, das zu
+# jd9bSJ7mshM passt.
+#
+# GEMESSENE BOXEN
+#   Facecam  [637, 0, 776, 436]   776/436 = 1.78, also 16:9.
+#            Staerkste senkrechte Kanten des Mittelbildes bei x=636/637 und
+#            1412/1413. Die Unterkante liegt zwischen y=437 und 438 (Zeilen-
+#            belegung faellt dort in allen sechs Bildern auf ein Drittel); die
+#            Box endet zwei Zeilen darueber, damit die Kante nicht ins Panel faellt.
+#   Handy    [818, 438, 476, 642]
+#            Chat und Tastatur belegen bei sechs Anrufern x=825..1288 — die Handys
+#            sind verschieden breit gespiegelt (Snapchat hell und dunkel,
+#            WhatsApp). Die Box nimmt links und rechts einige Pixel Rand dazu.
+#            Unten laeuft das Handy aus dem Bild.
+#
+# DIE VOLLBILD-CAM IST HIER NICHT DIE FACECAM, NUR GROESSER. Anders als bei
+# jd9bSJ7mshM hat sie eigene Zoomschnitte: Bei 480 s steht derselbe Ausschnitt
+# wie in der Facecam, bei 691 s ein naeherer (Poster rund 1.3x groesser). Ein
+# Einschub zeigt im oberen Panel deshalb manchmal die nahe Einstellung — wie im
+# Original geschnitten. Ein Punch-in darf dort nicht mit Facecam-Koordinaten
+# schneiden; er nimmt die Ersatzzone (kurzformat.punch_im_einschub).
+#
+# BILDER, die die Messreihe findet (rechte Flaeche + Kantenenergie der Tastatur):
+#   PHONE     Chat mit Tastatur, rechte Flaeche schwarz            75 %
+#   FULLCAM   Coachlim im Vollbild, 14.8-178.9 s am Stueck (Intro und das
+#             Gespraech ueber die 19-jaehrige Mutter), sonst 0.75-81.6 s
+#   ohne Tastatur  rechte Flaeche schwarz, aber kein Tastaturfeld (Chat
+#             zugeklappt, Bildschirmwechsel beim Anruferwechsel), z. B.
+#             490.7-505.0 s und 973.7-996.0 s. Fuer die Signatur PHONE — das
+#             Layout ist dasselbe, nur der Inhalt des Handys ein anderer.
+# Die "LIVE ... 1zu1 käse spielt EA Sports FC 26"-Zeile oben links ist eine
+# Titelleiste ueber dem Chatlayout, kein eigenes Bild. Im verkleinerten
+# Kontaktbogen sieht die Kachel aus wie ein Schwarzbild — sie ist keins.
+
+name: COACHLIM_KAESE_GROSSCAM
+beschreibung: Snapchat-Chat eines Zuschauers unter einer grossen Facecam, wechselnd mit Vollbild-Strecken mit eigenen Zoomschnitten
+gueltig_ab: 2026-09-16
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [Coachlim]
+  sprache: de
+
+# WIE ERKANNT WIRD: dieselbe Flaeche rechts vom Handy wie bei
+# COACHLIM_KAESE_SNAP, und sie trennt hier genauso. Ueber 9155 Punkte:
+#   unter 1.0   6846 Punkte (Chatlayout)
+#   ueber 30    2265 Punkte (Vollbild-Cam)
+#   dazwischen    44 Punkte, Uebergangsbilder an den Wechseln
+# Links taugt wieder nicht: Alerts und Spenden ("hat coach 100 geworfen")
+# erscheinen dort.
+signatur:
+  modus: PHONE
+  flaeche: [1450, 150, 400, 600]
+  schwelle: 15.0
+  invertiert: true          # PHONE aktiv, wo die Flaeche SCHWARZ ist
+  sonst: FULLCAM
+
+modi:
+  PHONE:
+    zonen:
+      facecam: { box: [637, 0, 776, 436], rolle: creator }    # 16:9
+      handy:   { box: [818, 438, 476, 642], rolle: inhalt }   # Chat + Tastatur
+    muellzonen:
+      - { box: [0, 0, 637, 1080], hinweis: schwarzer Grund links mit Piraten-Zaehler, Alerts und Sponsorlogo }
+      - { box: [1413, 0, 507, 1080], hinweis: schwarzer Grund rechts, unten der Twitch-Chat }
+  FULLCAM:
+    # SCHNITTREGELN.md Regel 2, Fall 2: 16:9 vollstaendig zeigen, kein fokus_x.
+    zonen:
+      voll: { box: [0, 0, 1920, 1080], rolle: creator }
+    muellzonen:
+      - { box: [0, 0, 460, 50], hinweis: Piraten-Zaehler oben links }
+      - { box: [1780, 10, 140, 50], hinweis: Sponsorlogo oben rechts }
+      - { box: [1640, 800, 280, 280], hinweis: Twitch-Chat rechts unten }
+    # EINSCHUB wie bei COACHLIM_KAESE_SNAP: Die kurzen Vollbild-Strecken sind
+    # die Reaktion auf das, was gerade im Chat steht. Das obere Panel kommt
+    # dann aus der Vollbild-Cam, der Chat haelt sein letztes Bild.
+    einschub:
+      in: PHONE
+      ersatz: { facecam: voll }
+
+datenschutz:
+  # Wie bei COACHLIM_KAESE_SNAP. ACHTUNG: Anders als dort steht hier bei
+  # einem Anrufer der Vorname des Maedchens als Chatname im Bild (660-760 s);
+  # die Mutter heisst im Chat "Mommy". Unveraenderte Entscheidung des Nutzers
+  # wie in den anderen Profilen — bei der Auslieferung erwaehnt.
+  fremdinhalt_blur: false
+
+signale:
+  # 40 Marker im Transkript: 17 [gelächter], 9 [schreien], 7 [räuspern],
+  # 6 [musik], 1 [japst].
+  lachmarker: 1.0
+  loudness_peak: 0.8
+  sprechtempo: 0.5

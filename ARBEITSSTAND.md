@@ -1,11 +1,37 @@
 # Arbeitsstand — hier weitermachen
 
-Stand 2026-09-15. Diese Datei ist die Uebergabe an einen neuen Chat: was
+Stand 2026-09-16. Diese Datei ist die Uebergabe an einen neuen Chat: was
 laeuft, was offen ist, mit welchen Befehlen und Werkzeugen gearbeitet wird.
 Architektur und Befunde stehen in [CLAUDE.md](CLAUDE.md), die Auftragslage des
 Nutzers in [SCHNITTREGELN.md](SCHNITTREGELN.md). Beide gelten zuerst.
 
 ## Offene Auftraege
+
+### 00. I-mbVr4qgFs — 1:1 Kaese mit grosser Facecam, 6 Clips, ausgeliefert
+
+"ZUSCHAUER WILL BEI EINER 19 JÄHRIGEN MUTTER KÄSE LEGEN", Coachlim, 2291 s.
+Auftrag: "Erstell gute Lacher Clips". Befunde: CLAUDE.md, "Nachtrag
+2026-09-16: 1:1 Kaese mit grosser Facecam".
+
+| Datei | Stand |
+|---|---|
+| `data/selections/I-mbVr4qgFs.json` | Plan, 6 Clips (Teaser + Hauptteil) |
+| `config/profiles/coachlim_kaese_grosscam.yaml` | Profil, Modi PHONE / FULLCAM, Einschub |
+| Code | Teaser + Einschub zusammen (`cli.cmd_rendere`, `render.filtergraph_teile`, `kurzformat.punch_im_einschub`), Tests in `tests/test_einschub.py` |
+| Messreihe | `flaechen_serie.py` K=15, Flaechen rechts/links/chat/tasten/cam — Laeufe in CLAUDE.md |
+| `data/korrekturen/I-mbVr4qgFs.json` | 54 Regeln, Zweitmeinung whisper.cpp + Chat im Bild |
+| Entwurf | `~/videoclipper/clips/2026-09-16_19-43-48` (lokal), fuenf Grenzen im Wort |
+| Finaler Lauf | `~/videoclipper/clips/2026-09-16_20-13-47` (lokal) fuer `_003`-`_006`; `_001` und `_002` aus `2026-09-16_20-26-17` (Korrekturregel an neuer Cuegrenze, Fetzen "stimmt." am Anfang). Handy-Fassungen unter `handy/` |
+
+Rueckmeldung des Nutzers steht aus. Die Bildwechsel in `_001` (85.1 s, 124.6 s)
+sind Zoomschnitte der Vollbild-Cam, kein zweiter Gegenstand.
+
+Clips: `_001` Besoffen zaehlt es nicht (FULLCAM_169), `_002` Falscher Snap,
+gegoennt, `_003` Kuscheleinheit nach der Katzen-OP / Phoenix, `_004` Gut mit
+Katzen und Fuessen, `_005` Netflix und chill / Rein in die Wand, `_006`
+Dresden. Nicht geschnitten (Grund in CLAUDE.md): alles mit 17-Jaehrigen ab
+1830 s, "Mach Stream aus", "Du hilfst mir geschlagen zu werden",
+Dessous-Anspielung 1146 s.
 
 ### 0. dwitch_j9snk5q6 — Twitch-VOD, 12 Clips, Rueckmeldung steht aus
 

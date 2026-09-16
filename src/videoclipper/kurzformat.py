@@ -20,6 +20,8 @@ Was davon Code ist:
 * ``pruefe``      Gesamtlaenge, Teaserlaenge und ob die Pointe im Teaser liegt —
                   am gesnappten Clip, nicht am Plan.
 * ``punch_in``    harter Zoom auf die Pointe, in jedem Segment, das sie zeigt.
+* ``punch_im_einschub`` denselben Zoom dort aus der Ersatzzone nehmen, wo ein
+                  Einschub das Panel ersetzt.
 * ``follow_conf`` die Follow-Szene hinter den Teaser legen.
 * ``verdeckt``    melden, wenn sie trotzdem auf einer Pointe liegt.
 
@@ -119,21 +121,81 @@ def punch_in(pointe: Pointe, segs: list[dict], panels: list[dict],
         for p in panels:
             if pointe.fokus and p["name"] not in pointe.fokus:
                 continue
-            (qx, qy, qw, qh), ziel = layout.sichtbar(p)
-            zw, zh = _gerade_ab(qw / zoom), _gerade_ab(qh / zoom)
-            fx = p["fokus_x"] if p.get("fokus_x") is not None else qx + qw / 2
-            fy = p["fokus_y"] if p.get("fokus_y") is not None else qy + qh / 2
-            zx = min(max(_gerade_ab(fx - zw / 2), qx), qx + qw - zw)
-            zy = min(max(_gerade_ab(fy - zh / 2), qy), qy + qh - zh)
+            quelle, ziel = _zoombox(p, zoom)
             out.append({
                 "segment": k,
                 "panel": p["name"],
                 "ab": round(seg["ab"] + ab, 3),
                 "bis": round(seg["ab"] + bis, 3),
-                "quelle": [int(zx), int(zy), zw, zh],
-                "ziel": list(ziel),
+                "quelle": quelle,
+                "ziel": ziel,
             })
     return out
+
+
+def _zoombox(p: dict, zoom: float) -> tuple[list[int], list[int]]:
+    """Quellbox des Zooms und Canvasrechteck fuer ein aufgeloestes Panel."""
+    (qx, qy, qw, qh), ziel = layout.sichtbar(p)
+    zw, zh = _gerade_ab(qw / zoom), _gerade_ab(qh / zoom)
+    fx = p["fokus_x"] if p.get("fokus_x") is not None else qx + qw / 2
+    fy = p["fokus_y"] if p.get("fokus_y") is not None else qy + qh / 2
+    zx = min(max(_gerade_ab(fx - zw / 2), qx), qx + qw - zw)
+    zy = min(max(_gerade_ab(fy - zh / 2), qy), qy + qh - zh)
+    return [int(zx), int(zy), zw, zh], list(ziel)
+
+
+def punch_im_einschub(punch: list[dict], einschuebe: list[dict],
+                      conf: dict) -> tuple[list[dict], list[str]]:
+    """Punch-in und Einschub im selben Fenster — ab 2026-09-16.
+
+    Waehrend eines Einschubs zeigt ein Panel nicht mehr seine eigene Zone
+    (siehe ``layout.einschuebe``). Ein Punch-in mit der Quellbox des Live-Panels
+    schnitte dort also eine Stelle aus dem ANDEREN Bild — bei I-mbVr4qgFs die
+    Facecam-Koordinaten aus einer Vollbild-Cam, die zudem eigene Zoomschnitte
+    hat. Deshalb wird jeder Eintrag an den Einschubgrenzen geteilt:
+
+    * ausserhalb bleibt er, wie er ist;
+    * innen zoomt ein **Ersatz**-Panel aus seiner Ersatzzone, mit derselben
+      Rechnung wie live (``_zoombox``);
+    * ein **gehaltenes** Panel zoomt dort nicht — sein Bild ist ein Standbild,
+      das im Graphen nicht als Videoeingang vorliegt. Das wird gemeldet.
+
+    Beide Listen stehen auf der Clipachse und tragen ``segment``.
+    """
+    zoom = float(conf["punch_in"]["zoom"])
+    out: list[dict] = []
+    hinweise: list[str] = []
+    for e in punch:
+        stuecke = [(e["ab"], e["bis"], None)]
+        for x in einschuebe:
+            if x.get("segment", 0) != e.get("segment", 0):
+                continue
+            neu = []
+            for a, b, ersatz in stuecke:
+                if ersatz is not None or b <= x["ab"] or x["bis"] <= a:
+                    neu.append((a, b, ersatz))
+                    continue
+                if a < x["ab"]:
+                    neu.append((a, x["ab"], None))
+                neu.append((max(a, x["ab"]), min(b, x["bis"]), x))
+                if x["bis"] < b:
+                    neu.append((x["bis"], b, None))
+            stuecke = neu
+        for a, b, x in stuecke:
+            if b - a <= 0.0:
+                continue
+            if x is None:
+                out.append(dict(e, ab=round(a, 3), bis=round(b, 3)))
+                continue
+            ersatz = [p for p in x["ersatz"] if p["name"] == e["panel"]]
+            if not ersatz:
+                hinweise.append(f"Punch-in auf {e['panel']} faellt {a:.2f}-{b:.2f}s "
+                                f"in einen Einschub mit gehaltenem Bild — dort kein Zoom")
+                continue
+            quelle, ziel = _zoombox(ersatz[0], zoom)
+            out.append(dict(e, ab=round(a, 3), bis=round(b, 3),
+                            quelle=quelle, ziel=ziel))
+    return out, hinweise
 
 
 def follow_conf(fw_conf: dict, segs: list[dict], conf: dict) -> dict:

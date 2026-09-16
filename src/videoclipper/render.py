@@ -101,8 +101,9 @@ def _overlay(vorher: str, eingang: int, u: dict, raus: str) -> str:
     return teil + f"[{raus}]"
 
 
-def _einschub_ketten(r, blur: int, vorher: str,
-                     eingang: int) -> tuple[list[str], str]:
+def _einschub_ketten(einschuebe: list[dict], blur: int, vorher: str,
+                     eingang: int, quelle: str = "0:v", versatz: float = 0.0,
+                     suffix: str = "") -> tuple[list[str], str, int]:
     """Filterglieder fuer die Einschuebe (siehe ``layout.einschuebe``).
 
     Zwei Arten Panel, zwei Arten Quelle:
@@ -117,41 +118,49 @@ def _einschub_ketten(r, blur: int, vorher: str,
       Zuschnitt, Einpassen, Blur —, sonst saehe das gehaltene Bild anders aus
       als das Bild davor, und genau dieser Uebergang soll nicht auffallen.
 
-    ``eingang`` ist der Index des ersten Haltebildes. Gibt die Glieder und das
-    Label danach zurueck.
+    ``eingang`` ist der Index des ersten Haltebildes. Gibt die Glieder, das
+    Label danach und den Index des naechsten freien Eingangs zurueck.
+
+    Mit Teaser baut ``filtergraph_teile`` je Segment eine eigene Buehne; dann
+    kommen hier nur die Einschuebe dieses Segments an, ``quelle`` ist sein
+    Eingang und ``versatz`` sein Beginn auf der Clipachse — die Fenster stehen
+    wie beim Punch-in auf der Clipachse, der Filter rechnet in Segmentzeit.
     """
     teile: list[str] = []
-    if not r.einschuebe:
-        return teile, vorher
+    if not einschuebe:
+        return teile, vorher, eingang
+
+    def zwischen(e: dict) -> str:
+        return f"between(t,{e['ab'] - versatz:.3f},{e['bis'] - versatz:.3f})"
 
     panels: dict[tuple, dict] = {}
     fenster: dict[tuple, list[str]] = {}
-    for e in r.einschuebe:
+    for e in einschuebe:
         for p in e["ersatz"]:
             k = (p["name"], tuple(p["src"]))
             panels[k] = p
-            fenster.setdefault(k, []).append(
-                f"between(t,{e['ab']:.3f},{e['bis']:.3f})")
+            fenster.setdefault(k, []).append(zwischen(e))
     for i, (k, p) in enumerate(panels.items()):
-        kette, label = _panel_kette("0:v", dict(p, name=f"ers{i}_{p['name']}"), blur)
+        kette, label = _panel_kette(quelle, dict(p, name=f"ers{i}_{p['name']}{suffix}"),
+                                    blur)
         teile.append(kette)
         teile.append(f"[{vorher}][{label}]overlay=x={p['dst'][0]}:y={p['dst'][1]}:"
                      f"enable='{'+'.join(fenster[k])}'[{label}_auf]")
         vorher = f"{label}_auf"
 
-    for n, e in enumerate(r.einschuebe):
+    for n, e in enumerate(einschuebe):
         if not e["halten"]:
             continue
         for p in e["halten"]:
             kette, label = _panel_kette(f"{eingang}:v",
-                                        dict(p, name=f"halt{n}_{p['name']}"), blur)
+                                        dict(p, name=f"halt{n}_{p['name']}{suffix}"),
+                                        blur)
             teile.append(kette)
             teile.append(f"[{vorher}][{label}]overlay=x={p['dst'][0]}:y={p['dst'][1]}:"
-                         f"enable='between(t,{e['ab']:.3f},{e['bis']:.3f})'"
-                         f"[{label}_auf]")
+                         f"enable='{zwischen(e)}'[{label}_auf]")
             vorher = f"{label}_auf"
         eingang += 1
-    return teile, vorher
+    return teile, vorher, eingang
 
 
 def _punch_ketten(eintraege: list[dict], vorher: str, quelle: str = "0:v",
@@ -210,7 +219,7 @@ def filtergraph(plan: EditPlan, tmpl: dict) -> str:
     # anhaengt. Die Einschuebe liegen UNTER Headline, Untertiteln und Follow:
     # Sie ersetzen Teile der Buehne, nicht die Schrift darauf.
     haltebilder = sum(1 for e in r.einschuebe if e["halten"])
-    glieder, vorher = _einschub_ketten(r, blur, "buehne", 1)
+    glieder, vorher, _ = _einschub_ketten(r.einschuebe, blur, "buehne", 1)
     teile += glieder
     glieder, vorher = _punch_ketten(r.punch_in, vorher)
     teile += glieder
@@ -233,16 +242,24 @@ def filtergraph_teile(plan: EditPlan, tmpl: dict, lufs: float) -> str:
     Der Ton kommt je Segment aus seinem Eingang und laeuft durch ``concat``;
     ``loudnorm`` steht deshalb im Graphen, weil ``-af`` Streams aus
     ``filter_complex`` ablehnt (Exit 234, siehe CLAUDE.md).
+
+    Eingaenge: erst ein Video je Segment, dann die Haltebilder der Einschuebe
+    in Segmentreihenfolge, dann die PNGs. Die Einschuebe liegen je Segment auf
+    seiner Buehne, unter dem Punch-in — dieselbe Schichtung wie im Einzelpfad.
     """
     r = plan.resolved
-    if r.einschuebe:
-        raise ValueError("Einschuebe und mehrere Segmente zusammen sind nicht gebaut")
     blur = (tmpl.get("hintergrund") or {}).get("staerke", 24)
     n = len(r.segmente)
+    haltebilder = sum(1 for e in r.einschuebe if e["halten"])
 
     teile, stufen = [], []
+    eingang = n
     for k, seg in enumerate(r.segmente):
         glieder, label = _buehne(f"{k}:v", r, blur, suffix=f"_s{k}")
+        teile += glieder
+        glieder, label, eingang = _einschub_ketten(
+            [e for e in r.einschuebe if e.get("segment", 0) == k], blur, label,
+            eingang, quelle=f"{k}:v", versatz=seg["ab"], suffix=f"_s{k}")
         teile += glieder
         eigene = [e for e in r.punch_in if e.get("segment", 0) == k]
         glieder, label = _punch_ketten(eigene, label, quelle=f"{k}:v",
@@ -257,7 +274,7 @@ def filtergraph_teile(plan: EditPlan, tmpl: dict, lufs: float) -> str:
     vorher = "buehne"
     for i, u in enumerate(ueberlagerungen(plan, tmpl)):
         raus = f"ov{i}"
-        teile.append(_overlay(vorher, n + i, u, raus))
+        teile.append(_overlay(vorher, n + haltebilder + i, u, raus))
         vorher = raus
     teile.append(f"[{vorher}]format=yuv420p[v]")
     return ";".join(teile)
@@ -305,10 +322,18 @@ def _haltebild(video: Path, start: float, t: float, ziel: Path) -> Path:
 
 
 def _haltebilder(plan: EditPlan, video: Path, bilder_dir: Path) -> list[Path]:
-    """Ein Standbild je Einschub mit gehaltenen Panels, Reihenfolge wie im Graphen."""
+    """Ein Standbild je Einschub mit gehaltenen Panels, Reihenfolge wie im Graphen.
+
+    ``halten_bei`` steht in der Zeit des eigenen Segments — mit Teaser also ab
+    dessen Quellbeginn, nicht ab dem des Hauptteils.
+    """
     r = plan.resolved
     bilder_dir.mkdir(parents=True, exist_ok=True)
-    return [_haltebild(video, r.start, e["halten_bei"],
+
+    def beginn(e: dict) -> float:
+        return r.segmente[e.get("segment", 0)]["start"] if r.segmente else r.start
+
+    return [_haltebild(video, beginn(e), e["halten_bei"],
                        bilder_dir / f"{plan.clip_id}.halt{k:02d}.png")
             for k, e in enumerate(r.einschuebe) if e["halten"]]
 

@@ -12,9 +12,9 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from videoclipper import layout
-from videoclipper.editplan import Aufgeloest, EditPlan
-from videoclipper.render import filtergraph
+from videoclipper import kurzformat, layout, render
+from videoclipper.editplan import Aufgeloest, EditPlan, Pointe
+from videoclipper.render import filtergraph, filtergraph_teile
 
 FPS = 60000 / 1001
 
@@ -157,3 +157,100 @@ def test_vollbild_cam_laeuft_einmal_fuer_alle_einschuebe(prof, tmpl):
 def test_ohne_einschub_bleibt_der_graph_wie_bisher(prof, tmpl):
     g = filtergraph(_plan(prof, tmpl, []), tmpl)
     assert "[1:v]overlay" in g and "crop=1920:1080" not in g
+
+
+# --- Teaser und Einschub zusammen (ab 2026-09-16) ---------------------------
+#
+# Bis hierher lehnte ``cmd_rendere`` beides zusammen ab. Beim Kaese-Format ist
+# die Vollbild-Strecke aber genau die Reaktion auf die Nachricht — ohne
+# Einschub gaebe es dort keinen Clip im Kurzformat.
+
+def _teaser_plan(prof, tmpl, segs, einschuebe, punch=()) -> EditPlan:
+    plan = _plan(prof, tmpl, einschuebe)
+    plan.resolved.segmente = segs
+    plan.resolved.punch_in = list(punch)
+    plan.resolved.dauer = sum(s["dauer"] for s in segs)
+    return plan
+
+
+def _auf_clipachse(einschuebe, segs, k):
+    return [dict(e, segment=k, ab=round(e["ab"] + segs[k]["ab"], 3),
+                 bis=round(e["bis"] + segs[k]["ab"], 3)) for e in einschuebe]
+
+
+def test_teaser_mit_einschueben_zaehlt_die_eingaenge(prof, tmpl):
+    """Zwei Videos, dann ein Haltebild je Segment, dann erst die PNGs."""
+    segs = kurzformat.segmente((200.0, 205.0), (160.0, 200.0))
+    z_t, z_h = _achse(5.0), _achse(40.0)
+    e = (_auf_clipachse(_schiebe(prof, tmpl, z_t, _eigen(z_t, (1.0, 3.0)), 5.0), segs, 0)
+         + _auf_clipachse(_schiebe(prof, tmpl, z_h, _eigen(z_h, (20.0, 24.0)), 40.0),
+                          segs, 1))
+    g = filtergraph_teile(_teaser_plan(prof, tmpl, segs, e), tmpl, -14.0)
+    assert "[2:v]crop=486:694:800:386" in g and "[3:v]crop=486:694:800:386" in g
+    assert "[buehne][4:v]overlay" in g             # Headline nach beiden Haltebildern
+    # Jede Buehne holt den Ersatz aus ihrem eigenen Video.
+    assert "[0:v]crop=1920:1080:0:0" in g and "[1:v]crop=1920:1080:0:0" in g
+
+
+def test_einschub_im_hauptteil_rechnet_in_segmentzeit(prof, tmpl):
+    """Auf der Clipachse liegt er 5 s spaeter — im Filter nicht."""
+    segs = kurzformat.segmente((200.0, 205.0), (160.0, 200.0))
+    z = _achse(40.0)
+    e = _auf_clipachse(_schiebe(prof, tmpl, z, _eigen(z, (20.0, 24.0)), 40.0), segs, 1)
+    assert e[0]["ab"] > 24.9
+    g = filtergraph_teile(_teaser_plan(prof, tmpl, segs, e), tmpl, -14.0)
+    assert f"between(t,{e[0]['ab'] - 5.0:.3f}," in g
+    assert f"between(t,{e[0]['ab']:.3f}," not in g
+
+
+def test_haltebild_kommt_aus_dem_eigenen_segment(prof, tmpl, tmp_path, monkeypatch):
+    segs = kurzformat.segmente((200.0, 205.0), (160.0, 200.0))
+    z = _achse(40.0)
+    e = _auf_clipachse(_schiebe(prof, tmpl, z, _eigen(z, (20.0, 24.0)), 40.0), segs, 1)
+    gerufen = []
+    monkeypatch.setattr(render, "_haltebild",
+                        lambda video, start, t, ziel: gerufen.append((start, t)) or ziel)
+    render._haltebilder(_teaser_plan(prof, tmpl, segs, e), tmp_path / "v.mp4", tmp_path)
+    assert gerufen == [(160.0, e[0]["halten_bei"])]
+
+
+def test_punch_im_einschub_zoomt_aus_der_ersatzzone(prof, tmpl):
+    """Mit der Facecam-Box geschnitten stuende im Zoom ein Stueck der
+    Vollbild-Cam an der falschen Stelle."""
+    conf = tmpl["kurzformat"]
+    panels = layout.panels(prof, tmpl, "PHONE")
+    segs = [{"art": "haupt", "start": 100.0, "ende": 130.0, "dauer": 30.0, "ab": 0.0}]
+    punch = kurzformat.punch_in(Pointe(t=109.0, bis=111.5, fokus=["facecam"]),
+                                segs, panels, conf)
+    z = _achse(30.0)
+    e = [dict(x, segment=0) for x in _schiebe(prof, tmpl, z, _eigen(z, (10.0, 15.0)), 30.0)]
+    neu, hinweise = kurzformat.punch_im_einschub(punch, e, conf)
+    assert hinweise == []
+    vor, im = neu
+    assert vor["quelle"] == punch[0]["quelle"] and vor["bis"] == e[0]["ab"]
+    assert im["ab"] == e[0]["ab"] and im["bis"] == punch[0]["bis"]
+    qx, qy, qw, qh = im["quelle"]
+    assert qw > 680 and qx + qw <= 1920          # aus der Vollbild-Zone, nicht 706+680
+
+
+def test_punch_auf_gehaltenem_panel_entfaellt_im_einschub(prof, tmpl):
+    conf = tmpl["kurzformat"]
+    panels = layout.panels(prof, tmpl, "PHONE")
+    segs = [{"art": "haupt", "start": 100.0, "ende": 130.0, "dauer": 30.0, "ab": 0.0}]
+    punch = kurzformat.punch_in(Pointe(t=111.0, bis=112.0, fokus=["handy"]),
+                                segs, panels, conf)
+    z = _achse(30.0)
+    e = [dict(x, segment=0) for x in _schiebe(prof, tmpl, z, _eigen(z, (10.0, 15.0)), 30.0)]
+    neu, hinweise = kurzformat.punch_im_einschub(punch, e, conf)
+    assert neu == [] and len(hinweise) == 1
+
+
+def test_punch_in_anderem_segment_bleibt_unberuehrt(prof, tmpl):
+    conf = tmpl["kurzformat"]
+    panels = layout.panels(prof, tmpl, "PHONE")
+    segs = kurzformat.segmente((111.0, 114.0), (100.0, 130.0))
+    punch = kurzformat.punch_in(Pointe(t=112.0, fokus=["facecam"]), segs, panels, conf)
+    z = _achse(3.0)
+    e = [dict(x, segment=0) for x in _schiebe(prof, tmpl, z, _eigen(z, (0.5, 2.5)), 3.0)]
+    neu, _ = kurzformat.punch_im_einschub([p for p in punch if p["segment"] == 1], e, conf)
+    assert neu == [p for p in punch if p["segment"] == 1]

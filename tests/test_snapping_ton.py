@@ -81,6 +81,19 @@ def test_ende_hinter_einem_lacher_marker_liegt_in_der_senke():
     assert 720.85 <= e < 721.05
 
 
+def test_stille_hinter_einem_schrei_marker_ist_das_ende():
+    """GEMESSEN an I-mbVr4qgFs: [schreien] steht bis 139.56 im Transkript,
+    geschrien ist bis 139.05, danach 0.5 s Stille bis "Warum". Die Stille
+    beginnt 0.51 s vor dem Markerende; mit der alten Schranke von 0.5 s galt
+    sie nicht, und der Clip endete bei 139.91 in "Warum macht"."""
+    tr = _tr(*_rede(100.0, 137.5), ("[schreien]", 137.55, 139.56),
+             ("Warum", 139.56, 139.84), ("macht", 139.84, 140.04))
+    pegel = _pegel((137.1, 139.05, -17.0), (139.05, 139.55, -62.0),
+                   (139.55, 140.1, -18.0))
+    _, e, _ = snappe(tr, 100.0, 139.3, pegel=pegel)
+    assert e == pytest.approx(139.2)
+
+
 def test_ende_im_ton_schneidet_an_der_ersten_pause():
     """Liegt das gewuenschte Ende mitten im Lacher, ist keine Luecke gemeint —
     dann gilt die Regel aus saiJDq9DM_Y: erste Pause nach dem letzten Wort."""

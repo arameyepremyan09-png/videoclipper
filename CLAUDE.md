@@ -777,6 +777,83 @@ Alter der Anrufer ist unbekannt), der Schueler, der von der Schule geflogen ist,
 AZs erster Rap (explizit), die Scheidungsgeschichte (kein Lacher) und
 "24-Stunden-VOD um 2 Uhr nachts" (Regel 1c: am Standbild lacht niemand).
 
+### Nachtrag 2026-09-16: 1:1 Kaese mit grosser Facecam — Teaser und Einschub zusammen
+
+Vermessen an I-mbVr4qgFs ("ZUSCHAUER WILL BEI EINER 19 JÄHRIGEN MUTTER KÄSE
+LEGEN", Coachlim, 2291 s, 1920x1080@59.94). Profil `COACHLIM_KAESE_GROSSCAM`,
+Templates `PHONE_STACK` und `FULLCAM_169`. Sechs Clips.
+
+**Dasselbe Format, eine andere Geometrie.** Wie bei jd9bSJ7mshM teilen
+Zuschauer ihr Snapchat und Coachlim diktiert, aber die Facecam ist
+`[637,0,776,436]` statt `[706,0,680,382]` und der Chat beginnt bei y=438. Das
+alte Profil haette die Cam seitlich angeschnitten und ihre Unterkante als
+helle Linie in den Chat gelegt. Signatur und Einschubregel bleiben gleich;
+die rechte Flaeche trennt ueber 9155 Punkte (6846 unter 1.0, 2265 ueber 30).
+Die Handys der Anrufer sind verschieden breit (x=825..1288), die Box nimmt
+das breiteste.
+
+**Die Vollbild-Cam ist hier NICHT die verkleinerte Facecam.** Das Profil von
+jd9bSJ7mshM stellt das fest, und der Einschub baut darauf. Hier hat die
+Vollbild-Cam eigene Zoomschnitte: Die Kantenkorrelation zwischen Facecam und
+Vollbild liegt bei 691 s bei 0.07, die Poster sind dort rund 1.3x groesser.
+Fuer den Einschub reicht das — das obere Panel zeigt kurz die nahe
+Einstellung, wie im Original geschnitten. **Ein Punch-in in dieser Strecke
+haette mit Facecam-Koordinaten aber eine falsche Stelle aus dem Vollbild
+geschnitten.** `kurzformat.punch_im_einschub` teilt den Zoom deshalb an den
+Einschubgrenzen und nimmt innen die Ersatzzone; ein gehaltenes Panel zoomt
+dort nicht und wird gemeldet.
+
+**Teaser und Einschub gingen bis heute nicht zusammen** — `cmd_rendere`
+lehnte jeden Plan mit Teaser ab, sobald das Template Einschuebe kennt, also
+jeden `PHONE_STACK`-Clip im Kurzformat. Beim Kaese-Format ist die Vollbild-
+Strecke aber fast immer die Reaktion. Jetzt misst `cmd_rendere` die Einschuebe
+je Segment; die Fenster stehen wie der Punch-in auf der Clipachse und nennen
+ihr Segment, `halten_bei` bleibt in Segmentzeit. `filtergraph_teile` legt sie
+je Buehne unter den Punch-in; die Haltebilder kommen als Eingaenge nach den
+Videos und vor den PNGs.
+
+**Ein Kontaktbogen kann Kacheln verwechseln.** Die Uebersicht zeigte bei
+1300, 1708, 1868 und 2074 s scheinbar ein Schwarzbild mit "LIVE ... 1zu1
+käse spielt EA Sports FC 26". Die Messreihe sagte an allen vier Stellen
+Chatlayout, und drei Abrufmethoden (Suche vor/nach `-i`, `select`) zeigten
+dasselbe Bild: Die Zeile ist eine Titelleiste ueber dem Chat, und die Kachel
+daneben trug das Bild. Wo Messung und Kontaktbogen sich widersprechen, das
+Einzelbild in voller Aufloesung holen.
+
+**Der Chat entscheidet, was die Pointe ist.** Im Transkript stand beim
+Katzen-Clip nur "hat viel Blut verloren die Arme, schick ab" — wer was
+schreibt, stand erst im Bild: Sie schreibt, die Katze haette die OP fast nicht
+ueberlebt, und direkt darunter geht "Brauchst du eine kleine Kuschel Einheit
+zum aufmuntern" raus. Ihre Antwort "Haette nix dagegen :)" ist der Phoenix aus
+der Asche. Bei diesem Format die Chatzone ausschneiden und lesen, bevor die
+Grenzen stehen.
+
+**Fuenf Grenzen lagen im Entwurf falsch, alle erst in der Grenzkontrolle
+sichtbar.** Die lehrreichste: Hinter "also da kannst krachen [schreien]"
+liegen 0.5 s Stille (139.05-139.53), dann "Warum macht die nicht Schluss". Der
+Marker reicht im Transkript bis 139.56, die Stille beginnt 0.51 s vor seinem
+Ende — `MARKER_AUSKLANG` liess bis dahin nur 0.50 s zu, und der Clip endete
+in "Warum macht". Die Schranke steht jetzt auf 0.6 (Test
+`test_stille_hinter_einem_schrei_marker_ist_das_ende`). Die anderen vier
+waren Anfaenge und Enden ohne Luecke im Ton ("mir doch mal", "Dann", "Warte
+mal", "stimmt."); sie sind ueber benachbarte Woerter mit echter Stille neu
+verankert, nicht im Code geloest.
+
+**Eine Falle beim Gegentest:** Wer eine Konstante per `sed` umstellt, den Test
+laufen laesst und in derselben Sekunde zuruecksetzt, bekommt von Python den
+alten Wert — die `.pyc` gilt als aktuell, weil Groesse und Zeitstempel (in
+Sekunden) gleich sind. Die Nachrechnung von `snappe` lief mit 0.5, obwohl 0.6
+in der Datei stand. Nach so einem Hin und Her `__pycache__` loeschen.
+
+Nicht geschnitten, mit Grund: alles ab 1830 s, wo ein Anrufer mit Ausweis
+beweisen will, dass er nicht 17 ist, und ein anderer mit einer 17-Jaehrigen
+schreibt ("Willst du in Knast?") — Minderjaehrige plus Sexuelles, egal wie
+laut gelacht wird. "Mach Stream aus" (1490-1640 s, das Handy ist aus, ohne den
+Chat versteht man nichts, und kurz danach "Du bist 17, nein 19"). "Du hilfst
+mir geschlagen zu werden" (1030-1090 s, Regel 1c: am Standbild lacht niemand).
+Die Dessous-Anspielung bei 1146 s (Vollbild-Strecke 11.5 s, `PHONE_STACK`
+ueberbrueckt hoechstens 10 s, und ohne `_002` fehlt der Kontext).
+
 ## Bildschnitte — Stage 04b, gemessen am 2026-09-07
 
 Der Modus sagt, *welches Layout* vorliegt. Er sagt nicht, ob das Bild
