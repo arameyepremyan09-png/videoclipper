@@ -39,7 +39,10 @@ REDIRECT = f"http://127.0.0.1:{PORT}/callback/"
 
 GOOGLE_AUTH = "https://accounts.google.com/o/oauth2/v2/auth"
 GOOGLE_TOKEN = "https://oauth2.googleapis.com/token"
-YOUTUBE_SCOPE = "https://www.googleapis.com/auth/youtube.upload"
+# force-ssl braucht videos.update, also das Umplanen schon hochgeladener Videos.
+YOUTUBE_SCOPE = ("https://www.googleapis.com/auth/youtube.upload "
+                 "https://www.googleapis.com/auth/youtube.force-ssl")
+YOUTUBE_VIDEOS = "https://www.googleapis.com/youtube/v3/videos"
 YOUTUBE_UPLOAD = "https://www.googleapis.com/upload/youtube/v3/videos"
 
 TIKTOK_AUTH = "https://www.tiktok.com/v2/auth/authorize/"
@@ -55,7 +58,11 @@ SICHTBARKEIT_YOUTUBE = {"privat": "private", "freunde": "unlisted",
                         "oeffentlich": "public"}
 
 # TikTok: Stuecke zwischen 5 und 64 MB, nur das letzte darf groesser sein.
+# Bis 64 MB geht die Datei in EINEM Stueck hoch. Gemessen am 2026-10-21: drei
+# Stuecke a 10 MB kamen vollstaendig an, der Entwurf blieb aber ueber 15 Minuten
+# auf PROCESSING_UPLOAD; dieselbe Datei am Stueck war nach 30 s im Posteingang.
 CHUNK = 10 * 1024 * 1024
+GANZ_BIS = 64 * 1024 * 1024
 PLATTFORMEN = ("youtube", "tiktok")
 
 
@@ -271,26 +278,51 @@ def lade_youtube_hoch(datei: Path, titel: str, beschreibung: str = "",
     raise HochladeFehler(f"YouTube-Upload gescheitert: {letzter}")
 
 
+def plane_youtube_um(video_id: str, zeit: str) -> dict[str, Any]:
+    """Freigabezeit eines noch nie veroeffentlichten Videos verschieben.
+
+    videos.update loescht jedes Feld im status-Part, das fehlt — deshalb wird
+    der ganze Part mitgeschickt, nicht nur publishAt.
+    """
+    token = _youtube_token()
+    _, _, body = _anfrage(
+        YOUTUBE_VIDEOS + "?part=status", methode="PUT",
+        daten=json.dumps({"id": video_id, "status": {
+            "privacyStatus": "private", "publishAt": zeit,
+            "selfDeclaredMadeForKids": False, "embeddable": True,
+            "publicStatsViewable": True, "license": "youtube"}}).encode(),
+        kopf={"Authorization": f"Bearer {token}",
+              "Content-Type": "application/json; charset=UTF-8"})
+    return json.loads(body)["status"]
+
+
 # --- TikTok ------------------------------------------------------------------
 
 def _tiktok_app() -> dict[str, str]:
     return _lade_json("tiktok_app.json")
 
 
+def _tiktok_redirect(app: dict[str, str]) -> str:
+    """TikTok verlangt https. Dann zeigt redirect_uri auf eine statische Seite,
+    die den Code an den lokalen Empfaenger (REDIRECT) weiterreicht."""
+    return app.get("redirect_uri") or REDIRECT
+
+
 def verbinde_tiktok() -> None:
     app = _tiktok_app()
+    redirect = _tiktok_redirect(app)
     verifier, state = _verifier(), secrets.token_urlsafe(16)
     # TikTok erwartet den SHA-256 hexadezimal, nicht base64url wie Google.
     challenge = hashlib.sha256(verifier.encode()).hexdigest()
     url = TIKTOK_AUTH + "?" + urllib.parse.urlencode({
         "client_key": app["client_key"], "scope": TIKTOK_SCOPES,
-        "response_type": "code", "redirect_uri": REDIRECT, "state": state,
+        "response_type": "code", "redirect_uri": redirect, "state": state,
         "code_challenge": challenge, "code_challenge_method": "S256"})
     code = _warte_auf_code(url, state)
     t = _form(f"{TIKTOK_API}/v2/oauth/token/", {
         "client_key": app["client_key"], "client_secret": app["client_secret"],
         "code": code, "grant_type": "authorization_code",
-        "redirect_uri": REDIRECT, "code_verifier": verifier})
+        "redirect_uri": redirect, "code_verifier": verifier})
     if "access_token" not in t:
         raise HochladeFehler(f"TikTok hat kein Token geliefert: {t}")
     _speichere_token("tiktok", _tiktok_token_satz(t))
@@ -325,9 +357,10 @@ def _tiktok_pruefe(antwort: dict[str, Any]) -> dict[str, Any]:
     return antwort.get("data", {})
 
 
-def stuecke(groesse: int, chunk: int = CHUNK) -> list[tuple[int, int]]:
+def stuecke(groesse: int, chunk: int = CHUNK,
+            ganz_bis: int = GANZ_BIS) -> list[tuple[int, int]]:
     """Byte-Bereiche (von, bis einschliesslich). Der Rest geht ins letzte Stueck."""
-    if groesse <= chunk:
+    if groesse <= max(chunk, ganz_bis):
         return [(0, groesse - 1)]
     n = groesse // chunk
     return [(i * chunk, (i + 1) * chunk - 1 if i < n - 1 else groesse - 1)

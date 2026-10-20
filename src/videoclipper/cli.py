@@ -25,6 +25,7 @@ Bewertung (Stages 15-17), der Kreis zurueck zum Anfang:
 Veroeffentlichen (Stage 18):
 ``clip verbinde``    YouTube/TikTok einmalig im Browser freigeben.
 ``clip poste``       Clip hochladen und ins Register eintragen.
+``clip veroeffentliche`` Ganzen Lauf: YouTube stuendlich geplant, TikTok als Entwurf.
 """
 
 from __future__ import annotations
@@ -49,7 +50,8 @@ from .transcript import lade_json3
 # --- Bewertungssystem ------------------------------------------------------
 from datetime import datetime
 
-from . import calibrate, collect, experiments, hochladen, publish, report, store
+from . import (calibrate, collect, experiments, hochladen, publish, report, store,
+               veroeffentlichen)
 from .forecast import Merkmale, prognostiziere
 from .scoring import konfiguration
 
@@ -604,6 +606,33 @@ def cmd_poste(args: argparse.Namespace) -> None:
         raise SystemExit(1)
 
 
+def cmd_veroeffentliche(args: argparse.Namespace) -> None:
+    if args.ordner:
+        lauf = Path(args.ordner).expanduser()
+    else:
+        juengster = ausgabe.zuletzt(arbeitsverzeichnis() / "clips")
+        if juengster is None:
+            raise SystemExit("Kein Lauf unter clips/ gefunden.")
+        lauf = juengster.wurzel
+    ab_tag = datetime.strptime(args.ab_tag, "%Y-%m-%d").date() if args.ab_tag else None
+    try:
+        e = veroeffentlichen.veroeffentliche(
+            lauf, plattformen=args.nur or hochladen.PLATTFORMEN, ab_tag=ab_tag,
+            probe=args.probe)
+    except hochladen.HochladeFehler as fehler:
+        raise SystemExit(f"Fehler: {fehler}")
+
+    if e["tiktok_titel"]:
+        print("\nTikTok-Titel zum Einfuegen in der App:")
+        for clip_id, titel in e["tiktok_titel"]:
+            print(f"\n  {clip_id}\n  {titel}")
+    if e["tiktok_offen"] or e["youtube_offen"]:
+        print(f"\nNoch offen: TikTok {e['tiktok_offen']}, YouTube {e['youtube_offen']}. "
+              "Entwuerfe in der App posten, dann denselben Befehl erneut.")
+    elif not args.probe:
+        print("\nAlles hochgeladen.")
+
+
 def cmd_prognose(args: argparse.Namespace) -> None:
     postzeit = datetime.fromisoformat(args.postzeit) if args.postzeit else None
     historie = [(z.post["titel"], z.bewertung.score)
@@ -878,6 +907,14 @@ def main() -> None:
     po.add_argument("--variante")
     po.add_argument("--ohne-register", action="store_true")
     po.set_defaults(func=cmd_poste)
+
+    ve = sub.add_parser("veroeffentliche",
+                        help="Ganzen Lauf hochladen: YouTube geplant, TikTok als Entwurf")
+    ve.add_argument("ordner", nargs="?", help="Lauf-Ordner, Standard: der juengste")
+    ve.add_argument("--nur", nargs="+", choices=hochladen.PLATTFORMEN)
+    ve.add_argument("--ab-tag", help="YouTube fruehestens an diesem Tag, JJJJ-MM-TT")
+    ve.add_argument("--probe", action="store_true", help="nur den Plan zeigen")
+    ve.set_defaults(func=cmd_veroeffentliche)
 
     b = sub.add_parser("bewerte", help="Rangliste, Muster, Luecken")
     b.add_argument("--fenster", type=float)

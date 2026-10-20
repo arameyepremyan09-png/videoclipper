@@ -7,14 +7,18 @@ def test_kleine_datei_ist_ein_stueck():
     assert hochladen.stuecke(3_000_000) == [(0, 2_999_999)]
 
 
+def test_bis_64_mb_ein_stueck():
+    assert hochladen.stuecke(30_854_616) == [(0, 30_854_615)]
+
+
 def test_rest_geht_ins_letzte_stueck():
     c = hochladen.CHUNK
-    bereiche = hochladen.stuecke(2 * c + 123)
+    bereiche = hochladen.stuecke(2 * c + 123, ganz_bis=0)
     assert bereiche == [(0, c - 1), (c, 2 * c + 122)]
 
 
 def test_stuecke_lueckenlos():
-    g = 47_123_456
+    g = 147_123_456
     b = hochladen.stuecke(g)
     assert b[0][0] == 0 and b[-1][1] == g - 1
     assert all(b[i][1] + 1 == b[i + 1][0] for i in range(len(b) - 1))

@@ -68,3 +68,14 @@ encoder = "h264_videotoolbox"
 preview_encoder = "h264_videotoolbox"
 hwaccel = "videotoolbox"
 asr_backend = "mlx"                 # Neural Engine, deutlich schneller
+
+[veroeffentlichen]
+# Auftrag des Nutzers vom 2026-10-21: YouTube-Shorts stuendlich ab 10 Uhr,
+# nicht alle auf einmal. `clip veroeffentliche` fuellt das Raster ab..bis und
+# springt danach auf den naechsten Tag; Termine anderer Laeufe bleiben frei.
+zeitzone = "Europe/Berlin"
+ab = "10:00"
+bis = "22:00"
+abstand_minuten = 60
+# YouTube verlangt einen Termin in der Zukunft — Puffer fuer Upload und Verarbeitung.
+vorlauf_minuten = 15

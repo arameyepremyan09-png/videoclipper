@@ -220,6 +220,19 @@ Zugangsdaten liegen **außerhalb des Repos** in `~/.config/videoclipper/`.
    `{"client_key": "...", "client_secret": "..."}`
 4. `clip verbinde tiktok`
 
+Ein ganzer Lauf mit einem Befehl — YouTube stündlich ab 10 Uhr geplant, TikTok
+als Entwurf, Titel aus `titel.md`:
+
+```bash
+clip veroeffentliche                 # jüngster Lauf unter clips/
+clip veroeffentliche --probe         # nur den Plan zeigen
+clip veroeffentliche clips/2026-10-20_23-08-33 --ab-tag 2026-10-25
+```
+
+Was erledigt ist, steht in `json/hochgeladen.json` des Laufes. Bremst TikTok
+(zu viele offene Entwürfe) oder ist das YouTube-Kontingent leer, einfach später
+denselben Befehl erneut aufrufen — er lädt nur das Fehlende hoch.
+
 ```bash
 clip verbinde status
 clip poste clips/mein_clip.mp4 --titel "..." --auf youtube --sichtbarkeit oeffentlich
