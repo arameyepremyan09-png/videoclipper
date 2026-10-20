@@ -26,6 +26,9 @@ Veroeffentlichen (Stage 18):
 ``clip verbinde``    YouTube/TikTok einmalig im Browser freigeben.
 ``clip poste``       Clip hochladen und ins Register eintragen.
 ``clip veroeffentliche`` Ganzen Lauf: YouTube stuendlich geplant, TikTok als Entwurf.
+
+Automatik (Stage 00):
+``clip beobachte``   Kanaele beobachten, neue Videos clippen, YouTube planen.
 """
 
 from __future__ import annotations
@@ -50,8 +53,8 @@ from .transcript import lade_json3
 # --- Bewertungssystem ------------------------------------------------------
 from datetime import datetime
 
-from . import (calibrate, collect, experiments, hochladen, publish, report, store,
-               veroeffentlichen)
+from . import (beobachten, calibrate, collect, experiments, hochladen, publish, report,
+               store, veroeffentlichen)
 from .forecast import Merkmale, prognostiziere
 from .scoring import konfiguration
 
@@ -633,6 +636,19 @@ def cmd_veroeffentliche(args: argparse.Namespace) -> None:
         print("\nAlles hochgeladen.")
 
 
+def cmd_beobachte(args: argparse.Namespace) -> None:
+    if args.aktion == "status":
+        beobachten.status()
+    elif args.aktion == "dienst-an":
+        pfad = beobachten.installiere_dienst()
+        print(f"Dienst laeuft: {pfad}\nProtokoll: {beobachten.ordner() / 'beobachter.log'}")
+    elif args.aktion == "dienst-aus":
+        beobachten.entferne_dienst()
+        print("Dienst entfernt.")
+    else:
+        beobachten.durchgang(probe=args.probe, nur_video=args.video)
+
+
 def cmd_prognose(args: argparse.Namespace) -> None:
     postzeit = datetime.fromisoformat(args.postzeit) if args.postzeit else None
     historie = [(z.post["titel"], z.bewertung.score)
@@ -915,6 +931,16 @@ def main() -> None:
     ve.add_argument("--ab-tag", help="YouTube fruehestens an diesem Tag, JJJJ-MM-TT")
     ve.add_argument("--probe", action="store_true", help="nur den Plan zeigen")
     ve.set_defaults(func=cmd_veroeffentliche)
+
+    bo = sub.add_parser("beobachte",
+                        help="Kanaele beobachten: neue Videos clippen, YouTube planen")
+    bo.add_argument("aktion", nargs="?", default="lauf",
+                    choices=("lauf", "status", "dienst-an", "dienst-aus"),
+                    help="lauf: ein Durchgang (Standard, so ruft ihn der Dienst)")
+    bo.add_argument("--probe", action="store_true",
+                    help="nur Feeds abrufen und zeigen, was offen ist")
+    bo.add_argument("--video", help="nur dieses offene Video bearbeiten")
+    bo.set_defaults(func=cmd_beobachte)
 
     b = sub.add_parser("bewerte", help="Rangliste, Muster, Luecken")
     b.add_argument("--fenster", type=float)

@@ -1,0 +1,26 @@
+# Kanaele, die `clip beobachte` verfolgt. Oeffentliche Profile, deshalb im Repo.
+#
+# Alle Kanaele haben dem Clippen ihres Contents zugestimmt (Auskunft des
+# Nutzers vom 2026-10-21). Ein neuer Kanal braucht nur handle und channel_id;
+# die ID steht im Seitenquelltext unter <link rel="canonical">.
+#
+# Beim ersten Lauf eines Kanals wird nichts geclippt: Alles, was dann schon im
+# Feed steht, gilt als gesehen. Verarbeitet wird nur, was danach erscheint.
+
+kanaele:
+  - handle: CoachLimTTV
+    channel_id: UCB62iJ-rz1Z2v0PyGh_W-Zg
+  - handle: CoachlimHighlight
+    channel_id: UC8w3YXGoTLtac6Oe1JJjl_Q
+  - handle: marliOrdneryt
+    channel_id: UCnSILFeIEKSZLuOpjtS2POQ
+  - handle: Rohaze
+    channel_id: UC-0VS3EMstuxc6q54jsAhNw
+  - handle: Lattensep
+    channel_id: UC7E_mZfYy4IEsnNZFczopOg
+  - handle: papaplatte
+    channel_id: UCDmbhGe7-wC1a55l5ZYAZJw
+  - handle: PapaplatteGaming
+    channel_id: UCxdaFKaMlRHtVkBeGygsYTw
+  - handle: MertAbiReacts
+    channel_id: UChFN8_C7yDdmUHJZVRQRAGQ

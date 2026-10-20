@@ -246,6 +246,26 @@ TikTok-Einschränkung: Solange die App kein Audit bestanden hat, ist jeder
 Direct Post `SELF_ONLY`. `--tiktok-modus entwurf` legt das Video stattdessen
 in den Entwürfen der TikTok-App ab, dort tippst du auf Posten.
 
+## Kanäle beobachten (Automatik)
+
+`clip beobachte` verfolgt die Kanäle aus `config/kanaele.yaml` und clippt jedes
+neue Video ohne Zutun: RSS-Feed → `yt-dlp` → ein `claude -p`-Lauf nach
+`config/automat_auftrag.md` → YouTube öffentlich ins Stundenraster. TikTok
+bekommt nur eine Mitteilung; die Entwürfe gehen nach Durchsicht mit
+`clip veroeffentliche <lauf> --nur tiktok` raus. Ablauf und Gründe stehen im
+Kopf von `src/videoclipper/beobachten.py`, Stellschrauben unter `[beobachten]`
+in `settings.toml`.
+
+```bash
+clip beobachte dienst-an     # LaunchAgent, alle 10 Minuten
+clip beobachte status        # Kanäle, Videos, wartende TikTok-Läufe
+clip beobachte --probe       # nur Feeds abrufen, nichts laden
+clip beobachte dienst-aus
+```
+
+Voraussetzung: `claude` ist im Terminal angemeldet (`claude`, dann `/login`).
+Protokoll: `~/videoclipper/beobachter/beobachter.log`.
+
 ## Ablauf
 
 ```bash

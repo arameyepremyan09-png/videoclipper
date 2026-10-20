@@ -79,3 +79,26 @@ bis = "22:00"
 abstand_minuten = 60
 # YouTube verlangt einen Termin in der Zukunft — Puffer fuer Upload und Verarbeitung.
 vorlauf_minuten = 15
+
+[beobachten]
+# Auftrag des Nutzers vom 2026-10-21: die Kanaele aus config/kanaele.yaml
+# dauerhaft beobachten. YouTube vollautomatisch und oeffentlich geplant
+# (Weg A), TikTok nur als Mitteilung (Weg B). Ablauf in beobachten.py.
+intervall_s = 600
+# Kuerzer ist ein Short oder ein Trailer, laenger dauert die ASR zu lange.
+min_dauer_s = 300
+max_dauer_s = 14400
+# YouTube erzeugt de-orig oft erst Stunden nach dem Upload. Bis dahin warten,
+# danach eigene ASR. Ein Video, das so lange nicht weiterkommt, wird aufgegeben.
+warte_auf_untertitel_h = 4.0
+aufgeben_nach_h = 48.0
+# Acht Kanaele liefern rund fuenf lange Videos am Tag, das Raster 13 Termine.
+# Drei Clips je Video und eine Obergrenze fuer den Vorlauf halten das aktuell.
+clips_pro_video = 3
+max_vorlauf_tage = 4
+min_frei_gb = 40
+# Der Agent (claude -p): Zeitlimit je Video, Versuche, Modell (leer = Standard).
+agent_timeout_min = 240
+agent_versuche = 2
+modell = ""
+asr_modell = "~/videoclipper/models/ggml-large-v3-turbo-q5_0.bin"
