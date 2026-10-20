@@ -117,3 +117,33 @@ def test_zuletzt_uebergeht_fremde_ordner(tmp_path):
     (tmp_path / "overlays").mkdir()
     lauf = ausgabe.neuer_lauf(tmp_path, datetime(2026, 9, 8, 9, 0, 0))
     assert ausgabe.zuletzt(tmp_path).wurzel == lauf.wurzel
+
+
+# --- Upload-Titel je Plattform (Regel 9, ab 2026-10-20) --------------------
+
+def test_titel_md_liegt_neben_den_clips_nicht_unter_json(tmp_path):
+    """Die Datei wird beim Hochladen gelesen, nicht von der Pipeline geparst.
+
+    ``json/`` ist der Datenvertrag, ``mp4/`` das Ergebnis — der Zettel mit den
+    Titeln gehoert daneben, nicht in einen der beiden.
+    """
+    lauf = ausgabe.neuer_lauf(tmp_path)
+    pfad = lauf.titel([("v_001", "Tiktok-Titel #paris", "YouTube-Titel")])
+    assert pfad.parent == lauf.wurzel
+    assert pfad.name == "titel.md"
+
+
+def test_titel_md_nennt_beide_plattformen_und_die_laenge(tmp_path):
+    """Die Zeichenzahl steht dabei, weil beide Plattformen frueh abschneiden."""
+    lauf = ausgabe.neuer_lauf(tmp_path)
+    text = lauf.titel([("v_001", "kurz", "laenger als kurz")]).read_text(encoding="utf-8")
+    assert "v_001" in text
+    assert "TikTok" in text and "YouTube Shorts" in text
+    assert "(4 Zeichen)" in text and "(16 Zeichen)" in text
+
+
+def test_jeder_clip_bekommt_einen_eigenen_abschnitt(tmp_path):
+    lauf = ausgabe.neuer_lauf(tmp_path)
+    text = lauf.titel([("a", "t1", "y1"), ("b", "t2", "y2")]).read_text(encoding="utf-8")
+    assert text.count("**TikTok**") == 2
+    assert text.index("## a") < text.index("## b")

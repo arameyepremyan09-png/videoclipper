@@ -15,6 +15,7 @@ from __future__ import annotations
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from . import follow
+from .editplan import Titel as EditplanTitel
 
 
 class Eintrag(BaseModel):
@@ -49,7 +50,11 @@ class CountdownPlan(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     clip_id: str
+    # Die Schrift im Bild.
     titel: str = Field(min_length=3, max_length=80)
+    # Die Titel fuer den Upload — Regel 9, auch fuer den Countdown. Nicht zu
+    # verwechseln mit ``titel`` darueber, das die Headline im Bild ist.
+    upload: EditplanTitel
     template: str = "TOP5_COUNTDOWN"
     sprache: str = "de"
     eintraege: list[Eintrag]

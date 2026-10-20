@@ -21,6 +21,10 @@ Bewertung (Stages 15-17), der Kreis zurueck zum Anfang:
 ``clip bewerte``     Rangliste, Muster, Luecken.
 ``clip ab``          A/B-Tests anlegen und auswerten.
 ``clip kalibriere``  Annahmen durch die eigenen Zahlen ersetzen.
+
+Veroeffentlichen (Stage 18):
+``clip verbinde``    YouTube/TikTok einmalig im Browser freigeben.
+``clip poste``       Clip hochladen und ins Register eintragen.
 """
 
 from __future__ import annotations
@@ -45,7 +49,7 @@ from .transcript import lade_json3
 # --- Bewertungssystem ------------------------------------------------------
 from datetime import datetime
 
-from . import calibrate, collect, experiments, publish, report, store
+from . import calibrate, collect, experiments, hochladen, publish, report, store
 from .forecast import Merkmale, prognostiziere
 from .scoring import konfiguration
 
@@ -175,6 +179,9 @@ def cmd_rendere(args: argparse.Namespace) -> None:
     # Korrekturregeln gelten je Video, gerendert werden mehrere Clips daraus.
     # Ausgewertet wird deshalb ueber den ganzen Lauf, nicht je Clip.
     kor_getroffen: set[int] = set()
+    # TikTok- und YouTube-Titel je Clip, Regel 9. Gesammelt ueber den ganzen
+    # Lauf und am Ende als ``titel.md`` neben die MP4s gelegt.
+    titel: list[tuple[str, str, str]] = []
 
     for roh in plaene:
         modus = roh.pop("modus")
@@ -344,12 +351,18 @@ def cmd_rendere(args: argparse.Namespace) -> None:
         print(f"      QC: {b.dauer:.2f}s {b.breite}x{b.hoehe} {marke}"
               + (f"  {'; '.join(b.hinweise)}" if b.hinweise else ""))
 
+        print(f"      TikTok:  {plan.titel.tiktok}")
+        print(f"      YouTube: {plan.titel.youtube}")
+        titel.append((plan.clip_id, plan.titel.tiktok, plan.titel.youtube))
+
         lauf.editplan(plan.clip_id).write_text(
             plan.model_dump_json(indent=2), encoding="utf-8")
 
     for m in untertitel.ungenutzte(args.video_id, kor_getroffen):
         print(f"  ! {m}")
+    pfad = lauf.titel(titel)
     print(f"\n{len(plaene)} Clips in {lauf.mp4}")
+    print(f"Titel fuer den Upload: {pfad}")
 
 
 def _historie() -> list[tuple[str, float]]:
@@ -477,6 +490,11 @@ def cmd_countdown(args: argparse.Namespace) -> None:
           + (f"  {'; '.join(b.hinweise)}" if b.hinweise else ""))
     (lauf.json / f"{plan.clip_id}.countdown.json").write_text(
         plan.model_dump_json(indent=2), encoding="utf-8")
+    # Regel 9 gilt auch fuer den Countdown.
+    print(f"   TikTok:  {plan.upload.tiktok}")
+    print(f"   YouTube: {plan.upload.youtube}")
+    print(f"   Titel fuer den Upload: "
+          f"{lauf.titel([(plan.clip_id, plan.upload.tiktok, plan.upload.youtube)])}")
     print(f"   {ziel}")
 
 
@@ -521,6 +539,69 @@ def cmd_registriere(args: argparse.Namespace) -> None:
     zusatz = f"  Experiment {p['experiment']} / Arm {p['variante']}" \
         if p.get("experiment") else ""
     print(f"{p['post_id']} eingetragen{zusatz}")
+
+
+def cmd_verbinde(args: argparse.Namespace) -> None:
+    if args.plattform == "status":
+        for p, ok in hochladen.verbunden().items():
+            print(f"{p:8} {'verbunden' if ok else 'NICHT verbunden'}")
+        return
+    try:
+        {"youtube": hochladen.verbinde_youtube,
+         "tiktok": hochladen.verbinde_tiktok}[args.plattform]()
+    except hochladen.HochladeFehler as e:
+        raise SystemExit(f"Fehler: {e}")
+    print(f"{args.plattform}: verbunden.")
+
+
+def _dauer_datei(datei: Path) -> float | None:
+    import subprocess
+    try:
+        r = subprocess.run(
+            ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+             "-of", "csv=p=0", str(datei)], capture_output=True, text=True, check=True)
+        return round(float(r.stdout.strip()), 2)
+    except (OSError, subprocess.CalledProcessError, ValueError):
+        return None
+
+
+def cmd_poste(args: argparse.Namespace) -> None:
+    datei = Path(args.datei).expanduser()
+    if not datei.is_file():
+        raise SystemExit(f"Datei nicht gefunden: {datei}")
+    dauer = _dauer_datei(datei)
+    fehler = 0
+    for plattform in args.auf:
+        try:
+            if plattform == "youtube":
+                r = hochladen.lade_youtube_hoch(
+                    datei, args.titel, args.beschreibung or "", args.tag,
+                    args.sichtbarkeit, args.zeit)
+                url = r["url"]
+            else:
+                r = hochladen.poste_tiktok(
+                    datei, args.titel, args.tiktok_modus, args.sichtbarkeit)
+                post_id = (r.get("publicaly_available_post_id") or [None])[0]
+                url = (f"https://www.tiktok.com/@haribo.030.clips/video/{post_id}"
+                       if post_id else None)
+        except hochladen.HochladeFehler as e:
+            print(f"{plattform}: FEHLER — {e}")
+            fehler += 1
+            continue
+
+        if url is None:
+            print(f"{plattform}: hochgeladen ({r.get('status')}), publish_id "
+                  f"{r['publish_id']}. Nach dem Veroeffentlichen in der App mit "
+                  f"`clip registriere` eintragen.")
+        elif args.ohne_register:
+            print(f"{plattform}: {url}")
+        else:
+            p = publish.registriere(
+                plattform, url, clip_id=args.clip_id, titel=args.titel, dauer=dauer,
+                experiment=args.experiment, variante=args.variante)
+            print(f"{plattform}: {url}  ->  {p['post_id']} eingetragen")
+    if fehler:
+        raise SystemExit(1)
 
 
 def cmd_prognose(args: argparse.Namespace) -> None:
@@ -775,6 +856,28 @@ def main() -> None:
     v.add_argument("--postzeit", help="ISO-Zeitstempel der geplanten Veroeffentlichung")
     v.add_argument("--hashtag", action="append")
     v.set_defaults(func=cmd_prognose)
+
+    vb = sub.add_parser("verbinde", help="YouTube/TikTok einmalig freigeben")
+    vb.add_argument("plattform", choices=[*hochladen.PLATTFORMEN, "status"])
+    vb.set_defaults(func=cmd_verbinde)
+
+    po = sub.add_parser("poste", help="Clip hochladen und registrieren")
+    po.add_argument("datei")
+    po.add_argument("--titel", required=True)
+    po.add_argument("--beschreibung")
+    po.add_argument("--tag", action="append", help="YouTube-Tag, mehrfach moeglich")
+    po.add_argument("--auf", nargs="+", choices=hochladen.PLATTFORMEN,
+                    default=list(hochladen.PLATTFORMEN))
+    po.add_argument("--sichtbarkeit", choices=["privat", "freunde", "oeffentlich"],
+                    default="privat", help="Standard privat — Veroeffentlichen ist Absicht")
+    po.add_argument("--tiktok-modus", choices=["entwurf", "direkt"], default="entwurf")
+    po.add_argument("--zeit", help="YouTube: Freigabe planen, ISO 8601 mit Zeitzone, "
+                                   "z.B. 2026-10-21T18:00:00+02:00")
+    po.add_argument("--clip-id")
+    po.add_argument("--experiment")
+    po.add_argument("--variante")
+    po.add_argument("--ohne-register", action="store_true")
+    po.set_defaults(func=cmd_poste)
 
     b = sub.add_parser("bewerte", help="Rangliste, Muster, Luecken")
     b.add_argument("--fenster", type=float)

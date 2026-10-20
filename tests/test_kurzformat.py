@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import pytest
 from videoclipper import follow, kurzformat, layout, render
+from pydantic import ValidationError
 from videoclipper.editplan import Aufgeloest, EditPlan, Pointe
 
 
@@ -171,6 +172,7 @@ def test_follow_auf_der_pointe_wird_gemeldet():
 def _plan(tmpl, panels, segs, punch) -> EditPlan:
     plan = EditPlan.model_validate({
         "clip_id": "t", "quelle": {"video_id": "v", "kanal": "k", "orig_start": 0.0},
+        "titel": {"tiktok": "Testtitel fuer TikTok", "youtube": "Testtitel fuer Shorts"},
         "tier": "B", "profil": "COACHLIM_DUO", "template": "DUO_STACK",
         "template_grund": "-",
         "timing": {"start": segs[-1]["start"], "ende": segs[-1]["ende"]},
@@ -204,3 +206,59 @@ def test_einzelpfad_bleibt_ein_eingang(tmpl, panels):
     g = render.filtergraph(_plan(tmpl, panels, s, punch), tmpl)
     assert "concat" not in g and "[1:v]crop" not in g
     assert "vstack=inputs=2[buehne]" in g and "[1:v]overlay" in g
+
+
+# --- Upload-Titel (Regel 9, ab 2026-10-20) ---------------------------------
+
+def _roh(**ueber):
+    basis = {
+        "clip_id": "v_001",
+        "titel": {"tiktok": "TikTok-Titel", "youtube": "Shorts-Titel"},
+        "quelle": {"video_id": "v", "kanal": "k", "orig_start": 1.0},
+        "tier": "B", "profil": "P", "template": "T", "template_grund": "g",
+        "timing": {"start": 1.0, "ende": 30.0},
+        "headline": "EINE HEADLINE 🥀💀",
+        "score": {"overall": 0.8, "reaktion": 0.8, "klarheit": 0.8, "payoff": 0.8},
+        "grund": "weil",
+    }
+    basis.update(ueber)
+    return basis
+
+
+def test_plan_ohne_titel_wird_nicht_geladen():
+    """Regel 9 verlangt beide Titel fuer JEDES Video.
+
+    Pflichtfeld im Vertrag statt Pruefung beim Ausliefern: Ein Plan ohne Titel
+    soll beim Laden auffallen, nicht wenn der Clip schon gerendert ist.
+    """
+    ohne = _roh()
+    del ohne["titel"]
+    with pytest.raises(ValidationError):
+        EditPlan.model_validate(ohne)
+
+
+def test_beide_plattformen_muessen_dastehen():
+    for fehlt in ("tiktok", "youtube"):
+        titel = {"tiktok": "a" * 10, "youtube": "b" * 10}
+        del titel[fehlt]
+        with pytest.raises(ValidationError):
+            EditPlan.model_validate(_roh(titel=titel))
+
+
+def test_zu_langer_tiktok_titel_wird_abgelehnt():
+    """TikTok blendet die Bildunterschrift frueh ab; 150 Zeichen ist die Schranke."""
+    with pytest.raises(ValidationError):
+        EditPlan.model_validate(_roh(
+            titel={"tiktok": "x" * 151, "youtube": "ok so"}))
+
+
+def test_zu_langer_youtube_titel_wird_abgelehnt():
+    with pytest.raises(ValidationError):
+        EditPlan.model_validate(_roh(
+            titel={"tiktok": "ok so", "youtube": "y" * 101}))
+
+
+def test_titel_bleibt_einzeilig():
+    with pytest.raises(ValidationError):
+        EditPlan.model_validate(_roh(
+            titel={"tiktok": "zwei\nzeilen", "youtube": "ok so"}))

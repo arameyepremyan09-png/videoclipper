@@ -32,6 +32,38 @@ class Zeit(BaseModel):
         return self
 
 
+class Titel(BaseModel):
+    """Die Titel, unter denen der Clip hochgeladen wird — je Plattform einer.
+
+    Auftrag des Nutzers vom 2026-10-20: "dass immer eine Tiktok und eine
+    Youtube Shorts Titel mir gegeben wird fuer jedes Video."
+
+    WARUM IM PLAN UND NICHT IM CODE: Leitprinzip 1 — die AI entscheidet WAS,
+    der Code WIE. Ein Titel ist Text, den jemand liest; ihn aus der Headline
+    abzuleiten waere geraten. Der Code traegt ihn nur durch und legt ihn
+    neben den fertigen Clip.
+
+    WARUM ZWEI: Die beiden Plattformen lesen verschieden. TikTok zeigt den
+    Text als Bildunterschrift unter dem Video, mit Hashtags, und schneidet
+    frueh ab. YouTube Shorts zeigt ihn als Titel ueber dem Kanal, ohne
+    Hashtags im Lesefluss und mit mehr Platz. Derselbe String auf beiden ist
+    auf einer der beiden falsch.
+    """
+    model_config = ConfigDict(extra="forbid")
+    # TikTok blendet die Bildunterschrift nach rund 100 Zeichen ab; danach
+    # steht "mehr". Hashtags zaehlen mit.
+    tiktok: str = Field(min_length=3, max_length=150)
+    # YouTube schneidet den Titel in der Shorts-Ansicht bei rund 60 Zeichen.
+    youtube: str = Field(min_length=3, max_length=100)
+
+    @model_validator(mode="after")
+    def _einzeilig(self):
+        for feld in ("tiktok", "youtube"):
+            if "\n" in getattr(self, feld):
+                raise ValueError(f"{feld}-Titel ist einzeilig")
+        return self
+
+
 class Score(BaseModel):
     model_config = ConfigDict(extra="forbid")
     overall: float = Field(ge=0, le=1)
@@ -102,6 +134,9 @@ class EditPlan(BaseModel):
 
     timing: Zeit
     headline: str = Field(min_length=3, max_length=60)
+    # Pflicht seit dem 2026-10-20 (SCHNITTREGELN Regel 9). Kein Default: Ein
+    # Plan ohne Titel soll beim Laden auffallen, nicht erst beim Ausliefern.
+    titel: Titel
     sprache: str = "de"
     score: Score
     grund: str

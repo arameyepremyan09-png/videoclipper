@@ -23,7 +23,8 @@ def _plan(**kw):
          "start": 10.0 * p, "dauer": 5.0}
         for p in range(1, 6)
     ]
-    daten = {"clip_id": "t", "titel": "Titel", "eintraege": eintraege}
+    daten = {"clip_id": "t", "titel": "Titel", "eintraege": eintraege,
+         "upload": {"tiktok": "TikTok", "youtube": "Shorts"}}
     daten.update(kw)
     return countdown.CountdownPlan.model_validate(daten)
 
@@ -64,6 +65,7 @@ def test_luecke_in_den_plaetzen_wird_abgewiesen():
     with pytest.raises(ValueError, match="lueckenlos"):
         countdown.CountdownPlan.model_validate({
             "clip_id": "t", "titel": "Titel",
+            "upload": {"tiktok": "Testtitel fuer TikTok", "youtube": "Testtitel fuer Shorts"},
             "eintraege": [
                 {"platz": 1, "text": "a", "video_id": "v", "start": 0, "dauer": 1},
                 {"platz": 3, "text": "b", "video_id": "v", "start": 0, "dauer": 1},
@@ -73,6 +75,7 @@ def test_luecke_in_den_plaetzen_wird_abgewiesen():
 def test_falsche_anzahl_plaetze_wird_abgewiesen(tmpl):
     plan = countdown.CountdownPlan.model_validate({
         "clip_id": "t", "titel": "Titel",
+        "upload": {"tiktok": "Testtitel fuer TikTok", "youtube": "Testtitel fuer Shorts"},
         "eintraege": [
             {"platz": 1, "text": "a", "video_id": "v", "start": 0, "dauer": 1},
             {"platz": 2, "text": "b", "video_id": "v", "start": 0, "dauer": 1},
@@ -214,7 +217,8 @@ def test_segmentgrenzen_liegen_auf_ganzen_ausgabebildern(tmpl):
                   "dauer": d} for p, d in zip(range(5, 0, -1),
                                               (12.083, 14.433, 6.817, 10.117, 13.383))]
     plan = countdown.CountdownPlan.model_validate(
-        {"clip_id": "t", "titel": "Titel", "eintraege": eintraege})
+        {"clip_id": "t", "titel": "Titel", "eintraege": eintraege,
+         "upload": {"tiktok": "TikTok", "youtube": "Shorts"}})
     r = countdown.loese_auf(plan, tmpl).aufgeloest
     bild = 0
     for s in r.segmente:

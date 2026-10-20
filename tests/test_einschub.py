@@ -119,6 +119,7 @@ def test_profil_ohne_einschub_bricht_ab(tmpl):
 def _plan(prof, tmpl, einschuebe) -> EditPlan:
     plan = EditPlan.model_validate({
         "clip_id": "t_001",
+        "titel": {"tiktok": "Testtitel fuer TikTok", "youtube": "Testtitel fuer Shorts"},
         "quelle": {"video_id": "t", "kanal": "k", "orig_start": 100.0},
         "tier": "B", "profil": prof["name"], "template": tmpl["name"],
         "template_grund": "Test", "timing": {"start": 100.0, "ende": 130.0},

@@ -41,6 +41,9 @@ Punkt fuer Punkt abgearbeitet, nicht nur bei neuem Material. Kurzfassung:
    geduckt. Fehlt der Ordner, bricht der Lauf ab.
 8. **Top 5**: das Videofeld auf voller Breite (`[0, 830, 1080, 608]`), Headline
    und Liste kleiner als in den Referenzen — "man muss das Video sehen".
+9. **Je Video ein TikTok- und ein YouTube-Titel**, Pflichtfelder im Plan
+   (`EditPlan.titel`, `CountdownPlan.upload`), ausgeliefert als `titel.md`
+   in der Wurzel des Laufes.
 
 Der Anlass ist gemessen und steht in der Datei: Von neun ausgelieferten Clips
 wurden drei abgelehnt, und **die abgelehnten hatten die hoeheren AI-Scores**

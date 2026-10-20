@@ -195,6 +195,44 @@ Drei Eigenschaften, die das System von einer bloßen Zahlenanzeige unterscheiden
 Die Gewichte in `config/scoring.yaml` sind zunächst **Annahmen** und dort als
 solche markiert. `clip kalibriere` ersetzt sie durch die eigenen Perzentile.
 
+## Hochladen — YouTube und TikTok
+
+`clip poste` lädt einen fertigen Clip hoch und trägt ihn ins Register ein.
+Zugangsdaten liegen **außerhalb des Repos** in `~/.config/videoclipper/`.
+
+**YouTube** (Kanal @hariboclips)
+
+1. console.cloud.google.com → neues Projekt → *YouTube Data API v3* aktivieren.
+2. *OAuth-Zustimmungsbildschirm*: extern, dich selbst als Testnutzer eintragen.
+   Im Testmodus laufen Refresh-Token nach 7 Tagen ab — Status auf
+   „In Produktion“ stellen, dann halten sie.
+3. *Anmeldedaten* → OAuth-Client-ID → Typ **Desktop-App** → JSON herunterladen
+   als `~/.config/videoclipper/youtube_client.json`.
+4. `clip verbinde youtube`
+
+**TikTok** (@haribo.030.clips)
+
+1. developers.tiktok.com → App anlegen → Produkte *Login Kit* und
+   *Content Posting API* (Direct Post) hinzufügen, Scopes `user.info.basic`,
+   `video.upload`, `video.publish`.
+2. Redirect-URI eintragen: `http://127.0.0.1:8765/callback/`
+3. `~/.config/videoclipper/tiktok_app.json`:
+   `{"client_key": "...", "client_secret": "..."}`
+4. `clip verbinde tiktok`
+
+```bash
+clip verbinde status
+clip poste clips/mein_clip.mp4 --titel "..." --auf youtube --sichtbarkeit oeffentlich
+clip poste clips/mein_clip.mp4 --titel "..." --auf youtube --zeit 2026-10-21T18:00:00+02:00
+clip poste clips/mein_clip.mp4 --titel "..." --auf tiktok --tiktok-modus entwurf
+```
+
+Standard ist **privat**; öffentlich nur mit `--sichtbarkeit oeffentlich`.
+
+TikTok-Einschränkung: Solange die App kein Audit bestanden hat, ist jeder
+Direct Post `SELF_ONLY`. `--tiktok-modus entwurf` legt das Video stattdessen
+in den Entwürfen der TikTok-App ab, dort tippst du auf Posten.
+
 ## Ablauf
 
 ```bash

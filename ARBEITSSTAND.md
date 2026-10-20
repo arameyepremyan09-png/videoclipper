@@ -21,11 +21,17 @@ sofort gueltig:
    umgebaut: `[0, 830, 1080, 608]` statt `[86, 900, 908, 908]`, Headline 44
    statt 62, Liste 34 ab y=300 statt 50 ab y=480.
 
-**Noch nicht nachgezogen:** Die acht Clips aus x0XeuK8Ejys stammen von vor
-diesen Regeln — sie sind 34-83 s lang und haben keinen Soundtrack. Wer sie
-neu will, muss die Fenster kuerzen (nicht nur neu rendern): Bei 20-30 s
-Gesamtdauer bleibt neben einem 5-s-Teaser nur rund 20 s Geschichte, und
-Regel 1a gilt weiter.
+4. **Je Video ein TikTok- und ein YouTube-Titel** (Regel 9). Pflichtfelder
+   im Datenvertrag: `EditPlan.titel`, `CountdownPlan.upload` — ein Plan ohne
+   sie laedt nicht. Ausgeliefert als `titel.md` in der Wurzel des Laufes,
+   neben `mp4/`. Zwei verschiedene Titel, nicht derselbe zweimal: TikTok
+   blendet die Bildunterschrift nach rund 100 Zeichen ab und nimmt Hashtags,
+   YouTube Shorts zeigt rund 60 Zeichen als Titel ohne Hashtags im Lesefluss.
+
+**Soundtrackpegel:** drei Werte an einem Tag — -20 dB (unhoerbar), -12 dB,
+zuletzt -5 dB auf Ansage des Nutzers. Die Stimme steht in allen drei Fassungen
+gleich bei -11.4 dB, das Ducking haelt sie frei. Was sich aendert, ist die
+Dynamik zwischen Stimme und Pause: 16.4 dB ohne Musik, 9.1 dB bei -5.
 
 ## Offene Auftraege
 

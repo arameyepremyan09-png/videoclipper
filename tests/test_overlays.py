@@ -365,6 +365,7 @@ def test_countdown_bekommt_die_aufforderung_aber_keine_untertitel():
     t = layout.template("TOP5_COUNTDOWN")
     plan = countdown.CountdownPlan.model_validate({
         "clip_id": "t", "titel": "Titel",
+        "upload": {"tiktok": "Testtitel fuer TikTok", "youtube": "Testtitel fuer Shorts"},
         "eintraege": [{"platz": p, "text": f"P{p}", "video_id": f"v{p}",
                        "start": 0.0, "dauer": 9.0} for p in range(1, 6)]})
     r = countdown.loese_auf(plan, t).aufgeloest

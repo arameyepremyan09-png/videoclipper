@@ -331,3 +331,29 @@ Flaeche, die ein 16:9-Bild auf 1080 Breite einnehmen kann. Ein hoeheres Feld
 braeuchte seitlichen Beschnitt und kostet bei Gespraechsformaten die Leute am
 Rand (Regel 2, Fall 2). Wenn das Bild noch groesser werden soll, ist das die
 Entscheidung, die ansteht.
+
+---
+
+## Regel 9 — Je Video ein TikTok- und ein YouTube-Titel (ab 2026-10-20)
+
+*"dass immer eine Tiktok und eine Youtube Shorts Titel mir gegeben wird fuer
+jedes Video."*
+
+Gilt fuer jeden Clip und fuer den Countdown.
+
+- **Zwei verschiedene Titel, nicht derselbe zweimal.** Die Plattformen lesen
+  verschieden: TikTok zeigt den Text als Bildunterschrift unter dem Video, mit
+  Hashtags, und blendet nach rund 100 Zeichen ab. YouTube Shorts zeigt ihn als
+  Titel ueber dem Kanal, ohne Hashtags im Lesefluss und mit weniger Platz
+  (rund 60 Zeichen sichtbar). Derselbe String ist auf einer der beiden falsch.
+- **Nicht die Headline.** Die Headline steht IM Bild und folgt Regel 3 (kurz,
+  keine Satzzeichen, Emoji-Paar). Ein Upload-Titel wird daneben gelesen, darf
+  Satzzeichen haben und soll die Headline ergaenzen, nicht wiederholen.
+- **Sie stehen im Plan, nicht im Code** (Leitprinzip 1: die AI entscheidet
+  WAS). `EditPlan.titel` und `CountdownPlan.upload` sind Pflichtfelder — ein
+  Plan ohne sie laedt nicht. Das faellt damit beim Schreiben des Plans auf und
+  nicht, wenn der Clip schon gerendert ist.
+- **Ausgeliefert wird `titel.md`** in der Wurzel des Laufes, neben `mp4/`. Je
+  Clip beide Titel mit ihrer Zeichenzahl, zum Kopieren. Nicht unter `json/`:
+  Das ist der Datenvertrag, der Zettel zum Hochladen gehoert daneben.
+

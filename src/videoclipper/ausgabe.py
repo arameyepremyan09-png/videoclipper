@@ -87,6 +87,28 @@ class Lauf:
     def editplan(self, clip_id: str) -> Path:
         return self.json / f"{clip_id}.editplan.json"
 
+    def titel(self, eintraege: list[tuple[str, str, str]]) -> Path:
+        """Schreibt ``titel.md`` neben die Clips — ein TikTok- und ein YouTube-Titel je Video.
+
+        Auftrag des Nutzers vom 2026-10-20 (SCHNITTREGELN Regel 9). Die Datei
+        liegt in der WURZEL des Laufes, nicht unter ``json/``: Sie ist kein
+        Zwischenstand und kein Datenvertrag, sondern das, was beim Hochladen
+        offen danebenliegt. Markdown statt JSON aus demselben Grund — sie wird
+        gelesen und kopiert, nicht geparst.
+
+        ``eintraege``: (clip_id, tiktok, youtube), in Renderreihenfolge.
+        """
+        zeilen = [f"# Titel fuer {self.name}", ""]
+        for clip_id, tiktok, youtube in eintraege:
+            zeilen += [f"## {clip_id}", "",
+                       f"**TikTok**  ({len(tiktok)} Zeichen)", "",
+                       f"    {tiktok}", "",
+                       f"**YouTube Shorts**  ({len(youtube)} Zeichen)", "",
+                       f"    {youtube}", ""]
+        pfad = self.wurzel / "titel.md"
+        pfad.write_text("\n".join(zeilen), encoding="utf-8")
+        return pfad
+
     def notiere(self, **felder: Any) -> Path:
         """Schreibt ``json/lauf.json`` — was diesen Lauf ausgeloest hat.
 
