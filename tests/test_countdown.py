@@ -131,3 +131,82 @@ def test_filtergraph_hat_je_stueck_der_klickszene_einen_eingang(tmpl):
     for j in range(len(stuecke)):
         assert f"[{erster + j}:v]" in graph, j
     assert f"[{erster + len(stuecke)}:v]" not in graph
+
+
+# --- Liste mit Emojis (TOP5_HALLOFCLIPS, 2026-09-16) -----------------------
+
+def _alpha_spalten(pfad, y, halbe_hoehe=40):
+    import numpy as np
+    from PIL import Image
+    a = np.asarray(Image.open(pfad))[..., 3]
+    return np.flatnonzero(a[int(y) - halbe_hoehe:int(y) + halbe_hoehe].max(axis=0) > 0)
+
+
+def test_beschriftung_mit_emoji_steht_als_gruppe_mittig(tmp_path):
+    """Die Referenzen setzen Text und Emoji zusammen mittig, nicht den Text allein."""
+    from videoclipper import liste
+    t = layout.template("TOP5_HALLOFCLIPS")
+    conf = t["liste"]
+    pfad = liste.baue_zustand({5: "Chaya reiten 💀"}, t, tmp_path / "l.png")
+    y5 = conf["erste_zeile_y"] + 4 * conf["zeilenabstand"]
+    xs = _alpha_spalten(pfad, y5)
+    gruppe = xs[xs > conf["ziffer_x"] + 60]      # ohne die Ziffer
+    mitte = (gruppe.min() + gruppe.max()) / 2
+    assert abs(mitte - conf["text_x"]) < 12, mitte
+
+
+def test_emoji_ohne_png_bricht_ab_statt_kaestchen_zu_rendern(tmp_path):
+    """😭 steht in den Referenzen, ein PNG dafuer gibt es nicht."""
+    from videoclipper import liste
+    t = layout.template("TOP5_HALLOFCLIPS")
+    with pytest.raises(ValueError, match="Kein Emoji-PNG"):
+        liste.baue_zustand({5: "Holy stutter 😭"}, t, tmp_path / "l.png")
+
+
+def test_liste_ohne_emoji_bleibt_wo_sie_war(tmp_path):
+    """TOP5_COUNTDOWN hat keine Emojis — die Gruppenmitte darf dort nichts verschieben."""
+    from videoclipper import liste
+    t = layout.template("TOP5_COUNTDOWN")
+    conf = t["liste"]
+    pfad = liste.baue_zustand({5: "Platz fuenf"}, t, tmp_path / "l.png")
+    y5 = conf["erste_zeile_y"] + 4 * conf["zeilenabstand"]
+    xs = _alpha_spalten(pfad, y5)
+    text = xs[xs > conf["ziffer_x"] + 60]
+    assert abs((text.min() + text.max()) / 2 - conf["text_x"]) < 3
+
+
+def test_hallofclips_meldet_das_videofeld_in_der_ui_zone():
+    """Bewusst uebernommen: die Referenzen laufen bis y=1808. Gemeldet wird es trotzdem."""
+    hinweise = countdown.sicherheitszone_pruefen(layout.template("TOP5_HALLOFCLIPS"))
+    assert len(hinweise) == 1 and "y=1808" in hinweise[0]
+
+
+# --- Bildgenaue Segmentgrenzen (2026-09-17) --------------------------------
+
+def test_segmentgrenzen_liegen_auf_ganzen_ausgabebildern(tmpl):
+    """Mit Dauern auf halben Bildern schaltete die Liste vor dem Schnitt um.
+
+    Gemessen an knossi_top5: Platz 1 stand 50 ms vor dem Bildwechsel in der
+    Liste, weil sich der Rest jeder Segmentdauer ueber vier Grenzen aufsummierte.
+    """
+    eintraege = [{"platz": p, "text": f"P{p}", "video_id": f"v{p}", "start": 0.117,
+                  "dauer": d} for p, d in zip(range(5, 0, -1),
+                                              (12.083, 14.433, 6.817, 10.117, 13.383))]
+    plan = countdown.CountdownPlan.model_validate(
+        {"clip_id": "t", "titel": "Titel", "eintraege": eintraege})
+    r = countdown.loese_auf(plan, tmpl).aufgeloest
+    bild = 0
+    for s in r.segmente:
+        assert s["ab"] == pytest.approx(bild / r.fps, abs=1e-3)
+        assert s["bilder"] <= s["dauer"] * r.fps + 1e-6
+        bild += s["bilder"]
+    assert r.dauer == pytest.approx(bild / r.fps, abs=1e-3)
+
+
+def test_renderer_schneidet_jedes_segment_auf_seine_bildzahl(tmpl):
+    from videoclipper import render
+    plan = countdown.loese_auf(_plan(), tmpl)
+    graph = render.filtergraph_countdown(plan, tmpl, -14.0)
+    for s in plan.aufgeloest.segmente:
+        assert f"trim=end_frame={s['bilder']}" in graph
+        assert f"atrim=end={s['bilder'] / plan.aufgeloest.fps:.6f}" in graph

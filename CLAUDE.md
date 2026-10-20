@@ -1584,6 +1584,135 @@ seine Schaerfe verloren. `CountdownPlan` steht deshalb daneben, mit derselben
 Trennung: Die AI fuellt `titel`, `text` und die Zeitfenster, alles unter
 `aufgeloest` rechnet der Code aus dem Template.
 
+### Nachtrag 2026-09-16: die Referenzen des Nutzers sehen anders aus
+
+Drei Top-5-Shorts vom Kanal HallOfClips, vom Nutzer geliefert mit dem Auftrag,
+die Momente darin zu **uebernehmen**, weil sie gut ankommen. Weitere folgen.
+Vermessen und gesichert mit `werkzeuge/top5_referenz.py`; das Verzeichnis
+liegt je Short in `data/referenz/top5/<id>.json`, die Momente lokal unter
+`<work>/referenz/top5/momente/`.
+
+| Short | Titel | Views | Like-Rate |
+|---|---|---|---|
+| uYAMGga5wr0 | Top 5 Coachlim Momente (Psychose) | 53.700 | 2,2 % |
+| c2UMW2I1lZ8 | Top 5 Knossi Momente (Psychose) | 151.600 | 1,4 % |
+| R8HNyeyCsWE | Top 5 Abu & Abdi Momente | 1.276.000 | 2,5 % |
+
+Alle drei sind pixelgleich aufgebaut, und **fast nichts davon deckt sich mit
+`TOP5_COUNTDOWN`**, das an `@phrai92` vermessen ist:
+
+| | HallOfClips (gemessen) | `TOP5_COUNTDOWN` |
+|---|---|---|
+| Videofeld | `[86,900,908,908]`, quadratisch, Blur derselben Quelle dahinter | `[60,812,960,916]` |
+| Headline | zwei Zeilen y=240..385, `#FAC102` (Median aus ~35000 Pixeln), kursiv, schwarzer Rand, `DIE BESTEN <X> MOMENTE (PSYCHOSE)` | `#01FC19`, y=255 |
+| Liste | Zeilen y=457..848, Abstand ~87; Ziffern linksbuendig x=141..180, Beschriftung mit Emoji mittig auf x≈540 | Abstand 89 ab 409, `ziffer_x` 170, `text_x` 560 |
+| Emoji | in der **Liste**, nicht in der Headline: 💀 😭 🙏🏽 🧀, manche Zeilen ohne | keins |
+| Momentlaengen | 8,1..16,3 s, gesamt 60,3..60,5 s (Tier B) | 8,5 / 9,5 / 7,5 / 11,0 / 12,2 s |
+| Untertitel, Follow | keine | Untertitel aus, Follow-Knopf auf dem Panel |
+
+Drei Befunde daraus, die ueber die Masse hinausgehen:
+
+1. **Der laengste Moment steht vorn.** Platz 5 ist in allen drei Shorts der
+   laengste (13,9 / 15,0 / 16,3 s). Das passt zu Regel 2b ("der lustigste
+   zuerst") und widerspricht der Aussage oben, die Segmente wuerden zum
+   Payoff hin laenger — die galt fuer `@phrai92`, nicht fuer den Hausstil.
+2. **Das bewaehrte Format hat keine Untertitel.** 1,28 Mio. Views ohne eine
+   Zeile Untertitel: Die Ausnahme in `TOP5_COUNTDOWN` ist damit nicht nur
+   technisch begruendet, sondern am Referenzmaterial belegt.
+3. **Die Emoji-Menge ist groesser als die von Regel 3.** Regel 3 gilt fuer
+   Hooks; die Listenbeschriftungen nutzen auch 😭 und 🧀. Das PNG-Verfahren
+   aus `headline.py` traegt nur die vier erlaubten — wer die Liste nachbaut,
+   braucht mehr Glyphen oder eine Entscheidung des Nutzers.
+
+Platz 5 steht ab Bild 0, jede weitere Zeile erscheint **mit dem harten Schnitt**
+zum naechsten Moment (an allen zwoelf Uebergaengen 0,03..0,17 s nach dem
+Schnitt, also im 0,1-s-Raster der Listenmessung).
+Innerhalb eines Moments bleiben die Schnitte der Quelle stehen, 0 bis 9 je
+Moment. Das Videofeld reicht bis y=1808 und damit in TikToks UI-Zone — bei
+YouTube Shorts unkritisch, fuer TikTok gilt die Zone weiter.
+
+**Shorts haben zwei Tonspuren.** YouTube bietet neben dem deutschen Original
+(`de-DE`) eine synchronisierte englische Spur an; Format 140 gibt es deshalb
+nur als `140-0` / `140-1`, und `-f 299+140` bricht mit "Requested format is
+not available" ab. Gewaehlt wird ueber `ba[language^=de][ext=m4a]`.
+
+Drei Fehler im eigenen Werkzeug, alle erst am Bild gesehen:
+
+- **Die staerkste Zeilenkante ist nicht die Panelkante.** Die Unterkante der
+  Platz-5-Zeile ist genauso scharf; der erste Lauf setzte das Panel auf
+  y=847 statt 900. Gemessen wird jetzt, wie weit die linke Panelkante
+  senkrecht reicht.
+- **Schnitte gegen den Median zu zaehlen ergab 195 in 8 s.** Die Quellen sind
+  30 fps im 60-fps-Short, jedes zweite Bild ist ein Duplikat mit Differenz 0.
+  Ein Schnitt ist eine einzelne Spitze gegen das Maximum ihrer Nachbarn.
+- **Zeitbasiert schneiden trifft die Grenze nicht.** `-ss ab -t dauer` nahm
+  bei 3 von 15 Momenten das erste Bild des naechsten mit, auf halbe Bilder
+  gelegte Raender verloren bei 10 von 15 eines. `trim` ueber Bildnummern
+  trifft alle 15 exakt (Bildzahl gegen Erwartung, erstes und letztes Bild am
+  Kontaktbogen).
+
+**Zu beobachten, nicht entschieden:** Ein uebernommener Moment liegt bereits
+auf der Plattform. Die Duplikatsdrosselung (Abschnitt Bewertungssystem) traf
+am 2026-09-04 genau so einen Fall mit 2 bzw. 4 Views. Ob ein neu
+zusammengestellter Countdown aus bekannten Momenten ebenso gedrosselt wird,
+zeigt erst der erste Post.
+
+### Der erste Countdown daraus: `abugoku_top5`, Template `TOP5_HALLOFCLIPS`
+
+Noch am selben Tag gebaut, Plan `data/plans/abugoku_top5.json`, 62,4 s.
+**Eigenes Template statt Umbau von `TOP5_COUNTDOWN`:** Dessen Masse sind an
+`@phrai92` gemessen und dort richtig, und seine Tests sichern Eigenschaften
+(Panel ueber der UI-Zone), die die HallOfClips-Referenzen bewusst nicht haben.
+
+Die Kategorie ist **AbuGoku** — die einzige, die sich aus den 15 Momenten
+ueber zwei Referenzen bilden laesst (vier aus R8HNyeyCsWE, "Abu hat
+Flashbacks" aus der Coachlim-Referenz). Ein Countdown aus nur einer Referenz
+waere deren Kopie. Deshalb steht der fremde Moment auf Platz 4: Mit der
+Originalreihenfolge liefen die ersten 30 s identisch zum Short mit 1,28 Mio.
+Views. "Wir muessen zusammenhalten" ist nicht dabei (Regel 1a: worauf sich
+der Satz bezieht, steht nicht im Moment).
+
+Nachgemessen am PNG, nicht am Template: Ziffernmitten 479/565/651/738/824 bei
+43 px Hoehe (Referenz identisch), Headlinezeilen 239..291 und 330..382 (Referenz
+240..292 / 332..383). Dafuer brauchte die Headline zwei neue Felder, beide mit
+Standardwert, der alle anderen Templates unveraendert laesst: `zeilen_faktor`
+(die Referenz setzt die Zeilen 91 px auseinander, 1,12 x Groesse ergab 69) und
+`neigung` (Anton hat keinen kursiven Schnitt, geschert wird je Zeile um ihre
+Mitte). Die Liste kann Emojis, als Gruppe mittig auf `text_x`, und bricht bei
+einem Emoji ohne PNG ab — 😭 steht in den Referenzen, `assets/emoji/` hat es nicht.
+
+**Der Follow-Knopf lag im ersten Render auf der Pointe.** Mittig unten im
+Videofeld sass er bei 23,7 s auf dem Kopf von Coach, der sich gerade vor Lachen
+kruemmt. Er steht jetzt links unten (`x: 200`). Das ist am Inhalt dieses Plans
+gemessen, nicht allgemein wahr: Bei jedem neuen Countdown das Follow-Fenster am
+gerenderten Clip ansehen. Lautheit je Moment nach `loudnorm`: -13,3 bis -14,8 LUFS.
+
+### Der zweite: `knossi_top5`, und die Liste lief dem Schnitt voraus
+
+Am 2026-09-17 aus den fuenf Knossi-Momenten derselben Referenz, 56,7 s. Der
+Nutzer gab dazu eine Regel aus (SCHNITTREGELN 2b): kuerzer duerfen die Momente
+sein, der Inhalt muss bleiben. Am 10-ms-Pegel waren 3,6 s zu holen, alle an den
+Raendern und alle in einer Pause: der Anlauf "Pass auf", die Ueberleitung "Und
+noch mal eine andere Frage", das "Ey, wirklich" vor dem Satz, und ein Ende, das
+statt mitten im Lachen in dessen Senke liegt. Die Reaktion der Frau
+("Uebertreib nicht") bleibt drin — sie ist die Pointe, nicht der Nachlauf.
+Gegengeprueft mit whisper.cpp ueber den fertigen Clip: **Whisper verschluckt am
+Dateianfang die ersten Woerter** ("Millionen hast du eigentlich verdient?"),
+mit 1,5 s Stille davor steht "Wie viele" wieder da. Ein fehlendes erstes Wort
+in der Abschrift ist also kein Beleg fuer einen Schnitt im Wort.
+
+**Dabei gefunden: Segmentgrenzen lagen auf halben Bildern.** `loese_auf`
+rechnete in Sekunden weiter, die Liste schaltet aber ueber `between(t,...)` am
+naechsten Bild und das Video am naechsten *ganzen* Bild — und der Rest jeder
+Dauer summierte sich ueber die Segmente auf. Gemessen ueber die Bilddifferenz
+im Videofeld: bei `knossi_top5` stand Platz 1 anderthalb Bilder (50 ms) vor
+dem Schnitt in der Liste, bei `abugoku_top5` ein halbes. Jetzt rechnet
+`loese_auf` in **Bildern** (abgerundet — endet ein Moment am Dateiende, gibt es
+das aufgerundete Bild nicht), der Graph schneidet jedes Segment mit
+`trim=end_frame` und `atrim` auf genau diese Zahl, und der Eingang bekommt ein
+Bild Reserve. Beide Countdowns treffen danach alle vier Grenzen auf 0 ms, und
+die Datei ist so lang wie der Plan (vorher 60-70 ms laenger).
+
 ## Monetarisierung
 
 Tier A ist alles über 63 Sekunden gerenderter Dauer (TikTok Creator Rewards verlangt

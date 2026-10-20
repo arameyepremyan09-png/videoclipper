@@ -66,7 +66,7 @@ def test_kein_template_laesst_die_drei_textebenen_kollidieren():
         t = layout.template(yaml.safe_load(pfad.read_text(encoding="utf-8"))["name"])
         cw, _ = t["canvas"]
         hc = t["headline"]
-        zh = int(hc["schriftgroesse"] * 1.12)
+        zh = int(hc["schriftgroesse"] * hc.get("zeilen_faktor", 1.12))
         halb = zh * hc.get("max_zeilen", 2) // 2
         mb = int(hc.get("max_breite", cw))
         headline = ((cw - mb) // 2, hc["y"] - halb, mb, 2 * halb)

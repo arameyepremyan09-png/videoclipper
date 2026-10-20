@@ -12,20 +12,49 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
+from .headline import EMOJI, EMOJI_ABSTAND, _emoji_bild, _zerlege
 from .headline import font as _font
 
 
-def _passend(text: str, conf: dict, zeichner: ImageDraw.ImageDraw
-             ) -> ImageFont.FreeTypeFont:
-    """Groesse so weit senken, bis die Zeile in die erlaubte Breite passt."""
+def _emoji_masse(conf: dict, groesse: int, anzahl: int) -> tuple[int, int, int]:
+    """(Kante, Luecke davor, Breite des ganzen Blocks) fuer ``anzahl`` Emojis.
+
+    In der Liste stehen Emojis groesser als in der Headline: In den
+    HallOfClips-Referenzen misst der Totenkopf 70 px gegen 43 px Ziffernhoehe.
+    """
+    if not anzahl:
+        return 0, 0, 0
+    kante = int(groesse * conf.get("emoji_faktor", 0.92))
+    luecke = int(kante * EMOJI_ABSTAND) + conf.get("rand_staerke", 8)
+    return kante, luecke, anzahl * (kante + luecke)
+
+
+def _pruefe_zeichen(text: str) -> None:
+    """Ein Emoji ohne PNG rendert Anton als leeres Kaestchen — lieber abbrechen.
+
+    Die Referenzen nutzen auch 😭 und 🧀; ``assets/emoji/`` traegt nur die vier
+    aus Regel 3. Das faellt sonst erst im fertigen Clip auf (CLAUDE.md,
+    "Anton hat keine Emoji-Glyphen").
+    """
+    fremd = sorted({z for z in text if ord(z) >= 0x2000 and z not in EMOJI
+                    and not 0xFE00 <= ord(z) <= 0xFE0F})
+    if fremd:
+        raise ValueError(f"Kein Emoji-PNG fuer {' '.join(fremd)} in {text!r} — "
+                         f"vorhanden: {' '.join(EMOJI)}")
+
+
+def _passend(text: str, anzahl_emoji: int, conf: dict,
+             zeichner: ImageDraw.ImageDraw) -> tuple[ImageFont.FreeTypeFont, int]:
+    """Groesse so weit senken, bis Zeile samt Emojis in die erlaubte Breite passt."""
     groesse = conf["schriftgroesse"]
     max_breite = conf.get("max_breite", 820)
     while groesse > 20:
         font = _font(conf, groesse)
-        if zeichner.textlength(text, font=font) <= max_breite:
-            return font
+        _, _, eb = _emoji_masse(conf, groesse, anzahl_emoji)
+        if zeichner.textlength(text, font=font) + eb <= max_breite:
+            return font, groesse
         groesse -= 2
-    return _font(conf, groesse)
+    return _font(conf, groesse), groesse
 
 
 def baue_zustand(sichtbar: dict[int, str], tmpl: dict, ziel: Path) -> Path:
@@ -56,11 +85,21 @@ def baue_zustand(sichtbar: dict[int, str], tmpl: dict, ziel: Path) -> Path:
         text = sichtbar.get(platz)
         if not text:
             continue
+        _pruefe_zeichen(text)
+        text, emojis = _zerlege(text)
         if versalien:
             text = text.upper()
-        font = _passend(text, conf, zeichner)
-        zeichner.text((conf["text_x"], y), text, font=font, fill=farbe,
+        font, groesse = _passend(text, len(emojis), conf, zeichner)
+        kante, luecke, eb = _emoji_masse(conf, groesse, len(emojis))
+        # Text und Emojis stehen als Gruppe mittig auf text_x, wie in den
+        # Referenzen; ohne Emojis ist das dieselbe Lage wie bisher.
+        mitte = conf["text_x"] - eb // 2
+        zeichner.text((mitte, y), text, font=font, fill=farbe,
                       stroke_width=rand, stroke_fill=rand_farbe, anchor="mm")
+        x = int(mitte + zeichner.textlength(text, font=font) / 2) + luecke
+        for code in emojis:
+            bild.alpha_composite(_emoji_bild(code, kante), (x, int(y - kante / 2)))
+            x += kante + luecke
 
     ziel.parent.mkdir(parents=True, exist_ok=True)
     bild.save(ziel)

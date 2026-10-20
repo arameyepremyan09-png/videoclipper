@@ -390,6 +390,10 @@ def _segment_kette(idx: int, seg: dict, panel: tuple[int, int, int, int],
     px, py, pw, ph = panel
     zone = f"crop={seg['quelle_box'][2]}:{seg['quelle_box'][3]}:" \
            f"{seg['quelle_box'][0]}:{seg['quelle_box'][1]}," if seg["quelle_box"] else ""
+    # Genau so viele Bilder, wie countdown.loese_auf dem Segment gibt — sonst
+    # laufen Liste und Schnitt auseinander. Der Eingang ist dafuer ein Bild
+    # laenger (rendere_countdown).
+    bilder = f",trim=end_frame={seg['bilder']},setpts=PTS-STARTPTS" if "bilder" in seg else ""
 
     return (
         # Hintergrund: eigene Quelle, formatfuellend, unscharf.
@@ -399,7 +403,7 @@ def _segment_kette(idx: int, seg: dict, panel: tuple[int, int, int, int],
         f"[{idx}:v]{zone}scale={pw}:{ph}:force_original_aspect_ratio=decrease:"
         f"force_divisible_by=2,setsar=1[fg{idx}];"
         f"[bg{idx}][fg{idx}]overlay={px}+({pw}-w)/2:{py}+({ph}-h)/2,"
-        f"fps={fps},format=yuv420p,setsar=1[seg{idx}]"
+        f"fps={fps}{bilder},format=yuv420p,setsar=1[seg{idx}]"
     )
 
 
@@ -412,8 +416,10 @@ def filtergraph_countdown(plan, tmpl: dict, lufs: float) -> str:
              for i, seg in enumerate(r.segmente)]
 
     # Ton der Segmente auf ein gemeinsames Format bringen, sonst weigert sich concat.
-    teile += [f"[{i}:a]aformat=sample_rates=48000:channel_layouts=stereo,"
-              f"asetpts=PTS-STARTPTS[sa{i}]" for i in range(n)]
+    teile += [f"[{i}:a]"
+              + (f"atrim=end={seg['bilder'] / r.fps:.6f}," if "bilder" in seg else "")
+              + f"aformat=sample_rates=48000:channel_layouts=stereo,"
+              f"asetpts=PTS-STARTPTS[sa{i}]" for i, seg in enumerate(r.segmente)]
 
     teile.append("".join(f"[seg{i}][sa{i}]" for i in range(n))
                  + f"concat=n={n}:v=1:a=1[cv][ca_roh]")
@@ -473,7 +479,8 @@ def rendere_countdown(plan, tmpl: dict, videos: dict[str, Path], ziel: Path,
         quelle = videos.get(seg["video_id"])
         if quelle is None:
             raise FileNotFoundError(f"Kein Video fuer {seg['video_id']}")
-        cmd += ["-ss", f"{seg['start']:.3f}", "-t", f"{seg['dauer']:.3f}",
+        # Ein Bild Reserve: ``trim`` im Graphen schneidet auf die Bildzahl.
+        cmd += ["-ss", f"{seg['start']:.3f}", "-t", f"{seg['dauer'] + 1 / r.fps:.3f}",
                 "-i", str(quelle)]
     cmd += ["-i", str(kopf_png)]
     for p in listen:

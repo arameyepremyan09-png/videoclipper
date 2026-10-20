@@ -133,6 +133,45 @@ Kandidaten, am Kontaktbogen und Transkript gesichtet:
 | 737-817 s | "Haettest du die Klaukuenste mal im Deutschunterricht eingesetzt, bisschen Rechtschreibung geklaut", zwei Jahre Bewaehrung, "vier ist weniger als fuenf" | [schreien] 807 |
 | 1558-1710 s | Bayerische Polizei: "Kann es sein, dass Sie gar keinen Fuehrerschein haben?", "mein Vater muss morgen arbeiten", Rock and Roll, Linkin Park, "ich mache jetzt 'The End' an, weil ich bin jetzt am Ende" - der Polizist lacht mit | [gelächter] 1569, 1644, 1670; Bild 1667-1699 |
 
+### Top-5-Countdown — erster Countdown gerendert, Rueckmeldung steht aus
+
+Auftraege vom 2026-09-16: Die Top-5-Shorts, die der Nutzer schickt, ansehen
+und die Momente darin sichern und uebernehmen; dann "Erstell einen Countdown
+aus den uebernommenen Momenten". Weitere Referenzen folgen, jede laeuft durch
+`werkzeuge/top5_referenz.py` (Beschriftungen danach von Hand aus
+`<id>.liste.png` in das JSON). Befunde: CLAUDE.md, Nachtraege 2026-09-16 im
+Abschnitt TOP5_COUNTDOWN; Auftrag: SCHNITTREGELN.md, Regel 2b.
+
+| Datei | Stand |
+|---|---|
+| `data/referenz/top5/{uYAMGga5wr0,c2UMW2I1lZ8,R8HNyeyCsWE}.json` | 15 Momente mit Grenzen, Beschriftung, Emoji, Transkript |
+| `~/videoclipper/referenz/top5/momente/` (lokal) | 15 MP4, nur Videofeld 908x908, bildgenau |
+| `config/templates/top5_hallofclips.yaml` | neu, nach den Referenzen vermessen; `TOP5_COUNTDOWN` bleibt unveraendert |
+| `data/plans/abugoku_top5.json` | "Die besten AbuGoku Momente", 5 Momente, 62,3 s |
+| `data/plans/knossi_top5.json` | "Die besten Knossi Momente", 5 Momente, 56,7 s, Raender nach Pegel gekuerzt |
+| Laeufe | `~/videoclipper/clips/2026-09-18_21-08-24` (AbuGoku) und `2026-09-17_13-05-09` (Knossi), Handy-Fassungen unter `handy/` |
+| ueberholt | `2026-09-16_20-14-36` und `2026-09-17_12-52-00`: Liste schaltete bis 50 ms vor dem Schnitt |
+| Code | `liste.py` Emojis als Gruppe mittig, Abbruch bei Emoji ohne PNG; `headline.py` `neigung` und `zeilen_faktor`; `cli._quellen` sucht auch `quellen/` und `referenz/top5/momente/`; `countdown.loese_auf` rechnet in Bildern, `render` schneidet je Segment mit `trim`; Tests in `tests/test_countdown.py` |
+| `data/plans/marli_top5.json` | alter Plan vom 2026-09-05, vor den Schnittregeln; nicht neu gerendert |
+
+Reihenfolgen: AbuGoku 5 Chaya reiten, 4 Abu hat Flashbacks, 3 Klingt Abdi
+schwarz?, 2 Du bist daran gewoehnt, 1 So sieht Abdi nicht aus (nicht dabei:
+"Wir muessen zusammenhalten", Regel 1a). Knossi 5 Hab gar nicht gezaehlt,
+4 Bro ist zu ehrlich, 3 Haben wir H****soehne hier?, 2 Hamed ist crazy,
+1 Gibt es Nachwuchs? — alle fuenf der Referenz, andere Reihenfolge.
+Offen dort: Das erste Bild ist die dunkle Buehne; ein heller Moment auf
+Platz 5 waere das bessere Vorschaubild, widerspricht aber Regel 2b.
+
+Offen:
+
+1. Rueckmeldung des Nutzers; nach dem ersten Post pruefen, ob die
+   Duplikatsdrosselung greift (Momente liegen schon auf der Plattform).
+2. Weitere Emojis fuer die Liste (😭, 🧀, 🙏🏽 in den Referenzen) nur auf Wunsch
+   des Nutzers — Regel 3 laesst fuer Hooks vier zu.
+3. Die vier TikTok-Referenzen aus SCHNITTREGELN Fall 5 sind nicht vermessen.
+4. Countdown aus eigenem Material: Momentgrenzen ueber `snappe` statt fester
+   Dauern, und 16:9-Quellen bekommen im quadratischen Feld Blurbalken.
+
 ### 3. Ausgeliefert, Rueckmeldung des Nutzers steht aus
 
 - 0-OqdAjLq_0 (Therapiestunde mit Eli), 5 Clips, 2026-09-11
@@ -197,6 +236,7 @@ Repo-Ordner mit `PYTHONPATH=src .venv/bin/python werkzeuge/<skript>`.
 | `lesbar.py <json3> [--modi m.npz] [--von] [--bis]` | Transkript als Zeilen mit Zeit und Bildtyp — zum Lesen der Kandidaten |
 | `asr_fenster.py <video> <json3> von:bis ... [--schreiben] [--neu]` | Clipfenster neu transkribieren, alt/neu vergleichen, bessere Fassung einsetzen |
 | `handy.py <lauf>` | jeden Clip des Laufs als 720x1280-Fassung unter 30 MiB nach `<lauf>/handy/` — groessere Dateien erreichen das Handy des Nutzers nicht |
+| `top5_referenz.py <url> ...` | Top-5-Referenz laden (deutsche Tonspur), Panel und Liste vermessen, die fuenf Momente bildgenau nach `<work>/referenz/top5/momente/` schneiden, Verzeichnis nach `data/referenz/top5/<id>.json`; bricht ab, wenn der Aufbau abweicht |
 
 `pegel10.py` und `laute.py` nehmen `ID.de-asr.json3`, wenn es kein `ID.de-orig.json3` gibt.
 

@@ -1,0 +1,44 @@
+{
+  "clip_id": "knossi_top5",
+  "titel": "Die besten Knossi Momente 🥀💀",
+  "template": "TOP5_HALLOFCLIPS",
+  "sprache": "de",
+  "fps": 30,
+  "eintraege": [
+    {
+      "platz": 5,
+      "text": "Hab gar nicht gezählt 🙏",
+      "video_id": "c2UMW2I1lZ8_platz2",
+      "start": 0.117,
+      "dauer": 12.083
+    },
+    {
+      "platz": 4,
+      "text": "Bro ist zu ehrlich 💀",
+      "video_id": "c2UMW2I1lZ8_platz5",
+      "start": 0.533,
+      "dauer": 14.433
+    },
+    {
+      "platz": 3,
+      "text": "Haben wir H****söhne hier?",
+      "video_id": "c2UMW2I1lZ8_platz3",
+      "start": 1.283,
+      "dauer": 6.817
+    },
+    {
+      "platz": 2,
+      "text": "Hamed ist crazy 💀🙏",
+      "video_id": "c2UMW2I1lZ8_platz4",
+      "start": 0.85,
+      "dauer": 10.117
+    },
+    {
+      "platz": 1,
+      "text": "Gibt es Nachwuchs?",
+      "video_id": "c2UMW2I1lZ8_platz1",
+      "start": 0.15,
+      "dauer": 13.383
+    }
+  ]
+}

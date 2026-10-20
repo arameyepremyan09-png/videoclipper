@@ -1,0 +1,103 @@
+# Template: TOP5_HALLOFCLIPS
+#
+# Top-5-Countdown im Stil der Referenzen, die der Nutzer am 2026-09-16
+# geliefert hat (HallOfClips: uYAMGga5wr0, c2UMW2I1lZ8, R8HNyeyCsWE, bis
+# 1,28 Mio. Views). Alle drei sind pixelgleich aufgebaut und weichen in fast
+# jedem Mass von TOP5_COUNTDOWN ab, das an @phrai92 vermessen ist — deshalb
+# ein eigenes Template statt einer Aenderung dort. Messwerte und Werkzeug:
+# CLAUDE.md, Nachtrag 2026-09-16 im Abschnitt TOP5_COUNTDOWN.
+#
+# WAS GEMESSEN IST und was angenaehert:
+# - Videofeld, Headlinefarbe, Ziffernlage, Zeilenabstand: gemessen, exakt.
+# - Schrift: Die Referenz nutzt eine breitere, kursive Schrift. Hier Anton mit
+#   ``neigung`` (Scherung), weil Anton die einzige Schrift im Repo ist. Die
+#   Groessen sind so gewaehlt, dass Ziffern- und Versalhoehe den Referenzen
+#   entsprechen; die Zeilen werden dadurch schmaler als dort.
+#
+# DAS VIDEOFELD REICHT BIS y=1808 und damit in TikToks UI-Zone (ab 1728).
+# Bewusst uebernommen: Die Referenzen sind so gebaut und kommen so an.
+# ``sicherheitszone_pruefen`` meldet es bei jedem Lauf, das ist gewollt.
+
+name: TOP5_HALLOFCLIPS
+beschreibung: Top-5-Countdown im HallOfClips-Stil, quadratisches Videofeld, Liste mit Emojis
+gilt_fuer_modus: COMPILATION
+
+canvas: [1080, 1920]
+
+panels:
+  # Die uebernommenen Momente sind bereits 908x908 (top5_referenz.py
+  # schneidet genau dieses Feld aus) — einpassen fuellt es dann exakt.
+  # Eigenes 16:9-Material bekaeme hier Blurbalken oben und unten.
+  - quelle: segment
+    ziel: [86, 900, 908, 908]
+    passung: einpassen
+
+hintergrund:
+  modus: blur
+  staerke: 24
+
+headline:
+  statisch: true
+  quelle: countdown.titel
+  schrift: Anton
+  # Referenz: Versalhoehe 53 px, zwei Zeilen im Abstand von 91 px, Mitte y=312.
+  # Anton hat Versalhoehe 0,86 der Groesse -> 62; 91 / 62 = 1,47.
+  schriftgroesse: 62
+  zeilen_faktor: 1.47
+  versalien: true
+  farbe: "#FAC102"          # Median aus ~35000 Pixeln, alle drei Shorts gleich
+  rand_farbe: "#000000"
+  rand_staerke: 7
+  neigung: 0.18
+  y: 312
+  # Bricht wie die Referenz vor "MOMENTE" (dort 630-663 px breit). Der
+  # Umbruch misst jede Zeile gegen max_breite minus Emojiblock (142 px bei 62).
+  max_breite: 700
+  max_zeilen: 2
+  renderer: png_overlay
+
+liste:
+  plaetze: 5
+  # Ziffernmitten gemessen bei 479 / 565 / 651 / 738 / 824, Hoehe 43 px.
+  # erste_zeile_y ist die Ankermitte von Pillow ("mm"), nicht die Ziffernmitte —
+  # der Wert ist am gerenderten PNG gegen 479 nachgemessen.
+  erste_zeile_y: 480
+  zeilenabstand: 86.25
+  ziffer_x: 160             # "1." bis "5." liegen auf x=138..182
+  text_x: 540               # Beschriftung + Emojis als Gruppe mittig
+  schrift: Anton
+  schriftgroesse: 50
+  versalien: false
+  farbe: "#FFFFFF"
+  rand_farbe: "#000000"
+  rand_staerke: 6
+  max_breite: 680           # Referenz bis 202..890, die Ziffern enden bei 182
+  emoji_faktor: 1.3         # Totenkopf 70 px gegen 43 px Ziffernhoehe
+  renderer: png_overlay
+
+sicherheitszone:
+  unten: 192
+
+# --- Pflicht-Overlays ------------------------------------------------------
+
+untertitel:
+  aktiv: false
+  grund: >-
+    Segmente kommen aus mehreren Quellen, deren Transkripte der CountdownPlan
+    nicht mitfuehrt; Textkanal ist die Liste. Die drei HallOfClips-Referenzen
+    haben ebenfalls keine Untertitel (bis 1,28 Mio. Views).
+
+follow_hinweis:
+  # Zwischen Liste (endet 848) und Videofeld (beginnt 900) ist kein Platz fuer
+  # den 150-px-Knopf. Er steht deshalb im Videofeld, so tief, wie die UI-Zone
+  # erlaubt (1565..1715), und in der linken unteren Ecke statt mittig: Beim
+  # ersten Render von abugoku_top5 lag er mittig bei 23.7 s auf dem Kopf von
+  # Coach, der sich gerade vor Lachen kruemmt — auf der Pointe von Platz 4.
+  # Links unten (x 125..275) stehen in allen vier gemessenen Bildern des
+  # Follow-Fensters Oberkoerper und Arme. Am gerenderten Frame je Plan nachsehen.
+  x: 200
+  y: 1640
+
+audio:
+  normalisieren: true
+  ziel_lufs: -14.0

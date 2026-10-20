@@ -1,0 +1,44 @@
+{
+  "clip_id": "abugoku_top5",
+  "titel": "Die besten AbuGoku Momente 💀🙏",
+  "template": "TOP5_HALLOFCLIPS",
+  "sprache": "de",
+  "fps": 30,
+  "eintraege": [
+    {
+      "platz": 5,
+      "text": "Chaya reiten 💀",
+      "video_id": "R8HNyeyCsWE_platz5",
+      "start": 0.0,
+      "dauer": 16.267
+    },
+    {
+      "platz": 4,
+      "text": "Abu hat Flashbacks 💀",
+      "video_id": "uYAMGga5wr0_platz5",
+      "start": 0.0,
+      "dauer": 13.85
+    },
+    {
+      "platz": 3,
+      "text": "Klingt Abdi schwarz?",
+      "video_id": "R8HNyeyCsWE_platz4",
+      "start": 0.0,
+      "dauer": 14.667
+    },
+    {
+      "platz": 2,
+      "text": "Du bist daran gewöhnt 💀",
+      "video_id": "R8HNyeyCsWE_platz3",
+      "start": 0.0,
+      "dauer": 8.2
+    },
+    {
+      "platz": 1,
+      "text": "So sieht Abdi nicht aus 💀",
+      "video_id": "R8HNyeyCsWE_platz1",
+      "start": 0.0,
+      "dauer": 9.35
+    }
+  ]
+}

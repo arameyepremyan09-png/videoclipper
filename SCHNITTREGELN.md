@@ -87,7 +87,7 @@ Abwaegung.
 | 2 | **Gaeste in Fullcam** (auch Coachlim allein in Fullcam) | 16:9 vollstaendig zeigen, nichts beschneiden | `FULLCAM_169` | angelegt 2026-09-08 |
 | 3 | **Gaming** | Facecam oben, Spiel unten mittig auf das Wichtigste | `GAME_STACK` | steht auf `einpassen` — dieselbe offene Frage wie Fall 1 |
 | 4 | **Reaction auf TikToks** | Facecam oben, TikTok-Video auf volle Breite | `REACT_STACK` | auf `fuellen` umgestellt 2026-09-08 |
-| 5 | **Top-5-Format** | mehrere Clips einer Kategorie, siehe Regel 2b | `TOP5_COUNTDOWN` | vorhanden |
+| 5 | **Top-5-Format** | mehrere Clips einer Kategorie, siehe Regel 2b | `TOP5_HALLOFCLIPS` | nach den Referenzen des Nutzers vermessen 2026-09-16; `TOP5_COUNTDOWN` (an `@phrai92`) bleibt daneben stehen |
 | 6 | **Reaction auf YouTube-Videos** | vom Nutzer offengelassen | `REACT_YT_SPLIT` | vorhanden |
 
 **Der untere Feed laeuft in diesem Hausstil von Kante zu Kante.** Gemessen am
@@ -134,6 +134,24 @@ allein vor der Wand richtig.
   Wer mit dem Staerksten einsteigt, glaubt, es kann nur besser werden.
   (`countdown.py` deckt in der gemessenen Reihenfolge 5 → 1 auf; die Zuordnung
   Qualitaet → Platz ist deshalb umgekehrt zur Erwartung.)
+- **Momente aus Referenzen duerfen uebernommen werden** (Auftrag vom
+  2026-09-16): *"Das sind Referenzen die du dir anschauen sollst du kannst
+  genau die Videos die darin enthalten sind abspeichern und übernehmen, weil
+  diese gut ankommen. Ich werden immer weitere Referenzen geben."* Jede neue
+  Referenz laeuft durch `werkzeuge/top5_referenz.py`; das Verzeichnis
+  `data/referenz/top5/` ist damit der Vorrat, aus dem ein Countdown
+  zusammengestellt werden kann. Kategorie und Regel 1 gelten weiter — ein
+  Moment ist nicht deshalb gut, weil er in einer Referenz stand.
+- **Die einzelnen Momente duerfen kuerzer sein, der Inhalt muss bleiben**
+  (Auftrag vom 2026-09-17): *"die einzelnen Clips können auch ruhig etwas
+  kürzer sein, aber der Inhalt soll erhalten bleiben."* Geschnitten wird an
+  den Raendern — Anlauf ("Pass auf", "Und noch mal eine andere Frage",
+  "Ey wirklich") und Nachlauf hinter dem Lacher —, gemessen am 10-ms-Pegel
+  und in einer Pause, nie im Wort. Setup, Pointe und die Reaktion darauf
+  bleiben stehen; bei `knossi_top5` waren so 3,6 s von 60,4 s zu holen.
+- Referenzen (alle HallOfClips, Aufbau in CLAUDE.md, Nachtrag 2026-09-16):
+  `youtube.com/shorts/uYAMGga5wr0` (Coachlim), `youtube.com/shorts/c2UMW2I1lZ8`
+  (Knossi), `youtube.com/shorts/R8HNyeyCsWE` (Abu & Abdi).
 
 ---
 

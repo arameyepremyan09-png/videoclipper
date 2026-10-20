@@ -134,22 +134,32 @@ def baue(text: str, tmpl: dict, ziel: Path) -> Path:
         zeilen = umbruch(text, schrift, max_breite - emoji_breite(groesse),
                          zeichner, max_zeilen)
 
-    zh = int(groesse * 1.12)
+    zh = int(groesse * conf.get("zeilen_faktor", 1.12))
     gesamt = zh * len(zeilen)
     y = conf["y"] - gesamt // 2          # auf der Naht zentriert
 
     eb = emoji_breite(groesse)
+    # Schraegstellung wie eine Kursive, als Scherung um die Zeilenmitte. Anton
+    # hat keinen kursiven Schnitt; die HallOfClips-Referenzen setzen die
+    # Headline schraeg (TOP5_HALLOFCLIPS). Emojis bleiben aufrecht.
+    neigung = float(conf.get("neigung", 0.0))
     for i, zeile in enumerate(zeilen):
         letzte = i == len(zeilen) - 1
         # Nur die letzte Zeile teilt sich die Breite mit dem Emojiblock; ihre
         # Textmitte rueckt deshalb um dessen halbe Breite nach links.
         mitte = breite // 2 - (eb // 2 if letzte else 0)
-        zeichner.text(
-            (mitte, y + i * zh + zh // 2), zeile, font=schrift,
+        zy = y + i * zh + zh // 2
+        ebene = Image.new("RGBA", (breite, hoehe), (0, 0, 0, 0)) if neigung else bild
+        ImageDraw.Draw(ebene).text(
+            (mitte, zy), zeile, font=schrift,
             fill=conf.get("farbe", "#FFFFFF"),
             stroke_width=rand, stroke_fill=conf.get("rand_farbe", "#000000"),
             anchor="mm",
         )
+        if neigung:
+            bild.alpha_composite(ebene.transform(
+                (breite, hoehe), Image.AFFINE, (1, neigung, -neigung * zy, 0, 1, 0),
+                resample=Image.BICUBIC))
         if letzte and emojis:
             kante, luecke = int(groesse * 0.92), emoji_luecke(groesse)
             x = mitte + int(zeichner.textlength(zeile, font=schrift)) // 2 + luecke

@@ -1,0 +1,145 @@
+{
+  "id": "c2UMW2I1lZ8",
+  "url": "https://www.youtube.com/shorts/c2UMW2I1lZ8",
+  "kanal": "HallOfClips",
+  "kanal_id": "@HallOfClips_Official",
+  "titel": "Top 5 Knossi Momente (Psychose) #knossi #streamer #clip #clips #momente",
+  "hochgeladen": "20260911",
+  "erfasst": "2026-09-16",
+  "views": 151922,
+  "likes": 2090,
+  "like_rate": 0.0138,
+  "dauer": 60.4,
+  "fps": 60.0,
+  "canvas": [
+    1080,
+    1920
+  ],
+  "geometrie": {
+    "panel": [
+      86,
+      900,
+      908,
+      908
+    ],
+    "headline_zeilen": [
+      [
+        240,
+        293
+      ],
+      [
+        331,
+        385
+      ]
+    ],
+    "listenzeilen": {
+      "1": [
+        457,
+        501
+      ],
+      "2": [
+        544,
+        588
+      ],
+      "3": [
+        627,
+        674
+      ],
+      "4": [
+        720,
+        761
+      ],
+      "5": [
+        804,
+        848
+      ]
+    }
+  },
+  "momente": [
+    {
+      "platz": 5,
+      "reihenfolge": 1,
+      "ab": 0.0,
+      "bis": 14.967,
+      "dauer": 14.967,
+      "label": "Bro ist zu ehrlich",
+      "emoji": "💀",
+      "creator": "Knossi",
+      "notiz": "Haare der Frau 'nur noch Stroh'",
+      "schnitte_im_moment": [
+        5.1,
+        6.03
+      ],
+      "text": "Pass auf, meine Frau Haare gefärbt. Warum? Weil Haare schon auseinander gefallen. Haare zerbrochen, Haare kaputt. Ihre Haare sind nur noch Stroh, sehen sehr oft sehr fettig aus. Wenn man in ihre Haare fährt, denkt man: \"Oh mein Gott, die lösen sich von der Kopfhaut.\" So ist es mittler. Übertreibt nicht,",
+      "datei": "referenz/top5/momente/c2UMW2I1lZ8_platz5.mp4"
+    },
+    {
+      "platz": 4,
+      "reihenfolge": 2,
+      "ab": 14.967,
+      "bis": 26.217,
+      "dauer": 11.25,
+      "label": "Hamed ist crazy",
+      "emoji": "😭🙏🏽",
+      "creator": "Knossi, Hamed",
+      "notiz": "zwei Streams hintereinander: Knossi, dann Hamed im roten Zimmer",
+      "schnitte_im_moment": [
+        5.75,
+        6.75,
+        7.5,
+        8.43
+      ],
+      "text": "ey. Wirklich? [musik] Meine Frau extra sich geschminkt hier hingestellt. Wir waren gerade voll im Programm, hat er mit den Schuss versaut. Was für ein Programm? Ach komm, hör auf. Hamm, ich ich bin nicht Ham. [gelächter]",
+      "datei": "referenz/top5/momente/c2UMW2I1lZ8_platz4.mp4"
+    },
+    {
+      "platz": 3,
+      "reihenfolge": 3,
+      "ab": 26.217,
+      "bis": 34.317,
+      "dauer": 8.1,
+      "label": "Haben wir H****söhne hier?",
+      "emoji": null,
+      "creator": "Knossi",
+      "notiz": "explizit (Laufhaus)",
+      "schnitte_im_moment": [
+        5.63
+      ],
+      "text": "Und noch mal eine andere Frage. Haben wir Huröhne im Chat? Also so echte. Wo die Mutti im Laufhaus steht, haben wir welche da sind da. Auch an euch ein herzliches Willkommen.",
+      "datei": "referenz/top5/momente/c2UMW2I1lZ8_platz3.mp4"
+    },
+    {
+      "platz": 2,
+      "reihenfolge": 4,
+      "ab": 34.317,
+      "bis": 46.867,
+      "dauer": 12.55,
+      "label": "Hab gar nicht gezählt",
+      "emoji": "🙏🏽",
+      "creator": "Knossi",
+      "notiz": "Buehne mit Kind: 'Wie viele Millionen hast du verdient?'",
+      "schnitte_im_moment": [
+        7.3,
+        8.4
+      ],
+      "text": "Wie viele Millionen hast du eigentlich verdient? [musik] Alter, das ist eine gute Frage. Ich habe gar nicht gezählt. Ich habe noch nicht gezählt. Mehr als 2 Millionen. Ja. [gelächter]",
+      "datei": "referenz/top5/momente/c2UMW2I1lZ8_platz2.mp4"
+    },
+    {
+      "platz": 1,
+      "reihenfolge": 5,
+      "ab": 46.867,
+      "bis": 60.4,
+      "dauer": 13.533,
+      "label": "Gibt es Nachwuchs?",
+      "emoji": null,
+      "creator": "Knossi",
+      "notiz": "sexuelle Anspielung ('getackert', 'Ofen ist voll')",
+      "schnitte_im_moment": [
+        12.55
+      ],
+      "text": "Gibt es Nachwuchs? Glaubt es mir, ich habe getackert. Die letzten Wochen müssten Drillinge Vierlinge sein. Also, wenn mehrere Schüsse nacheinander am Tag zählen, dann kriegen wir Vierlinge, Fünflinge. Ich sag dir es ohne Scheiß, der Ofen ist voll.",
+      "datei": "referenz/top5/momente/c2UMW2I1lZ8_platz1.mp4"
+    }
+  ]
+}

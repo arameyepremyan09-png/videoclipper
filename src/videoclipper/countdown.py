@@ -81,21 +81,31 @@ def loese_auf(plan: CountdownPlan, tmpl: dict) -> CountdownPlan:
     # Abgespielt wird rueckwaerts: Platz 5 zuerst, Platz 1 als Payoff.
     reihe = sorted(plan.eintraege, key=lambda e: -e.platz)
 
-    segmente, uhr = [], 0.0
+    # Segmentgrenzen auf ganze Ausgabebilder. Mit Dauern in beliebigen
+    # Sekundenbruechteilen schaltete die Liste auf halben Bildern um, das Video
+    # aber erst am naechsten ganzen — und der Rest lief ueber die Segmente auf:
+    # bei knossi_top5 stand Platz 1 anderthalb Bilder (50 ms) vor dem Schnitt
+    # in der Liste. ``bilder`` begrenzt der Renderer exakt (trim), ab/bis
+    # sind Vielfache von 1/fps. Abgerundet, nicht gerundet: Endet ein Moment am
+    # Dateiende, gibt es das aufgerundete Bild in der Quelle nicht.
+    segmente, bild = [], 0
     for i, e in enumerate(reihe):
+        n = max(1, int(e.dauer * plan.fps + 1e-6))
         segmente.append({
             "index": i,
             "platz": e.platz,
             "video_id": e.video_id,
             "start": round(e.start, 3),
-            "dauer": round(e.dauer, 3),
-            "ab": round(uhr, 3),
-            "bis": round(uhr + e.dauer, 3),
+            "dauer": round(n / plan.fps, 3),
+            "bilder": n,
+            "ab": round(bild / plan.fps, 3),
+            "bis": round((bild + n) / plan.fps, 3),
             # Nach diesem Segment sind alle Plaetze ab hier abwaerts sichtbar.
             "sichtbar": sorted((x.platz for x in reihe[: i + 1]), reverse=True),
             "quelle_box": list(e.quelle_box) if e.quelle_box else None,
         })
-        uhr += e.dauer
+        bild += n
+    uhr = bild / plan.fps
 
     conf = tmpl.get("follow_hinweis") or {}
     hinweis, _ = follow.platziere(uhr, conf) if conf.get("aktiv", True) else (None, [])
