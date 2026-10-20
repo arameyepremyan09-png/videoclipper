@@ -246,10 +246,19 @@ soundtrack:
   # verschiedene Stuecke, derselbe Clip immer dasselbe.
   wahl: clip_id
 
-  # Lautstaerke des Bettes, bevor geduckt wird. -20 dB ist der uebliche
-  # Startwert fuer Sprache ueber Musik; der Wert ist NICHT an diesem Material
-  # gemessen und gehoert am ersten fertigen Clip nachgehoert.
-  pegel_db: -20.0
+  # Lautstaerke des Bettes, bevor geduckt wird — als Abstand zur Stimme, die
+  # auf ``audio.ziel_lufs`` normiert ist.
+  #
+  # GEMESSEN UND KORRIGIERT am 2026-10-20: Der erste Wert war -20 dB, der
+  # uebliche Buchwert fuer Sprache ueber Musik. Am fertigen Countdown lag das
+  # Bett damit bei -36 dB im leisesten Fuenfzigstel und -48 dB im Minimum —
+  # vorhanden, aber auf einem Handylautsprecher unter Strassenlaerm nicht zu
+  # hoeren. Der Nutzer hat es fuer fehlend gehalten, und das ist die richtige
+  # Rueckmeldung: Ein Bett, das niemand bemerkt, ist keins.
+  #
+  # -12 dB ist der neue Startwert. Am fertigen Clip nachhoeren bleibt Pflicht;
+  # wird die Sprache unverstaendlich, geht es wieder herunter.
+  pegel_db: -12.0
 
   # Ducking: Die Musik weicht der Stimme, statt dauerhaft leise zu sein.
   # Ohne das muesste das Bett so tief liegen, dass es in den Pausen gar nicht
@@ -257,9 +266,14 @@ soundtrack:
   ducking:
     aktiv: true
     schwelle: 0.03             # ab welchem Stimmpegel geduckt wird
-    verhaeltnis: 8             # wie stark
+    # 4 statt 8, 250 ms statt 400: Mit dem alten Paar kam die Musik aus einer
+    # Sprechpause von 200 ms gar nicht mehr hoch — bei diesem Material, wo
+    # vier Leute durcheinanderreden, sind das fast alle Pausen. Gemessen an
+    # frankreich_top5: die Naht bei 30.8 s lag trotz digitaler Stille in der
+    # Quelle bei -48 dB.
+    verhaeltnis: 4             # wie stark
     attack: 20                 # ms, schnell genug fuer einen Satzanfang
-    release: 400               # ms, langsam genug, dass es nicht pumpt
+    release: 250               # ms, kurz genug fuer eine Sprechpause
 
   # Ein harter Musikeinsatz im ersten Bild klingt nach Fehler, ein hartes Ende
   # nach Abbruch. Beide Blenden sind kurz genug, um bei 20 s nicht aufzufallen.

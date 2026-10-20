@@ -114,7 +114,7 @@ def test_musik_wird_auf_einen_absoluten_pegel_gebracht(conf):
     # Erst auf den Stimmpegel, dann 20 dB darunter — in EINEM loudnorm ginge
     # es nicht, FFmpeg laesst TP nur zwischen -9 und 0 zu (Exit 222).
     assert "loudnorm=I=-14.0:TP=-1.5" in musik
-    assert "volume=-20.00dB" in musik
+    assert f"volume={conf['pegel_db']:.2f}dB" in musik
     assert musik.index("loudnorm") < musik.index("volume=")
 
 
