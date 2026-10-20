@@ -256,9 +256,12 @@ soundtrack:
   # hoeren. Der Nutzer hat es fuer fehlend gehalten, und das ist die richtige
   # Rueckmeldung: Ein Bett, das niemand bemerkt, ist keins.
   #
-  # -12 dB ist der neue Startwert. Am fertigen Clip nachhoeren bleibt Pflicht;
-  # wird die Sprache unverstaendlich, geht es wieder herunter.
-  pegel_db: -12.0
+  # -12 dB war der zweite Wert, auf Ansage des Nutzers am selben Tag auf -5
+  # gesetzt: "musik kann etwas lauter so auf -5db". Das ist laut fuer ein Bett
+  # unter Sprache, und es haelt nur, weil das Ducking davorliegt — ohne
+  # ``sidechaincompress`` laege die Musik hier auf derselben Hoehe wie die
+  # Stimme. Am fertigen Clip nachhoeren bleibt Pflicht.
+  pegel_db: -5.0
 
   # Ducking: Die Musik weicht der Stimme, statt dauerhaft leise zu sein.
   # Ohne das muesste das Bett so tief liegen, dass es in den Pausen gar nicht
