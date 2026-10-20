@@ -7,6 +7,30 @@ Nutzers in [SCHNITTREGELN.md](SCHNITTREGELN.md). Beide gelten zuerst.
 
 ## Offene Auftraege
 
+### 000. x0XeuK8Ejys — Frankreich-Vlog, 8 Clips, ausgeliefert
+
+"WIR SIND IN FRANKREICH 💀 DEMO BEOBACHTEN, ESSEN UND LIVE INTERVIEW",
+Coachlim, 4511.4 s, am 2026-10-20 hochgeladen. Auftrag: "mach das Video".
+Befunde: CLAUDE.md, "Nachtrag 2026-10-20: Frankreich-Vlog".
+
+| Datei | Stand |
+|---|---|
+| `data/selections/x0XeuK8Ejys.json` | Plan, 8 Clips (Teaser + Hauptteil) |
+| `config/profiles/coachlim_frankreich.yaml` | neu, einmodig, Twitch-Chat unten links als `muellzone` |
+| `config/templates/fullcam_169.yaml` | nur `default_fuer` ergaenzt |
+| Finaler Lauf | `~/videoclipper/clips/2026-10-20_21-16-21` (lokal), Handy-Fassungen unter `handy/` |
+| ueberholt | `2026-10-20_20-43-44` (sieben Grenzen im Wort), `20-59-21` (Ende `_004` in "Gucci"), `21-05-07` (`_007` endete auf offener Frage) |
+
+Clips: `_001` Celine-Tasche gegen 2-Euro-Baeckerei, `_002` "die Kassiererin ist
+Yakuza", `_003` Matratzen Concord, `_004` die glaenzenden Schuhe (staerkster
+Lachercluster, sieben Marker), `_005` Skateboard + "Zwei Megapixel" (Tier A,
+82.6 s), `_006` die Roentgenbrille, `_007` Wanderstream, `_008` Orangina.
+
+Rueckmeldung des Nutzers steht aus. Keine Untertitelkorrekturen geschrieben —
+`data/korrekturen/x0XeuK8Ejys.json` fehlt. Beim naechsten Durchgang: die Cues
+gegen eine whisper.cpp-Zweitmeinung pruefen, vor allem die franzoesischen und
+englischen Stellen.
+
 ### 00. I-mbVr4qgFs — 1:1 Kaese mit grosser Facecam, 6 Clips, ausgeliefert
 
 "ZUSCHAUER WILL BEI EINER 19 JÄHRIGEN MUTTER KÄSE LEGEN", Coachlim, 2291 s.

@@ -1,0 +1,306 @@
+[
+ {
+  "clip_id": "x0XeuK8Ejys_001",
+  "quelle": {
+   "video_id": "x0XeuK8Ejys",
+   "kanal": "Coachlim",
+   "orig_start": 417.04
+  },
+  "tier": "B",
+  "profil": "COACHLIM_FRANKREICH",
+  "template": "FULLCAM_169",
+  "template_grund": "Einmodig, Handkamera, drei Personen nebeneinander im Bild (Regel 2, Fall 2).",
+  "modus": "FULLCAM",
+  "modus_anteil": 1.0,
+  "teaser": {
+   "start": 423.32,
+   "ende": 425.75
+  },
+  "timing": {
+   "start": 417.04,
+   "ende": 453.36
+  },
+  "pointe": {
+   "t": 425.3,
+   "bis": 426.1,
+   "fokus": [
+    "voll"
+   ]
+  },
+  "headline": "WAS HAT CELINE MIT DEMO ZU TUN 🥀💀",
+  "sprache": "de",
+  "score": {
+   "overall": 0.78,
+   "reaktion": 0.75,
+   "klarheit": 0.85,
+   "payoff": 0.75
+  },
+  "grund": "Teaser: 'Was hat Celine Tasche mit Demonstration zu tun?' [gelächter] — die Frage steht allein (Regel 1c). Hauptteil ab 'Chat, man sieht jeder Laden nebendran, der nur 3 Euro Umsatz macht': die Laeden mit kleinem Umsatz sind leer geraeumt, aber die Louis-Celine-Tasche auch. Dann die Steigerung, die den Witz traegt — 'was hat 2 Euro Baeckerei damit zu tun?', 'was hat Leihfahrrad damit zu tun, 40 Cent pro Minute?' — und das Fazit 'das ist paradox'. Endet auf der Pointe, kein zweiter Gegenstand."
+ },
+ {
+  "clip_id": "x0XeuK8Ejys_002",
+  "quelle": {
+   "video_id": "x0XeuK8Ejys",
+   "kanal": "Coachlim",
+   "orig_start": 816.08
+  },
+  "tier": "B",
+  "profil": "COACHLIM_FRANKREICH",
+  "template": "FULLCAM_169",
+  "template_grund": "Einmodig; im Laden stehen vier Leute plus Kassiererin im Bild, ein 9:16-Fenster schnitte die Haelfte weg.",
+  "modus": "FULLCAM",
+  "modus_anteil": 1.0,
+  "teaser": {
+   "start": 838.8,
+   "ende": 844.16
+  },
+  "timing": {
+   "start": 816.08,
+   "ende": 848.88
+  },
+  "pointe": {
+   "t": 839.16,
+   "bis": 844.16,
+   "fokus": [
+    "voll"
+   ]
+  },
+  "headline": "DIE KASSIERERIN IST YAKUZA 🥀💀",
+  "sprache": "de",
+  "score": {
+   "overall": 0.8,
+   "reaktion": 0.85,
+   "klarheit": 0.8,
+   "payoff": 0.8
+  },
+  "grund": "Teaser: 'Bruder, die ist Yakuza, Bruder.' — 'Bruder, das Wort ist international, die versteht dich.' Der Witz ist nicht das Wort, sondern dass er es fuer ein Geheimwort haelt. Hauptteil ab 'Nee Bruder, warte, ich habe nur drei geholt': der Streit am Tresen, ob die Kassiererin nur Bargeld nimmt, 'lass einfach mit Karte zahlen, haram'. Endet auf 'Der denkt, der hat auf Kurdisch gesagt, einfach' — die Aufloesung des Teasers."
+ },
+ {
+  "clip_id": "x0XeuK8Ejys_003",
+  "quelle": {
+   "video_id": "x0XeuK8Ejys",
+   "kanal": "Coachlim",
+   "orig_start": 969.64
+  },
+  "tier": "B",
+  "profil": "COACHLIM_FRANKREICH",
+  "template": "FULLCAM_169",
+  "template_grund": "Einmodig, Handkamera, zwei bis drei Personen im Gehen (Regel 2, Fall 2).",
+  "modus": "FULLCAM",
+  "modus_anteil": 1.0,
+  "teaser": {
+   "start": 1003.6,
+   "ende": 1009.76
+  },
+  "timing": {
+   "start": 969.64,
+   "ende": 1009.76
+  },
+  "pointe": {
+   "t": 1005.44,
+   "bis": 1009.76,
+   "fokus": [
+    "voll"
+   ]
+  },
+  "headline": "MATRATZEN CONCORD IST GELDWÄSCHE 🥀💀",
+  "sprache": "de",
+  "score": {
+   "overall": 0.85,
+   "reaktion": 0.8,
+   "klarheit": 0.9,
+   "payoff": 0.9
+  },
+  "grund": "Teaser: 'Diese Matratzen seit 80 Jahren ist 80% da. Wie funktioniert das? Nicht einer war drinne.' Steht fuer sich und ist der bekannteste Laden Deutschlands (Regel 1c). Hauptteil ab 'Solche Laeden, ihr habt die auch in eurer Stadt. Das muss Geldwaesche sein': ein unscheinbarer Secondhandladen in Paris, 'nicht mal Kassierer denkt, dass irgendwer reinkommt', 'was ist das fuer ein Fantasieladen' — dann die Frage 'weisst du, welcher der schlimmste ist?' und die Antwort Matratzen Concord. Der Clip traegt seinen Kontext selbst."
+ },
+ {
+  "clip_id": "x0XeuK8Ejys_004",
+  "quelle": {
+   "video_id": "x0XeuK8Ejys",
+   "kanal": "Coachlim",
+   "orig_start": 1061.68
+  },
+  "tier": "B",
+  "profil": "COACHLIM_FRANKREICH",
+  "template": "FULLCAM_169",
+  "template_grund": "Strasseninterview mit drei Fremden, alle gleichzeitig im Bild — genau der Fall, fuer den Regel 2 Fall 2 das ganze 16:9 verlangt.",
+  "modus": "FULLCAM",
+  "modus_anteil": 1.0,
+  "teaser": {
+   "start": 1094.64,
+   "ende": 1099.32
+  },
+  "timing": {
+   "start": 1061.68,
+   "ende": 1112.2
+  },
+  "pointe": {
+   "t": 1095.64,
+   "bis": 1099.32,
+   "fokus": [
+    "voll"
+   ]
+  },
+  "headline": "WARUM GLÄNZEN EURE SCHUHE SO 🥀💀",
+  "sprache": "de",
+  "score": {
+   "overall": 0.88,
+   "reaktion": 0.9,
+   "klarheit": 0.85,
+   "payoff": 0.9
+  },
+  "grund": "Staerkster Lachercluster des Videos (sieben Marker). Teaser: 'Oder Jungs, warum sind eure Outfits so neu? Bruder, die glaenzen.' Hauptteil ab der harmlosen Frage 'Und was macht ihr im Urlaub?' — sie sind seit Freitag da, haben es auf TikTok mitbekommen, am Samstag war ueberall was los. Dann faellt Coach das Outfit auf: 'da ist nicht ein Fleck auf dem Schuh', 'Gucci Cap, die riecht neu, ich habe gerade gerochen'. Die drei lachen mit und widersprechen — der Witz ist die Unterstellung, nicht ihr Beleg. Endet auf 'die riecht neu, mein Bruder', vor der neuen Frage nach der Herkunft. Ende: Das Transkript laesst 'Bruder' bis 1112.60 laufen, gesprochen ist es bei 1112.06 zu Ende — danach liegen 250 ms echte Pause (-29..-35 dB), dann eine weitere Aeusserung und erst ab 1112.71 'Diese Gucci Laden'. Das gewuenschte Ende 1112.20 liegt in dieser Pause, snappe schneidet dort bei 1112.28. Ueber das Wortende ging es nicht: 1112.60 + 0.35 Nachlauf landet mitten in 'Gucci', und das Tal bei 1112.65 verfehlt die Tal-Schwelle um 0.8 dB (-24.6 gegen -25.4)."
+ },
+ {
+  "clip_id": "x0XeuK8Ejys_005",
+  "quelle": {
+   "video_id": "x0XeuK8Ejys",
+   "kanal": "Coachlim",
+   "orig_start": 1584.76
+  },
+  "tier": "A",
+  "profil": "COACHLIM_FRANKREICH",
+  "template": "FULLCAM_169",
+  "template_grund": "Einmodig; der Clip lebt davon, dass man die ganze Strasse und das Board sieht.",
+  "modus": "FULLCAM",
+  "modus_anteil": 1.0,
+  "teaser": {
+   "start": 1649.6,
+   "ende": 1657.08
+  },
+  "timing": {
+   "start": 1584.76,
+   "ende": 1659.44
+  },
+  "pointe": {
+   "t": 1653.32,
+   "bis": 1657.08,
+   "fokus": [
+    "voll"
+   ]
+  },
+  "headline": "UNSERE KAMERA HAT ZWEI MEGAPIXEL 💀🙏",
+  "sprache": "de",
+  "score": {
+   "overall": 0.82,
+   "reaktion": 0.8,
+   "klarheit": 0.8,
+   "payoff": 0.9
+  },
+  "grund": "Teaser: 'Zwei Megapixel. Man kann nicht unterscheiden, ob wir gerade in Paris Royale machen oder ob wir Craft Attack gerade spielen.' Hauptteil: eine einzige durchgehende Einstellung ohne Schnitt. Sie fragen einen Fremden nach seinem Skateboard ('Can I drive?' - 'Yes'), Coach faehrt, bleibt stehen, wird ausgelacht ('bei dir bricht du Fettsack'), gibt es zurueck — und der Kommentar darueber ist der Kamerawitz, der sich genau auf dieses Material bezieht. Ein Gegenstand (Regel 1b): kein Schnitt, keine neuen Personen, dieselbe Strasse. Tier A, 82 s."
+ },
+ {
+  "clip_id": "x0XeuK8Ejys_006",
+  "quelle": {
+   "video_id": "x0XeuK8Ejys",
+   "kanal": "Coachlim",
+   "orig_start": 1720.32
+  },
+  "tier": "B",
+  "profil": "COACHLIM_FRANKREICH",
+  "template": "FULLCAM_169",
+  "template_grund": "Einmodig; die Brille auf dem Gesicht ist der Inhalt und sitzt rechts im Bild — nicht beschneiden.",
+  "modus": "FULLCAM",
+  "modus_anteil": 1.0,
+  "teaser": {
+   "start": 1747.0,
+   "ende": 1752.14
+  },
+  "timing": {
+   "start": 1720.32,
+   "ende": 1770.8
+  },
+  "pointe": {
+   "t": 1748.5,
+   "bis": 1752.14,
+   "fokus": [
+    "voll"
+   ]
+  },
+  "headline": "WAS IST DAS FÜR EINE BRILLE 🥀💀",
+  "sprache": "de",
+  "score": {
+   "overall": 0.8,
+   "reaktion": 0.8,
+   "klarheit": 0.85,
+   "payoff": 0.8
+  },
+  "grund": "Teaser: 'Du kannst damit durch Waende gucken, Alter.' [gelächter] Hauptteil ab 'Haeh? Brillen. War extra gekauft' — einer traegt eine riesige weisse Skibrille, die Gruppe glaubt ihm nicht, dass er sie gekauft hat, dann wird sie herumgereicht und aufgesetzt. Pointe und Aufloesung: 'Das war damals wie bei Sport 1, diese X-Ray-Brillen, SMS fuer 1,50 Euro.' Visuell stark — die Brille steht im Bild, bevor ein Wort faellt (Regel 1a)."
+ },
+ {
+  "clip_id": "x0XeuK8Ejys_007",
+  "quelle": {
+   "video_id": "x0XeuK8Ejys",
+   "kanal": "Coachlim",
+   "orig_start": 2134.72
+  },
+  "tier": "B",
+  "profil": "COACHLIM_FRANKREICH",
+  "template": "FULLCAM_169",
+  "template_grund": "Drei Personen am Restauranttisch nebeneinander (Regel 2, Fall 2).",
+  "modus": "FULLCAM",
+  "modus_anteil": 1.0,
+  "teaser": {
+   "start": 2141.6,
+   "ende": 2145.15
+  },
+  "timing": {
+   "start": 2134.72,
+   "ende": 2169.2
+  },
+  "pointe": {
+   "t": 2142.0,
+   "bis": 2145.15,
+   "fokus": [
+    "voll"
+   ]
+  },
+  "headline": "ER WAR MAL MIT MIR WANDERN 🥀💀",
+  "sprache": "de",
+  "score": {
+   "overall": 0.76,
+   "reaktion": 0.8,
+   "klarheit": 0.75,
+   "payoff": 0.75
+  },
+  "grund": "Teaser: 'Ja, du Fettsack, ich weiss doch, dass du da nicht dabei bist.' [gelächter] Hauptteil ab 'Wisst ihr, was mal geil waer? Ein Wanderstream' — der Einwand kommt sofort, dann die Belege: 'ich bin einen kleinen Berg mit dir hochgelaufen, der ist gestorben', Schweden, 'wir waren mit Eisbaeren kaempfen', 'wir haben einen Wald Steak gemacht'. Endet bei 2169.18 auf 'Tschuess, Bruder' und dem Lacher — davor stand das Ende bei 2174.43 auf 'Der Schneestream Chat, wer war damals am Start?', einer unbeantworteten Frage an den Chat (Regel 1b, kein offenes Ende). Der Lacher laeuft 2168.40-2169.20 bei -18..-38 dB, ab 2169.25 setzt 'Bruder, walla' ein. Alles am Tisch, ein Gegenstand."
+ },
+ {
+  "clip_id": "x0XeuK8Ejys_008",
+  "quelle": {
+   "video_id": "x0XeuK8Ejys",
+   "kanal": "Coachlim",
+   "orig_start": 4477.6
+  },
+  "tier": "B",
+  "profil": "COACHLIM_FRANKREICH",
+  "template": "FULLCAM_169",
+  "template_grund": "Einmodig, zwei Personen am Cafetisch im Bild.",
+  "modus": "FULLCAM",
+  "modus_anteil": 1.0,
+  "teaser": {
+   "start": 4494.72,
+   "ende": 4499.35
+  },
+  "timing": {
+   "start": 4477.6,
+   "ende": 4506.68
+  },
+  "pointe": {
+   "t": 4497.28,
+   "bis": 4499.52,
+   "fokus": [
+    "voll"
+   ]
+  },
+  "headline": "WAS IST DAS FÜR EIN KINDERGETRÄNK 🥀💀",
+  "sprache": "de",
+  "score": {
+   "overall": 0.74,
+   "reaktion": 0.75,
+   "klarheit": 0.8,
+   "payoff": 0.75
+  },
+  "grund": "Teaser: 'Nein, nein, ich nehme Orangina.' - 'Was ist das Orangina, Marvel, Bruder?' [gelächter] 'Aber was ist das fuer ein Kindergetraenk?' Hauptteil ab 'Hey, was wollt ihr trinken, Kaffee?' im Cafe am Ende des Tages. Aufloesung: 'Bruder, das ist franzoesisches Fanta.' Leichter Schlussclip, einziger im Video, der ohne die Krawalle auskommt."
+ }
+]

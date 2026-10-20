@@ -1,0 +1,93 @@
+# Materialprofil: Coachlim / Frankreich-Vlog
+#
+# Gemessen am 2026-10-20 an x0XeuK8Ejys ("WIR SIND IN FRANKREICH 💀 DEMO
+# BEOBACHTEN, ESSEN UND LIVE INTERVIEW", Kanal Coachlim, 4511.4 s,
+# 1920x1080 bei 59.94 fps). Livestream-Mitschnitt: Coachlim und drei Begleiter
+# laufen nach den Krawallen durch Paris, machen Strasseninterviews, essen.
+#
+# EINMODIG, und zwar wie AGAAMUZA_TUERSTEHER: eine Handkamera folgt vier
+# Personen durch die Stadt. Die Kantenmessung ueber 40 Bilder zwischen 60 s
+# und 4450 s findet keine Box:
+#
+#   staerkste persistente Spalte   9.9 (x=139)  gegen Median 1.4
+#   staerkste persistente Zeile   15.4 (y=806)  gegen Median 1.5
+#
+# Das liegt auf der Hoehe der Couch-Runde (13.3, "nichts zu trennen") und weit
+# unter dem Splitscreen (177.1). Die staerkste Zeile bei y=806 ist keine
+# Boxkante, sondern die Oberkante des Chatblocks — der steht fest im Bild und
+# erzeugt dort eine schwache Dauerkante.
+#
+# GELETTERBOXT WIRD NIE. Oberes Bildband min 2.9 / Median 30.3, unteres
+# min 7.1 / Median 42.7. Die Minima sind niedriger als bei AGAAMUZA_TUERSTEHER
+# (37.3 / 47.9), aber das ist Nacht und keine Blende: Ab rund 2300 s laeuft das
+# Video im Dunkeln, und ein dunkles Bild hat auch am Rand wenig Struktur. Kein
+# Messpunkt geht gegen 0.00, wo der BMW-Vlog seinen echten Balken zeigte.
+#
+# Deshalb `signatur.immer: true`. Stage 04 spart sich damit den Bilddurchlauf
+# ueber 75 Minuten.
+#
+# GESCHNITTEN WIRD TROTZDEM. Die Jungs wechseln im Stream die Kamera
+# ("wir switchen kurz auf GoPro Chat", 1343 s) und die Fuehrung wandert
+# zwischen den Begleitern. Das ist kein Moduswechsel und nach SCHNITTREGELN 1b
+# auch kein Abbruchgrund, solange der Gegenstand derselbe bleibt — aber
+# gerendert wird MIT Schnittpruefung, damit keine Clipgrenze in einem
+# Bildwechsel liegt. Derselbe Fall wie ABUGOKU_VLOG.
+#
+# WERBUNG: Instant-Gaming-Block 1848-1876 s ("Ausrufezeichen Instant Gaming",
+# Rabattcode). Kein Clip darf dort liegen.
+
+name: COACHLIM_FRANKREICH
+beschreibung: Handheld-Vlog durch Paris nach den Krawallen, vier Personen, Livestream mit Chat-Overlay
+gueltig_ab: 2026-10-20
+
+quelle:
+  breite: 1920
+  hoehe: 1080
+  kanaele: [Coachlim]
+  sprache: de
+
+signatur:
+  modus: FULLCAM
+  immer: true               # gemessen einmodig, siehe Kopf
+  sonst: FULLCAM
+
+modi:
+  FULLCAM:
+    zonen:
+      # Vier Personen, die Kamera schwenkt staendig zwischen ihnen. Es gibt
+      # keine feste Bildmitte — fokus_x bleibt deshalb bei 960 und ist unter
+      # `passung: einpassen` (FULLCAM_169) ohnehin tote Konfiguration.
+      voll: { box: [0, 0, 1920, 1080], rolle: creator, fokus_x: 960 }
+    muellzonen:
+      # Livestream-Chat, halbtransparent UNTEN links (bei AGAAMUZA_TUERSTEHER
+      # steht er oben). Gemessen an zwei Bildern: erste Zeile schwankt mit der
+      # Nachrichtenzahl zwischen y~700 und y~725, der Block reicht bis zum
+      # unteren Bildrand; die laengsten Zeilen enden bei x~660.
+      #
+      # Er laesst sich nicht wegschneiden, weil er AUF dem Motiv liegt. In
+      # FULLCAM_169 landet er als winziger Text im 1080x606-Band — Bildrauschen,
+      # kein Modus. Regel 2 Fall 2 verlangt, alles zu zeigen.
+      - { box: [0, 690, 700, 390], hinweis: Twitch-Chat unten links }
+
+datenschutz:
+  # Strasseninterviews mit fremden Passanten, dazu Polizei und Umstehende.
+  # Freistellen ist unmoeglich, und der Kanal veroeffentlicht das Video selbst
+  # so — dieselbe Abwaegung wie bei AGAAMUZA_TUERSTEHER.
+  fremdinhalt_blur: false
+
+signale:
+  # ERSTES VLOG-MATERIAL IM REPO MIT EINEM ECHTEN TEXTKANAL. AGAAMUZA_TUERSTEHER
+  # hatte 4 Marker (alle zensierte Kraftausdruecke), ABUGOKU_VLOG null — hier
+  # stehen 53 [gelächter] in 11578 Woertern, dazu 4 [musik]. Der Lachmarker
+  # traegt also wieder, anders als bei den beiden anderen Handkamera-Videos.
+  #
+  # Der Pegel traegt dafuer WENIGER als sonst: Vier Stimmen auf einer Strasse
+  # plus Verkehr, und ueber ganze Kandidatenfenster liegt keine Wortluecke ueber
+  # 0.15 s. Ein Lautheitsmaximum heisst hier wenig; die Grenzen kommen aus dem
+  # 10-ms-Pegel, nicht aus dem Signal.
+  #
+  # Sprechtempo: 11578 Woerter auf 4511 s sind 2.6 W/s — zwischen dem
+  # Tuersteher-Vlog (1.8) und einem Reaction-Streamer (ueber 3).
+  lachmarker: 1.0
+  loudness_peak: 0.6
+  sprechtempo: 0.6

@@ -854,6 +854,73 @@ mir geschlagen zu werden" (1030-1090 s, Regel 1c: am Standbild lacht niemand).
 Die Dessous-Anspielung bei 1146 s (Vollbild-Strecke 11.5 s, `PHONE_STACK`
 ueberbrueckt hoechstens 10 s, und ohne `_002` fehlt der Kontext).
 
+### Nachtrag 2026-10-20: Frankreich-Vlog — Material ohne Wortluecken
+
+Vermessen an x0XeuK8Ejys ("WIR SIND IN FRANKREICH 💀 DEMO BEOBACHTEN, ESSEN UND
+LIVE INTERVIEW", Coachlim, 4511.4 s, 1920x1080@59.94). Profil
+`COACHLIM_FRANKREICH`, Template `FULLCAM_169`. Acht Clips. **Laengste Quelle
+bisher** — 75 min gegen 65 beim Among-Us-Stream.
+
+Einmodig wie `AGAAMUZA_TUERSTEHER`: staerkste persistente Spalte 9.9, Zeile
+15.4 gegen Median 1.4, nie geletterboxt. Die staerkste Zeile bei y=806 ist
+keine Boxkante, sondern die Oberkante des Twitch-Chats (unten links,
+`muellzone`). Erstes Handkamera-Material im Repo **mit** Textkanal: 53
+`[gelächter]` in 11578 Woertern, also `lachmarker: 1.0` statt 0 wie bei
+AgaaMuza (4 Marker) und AbuGoku (null).
+
+**Der eigentliche Befund ist der Ton, und er trifft `snappe` an einer Stelle,
+die bisher nur theoretisch war.** Vier Leute reden auf einer Strasse
+durcheinander; ueber ganze Kandidatenfenster von 40 s liegt **keine einzige
+Wortluecke ueber 0.15 s**. Das Transkript taugt damit nicht zum Setzen der
+Grenzen — es liefert nur Anker, der Schnittpunkt kommt aus `pegel10.py`. Von
+sechzehn Grenzen des ersten Entwurfs lagen sieben im Wort.
+
+Drei Faelle, die ueber dieses Video hinausgehen:
+
+1. **Das Wortende im Transkript ist nicht das Ende des Lauts.** Bei `_004`
+   laesst das Transkript "Bruder" bis 1112.60 laufen; gemessen in 10-ms-Fenstern
+   ist es bei **1112.06** zu Ende, dahinter liegen 250 ms echte Pause
+   (-29..-35 dB), dann eine weitere Aeusserung, und erst ab 1112.71 "Diese Gucci
+   Laden". Ueber das Wortende war die Grenze nicht erreichbar: 1112.60 + 0.35 s
+   Nachlauf landet mitten in "Gucci". Erreichbar war sie nur, indem das
+   **gewuenschte** Ende in die gemessene Pause gelegt wird (1112.20) — dann
+   greift `_luecke` statt des Nachlaufs und schneidet bei 1112.28. Das ist das
+   allgemeine Mittel fuer dieses Material: nicht das Wortende suchen, sondern
+   das Tal, und `ende` dorthin legen.
+2. **Das Tal kann um weniger als 1 dB verfehlt werden.** Am selben Clip liegt
+   direkt hinter 1112.60 ein Fenster bei -24.6 dB, die Tal-Schwelle dort bei
+   -25.4 (p75 der Umgebung -15.4, `TAL_DB` 10). 0.8 dB zu wenig, und `_luecke`
+   greift nicht. Wer eine Grenze nicht trifft, sollte das nachrechnen, bevor er
+   den Plan aendert — die Pause 500 ms frueher lag bei -33 und wurde sofort
+   erkannt. `TAL_DB` wurde **nicht** gesenkt: Der Wert ist an anderem Material
+   gemessen, und eine Schwelle wegen eines Einzelfalls zu verschieben aendert
+   stillschweigend jede andere Grenze.
+3. **Der Prueferbogen findet, was die Grenzkontrolle nicht sehen kann.** Bei
+   `_007` war jede Grenze sauber im Tal — und der Clip endete trotzdem falsch,
+   naemlich auf "Der Schneestream Chat, wer war damals am Start?", einer
+   unbeantworteten Frage an den Chat (Regel 1b, kein offenes Ende). Die
+   Grenzkontrolle misst Pegel und Woerter, nicht **Sinn**. Der letzte Cue je
+   Clip gehoert deshalb gelesen, nicht nur vermessen; `_005` ("ey.") und `_007`
+   ("Start?") sahen im Pegel identisch aus, und nur einer war ein Ende.
+
+**Und die Umlaute in der Headline sind kein Schoenheitsfehler.** Vier Headlines
+standen zuerst als `GELDWAESCHE`, `GLAENZEN`, `KINDERGETRAENK` im Plan —
+Gewohnheit aus den Commit-Nachrichten. `hook.pruefe` vergleicht Headline-Woerter
+gegen den Wortlaut des Fensters, findet dann kein einziges wieder und meldet
+**"lose"**, laut dem Abschnitt oben der teurere der beiden Headline-Fehler.
+Anton hat die Glyphen; in der Headline wird geschrieben wie gesprochen.
+
+Ein gemeldeter Bildwechsel war keiner: `schnitte.finde` meldet bei `_008`
+zwei Wechsel bei 4479.48 und 4479.73. Die Einzelbilder zeigen dieselbe Szene —
+die Nachtkamera zieht nur die Belichtung nach. Dieselbe Klasse wie die
+Seitenleisten-Meldungen beim Twitch-VOD: gemessen wird das ganze Bild.
+
+Nicht geschnitten, mit Grund: das lange Interview mit der franzoesischen
+Historikerin (2880-3220 s) ist inhaltlich das Stueck des Videos, hat aber
+keinen Lacher (Regel 1c); die Marktanalyse-Pointe bei 2250 s ("er hat eine
+Marktanalyse gemacht, was sich lohnt zu klauen") kommt mit Kontext nur auf
+20 s (Regel 6 verlangt 30); der Instant-Gaming-Block 1848-1876 s ist Werbung.
+
 ## Bildschnitte — Stage 04b, gemessen am 2026-09-07
 
 Der Modus sagt, *welches Layout* vorliegt. Er sagt nicht, ob das Bild
