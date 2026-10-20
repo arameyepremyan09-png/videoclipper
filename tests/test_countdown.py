@@ -175,10 +175,31 @@ def test_liste_ohne_emoji_bleibt_wo_sie_war(tmp_path):
     assert abs((text.min() + text.max()) / 2 - conf["text_x"]) < 3
 
 
-def test_hallofclips_meldet_das_videofeld_in_der_ui_zone():
-    """Bewusst uebernommen: die Referenzen laufen bis y=1808. Gemeldet wird es trotzdem."""
-    hinweise = countdown.sicherheitszone_pruefen(layout.template("TOP5_HALLOFCLIPS"))
-    assert len(hinweise) == 1 and "y=1808" in hinweise[0]
+def test_hallofclips_bleibt_ueber_der_ui_zone():
+    """Seit dem Umbau am 2026-10-20 endet das Videofeld bei 1438, nicht 1808.
+
+    Die Referenzen liefen bewusst bis in TikToks UI-Zone hinein, und der
+    Hinweis dazu war gewollt. Mit dem groesseren, aber flacheren Feld (volle
+    Breite statt quadratisch) ist der Konflikt von selbst weg — das ist eine
+    Folge des Umbaus, kein eigenes Ziel.
+    """
+    tmpl = layout.template("TOP5_HALLOFCLIPS")
+    x, y, b, h = tmpl["panels"][0]["ziel"]
+    assert y + h <= tmpl["canvas"][1] - tmpl["sicherheitszone"]["unten"]
+    assert countdown.sicherheitszone_pruefen(tmpl) == []
+
+
+def test_hallofclips_zeigt_mehr_bild_als_die_referenzvermessung():
+    """"Das eigentliche Video muss viel groesser sein" (Nutzer, 2026-10-20).
+
+    Gemessen in Bildflaeche, nicht in Feldflaeche: Eine 16:9-Quelle steht im
+    alten quadratischen Feld 908x908 nur als 908x511. Das neue Feld ist exakt
+    so hoch wie das Bild, es geht also nichts an Blur verloren.
+    """
+    b, h = layout.template("TOP5_HALLOFCLIPS")["panels"][0]["ziel"][2:]
+    alt = 908 * round(908 * 9 / 16)          # Bild im alten quadratischen Feld
+    assert b / h == pytest.approx(16 / 9, abs=0.01)
+    assert b * h > alt * 1.4
 
 
 # --- Bildgenaue Segmentgrenzen (2026-09-17) --------------------------------

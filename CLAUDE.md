@@ -30,11 +30,17 @@ Punkt fuer Punkt abgearbeitet, nicht nur bei neuem Material. Kurzfassung:
 4. **Untertitel** verdecken nie ein Gesicht — je Template nachgemessen, am
    gerenderten Frame kontrolliert.
 5. **Qualitaet halten, dynamisch schneiden.**
-6. **Kurzformat** (ab 2026-09-11, in Erprobung): erst ein Teaser mit dem
-   lustigsten Moment (2-7 s, `EditPlan.teaser`), dann harter Schnitt an den
-   Anfang der Geschichte, zusammen mindestens 30 s mit vollem Kontext (1a
-   gilt). Headline als Uebertreibung, Punch-in auf der Pointe. Die erste
-   Fassung (10-15 s, Pointe bei 3-5 s) war laut Nutzer "zu kurz, kein Kontext".
+6. **Kurzformat** (ab 2026-09-11): erst ein Teaser mit dem lustigsten
+   Moment (2-8 s, `EditPlan.teaser`), dann harter Schnitt an den Anfang der
+   Geschichte. Headline als Uebertreibung, Punch-in auf der Pointe.
+   **Zieldauer seit dem 2026-10-20: 20-30 s** (vorher mindestens 30). Damit
+   ist Tier A fuer Clips nicht mehr erreichbar; der Countdown ist von der
+   Regel ausgenommen.
+7. **Soundtrack** unter jedem Video, Stueck je Clip ueber einen Hash der
+   `clip_id` aus `~/Desktop/Soundtracks`, 20 dB unter der Stimme und zusaetzlich
+   geduckt. Fehlt der Ordner, bricht der Lauf ab.
+8. **Top 5**: das Videofeld auf voller Breite (`[0, 830, 1080, 608]`), Headline
+   und Liste kleiner als in den Referenzen — "man muss das Video sehen".
 
 Der Anlass ist gemessen und steht in der Datei: Von neun ausgelieferten Clips
 wurden drei abgelehnt, und **die abgelehnten hatten die hoeheren AI-Scores**

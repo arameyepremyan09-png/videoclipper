@@ -233,8 +233,16 @@ Gebaut als Teaser plus Geschichte:
   dort laeuft der Clip mit Kontext ueber die Pointe hinaus (`timing`). Der
   Moment kommt also zweimal. Einfach ab dem Lacher weiterlaufen haette den
   Kontext nicht geliefert — der liegt vor der Pointe, nicht dahinter.
-- **Mindestens 30 s**, darunter wird nicht gerendert. Ziel 30-60 s, darueber
-  ein Hinweis.
+- **20-30 s**, unter 20 wird nicht gerendert, darueber ein Hinweis.
+  Auftrag vom 2026-10-20: *"Alle Videos ausser die TOP 5 Videos sollen kuerzer
+  sein, so 20-30 Sekunden."* Das kehrt die Vorgabe vom 2026-09-11 um (damals
+  "mindestens 30 Sekunden oder drueber", aus der Rueckmeldung "zu kurz, kein
+  Kontext"). Beide Fassungen stehen hier, damit die neue nicht fuer einen
+  Fehler gehalten und zurueckgestellt wird.
+- **Tier A ist damit fuer Clips vom Tisch.** Creator Rewards verlangt ueber
+  63 s; ein Clip von 20-30 s kann das nie erreichen. Der Countdown ist von der
+  Dauerregel ausgenommen und bleibt bei rund 60 s — er ist seither das einzige
+  Format, das fuer die Auszahlung ueberhaupt in Frage kommt.
 - **Die Headline bleibt die Uebertreibung des Szenarios**, Regel 3 gilt
   weiter. `hook.pruefe` meldet bei diesem Stil "kein offenes Element" — das
   ist erwartet, eine Uebertreibung ist eine Aussage.
@@ -265,3 +273,61 @@ Rueckmeldung steht aus.
 6. Headline nach Regel 3, `hook.stil` + `hook.pruefe` muessen sauber sein.
 7. Ein Standbild aus der Mitte ansehen (Regel 1c und Regel 4).
 8. Rendern, QC lesen.
+
+---
+
+## Regel 7 — Soundtrack unter jedem Video (ab 2026-10-20)
+
+*"Alle Videos sollen einen Soundtrack haben, nutze dafuer folgende die auf
+meinem PC im Ordner Soundtracks auf meinem Desktop sind."*
+
+Ohne Einschraenkung, also auch unter dem Countdown.
+
+- Die Stuecke liegen auf der Maschine (`~/Desktop/Soundtracks`), nicht im
+  Repo. Pfad in `settings.toml`, Abweichungen in `local.toml`.
+- **Welches Stueck ein Clip bekommt, entscheidet ein Hash seiner `clip_id`** —
+  nicht der Zufall. Sonst laege bei jedem Rerender andere Musik unter
+  demselben Clip, und zwei Laeufe waeren nicht mehr vergleichbar (Leitprinzip
+  2). Mehrere Clips eines Laufes bekommen verschiedene Stuecke.
+- Das Bett liegt 20 dB unter der Stimme und weicht ihr zusaetzlich aus
+  (`sidechaincompress`). Gemessen am ersten Lauf: In den Sprechpausen und an
+  den Segmentnaehten des Countdowns, wo vorher digitale Stille lag, traegt es
+  jetzt bei -40 bis -48 dB.
+- **Fehlt der Ordner oder ist er leer, bricht der Lauf ab.** Dieselbe
+  Entscheidung wie bei den Pflicht-Overlays: Eine Datei ohne Musik hat
+  trotzdem die richtige Dauer, die richtige Aufloesung und eine Tonspur — das
+  QC kann sie nicht von einer fertigen unterscheiden.
+
+**Offen und vom Nutzer zu entscheiden:** Die Stuecke sind fremde Aufnahmen
+(eines davon das Zelda-Titelthema). Das Bewertungssystem hat am 2026-09-04
+gemessen, dass ein Post mit fremdem Sound auf **4 Views** kam, waehrend fuenf
+vergleichbare auf 905-1021 kamen (CLAUDE.md, "Duplikatsdrosselung"). Ob die
+Plattformen den Soundtrack erkennen und drosseln, zeigt erst der erste Post —
+es gehoert beobachtet.
+
+---
+
+## Regel 8 — Top 5: das Video gross, der Text klein (ab 2026-10-20)
+
+*"Bei den TOP 5 Videos muss das eigentliche Video viel groesser sein und der
+Text kleiner, man muss das Video sehen."*
+
+Das steht ueber der Vermessung der HallOfClips-Referenzen, die bis dahin
+`TOP5_HALLOFCLIPS` bestimmt hat. Geaendert sind drei Werte:
+
+| | Referenz (bis 2026-10-20) | jetzt |
+|---|---|---|
+| Videofeld | `[86, 900, 908, 908]` quadratisch | `[0, 830, 1080, 608]`, volle Breite |
+| Headline | 62 px | 44 px |
+| Liste | 50 px ab y=480 | 34 px ab y=300 |
+
+Der Anlass ist gemessen: Die Referenzmomente sind quadratisch geschnitten und
+fuellen ihr Feld. Eine eigene 16:9-Quelle steht in 908x908 nur als 908x511 —
+464000 Pixel Bild, der Rest Blur. Das neue Feld ist exakt so hoch wie das
+Bild und zeigt 657000 Pixel, 41 % mehr.
+
+**Mehr geht nur mit Beschnitt.** 1080x608 ist die groesste unverzerrte
+Flaeche, die ein 16:9-Bild auf 1080 Breite einnehmen kann. Ein hoeheres Feld
+braeuchte seitlichen Beschnitt und kostet bei Gespraechsformaten die Leute am
+Rand (Regel 2, Fall 2). Wenn das Bild noch groesser werden soll, ist das die
+Entscheidung, die ansteht.

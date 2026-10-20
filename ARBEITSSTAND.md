@@ -5,6 +5,28 @@ laeuft, was offen ist, mit welchen Befehlen und Werkzeugen gearbeitet wird.
 Architektur und Befunde stehen in [CLAUDE.md](CLAUDE.md), die Auftragslage des
 Nutzers in [SCHNITTREGELN.md](SCHNITTREGELN.md). Beide gelten zuerst.
 
+## Neu am 2026-10-20 — zwei Dauerregeln und ein Umbau
+
+Drei Ansagen des Nutzers, alle in SCHNITTREGELN.md als Regel 6/7/8 und ab
+sofort gueltig:
+
+1. **Clips 20-30 s** statt mindestens 30. `config/overlays.yaml`,
+   `kurzformat.dauer_min` / `dauer_ziel`. Tier A ist damit fuer Clips weg.
+2. **Soundtrack unter jedem Video**, neues Modul `src/videoclipper/soundtrack.py`,
+   Pfad in `settings.toml` (`[soundtrack]`), Hauswerte in `overlays.yaml`.
+   Stueckwahl ueber einen Hash der `clip_id`, damit ein Rerender dieselbe
+   Musik legt. Verdrahtet in alle drei Audiopfade von `render.py`
+   (Einzelclip, Teaser+Hauptteil, Countdown).
+3. **Top 5 mit grossem Videofeld**, `config/templates/top5_hallofclips.yaml`
+   umgebaut: `[0, 830, 1080, 608]` statt `[86, 900, 908, 908]`, Headline 44
+   statt 62, Liste 34 ab y=300 statt 50 ab y=480.
+
+**Noch nicht nachgezogen:** Die acht Clips aus x0XeuK8Ejys stammen von vor
+diesen Regeln — sie sind 34-83 s lang und haben keinen Soundtrack. Wer sie
+neu will, muss die Fenster kuerzen (nicht nur neu rendern): Bei 20-30 s
+Gesamtdauer bleibt neben einem 5-s-Teaser nur rund 20 s Geschichte, und
+Regel 1a gilt weiter.
+
 ## Offene Auftraege
 
 ### 000. x0XeuK8Ejys — Frankreich-Vlog, 8 Clips, ausgeliefert

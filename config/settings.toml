@@ -35,6 +35,22 @@ whisper_model = "large-v3-turbo"
 kandidaten_pro_video = 25
 min_score = 0.45
 
+[soundtrack]
+# Auftrag des Nutzers vom 2026-10-20: JEDES Video bekommt einen Soundtrack,
+# aus seinem eigenen Ordner. Die Dateien wandern NICHT mit dem Repo — sie sind
+# fremde Aufnahmen und gehoeren zur Maschine, nicht zum Code. Nur der Pfad
+# steht hier.
+#
+# BEWUSST KEINE VIERTE PLATTFORMSTELLE: `~` loest auf beiden Rechnern auf, der
+# Ausdruck ist also auf Windows und macOS derselbe. Liegt der Ordner woanders,
+# gehoert der abweichende Pfad nach config/local.toml — wie jede andere
+# maschinenspezifische Abweichung.
+ordner = "~/Desktop/Soundtracks"
+# Fehlt der Ordner oder ist er leer, bricht der Renderlauf ab statt still ohne
+# Musik zu rendern: Ein Clip ohne Soundtrack sieht im QC aus wie ein fertiger,
+# genau wie ein Clip ohne Pflicht-Overlays (siehe CLAUDE.md, qc.pflichtelemente).
+pflicht = true
+
 # ---------------------------------------------------------------------------
 # Plattformabhängig. Genau drei Stellen — mehr darf es nicht werden.
 # ---------------------------------------------------------------------------

@@ -9,7 +9,7 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
-from . import follow, layout, untertitel
+from . import follow, layout, soundtrack, untertitel
 from .editplan import EditPlan
 from .headline import baue as headline_bauen
 from .settings import einstellungen
@@ -209,7 +209,14 @@ def _buehne(quelle: str, r, blur: int, suffix: str = "") -> tuple[list[str], str
     return teile, ziel
 
 
-def filtergraph(plan: EditPlan, tmpl: dict) -> str:
+def filtergraph(plan: EditPlan, tmpl: dict, lufs: float | None = None,
+                musik_index: int | None = None) -> str:
+    """Einzelfenster. Mit ``musik_index`` laeuft auch der Ton durch den Graphen.
+
+    Ohne Musik bleibt der Ton draussen und ``rendere`` normiert ihn mit
+    ``-af`` — das ist der Pfad, den es seit jeher gibt. Sobald ein Musikbett
+    dazukommt, muss gemischt werden, und Mischen geht nur im Graphen.
+    """
     r = plan.resolved
     blur = (tmpl.get("hintergrund") or {}).get("staerke", 24)
     teile, _ = _buehne("0:v", r, blur)
@@ -228,10 +235,15 @@ def filtergraph(plan: EditPlan, tmpl: dict) -> str:
         teile.append(_overlay(vorher, 1 + haltebilder + i, u, raus))
         vorher = raus
     teile.append(f"[{vorher}]format=yuv420p[v]")
+    if musik_index is not None:
+        teile += soundtrack.kette(musik_index, r.dauer,
+                                  soundtrack.konfiguration(tmpl),
+                                  stimme="0:a", ziel="a", lufs=lufs)
     return ";".join(teile)
 
 
-def filtergraph_teile(plan: EditPlan, tmpl: dict, lufs: float) -> str:
+def filtergraph_teile(plan: EditPlan, tmpl: dict, lufs: float,
+                      musik_index: int | None = None) -> str:
     """Mehrere Quellfenster hintereinander — Teaser, dann Hauptteil.
 
     Je Segment eine eigene Buehne aus seinem eigenen Eingang, mit seinem
@@ -268,8 +280,17 @@ def filtergraph_teile(plan: EditPlan, tmpl: dict, lufs: float) -> str:
         stufen.append(label)
     teile.append("".join(f"[{s}]" for s in stufen)
                  + f"concat=n={n}:v=1:a=0[buehne]")
-    teile.append("".join(f"[{k}:a]" for k in range(n))
-                 + f"concat=n={n}:v=0:a=1,loudnorm=I={lufs}:TP=-1.5:LRA=11[a]")
+    if musik_index is None:
+        teile.append("".join(f"[{k}:a]" for k in range(n))
+                     + f"concat=n={n}:v=0:a=1,loudnorm=I={lufs}:TP=-1.5:LRA=11[a]")
+    else:
+        # Mit Musikbett wird erst zusammengesetzt, dann in ``soundtrack.kette``
+        # normiert und gemischt — ``loudnorm`` steht dort am Anfang.
+        teile.append("".join(f"[{k}:a]" for k in range(n))
+                     + f"concat=n={n}:v=0:a=1[stimme_roh]")
+        teile += soundtrack.kette(musik_index, r.dauer,
+                                  soundtrack.konfiguration(tmpl),
+                                  stimme="stimme_roh", ziel="a", lufs=lufs)
 
     vorher = "buehne"
     for i, u in enumerate(ueberlagerungen(plan, tmpl)):
@@ -338,6 +359,28 @@ def _haltebilder(plan: EditPlan, video: Path, bilder_dir: Path) -> list[Path]:
             for k, e in enumerate(r.einschuebe) if e["halten"]]
 
 
+def _musikstueck(clip_id: str, tmpl: dict) -> Path | None:
+    """Das Stueck fuer diesen Clip, oder ``None`` wenn ohne Soundtrack gerendert wird.
+
+    Bricht ab, wenn der Soundtrack Pflicht ist und kein Stueck dasteht. Das ist
+    dieselbe Entscheidung wie bei ``qc.pflichtelemente``: Eine Datei ohne
+    Musik hat trotzdem die richtige Dauer, die richtige Aufloesung und eine
+    Tonspur — das QC der fertigen Datei kann sie also nicht von einer
+    vollstaendigen unterscheiden.
+    """
+    if not soundtrack.aktiv(tmpl):
+        return None
+    stueck = soundtrack.waehle(clip_id)
+    if stueck is None and soundtrack.pflicht():
+        raise FileNotFoundError(
+            f"Soundtrack ist Pflicht, aber in {soundtrack.verzeichnis()} liegt "
+            f"keine brauchbare Datei. Ordner fuellen, den Pfad in "
+            f"config/local.toml setzen, oder soundtrack.pflicht in "
+            f"config/settings.toml auf false stellen."
+        )
+    return stueck
+
+
 def rendere(plan: EditPlan, tmpl: dict, video: Path, ziel: Path,
             vorschau: bool = False, bilder_dir: Path | None = None) -> Path:
     r = plan.resolved
@@ -350,22 +393,31 @@ def rendere(plan: EditPlan, tmpl: dict, video: Path, ziel: Path,
     encoder = e["platform"]["preview_encoder" if vorschau else "encoder"]
     lufs = (tmpl.get("audio") or {}).get("ziel_lufs", e["output"]["target_lufs"])
 
+    # Musik haengt GANZ HINTEN im Eingang, damit sich kein bestehender Index
+    # verschiebt — Haltebilder und PNGs werden ueber ihre Position adressiert.
+    musik = _musikstueck(plan.clip_id, tmpl)
+    n_video = len(r.segmente) or 1
+    musik_index = n_video + len(halte) + len(bilder) if musik else None
+
     cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"]
     if r.segmente:
         # Teaser und Hauptteil: ein Eingang je Quellfenster, der Ton im Graphen.
         for seg in r.segmente:
             cmd += ["-ss", f"{seg['start']:.3f}", "-t", f"{seg['dauer']:.3f}",
                     "-i", str(video)]
-        graph = filtergraph_teile(plan, tmpl, lufs)
+        graph = filtergraph_teile(plan, tmpl, lufs, musik_index)
         karten = ["-map", "[v]", "-map", "[a]"]
     else:
         cmd += ["-ss", f"{r.start:.3f}", "-t", f"{r.dauer:.3f}", "-i", str(video)]
-        graph = filtergraph(plan, tmpl)
-        karten = ["-map", "[v]", "-map", "0:a",
-                  "-af", f"loudnorm=I={lufs}:TP=-1.5:LRA=11"]
+        graph = filtergraph(plan, tmpl, lufs, musik_index)
+        karten = (["-map", "[v]", "-map", "[a]"] if musik else
+                  ["-map", "[v]", "-map", "0:a",
+                   "-af", f"loudnorm=I={lufs}:TP=-1.5:LRA=11"])
     # Reihenfolge der Eingaenge wie im Graphen: Haltebilder, dann PNGs.
     for bild in halte + bilder:
         cmd += ["-i", str(bild)]
+    if musik:
+        cmd += soundtrack.eingang(musik, soundtrack.konfiguration(tmpl))
     cmd += [
         "-filter_complex", graph,
         *karten,
@@ -407,7 +459,8 @@ def _segment_kette(idx: int, seg: dict, panel: tuple[int, int, int, int],
     )
 
 
-def filtergraph_countdown(plan, tmpl: dict, lufs: float) -> str:
+def filtergraph_countdown(plan, tmpl: dict, lufs: float,
+                          musik_index: int | None = None) -> str:
     r = plan.aufgeloest
     blur = (tmpl.get("hintergrund") or {}).get("staerke", 24)
     n = len(r.segmente)
@@ -425,7 +478,12 @@ def filtergraph_countdown(plan, tmpl: dict, lufs: float) -> str:
                  + f"concat=n={n}:v=1:a=1[cv][ca_roh]")
     # loudnorm muss in den Graphen: ``-af`` weigert sich bei Streams, die aus
     # einem filter_complex kommen, und bricht mit Exit 234 ab.
-    teile.append(f"[ca_roh]loudnorm=I={lufs}:TP=-1.5:LRA=11[ca]")
+    if musik_index is None:
+        teile.append(f"[ca_roh]loudnorm=I={lufs}:TP=-1.5:LRA=11[ca]")
+    else:
+        teile += soundtrack.kette(musik_index, r.dauer,
+                                  soundtrack.konfiguration(tmpl),
+                                  stimme="ca_roh", ziel="ca", lufs=lufs)
 
     # Headline liegt konstant oben; danach je Segment ein Listenzustand.
     kopf = n                      # Eingangsindex des Headline-PNG
@@ -474,6 +532,8 @@ def rendere_countdown(plan, tmpl: dict, videos: dict[str, Path], ziel: Path,
     encoder = e["platform"]["preview_encoder" if vorschau else "encoder"]
     lufs = (tmpl.get("audio") or {}).get("ziel_lufs", e["output"]["target_lufs"])
 
+    musik = _musikstueck(plan.clip_id, tmpl)
+
     cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"]
     for seg in r.segmente:
         quelle = videos.get(seg["video_id"])
@@ -485,13 +545,21 @@ def rendere_countdown(plan, tmpl: dict, videos: dict[str, Path], ziel: Path,
     cmd += ["-i", str(kopf_png)]
     for p in listen:
         cmd += ["-i", str(p)]
+    follow_bilder = []
     if r.follow:
         h = follow.Hinweis(r.follow["text"], r.follow["ab"], r.follow["bis"])
-        for pfad in follow.baue(tmpl, bilder_dir, plan.clip_id, h):
+        follow_bilder = follow.baue(tmpl, bilder_dir, plan.clip_id, h)
+        for pfad in follow_bilder:
             cmd += ["-i", str(pfad)]
 
+    # Wie im Clippfad ganz hinten, damit kein bestehender Index wandert.
+    musik_index = (len(r.segmente) + 1 + len(listen) + len(follow_bilder)
+                   if musik else None)
+    if musik:
+        cmd += soundtrack.eingang(musik, soundtrack.konfiguration(tmpl))
+
     cmd += [
-        "-filter_complex", filtergraph_countdown(plan, tmpl, lufs),
+        "-filter_complex", filtergraph_countdown(plan, tmpl, lufs, musik_index),
         "-map", "[v]", "-map", "[ca]",
         "-r", str(r.fps),
         "-c:v", encoder, "-b:v", "1500k" if vorschau else "8000k",

@@ -1,9 +1,10 @@
 """Tests fuer das Kurzformat mit Teaser (ab 2026-09-11).
 
-Erst der lustigste Moment, dann die Geschichte mit Kontext, zusammen
-mindestens 30 s. Im fertigen Clip ist davon nur noch mit der Stoppuhr etwas zu
-pruefen — und ein Punch-in, der im falschen Segment oder zur falschen Zeit
-sitzt, faellt im QC der Datei gar nicht auf.
+Erst der lustigste Moment, dann die Geschichte mit Kontext. Die Zieldauer ist
+seit dem 2026-10-20 20-30 s (Auftrag des Nutzers); davor waren es mindestens
+30 s. Im fertigen Clip ist davon nur noch mit der Stoppuhr etwas zu pruefen —
+und ein Punch-in, der im falschen Segment oder zur falschen Zeit sitzt, faellt
+im QC der Datei gar nicht auf.
 """
 
 from __future__ import annotations
@@ -43,13 +44,20 @@ def test_teaser_steht_vorn_und_der_hauptteil_schliesst_an():
 
 
 def test_sauberer_clip(tmpl):
-    fehler, hinweise = kurzformat.pruefe(_segs(), Pointe(t=202.0), tmpl["kurzformat"])
+    """4 s Teaser plus 22 s Geschichte = 26 s, mitten im Zielband 20-30."""
+    fehler, hinweise = kurzformat.pruefe(_segs(haupt=(182.0, 204.0)),
+                                         Pointe(t=202.0), tmpl["kurzformat"])
     assert fehler == [] and hinweise == []
 
 
-def test_unter_30_sekunden_bricht_ab(tmpl):
-    """Die Rueckmeldung des Nutzers woertlich: zu kurz, kein Kontext."""
-    fehler, _ = kurzformat.pruefe(_segs(haupt=(185.0, 205.0)), Pointe(t=202.0),
+def test_unter_der_untergrenze_bricht_ab(tmpl):
+    """18 s: unter 20 wird nicht gerendert.
+
+    Die Grenze stand bis zum 2026-10-20 auf 30 s — aus der Rueckmeldung "zu
+    kurz, kein Kontext". Der Nutzer hat sie an dem Tag auf 20 gesetzt; der
+    Test haelt nur fest, DASS es eine Untergrenze gibt, nicht welche.
+    """
+    fehler, _ = kurzformat.pruefe(_segs(haupt=(190.0, 204.0)), Pointe(t=202.0),
                                   tmpl["kurzformat"])
     assert any("mindestens" in f for f in fehler)
 

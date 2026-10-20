@@ -14,22 +14,49 @@
 #   Groessen sind so gewaehlt, dass Ziffern- und Versalhoehe den Referenzen
 #   entsprechen; die Zeilen werden dadurch schmaler als dort.
 #
-# DAS VIDEOFELD REICHT BIS y=1808 und damit in TikToks UI-Zone (ab 1728).
-# Bewusst uebernommen: Die Referenzen sind so gebaut und kommen so an.
-# ``sicherheitszone_pruefen`` meldet es bei jedem Lauf, das ist gewollt.
+# UMGEBAUT AM 2026-10-20 AUF ANSAGE DES NUTZERS: "Bei den TOP 5 Videos muss
+# das eigentliche Video viel groesser sein und der Text kleiner, man muss das
+# Video sehen."
+#
+# Das hebelt die Vermessung der Referenzen an genau zwei Stellen aus, und
+# zwar absichtlich — SCHNITTREGELN.md steht ueber jeder Messung. Was vorher
+# hier stand und warum es fuer die Referenzen richtig war:
+#
+#   Videofeld   [86, 900, 908, 908]   quadratisch, gemessen an allen dreien
+#   Headline    62 px auf y=312
+#   Liste       50 px ab y=480, Abstand 86.25
+#
+# DER GRUND, WARUM ES FUER EIGENES MATERIAL NICHT TAUGT: Die Referenzmomente
+# sind quadratisch geschnitten und fuellen ihr Feld ganz. Eine 16:9-Quelle
+# steht in 908x908 nur als 908x511 — 464000 Pixel Bild, der Rest Blur. Beim
+# ersten eigenen Countdown (frankreich_top5) war genau das der Befund.
+#
+# JETZT: volle Breite, unbeschnitten. 1080x608 sind 657000 Pixel, 41 % mehr
+# als vorher, und das Feld ist exakt so hoch wie das Bild — innerhalb des
+# Panels bleibt kein Blurbalken. Mehr geht ohne Beschneiden nicht: 1080x608
+# ist die groesste unverzerrte Flaeche, die ein 16:9-Bild auf 1080 Breite
+# einnehmen kann. Wer mehr will, muss seitlich beschneiden und verliert bei
+# Gespraechsformaten die Leute am Rand (Regel 2, Fall 2).
+#
+# Das Videofeld endet jetzt bei y=1520 und liegt damit ERSTMALS ganz ueber
+# TikToks UI-Zone (ab 1728). Die Meldung von ``sicherheitszone_pruefen``
+# faellt deshalb weg — bei den Referenzen lief das Feld bis 1808 hinein.
 
 name: TOP5_HALLOFCLIPS
-beschreibung: Top-5-Countdown im HallOfClips-Stil, quadratisches Videofeld, Liste mit Emojis
+beschreibung: Top-5-Countdown, Videofeld auf voller Breite, kleine Liste mit Emojis
 gilt_fuer_modus: COMPILATION
 
 canvas: [1080, 1920]
 
 panels:
-  # Die uebernommenen Momente sind bereits 908x908 (top5_referenz.py
-  # schneidet genau dieses Feld aus) — einpassen fuellt es dann exakt.
-  # Eigenes 16:9-Material bekaeme hier Blurbalken oben und unten.
+  # ``einpassen`` statt ``fuellen``: Eine 16:9-Quelle fuellt dieses Feld exakt,
+  # es entsteht kein Blurbalken. Ein quadratisch geschnittener Moment aus
+  # ``top5_referenz.py`` (908x908) bekommt hier dagegen Balken links und
+  # rechts — fuer uebernommene Referenzmomente ist das alte Feld das richtige.
   - quelle: segment
-    ziel: [86, 900, 908, 908]
+    # Volle Breite, 16:9, mittig im freien Raum unter der Liste (endet 540)
+    # und ueber der UI-Zone (ab 1728): 540 + (1728-540-608)/2 = 830.
+    ziel: [0, 830, 1080, 608]
     passung: einpassen
 
 hintergrund:
@@ -40,38 +67,38 @@ headline:
   statisch: true
   quelle: countdown.titel
   schrift: Anton
-  # Referenz: Versalhoehe 53 px, zwei Zeilen im Abstand von 91 px, Mitte y=312.
-  # Anton hat Versalhoehe 0,86 der Groesse -> 62; 91 / 62 = 1,47.
-  schriftgroesse: 62
+  # 44 statt der an der Referenz gemessenen 62: "der Text kleiner" (Nutzer,
+  # 2026-10-20). ``zeilen_faktor`` bleibt, das Verhaeltnis stimmt weiter.
+  schriftgroesse: 44
   zeilen_faktor: 1.47
   versalien: true
   farbe: "#FAC102"          # Median aus ~35000 Pixeln, alle drei Shorts gleich
   rand_farbe: "#000000"
-  rand_staerke: 7
+  rand_staerke: 6
   neigung: 0.18
-  y: 312
-  # Bricht wie die Referenz vor "MOMENTE" (dort 630-663 px breit). Der
-  # Umbruch misst jede Zeile gegen max_breite minus Emojiblock (142 px bei 62).
-  max_breite: 700
+  y: 150
+  # Breiter als die Referenz (700): Bei 44 px passt mehr in eine Zeile, und
+  # zwei kurze Zeilen stehen ruhiger als zwei fast leere.
+  max_breite: 920
   max_zeilen: 2
   renderer: png_overlay
 
 liste:
   plaetze: 5
-  # Ziffernmitten gemessen bei 479 / 565 / 651 / 738 / 824, Hoehe 43 px.
-  # erste_zeile_y ist die Ankermitte von Pillow ("mm"), nicht die Ziffernmitte —
-  # der Wert ist am gerenderten PNG gegen 479 nachgemessen.
-  erste_zeile_y: 480
-  zeilenabstand: 86.25
-  ziffer_x: 160             # "1." bis "5." liegen auf x=138..182
+  # Die Referenzwerte waren 480 / 86.25 / 160 bei 50 px Schrift. Hier alles
+  # kleiner und weiter oben, damit unter der Liste Platz fuer das Videofeld
+  # bleibt: fuenf Zeilen ab 300 im Abstand von 60 enden bei 540.
+  erste_zeile_y: 300
+  zeilenabstand: 60.0
+  ziffer_x: 205             # mittiger als die Referenz, weil die Zeilen kuerzer sind
   text_x: 540               # Beschriftung + Emojis als Gruppe mittig
   schrift: Anton
-  schriftgroesse: 50
+  schriftgroesse: 34
   versalien: false
   farbe: "#FFFFFF"
   rand_farbe: "#000000"
-  rand_staerke: 6
-  max_breite: 680           # Referenz bis 202..890, die Ziffern enden bei 182
+  rand_staerke: 5
+  max_breite: 700           # bei 34 px reicht das fuer rund 30 Zeichen plus Emoji
   emoji_faktor: 1.3         # Totenkopf 70 px gegen 43 px Ziffernhoehe
   renderer: png_overlay
 
@@ -88,15 +115,12 @@ untertitel:
     haben ebenfalls keine Untertitel (bis 1,28 Mio. Views).
 
 follow_hinweis:
-  # Zwischen Liste (endet 848) und Videofeld (beginnt 900) ist kein Platz fuer
-  # den 150-px-Knopf. Er steht deshalb im Videofeld, so tief, wie die UI-Zone
-  # erlaubt (1565..1715), und in der linken unteren Ecke statt mittig: Beim
-  # ersten Render von abugoku_top5 lag er mittig bei 23.7 s auf dem Kopf von
-  # Coach, der sich gerade vor Lachen kruemmt — auf der Pointe von Platz 4.
-  # Links unten (x 125..275) stehen in allen vier gemessenen Bildern des
-  # Follow-Fensters Oberkoerper und Arme. Am gerenderten Frame je Plan nachsehen.
+  # Links unten IM Videofeld (830..1438), nicht mittig: Beim ersten Render von
+  # abugoku_top5 lag der Knopf mittig bei 23.7 s auf dem Kopf von Coach, der
+  # sich gerade vor Lachen kruemmte — auf der Pointe von Platz 4. Am
+  # gerenderten Frame je Plan nachsehen, das ist materialabhaengig.
   x: 200
-  y: 1640
+  y: 1270
 
 audio:
   normalisieren: true

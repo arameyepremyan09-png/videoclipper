@@ -19,7 +19,8 @@ ROOT = Path(__file__).resolve().parents[2]
 
 # Overlays, die in jedem Clip gleich aussehen und deshalb nicht elfmal im
 # Template stehen. Ein Template darf einzelne Werte ueberschreiben.
-UEBERALL = ("sicherheitszone", "untertitel", "follow_hinweis", "kurzformat")
+UEBERALL = ("sicherheitszone", "untertitel", "follow_hinweis", "kurzformat",
+            "soundtrack")
 
 
 def _lade(ordner: str, name: str) -> dict[str, Any]:

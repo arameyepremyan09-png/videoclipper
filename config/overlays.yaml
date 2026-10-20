@@ -176,13 +176,32 @@ follow_hinweis:
 # staerkeren Zoom, wo das Bild klein steht.
 
 kurzformat:
-  dauer_min: 30.0              # "mindestens 30 Sekunden oder drueber" — darunter kein Render
-  dauer_ziel: [30.0, 60.0]     # darueber ein Hinweis, kein Abbruch
+  # AUFTRAG DES NUTZERS VOM 2026-10-20: "Alle Videos ausser die TOP 5 Videos
+  # sollen kuerzer sein, so 20-30 Sekunden."
+  #
+  # Das kehrt die Vorgabe vom 2026-09-11 um, die hier vorher stand (min 30.0,
+  # Ziel 30-60). Die alte kam aus der Rueckmeldung auf fuenf 10-15-s-Clips:
+  # "Die Clips sind oft zu kurz, man versteht nicht, was der Kontext hinter
+  # denen ist." Daraus wurde die 30-s-Untergrenze. Die neue Vorgabe gilt ab
+  # jetzt; der Verlauf steht in SCHNITTREGELN.md, Regel 6, damit niemand sie
+  # fuer einen Tippfehler haelt und zurueckstellt.
+  #
+  # WAS DAS KOSTET, gemessen und nicht verhandelbar: Tier A verlangt ueber
+  # 63 s gerenderte Dauer (monetarisierung.tier_a_min_sekunden). Ein Clip
+  # von 20-30 s kann das nie erreichen. Damit ist TOP5_HALLOFCLIPS das
+  # einzige Format, das noch fuer Creator Rewards in Frage kommt — es ist von
+  # dieser Regel ausgenommen und liegt bei rund 60 s.
+  dauer_min: 20.0              # darunter kein Render
+  dauer_ziel: [20.0, 30.0]     # darueber ein Hinweis, kein Abbruch
   teaser:
     min: 2.0                   # kuerzer ist es ein Wort, kein Moment
     # Laenger erzaehlt der Teaser schon die Geschichte. 8 statt der zuerst
     # angesetzten 7: Ein Teaser muss einen ganzen Witz tragen, und der aus
     # 0-OqdAjLq_0_004 (Satz, Echo, Pointe, Reaktion) braucht gemessen 7.7 s.
+    #
+    # Bei 20-30 s Gesamtdauer frisst ein 8-s-Teaser bis zu 40 % des Clips und
+    # laesst der Geschichte 12 s. Die Obergrenze bleibt trotzdem stehen: Sie
+    # ist gemessen, und wo ein Witz sie braucht, ist der Hauptteil eben kurz.
     max: 8.0
 
   # Die Uebertreibung im Bild: ein harter Zoom auf die Gesichter, genau auf
@@ -199,3 +218,54 @@ kurzformat:
   # der Zuschauer noch nicht entschieden, ob er bleibt.
   follow_hinweis:
     abstand: 1.0               # so lange nach dem Rueckschnitt fruehestens
+
+# ---------------------------------------------------------------------------
+# Soundtrack — Pflicht in jedem Video, ab 2026-10-20
+# ---------------------------------------------------------------------------
+# Auftrag des Nutzers: "Alle Videos sollen einen Soundtrack haben." Ohne
+# Einschraenkung, also auch der Countdown.
+#
+# WARUM HIER und nicht im Materialprofil oder Template: Der Soundtrack haengt
+# weder an der Geometrie der Quelle noch an der Zielkomposition — er ist eine
+# Hausregel fuer jedes Video. Dieselbe Begruendung wie fuer Untertitel und
+# Follow-Knopf, und damit nach Leitprinzip 3 kein Fall fuer die beiden
+# materialabhaengigen Schichten. Ein Template darf einzelne Werte
+# ueberschreiben, etwa einen leiseren Bett unter einem lauten Format.
+#
+# WO DIE DATEIEN LIEGEN: settings.toml, Abschnitt [soundtrack]. Sie wandern
+# nicht mit dem Repo.
+soundtrack:
+  aktiv: true
+
+  # WIE DIE WAHL FAELLT: deterministisch aus der clip_id, nicht zufaellig.
+  # Leitprinzip 2 verlangt, dass derselbe Eingang dasselbe Ergebnis gibt —
+  # ein `random.choice` haette bei jedem Rerender eine andere Musik unter
+  # denselben Clip gelegt, und der Vergleich zweier Laeufe waere wertlos.
+  # Die Dateien werden nach Namen sortiert, der Index kommt aus einem
+  # stabilen Hash der clip_id. Mehrere Clips eines Laufes bekommen so
+  # verschiedene Stuecke, derselbe Clip immer dasselbe.
+  wahl: clip_id
+
+  # Lautstaerke des Bettes, bevor geduckt wird. -20 dB ist der uebliche
+  # Startwert fuer Sprache ueber Musik; der Wert ist NICHT an diesem Material
+  # gemessen und gehoert am ersten fertigen Clip nachgehoert.
+  pegel_db: -20.0
+
+  # Ducking: Die Musik weicht der Stimme, statt dauerhaft leise zu sein.
+  # Ohne das muesste das Bett so tief liegen, dass es in den Pausen gar nicht
+  # mehr traegt — und genau die Pausen soll es fuellen.
+  ducking:
+    aktiv: true
+    schwelle: 0.03             # ab welchem Stimmpegel geduckt wird
+    verhaeltnis: 8             # wie stark
+    attack: 20                 # ms, schnell genug fuer einen Satzanfang
+    release: 400               # ms, langsam genug, dass es nicht pumpt
+
+  # Ein harter Musikeinsatz im ersten Bild klingt nach Fehler, ein hartes Ende
+  # nach Abbruch. Beide Blenden sind kurz genug, um bei 20 s nicht aufzufallen.
+  blende_ein: 0.5
+  blende_aus: 1.0
+
+  # Kuerzer als der Clip: Das Stueck laeuft von vorne weiter. Laenger: es wird
+  # abgeschnitten. Beides ist besser als Stille am Ende.
+  schleife: true
