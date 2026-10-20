@@ -177,6 +177,8 @@ Abschnitt TOP5_COUNTDOWN; Auftrag: SCHNITTREGELN.md, Regel 2b.
 | ueberholt | `2026-09-16_20-14-36` und `2026-09-17_12-52-00`: Liste schaltete bis 50 ms vor dem Schnitt |
 | Code | `liste.py` Emojis als Gruppe mittig, Abbruch bei Emoji ohne PNG; `headline.py` `neigung` und `zeilen_faktor`; `cli._quellen` sucht auch `quellen/` und `referenz/top5/momente/`; `countdown.loese_auf` rechnet in Bildern, `render` schneidet je Segment mit `trim`; Tests in `tests/test_countdown.py` |
 | `data/plans/marli_top5.json` | alter Plan vom 2026-09-05, vor den Schnittregeln; nicht neu gerendert |
+| `data/plans/frankreich_top5.json` | "Top Clips von Coach Rohat und Yussuf", 5 Momente, 62,0 s, **erster Countdown aus eigenem Material** |
+| Lauf | `~/videoclipper/clips/2026-10-20_22-18-01` (lokal), Handy-Fassung unter `handy/` |
 
 Reihenfolgen: AbuGoku 5 Chaya reiten, 4 Abu hat Flashbacks, 3 Klingt Abdi
 schwarz?, 2 Du bist daran gewoehnt, 1 So sieht Abdi nicht aus (nicht dabei:
@@ -193,8 +195,16 @@ Offen:
 2. Weitere Emojis fuer die Liste (😭, 🧀, 🙏🏽 in den Referenzen) nur auf Wunsch
    des Nutzers — Regel 3 laesst fuer Hooks vier zu.
 3. Die vier TikTok-Referenzen aus SCHNITTREGELN Fall 5 sind nicht vermessen.
-4. Countdown aus eigenem Material: Momentgrenzen ueber `snappe` statt fester
-   Dauern, und 16:9-Quellen bekommen im quadratischen Feld Blurbalken.
+4. Countdown aus eigenem Material: erledigt am 2026-10-20 mit
+   `frankreich_top5`. Die Momentgrenzen sind mit `snappe` gerechnet und als
+   feste `start`/`dauer` in den Plan geschrieben — `CountdownPlan` kennt kein
+   Snapping, der Weg ist also Rechnen und Eintragen, nicht Umbauen. Die
+   16:9-Quelle bekommt im quadratischen Feld wie vorhergesagt Blurbalken: Das
+   Bild steht als 908x511 in 908x908. Sichtbar kleiner als in den Referenzen,
+   deren Momente quadratisch geschnitten sind. `fuellen` waere die Alternative
+   und ist hier falsch — es naehme 37 % der Breite, und bei Platz 5 stehen
+   drei Personen nebeneinander im Bild (Regel 2, Fall 2). Ob der Nutzer das
+   kleinere Bild akzeptiert, ist offen.
 
 ### 3. Ausgeliefert, Rueckmeldung des Nutzers steht aus
 

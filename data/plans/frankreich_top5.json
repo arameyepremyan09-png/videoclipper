@@ -1,0 +1,44 @@
+{
+  "clip_id": "frankreich_top5",
+  "titel": "Top Clips von Coach Rohat und Yussuf",
+  "template": "TOP5_HALLOFCLIPS",
+  "sprache": "de",
+  "fps": 30,
+  "eintraege": [
+    {
+      "platz": 5,
+      "text": "Warum glänzen die Schuhe 💀",
+      "video_id": "x0XeuK8Ejys",
+      "start": 1094.44,
+      "dauer": 17.84
+    },
+    {
+      "platz": 4,
+      "text": "Paris oder Craft Attack 🫩",
+      "video_id": "x0XeuK8Ejys",
+      "start": 1649.4,
+      "dauer": 10.02
+    },
+    {
+      "platz": 3,
+      "text": "Matratzen Concord 🥀",
+      "video_id": "x0XeuK8Ejys",
+      "start": 995.8,
+      "dauer": 13.97
+    },
+    {
+      "platz": 2,
+      "text": "Die Kassiererin ist Yakuza 💀",
+      "video_id": "x0XeuK8Ejys",
+      "start": 838.6,
+      "dauer": 10.17
+    },
+    {
+      "platz": 1,
+      "text": "Sie sieht durch Wände 🙏",
+      "video_id": "x0XeuK8Ejys",
+      "start": 1746.8,
+      "dauer": 10.03
+    }
+  ]
+}
