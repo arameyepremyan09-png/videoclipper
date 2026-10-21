@@ -640,7 +640,8 @@ def cmd_beobachte(args: argparse.Namespace) -> None:
     if args.aktion == "status":
         beobachten.status()
     else:
-        beobachten.durchgang(probe=args.probe, nur_video=args.video)
+        beobachten.durchgang(probe=args.probe, nur_video=args.video,
+                             nur_hochladen=args.nur_hochladen)
 
 
 def cmd_prognose(args: argparse.Namespace) -> None:
@@ -933,6 +934,8 @@ def main() -> None:
     bo.add_argument("--probe", action="store_true",
                     help="nur Feeds abrufen und zeigen, was offen ist")
     bo.add_argument("--video", help="nur dieses offene Video bearbeiten")
+    bo.add_argument("--nur-hochladen", action="store_true",
+                    help="keine neuen Videos suchen, nur offene YouTube-Uploads nachholen")
     bo.set_defaults(func=cmd_beobachte)
 
     b = sub.add_parser("bewerte", help="Rangliste, Muster, Luecken")

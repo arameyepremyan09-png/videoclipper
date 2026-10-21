@@ -168,11 +168,17 @@ def veroeffentliche(lauf: Path, *, plattformen: Iterable[str] = hochladen.PLATTF
                     beschreibung=" ".join(tags), tags=[h[1:] for h in tags],
                     sichtbarkeit="oeffentlich", zeit=termin.isoformat())
             except hochladen.HochladeFehler as e:
-                melde(f"  {clip_id}  FEHLER {e}")
-                if "quota" in str(e).lower():
-                    melde("  Tageskontingent erschoepft — morgen denselben Befehl erneut.")
+                # Zwei Grenzen, beide gelten fuer alle weiteren Clips: das
+                # API-Kontingent (quotaExceeded) und das Upload-Limit des
+                # Kanals (uploadLimitExceeded, gemessen am 2026-10-21 nach 16
+                # Uploads am Vortag). Weiterversuchen erzeugt nur Fehler.
+                if any(g in str(e) for g in ("quota", "uploadLimitExceeded")):
+                    melde(f"  {clip_id}  YouTube-Tageslimit erreicht — "
+                          "in rund 24 h denselben Befehl erneut.")
                     ergebnis["youtube_offen"] = len(offen) - i
+                    ergebnis["youtube_limit"] = True
                     break
+                melde(f"  {clip_id}  FEHLER {e}")
                 ergebnis["youtube_offen"] += 1
                 continue
             stand.setdefault(clip_id, {})["youtube"] = {

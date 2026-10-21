@@ -218,3 +218,26 @@ def test_stand_rundreise(tmp_path):
     b.speichere_stand(stand, pfad)
     assert b.lade_stand(pfad) == stand
     assert b.lade_stand(tmp_path / "fehlt.json") == {"kanaele": {}, "videos": {}}
+
+
+def test_tageslimit_bricht_ab_und_sagt_es(monkeypatch, tmp_path):
+    from videoclipper import hochladen, veroeffentlichen as ver
+    lauf = ausgabe.neuer_lauf(tmp_path)
+    for n in ("abc_001", "abc_002", "abc_003"):
+        (lauf.mp4 / f"{n}.mp4").write_bytes(b"x")
+    lauf.titel([(n, "t", "Y") for n in ("abc_001", "abc_002", "abc_003")])
+    versuche = []
+
+    def limit(*a, **kw):
+        versuche.append(a[0])
+        raise hochladen.HochladeFehler('HTTP 400 ... "reason": "uploadLimitExceeded"')
+    monkeypatch.setattr(ver.hochladen, "lade_youtube_hoch", limit)
+    monkeypatch.setattr(ver, "_geplante_youtube_termine", lambda jetzt: [])
+    r = ver.veroeffentliche(lauf.wurzel, plattformen=["youtube"], melde=lambda t: None)
+    assert len(versuche) == 1
+    assert r["youtube_offen"] == 3 and r["youtube_limit"]
+
+    v = {"kanal": "K", "laeufe": [str(lauf.wurzel)]}
+    monkeypatch.setattr(b.veroeffentlichen, "veroeffentliche", lambda lauf, **kw: r)
+    b.lade_hoch("abc", v, lambda t: None)
+    assert v["status"] == "upload_offen" and "Tageslimit" in v["grund"]

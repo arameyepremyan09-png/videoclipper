@@ -477,7 +477,11 @@ def lade_hoch(video_id: str, v: dict[str, Any], melde: Callable[[str], None]) ->
             melde(f"{video_id}: Upload gescheitert — {e}")
             return
         if r["youtube_offen"]:
-            v.update(status="upload_offen", grund=f"{r['youtube_offen']} Uploads noch offen")
+            grund = f"{r['youtube_offen']} Uploads noch offen"
+            if r.get("youtube_limit"):
+                grund = (f"YouTube-Tageslimit — {r['youtube_offen']} Uploads offen, "
+                         "spaeter `neue-clips --nur-hochladen`")
+            v.update(status="upload_offen", grund=grund)
             return
         termine += [e["youtube"]["termin"] for e in veroeffentlichen.lade_stand(lauf).values()
                     if "youtube" in e]
@@ -577,7 +581,10 @@ def bearbeite(video_id: str, v: dict[str, Any], conf: dict[str, Any], jetzt: dat
 
 
 def durchgang(*, probe: bool = False, nur_video: str | None = None,
-              melde: Callable[[str], None] = print) -> None:
+              nur_hochladen: bool = False, melde: Callable[[str], None] = print) -> None:
+    """``nur_hochladen``: keine Feeds, kein Schnitt — nur fertige Laeufe, deren
+    Upload offen ist (Tageslimit von YouTube). Ein neues Video seit dem letzten
+    Aufruf wuerde sonst nebenbei eine Stunde Schnitt anstossen."""
     melde = _stempel(melde)
     conf = konfiguration()
     with sperre() as frei:
@@ -587,7 +594,7 @@ def durchgang(*, probe: bool = False, nur_video: str | None = None,
         jetzt = datetime.now(timezone.utc)
         stand = lade_stand()
 
-        for kanal in kanaele():
+        for kanal in [] if nur_hochladen else kanaele():
             erst = kanal.channel_id not in stand["kanaele"]
             try:
                 neu = nimm_auf(stand, kanal, hole_feed(kanal), jetzt)
@@ -600,7 +607,8 @@ def durchgang(*, probe: bool = False, nur_video: str | None = None,
                 melde(f"{kanal.handle}: neu {e.video_id}{' (Short)' if e.short else ''} {e.titel}")
         speichere_stand(stand)
 
-        offen = sorted((vid for vid, v in stand["videos"].items() if v["status"] in OFFEN),
+        status_offen = ("upload_offen",) if nur_hochladen else OFFEN
+        offen = sorted((vid for vid, v in stand["videos"].items() if v["status"] in status_offen),
                        key=lambda vid: stand["videos"][vid]["veroeffentlicht"])
         if nur_video:
             offen = [vid for vid in offen if vid == nur_video]
@@ -609,12 +617,15 @@ def durchgang(*, probe: bool = False, nur_video: str | None = None,
                 v = stand["videos"][vid]
                 melde(f"offen {vid} [{v['status']}] {v['kanal']}: {v['titel']}")
             if not offen:
-                melde("Keine neuen Videos.")
+                melde("Keine offenen Uploads." if nur_hochladen else "Keine neuen Videos.")
             return
 
         halte_wach()
-        melde(f"{len(offen)} Videos zu bearbeiten — je Video etwa eine Stunde. "
-              "Den Mac aufgeklappt lassen.")
+        if nur_hochladen:
+            melde(f"{len(offen)} Videos mit offenem Upload.")
+        else:
+            melde(f"{len(offen)} Videos zu bearbeiten — je Video etwa eine Stunde. "
+                  "Den Mac aufgeklappt lassen.")
         for vid in offen:
             bearbeite(vid, stand["videos"][vid], conf, datetime.now(timezone.utc),
                       lambda: speichere_stand(stand), melde)

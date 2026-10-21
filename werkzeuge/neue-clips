@@ -6,6 +6,7 @@
 #   neue-clips --probe     nur zeigen, was neu ist
 #   neue-clips status      was zuletzt passiert ist, welche Laeufe auf TikTok warten
 #   neue-clips --video ID  nur dieses Video
+#   neue-clips --nur-hochladen  nichts suchen, nur offene YouTube-Uploads nachholen
 #
 # Einmalig als Kurzbefehl einrichten:
 #   echo "alias neue-clips=~/Desktop/VideoClipper/repo/werkzeuge/neue-clips" >> ~/.zshrc
