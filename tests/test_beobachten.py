@@ -1,7 +1,5 @@
 """Feed, Entscheidung, Laufpruefung, Agentenaufruf. Netzwerk wird nicht beruehrt."""
 
-import json
-import plistlib
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -85,10 +83,11 @@ def test_entscheidung():
     assert b.entscheide(_meta(duration=6 * 3600), CONF, 1.0, "de-orig").art == "ueberspringen"
 
 
-def test_ohne_untertitel_erst_warten_dann_asr():
+def test_mit_wartezeit_erst_warten_dann_asr():
     ohne = _meta(automatic_captions={"en": []})
-    assert b.entscheide(ohne, CONF, 1.0, "de-orig").art == "warten"
-    e = b.entscheide(ohne, CONF, 5.0, "de-orig")
+    conf = {**CONF, "warte_auf_untertitel_h": 4.0}
+    assert b.entscheide(ohne, conf, 1.0, "de-orig").art == "warten"
+    e = b.entscheide(ohne, conf, 5.0, "de-orig")
     assert (e.art, e.transkript) == ("los", "asr")
 
 
@@ -134,12 +133,83 @@ def test_agent_ohne_upload_und_auftrag_nicht_in_argv():
     assert "WebFetch" not in werkzeuge and "Bash" in werkzeuge
 
 
-def test_dienst_plist():
-    p = plistlib.loads(b.plist({**CONF, "intervall_s": 600}))
-    assert p["Label"] == b.LABEL
-    assert p["StartInterval"] == 600
-    assert p["ProgramArguments"][:2] == ["/usr/bin/caffeinate", "-i"]
-    assert p["ProgramArguments"][-3:] == ["-m", "videoclipper.cli", "beobachte"]
+def test_standard_fuenf_clips_und_top5():
+    assert CONF["clips_pro_video"] == 5 and CONF["top5"] is True
+    # Auf Abruf: fehlt de-orig, wird sofort transkribiert statt gewartet.
+    e = b.entscheide(_meta(automatic_captions={}), CONF, 0.5, "de-orig")
+    assert (e.art, e.transkript) == ("los", "asr")
+
+
+def test_countdown_lauf_gehoert_ueber_quellen_zum_video(tmp_path):
+    lauf = ausgabe.neuer_lauf(tmp_path)
+    lauf.notiere(format="countdown", quellen=["abc"], clips=1)
+    (lauf.mp4 / "abc_top5.mp4").write_bytes(b"x")
+    lauf.titel([("abc_top5", "Top 5 💀 #top5", "Top 5 Momente")])
+    assert b.pruefe_lauf(lauf.wurzel, "abc", tmp_path) == []
+    assert b.pruefe_lauf(lauf.wurzel, "xyz", tmp_path)
+
+
+def test_auftrag_mit_und_ohne_top5(tmp_path):
+    v = {"kanal": "K", "titel": "T"}
+    args = ("abc", v, 600, tmp_path / "v.mp4", tmp_path / "t.json3", "youtube")
+    mit = b.auftrag(*args, CONF, tmp_path / "e.json")
+    assert "5 Clips und ein Top 5" in mit and "data/plans/abc_top5.json" in mit
+    assert "kein Top 5" not in mit
+    ohne = b.auftrag(*args, {**CONF, "top5": False}, tmp_path / "e.json")
+    assert "Diesmal kein Top 5" in ohne
+
+
+def _bereit(monkeypatch, tmp_path, erg):
+    """bearbeite() bis zum Agenten ohne Netz, Platte und Agent."""
+    monkeypatch.setattr(b, "metadaten", lambda vid: _meta())
+    monkeypatch.setattr(b, "frei_gb", lambda: 500.0)
+    monkeypatch.setattr(b, "naechster_termin", lambda jetzt: jetzt + timedelta(hours=1))
+    monkeypatch.setattr(b, "lade", lambda vid, art, conf: (tmp_path / "v.mp4", tmp_path / "t"))
+    monkeypatch.setattr(b, "clippe", lambda *a: erg)
+    monkeypatch.setattr(b, "ausgabe_ordner", lambda: tmp_path)
+    monkeypatch.setattr(b, "mitteilung", lambda text: None)
+    hoch = []
+    monkeypatch.setattr(b.veroeffentlichen, "veroeffentliche",
+                        lambda lauf, **kw: hoch.append(lauf) or {"youtube_offen": 0})
+    return hoch
+
+
+def _video():
+    return {"kanal": "K", "titel": "T", "status": "wartet", "versuche": 0,
+            "veroeffentlicht": "2026-10-21T10:00:00+00:00",
+            "entdeckt": "2026-10-21T11:00:00+00:00"}
+
+
+def test_clips_und_top5_gehen_beide_hoch(monkeypatch, tmp_path):
+    clips = _lauf(tmp_path)
+    top5 = ausgabe.neuer_lauf(tmp_path)
+    top5.notiere(format="countdown", quellen=["abc"])
+    (top5.mp4 / "abc_top5.mp4").write_bytes(b"x")
+    top5.titel([("abc_top5", "Top 5", "Top 5 Momente")])
+    hoch = _bereit(monkeypatch, tmp_path, {"status": "fertig", "lauf": str(clips),
+                                           "top5": str(top5.wurzel), "clips": 5})
+    v = _video()
+    b.bearbeite("abc", v, CONF, datetime(2026, 10, 21, 12, tzinfo=UTC), lambda: None,
+                lambda t: None)
+    assert hoch == [clips, top5.wurzel]
+    assert v["status"] == "geplant"
+
+
+def test_fehlender_top5_haelt_die_clips_nicht_auf(monkeypatch, tmp_path):
+    clips = _lauf(tmp_path)
+    hoch = _bereit(monkeypatch, tmp_path, {"status": "fertig", "lauf": str(clips),
+                                           "top5": None, "clips": 5})
+    v = _video()
+    b.bearbeite("abc", v, CONF, datetime(2026, 10, 21, 12, tzinfo=UTC), lambda: None,
+                lambda t: None)
+    assert hoch == [clips]
+    assert v["status"] == "geplant" and v["top5_fehlt"] == "kein Top 5 geliefert"
+
+
+def test_alter_stand_mit_einzelnem_lauf():
+    assert b.laeufe({"lauf": "/x"}) == [Path("/x")]
+    assert b.laeufe({"laeufe": ["/x", "/y"]}) == [Path("/x"), Path("/y")]
+    assert b.laeufe({}) == []
 
 
 def test_stand_rundreise(tmp_path):

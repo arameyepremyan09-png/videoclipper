@@ -1,24 +1,33 @@
-"""Stage 00 — Kanaele beobachten und neue Videos ohne Zutun clippen.
+"""Stage 00 — Kanaele abfragen und neue Videos ohne Zutun clippen.
 
-``clip beobachte`` laeuft als macOS-Dienst (LaunchAgent) alle zehn Minuten und
-fuehrt jedes neue Video eines Kanals aus ``config/kanaele.yaml`` durch:
+``clip beobachte`` (kurz: ``werkzeuge/neue-clips``) startet der Nutzer selbst,
+wann er will — kein Dienst, der MacBook muss nicht dauerhaft laufen (Auftrag
+vom 2026-10-21, ersetzt den LaunchAgent vom selben Tag). Ein Aufruf fuehrt
+jedes Video durch, das seit dem letzten Aufruf in einem Kanal aus
+``config/kanaele.yaml`` erschienen ist:
 
   1. **Feed.** YouTube gibt je Kanal einen RSS-Feed mit den letzten 15 Videos
      heraus — ohne API-Schluessel und ohne Kontingent. Shorts erkennt man am
-     Link (``/shorts/``); sie werden nicht geclippt.
+     Link (``/shorts/``); sie werden nicht geclippt. 15 Eintraege reichen fuer
+     rund zwei Wochen Pause auch beim fleissigsten Kanal.
   2. **Pruefung.** ``yt-dlp -J`` liefert Laenge, Live-Status und Untertitel.
-     Ein laufender Stream, eine Premiere oder ein Video ohne ``de-orig``
-     wartet auf den naechsten Durchgang: YouTube erzeugt die automatischen
-     Untertitel oft erst Stunden nach dem Upload. Nach
-     ``warte_auf_untertitel_h`` wird selbst transkribiert.
+     Ein laufender Stream oder eine Premiere bleibt fuer den naechsten Aufruf
+     liegen. Fehlt ``de-orig`` noch — YouTube erzeugt es oft erst Stunden nach
+     dem Upload —, wird sofort selbst transkribiert: Der Nutzer will die Clips
+     jetzt, nicht beim naechsten Aufruf (``warte_auf_untertitel_h = 0``).
   3. **Schnitt.** Ein Claude-Code-Lauf ohne Mensch (``claude -p``) arbeitet
      den Ablauf je Video aus ARBEITSSTAND.md ab — Layout, Profil, Plan,
-     Render, Pruefung. Der Auftrag steht in ``config/automat_auftrag.md``.
+     Render, Pruefung — und baut aus denselben Momenten einen Top-5-Countdown.
+     Fuenf Clips plus Top 5 je Video, Auftrag vom 2026-10-21. Der Auftrag an
+     den Agenten steht in ``config/automat_auftrag.md``.
   4. **YouTube (Weg A).** ``veroeffentlichen.veroeffentliche`` plant jeden
-     Clip oeffentlich ins Stundenraster.
+     Clip und den Countdown oeffentlich ins Stundenraster.
   5. **TikTok (Weg B).** Nur eine Mitteilung. Die Entwuerfe gehen erst raus,
-     wenn der Nutzer den Lauf angesehen hat
+     wenn der Nutzer die Laeufe angesehen hat
      (``clip veroeffentliche <lauf> --nur tiktok``).
+
+Waehrend eines Aufrufs haelt ``caffeinate`` den Mac wach; ein Video braucht
+mit Agent, Render und Countdown leicht eine Stunde.
 
 WARUM DER AGENT NICHT SELBST HOCHLAEDT: Er liest Titel und Transkripte fremder
 Kanaele. Was dort steht, darf nie bis zu einem Upload durchreichen. Der Agent
@@ -28,10 +37,10 @@ Schluesselordner (``VIDEOCLIPPER_SCHLUESSEL``), keine MCP-Connectoren und
 keine Web-Werkzeuge.
 
 WARUM DAS RASTER EINE OBERGRENZE HAT: Acht Kanaele liefern zusammen rund fuenf
-lange Videos am Tag, das Raster 10-22 Uhr hat 13 Termine. Ohne Grenze liefe
-die Warteschlange jeden Tag weiter in die Zukunft, und ein Clip ginge erst
-eine Woche nach dem Video online. Liegt der naechste freie Termin mehr als
-``max_vorlauf_tage`` entfernt, wird das Video uebersprungen.
+lange Videos am Tag, jedes bringt sechs Uploads (fuenf Clips, ein Countdown).
+Ohne Grenze liefe die Warteschlange jeden Tag weiter in die Zukunft, und ein
+Clip ginge erst Wochen nach dem Video online. Liegt der naechste freie Termin
+mehr als ``max_vorlauf_tage`` entfernt, wird das Video uebersprungen.
 
 Stand, Protokoll und Agent-Ausgaben liegen unter ``<work>/beobachter/``, nicht
 im Repo.
@@ -42,7 +51,6 @@ from __future__ import annotations
 import fcntl
 import json
 import os
-import plistlib
 import shutil
 import subprocess
 import sys
@@ -62,12 +70,12 @@ from . import hochladen, veroeffentlichen
 from .settings import CONFIG_DIR, ROOT, arbeitsverzeichnis, einstellungen
 
 STANDARD: dict[str, Any] = {
-    "intervall_s": 600,
     "min_dauer_s": 300,
     "max_dauer_s": 4 * 3600,
-    "warte_auf_untertitel_h": 4.0,
+    "warte_auf_untertitel_h": 0.0,
     "aufgeben_nach_h": 48.0,
-    "clips_pro_video": 3,
+    "clips_pro_video": 5,
+    "top5": True,
     "max_vorlauf_tage": 4,
     "min_frei_gb": 40,
     "agent_timeout_min": 240,
@@ -76,8 +84,7 @@ STANDARD: dict[str, Any] = {
     "asr_modell": "~/videoclipper/models/ggml-large-v3-turbo-q5_0.bin",
 }
 
-LABEL = "de.videoclipper.beobachter"
-FEED = "https://www.youtube.com/feeds/videos.xml?channel_id={}"
+FEED ="https://www.youtube.com/feeds/videos.xml?channel_id={}"
 NS = {"a": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/xml/schemas/2015"}
 
 #: Was der Agent nie ausfuehren darf. Der leere Schluesselordner ist die
@@ -339,12 +346,14 @@ def auftrag(video_id: str, v: dict[str, Any], dauer_s: float, video: Path,
     vorlage = (CONFIG_DIR / "automat_auftrag.md").read_text(encoding="utf-8")
     asr = ("Das Transkript ist eigene ASR: jedes Clipfenster mit `asr_fenster.py` "
            "zweitmeinen und die bessere Fassung einsetzen." if transkript_art == "asr" else "")
+    top5 = "" if conf["top5"] else ("**Diesmal kein Top 5** — Schritt 5 entfaellt, "
+                                    "`top5` in der Rueckmeldung ist null.")
     return vorlage.format(
         kanal=v["kanal"], titel=v["titel"], video_id=video_id,
         dauer_min=round(dauer_s / 60), video=video, transkript=transkript,
         transkript_art="YouTube de-orig" if transkript_art == "youtube" else "eigene ASR",
         clips=conf["clips_pro_video"], ausgabe=ausgabe_ordner(), asr_hinweis=asr,
-        arbeit=arbeitsverzeichnis(), ergebnis=ergebnis)
+        top5_hinweis=top5, arbeit=arbeitsverzeichnis(), ergebnis=ergebnis)
 
 
 def agent_befehl(conf: dict[str, Any], session_id: str, name: str) -> list[str]:
@@ -397,7 +406,9 @@ def pruefe_lauf(lauf: Path, video_id: str, basis: Path) -> list[str]:
     if not lauf_json.exists():
         return [f"{lauf_json} fehlt"]
     fehler = []
-    if json.loads(lauf_json.read_text(encoding="utf-8")).get("video_id") != video_id:
+    # Ein Clip-Lauf traegt ``video_id``, ein Countdown-Lauf ``quellen``.
+    notiz = json.loads(lauf_json.read_text(encoding="utf-8"))
+    if notiz.get("video_id") != video_id and video_id not in notiz.get("quellen", []):
         fehler.append(f"lauf.json gehoert nicht zu {video_id}")
     clips = sorted(p.stem for p in (lauf / "mp4").glob("*.mp4"))
     if not clips:
@@ -417,8 +428,8 @@ def pruefe_lauf(lauf: Path, video_id: str, basis: Path) -> list[str]:
 
 @contextmanager
 def sperre() -> Iterator[bool]:
-    """Ein Durchgang zur Zeit. Der Dienst startet alle zehn Minuten, ein
-    Schnitt dauert Stunden — der naechste Start kehrt dann sofort um."""
+    """Ein Durchgang zur Zeit. Ein Aufruf dauert Stunden; ein zweiter Aufruf
+    im anderen Fenster kehrt sofort um, statt dieselben Videos zu schneiden."""
     with (ordner() / "sperre").open("w") as f:
         try:
             fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -432,26 +443,48 @@ def sperre() -> Iterator[bool]:
 
 
 def _stempel(melde: Callable[[str], None]) -> Callable[[str], None]:
-    return lambda text: melde(f"{datetime.now():%Y-%m-%d %H:%M:%S}  {text}")
+    """Mit Uhrzeit ins Terminal und ins Protokoll — der Aufruf laeuft Stunden,
+    und was nachts passiert ist, soll morgens noch nachzulesen sein."""
+    protokoll = ordner() / "beobachter.log"
+
+    def ausgeben(text: str) -> None:
+        zeile = f"{datetime.now():%Y-%m-%d %H:%M:%S}  {text}"
+        melde(zeile)
+        with protokoll.open("a", encoding="utf-8") as f:
+            f.write(zeile + "\n")
+    return ausgeben
+
+
+def laeufe(v: dict[str, Any]) -> list[Path]:
+    """Clip-Lauf und Countdown-Lauf eines Videos. ``lauf`` ist der alte
+    Schluessel aus der Zeit ohne Countdown."""
+    return [Path(p) for p in v.get("laeufe") or ([v["lauf"]] if v.get("lauf") else [])]
 
 
 def lade_hoch(video_id: str, v: dict[str, Any], melde: Callable[[str], None]) -> None:
-    lauf = Path(v["lauf"])
-    try:
-        r = veroeffentlichen.veroeffentliche(lauf, plattformen=["youtube"],
-                                             melde=lambda t: melde(f"  {t.strip()}"))
-    except hochladen.HochladeFehler as e:
-        v.update(status="upload_offen", grund=str(e))
-        melde(f"{video_id}: Upload gescheitert — {e}")
-        return
-    if r["youtube_offen"]:
-        v.update(status="upload_offen", grund=f"{r['youtube_offen']} Clips noch offen")
-        return
-    termine = sorted(e["youtube"]["termin"] for e in veroeffentlichen.lade_stand(lauf).values()
-                     if "youtube" in e)
+    """Jeder Lauf des Videos ins Raster, Clips zuerst, Countdown danach.
+
+    ``veroeffentliche`` merkt sich je Lauf, was oben ist — bricht der zweite
+    ab, laedt ein neuer Aufruf beim ersten nichts doppelt hoch.
+    """
+    termine: list[str] = []
+    for lauf in laeufe(v):
+        try:
+            r = veroeffentlichen.veroeffentliche(lauf, plattformen=["youtube"],
+                                                 melde=lambda t: melde(f"  {t.strip()}"))
+        except hochladen.HochladeFehler as e:
+            v.update(status="upload_offen", grund=str(e))
+            melde(f"{video_id}: Upload gescheitert — {e}")
+            return
+        if r["youtube_offen"]:
+            v.update(status="upload_offen", grund=f"{r['youtube_offen']} Uploads noch offen")
+            return
+        termine += [e["youtube"]["termin"] for e in veroeffentlichen.lade_stand(lauf).values()
+                    if "youtube" in e]
+    termine.sort()
     erster = datetime.fromisoformat(termine[0]) if termine else None
     v.update(status="geplant", grund="", termine=termine)
-    text = (f"{v['kanal']}: {len(termine)} Clips auf YouTube geplant"
+    text = (f"{v['kanal']}: {len(termine)} Videos auf YouTube geplant"
             + (f", ab {erster:%a %d.%m. %H:%M}" if erster else "")
             + ". TikTok wartet auf dich.")
     melde(text)
@@ -522,13 +555,23 @@ def bearbeite(video_id: str, v: dict[str, Any], conf: dict[str, Any], jetzt: dat
         mitteilung(f"{v['kanal']}: keine Clips aus {v['titel'][:50]} — {v['grund']}")
         return
 
-    lauf = Path(str(erg.get("lauf", ""))).expanduser()
+    lauf = Path(str(erg.get("lauf") or "")).expanduser()
     if fehler := pruefe_lauf(lauf, video_id, ausgabe_ordner()):
-        v.update(status="fehler", grund="; ".join(fehler), lauf=str(lauf))
+        v.update(status="fehler", grund="; ".join(fehler), laeufe=[str(lauf)])
         melde(f"{video_id}: Lauf nicht hochgeladen — {v['grund']}")
         mitteilung(f"{v['kanal']}: Lauf fertig, aber nicht hochgeladen — {v['grund']}")
         return
-    v.update(status="upload_offen", lauf=str(lauf), grund="")
+    gefunden = [str(lauf)]
+    # Ein fehlender oder kaputter Countdown haelt die Clips nicht auf.
+    if conf["top5"]:
+        top5 = Path(str(erg.get("top5") or "")).expanduser()
+        if erg.get("top5") and not (mangel := pruefe_lauf(top5, video_id, ausgabe_ordner())):
+            gefunden.append(str(top5))
+        else:
+            hinweis = "; ".join(mangel) if erg.get("top5") else "kein Top 5 geliefert"
+            v["top5_fehlt"] = hinweis
+            melde(f"{video_id}: Top 5 nicht hochgeladen — {hinweis}")
+    v.update(status="upload_offen", laeufe=gefunden, clips=erg.get("clips"), grund="")
     speichere()
     lade_hoch(video_id, v, melde)
 
@@ -561,15 +604,39 @@ def durchgang(*, probe: bool = False, nur_video: str | None = None,
                        key=lambda vid: stand["videos"][vid]["veroeffentlicht"])
         if nur_video:
             offen = [vid for vid in offen if vid == nur_video]
-        if probe:
+        if probe or not offen:
             for vid in offen:
                 v = stand["videos"][vid]
                 melde(f"offen {vid} [{v['status']}] {v['kanal']}: {v['titel']}")
+            if not offen:
+                melde("Keine neuen Videos.")
             return
+
+        halte_wach()
+        melde(f"{len(offen)} Videos zu bearbeiten — je Video etwa eine Stunde. "
+              "Den Mac aufgeklappt lassen.")
         for vid in offen:
             bearbeite(vid, stand["videos"][vid], conf, datetime.now(timezone.utc),
                       lambda: speichere_stand(stand), melde)
             speichere_stand(stand)
+
+        melde("Fertig:")
+        for vid in offen:
+            v = stand["videos"][vid]
+            melde(f"  {v['status']:<13} {v['kanal']}: {v['titel'][:50]}"
+                  + (f" — {v['grund']}" if v.get("grund") else ""))
+        if any(stand["videos"][vid]["status"] == "geplant" for vid in offen):
+            melde("TikTok: `clip beobachte status` zeigt die Laeufe zum Durchsehen.")
+
+
+def halte_wach() -> None:
+    """``caffeinate`` bis dieser Prozess endet. Zugeklappt schlaeft der Mac
+    trotzdem — dagegen hilft nur Aufklappen oder ein externer Bildschirm."""
+    try:
+        subprocess.Popen(["caffeinate", "-i", "-w", str(os.getpid())],
+                         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except OSError:
+        pass
 
 
 def status(melde: Callable[[str], None] = print, anzahl: int = 25) -> None:
@@ -584,50 +651,11 @@ def status(melde: Callable[[str], None] = print, anzahl: int = 25) -> None:
               f"{v['titel'][:45]}" + (f"  — {v['grund']}" if v.get("grund") else ""))
 
     tiktok = [v for v in stand["videos"].values() if v["status"] == "geplant"
-              and not any("tiktok" in e for e in
-                          veroeffentlichen.lade_stand(Path(v["lauf"])).values())]
+              and not any("tiktok" in e for lauf in laeufe(v)
+                          for e in veroeffentlichen.lade_stand(lauf).values())]
     if tiktok:
         melde("\nTikTok wartet auf dich (Weg B):")
         for v in tiktok:
-            melde(f"  {v['kanal']}: {v['titel'][:50]}\n    {v['lauf']}")
-
-
-# --- Dienst ------------------------------------------------------------------
-
-def plist_pfad() -> Path:
-    return Path.home() / "Library" / "LaunchAgents" / f"{LABEL}.plist"
-
-
-def plist(conf: dict[str, Any]) -> bytes:
-    python = ROOT / ".venv" / "bin" / "python"
-    protokoll = ordner() / "beobachter.log"
-    return plistlib.dumps({
-        "Label": LABEL,
-        # caffeinate haelt den Mac wach, solange ein Durchgang laeuft — ein
-        # Schnitt dauert Stunden, und der Ruhezustand wuerde ihn anhalten.
-        "ProgramArguments": ["/usr/bin/caffeinate", "-i",
-                             str(python if python.exists() else sys.executable),
-                             "-m", "videoclipper.cli", "beobachte"],
-        "WorkingDirectory": str(ROOT),
-        "EnvironmentVariables": {"PATH": os.environ.get("PATH", "/usr/bin:/bin"),
-                                 "PYTHONPATH": str(ROOT / "src")},
-        "StartInterval": int(conf["intervall_s"]),
-        "RunAtLoad": True,
-        "StandardOutPath": str(protokoll),
-        "StandardErrorPath": str(protokoll),
-    })
-
-
-def installiere_dienst() -> Path:
-    pfad = plist_pfad()
-    pfad.parent.mkdir(parents=True, exist_ok=True)
-    pfad.write_bytes(plist(konfiguration()))
-    domaene = f"gui/{os.getuid()}"
-    subprocess.run(["launchctl", "bootout", f"{domaene}/{LABEL}"], capture_output=True)
-    subprocess.run(["launchctl", "bootstrap", domaene, str(pfad)], check=True)
-    return pfad
-
-
-def entferne_dienst() -> None:
-    subprocess.run(["launchctl", "bootout", f"gui/{os.getuid()}/{LABEL}"], capture_output=True)
-    plist_pfad().unlink(missing_ok=True)
+            melde(f"  {v['kanal']}: {v['titel'][:50]}")
+            for lauf in laeufe(v):
+                melde(f"    {lauf}")

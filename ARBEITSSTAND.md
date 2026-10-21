@@ -5,10 +5,12 @@ laeuft, was offen ist, mit welchen Befehlen und Werkzeugen gearbeitet wird.
 Architektur und Befunde stehen in [CLAUDE.md](CLAUDE.md), die Auftragslage des
 Nutzers in [SCHNITTREGELN.md](SCHNITTREGELN.md). Beide gelten zuerst.
 
-## Neu am 2026-10-21 — Kanaele beobachten (`clip beobachte`)
+## Neu am 2026-10-21 — neue Videos auf Abruf clippen (`werkzeuge/neue-clips`)
 
 Auftrag des Nutzers: acht Kanaele (`config/kanaele.yaml`, alle mit Zustimmung
-zum Clippen) dauerhaft beobachten und jedes neue Video sofort clippen.
+zum Clippen) auf Abruf pruefen — **kein Dauerdienst**, der Nutzer startet
+`werkzeuge/neue-clips` (= `clip beobachte`) selbst — und jedes neue Video
+sofort clippen: **5 Clips + ein Top 5** aus denselben Momenten.
 YouTube **Weg A** — vollautomatisch, oeffentlich geplant ins Stundenraster;
 TikTok **Weg B** — nur Mitteilung, Entwuerfe nach Durchsicht mit
 `clip veroeffentliche <lauf> --nur tiktok`. Ablauf und Gruende im Kopf von
@@ -16,12 +18,14 @@ TikTok **Weg B** — nur Mitteilung, Entwuerfe nach Durchsicht mit
 settings.toml, Auftrag an den Agenten in `config/automat_auftrag.md`.
 
 - Startpunkt gesetzt am 2026-10-21 00:59: was davor im Feed stand, gilt als gesehen.
-- Laeufe des Agenten landen in `~/videoclipper/clips/automat/`, Stand,
-  Protokoll und Agent-Ausgaben in `~/videoclipper/beobachter/`.
+  Erstes neues Video: `I-MSWkxVxRQ` (Rohaze, GTA Arena Wars), wartet auf den
+  ersten echten Aufruf.
+- Laeufe des Agenten (Clips und Countdown je eigener Lauf) landen in
+  `~/videoclipper/clips/automat/`, Stand, Protokoll und Agent-Ausgaben in
+  `~/videoclipper/beobachter/`.
 - Jeder Agentenlauf ist eine Claude-Sitzung mit fester ID (`session` im Stand)
   — `claude --resume <id>` zeigt, was er getan hat.
-- Dienst: `clip beobachte dienst-an` / `dienst-aus` (LaunchAgent
-  `de.videoclipper.beobachter`). Der Nutzer schaltet ihn selbst ein.
+- Der LaunchAgent aus der ersten Fassung ist wieder ausgebaut; er war nie installiert.
 
 ## Neu am 2026-10-20 — zwei Dauerregeln und ein Umbau
 

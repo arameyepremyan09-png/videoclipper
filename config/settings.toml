@@ -81,20 +81,22 @@ abstand_minuten = 60
 vorlauf_minuten = 15
 
 [beobachten]
-# Auftrag des Nutzers vom 2026-10-21: die Kanaele aus config/kanaele.yaml
-# dauerhaft beobachten. YouTube vollautomatisch und oeffentlich geplant
-# (Weg A), TikTok nur als Mitteilung (Weg B). Ablauf in beobachten.py.
-intervall_s = 600
+# Auftrag des Nutzers vom 2026-10-21: die Kanaele aus config/kanaele.yaml auf
+# Abruf pruefen (`werkzeuge/neue-clips`, kein Dauerdienst) und neue Videos
+# sofort clippen. YouTube vollautomatisch und oeffentlich geplant (Weg A),
+# TikTok nur als Mitteilung (Weg B). Ablauf in beobachten.py.
 # Kuerzer ist ein Short oder ein Trailer, laenger dauert die ASR zu lange.
 min_dauer_s = 300
 max_dauer_s = 14400
-# YouTube erzeugt de-orig oft erst Stunden nach dem Upload. Bis dahin warten,
-# danach eigene ASR. Ein Video, das so lange nicht weiterkommt, wird aufgegeben.
-warte_auf_untertitel_h = 4.0
+# 0 = fehlt de-orig noch, sofort selbst transkribieren statt zu warten.
+warte_auf_untertitel_h = 0.0
+# Ein Livestream, der so lange nicht als fertiges Video vorliegt, wird aufgegeben.
 aufgeben_nach_h = 48.0
-# Acht Kanaele liefern rund fuenf lange Videos am Tag, das Raster 13 Termine.
-# Drei Clips je Video und eine Obergrenze fuer den Vorlauf halten das aktuell.
-clips_pro_video = 3
+# Je Video fuenf Clips und ein Top 5 aus denselben Momenten (Auftrag 2026-10-21).
+clips_pro_video = 5
+top5 = true
+# Sechs Uploads je Video, das Raster hat 13 Termine am Tag. Liegt der naechste
+# freie Termin weiter weg, wird das Video uebersprungen statt veraltet gepostet.
 max_vorlauf_tage = 4
 min_frei_gb = 40
 # Der Agent (claude -p): Zeitlimit je Video, Versuche, Modell (leer = Standard).

@@ -1,0 +1,13 @@
+#!/bin/zsh
+# Neue Videos der beobachteten Kanaele suchen und direkt clippen
+# (5 Clips + Top 5 je Video, YouTube geplant, TikTok nach Durchsicht).
+#
+#   neue-clips             suchen und clippen
+#   neue-clips --probe     nur zeigen, was neu ist
+#   neue-clips status      was zuletzt passiert ist, welche Laeufe auf TikTok warten
+#   neue-clips --video ID  nur dieses Video
+#
+# Einmalig als Kurzbefehl einrichten:
+#   echo "alias neue-clips=~/Desktop/VideoClipper/repo/werkzeuge/neue-clips" >> ~/.zshrc
+cd "${0:A:h}/.." || exit 1
+PYTHONPATH=src exec .venv/bin/python -m videoclipper.cli beobachte "$@"

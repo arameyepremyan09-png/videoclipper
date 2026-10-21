@@ -28,7 +28,7 @@ Veroeffentlichen (Stage 18):
 ``clip veroeffentliche`` Ganzen Lauf: YouTube stuendlich geplant, TikTok als Entwurf.
 
 Automatik (Stage 00):
-``clip beobachte``   Kanaele beobachten, neue Videos clippen, YouTube planen.
+``clip beobachte``   Kanaele abfragen, neue Videos clippen (5 + Top 5), YouTube planen.
 """
 
 from __future__ import annotations
@@ -639,12 +639,6 @@ def cmd_veroeffentliche(args: argparse.Namespace) -> None:
 def cmd_beobachte(args: argparse.Namespace) -> None:
     if args.aktion == "status":
         beobachten.status()
-    elif args.aktion == "dienst-an":
-        pfad = beobachten.installiere_dienst()
-        print(f"Dienst laeuft: {pfad}\nProtokoll: {beobachten.ordner() / 'beobachter.log'}")
-    elif args.aktion == "dienst-aus":
-        beobachten.entferne_dienst()
-        print("Dienst entfernt.")
     else:
         beobachten.durchgang(probe=args.probe, nur_video=args.video)
 
@@ -933,10 +927,9 @@ def main() -> None:
     ve.set_defaults(func=cmd_veroeffentliche)
 
     bo = sub.add_parser("beobachte",
-                        help="Kanaele beobachten: neue Videos clippen, YouTube planen")
-    bo.add_argument("aktion", nargs="?", default="lauf",
-                    choices=("lauf", "status", "dienst-an", "dienst-aus"),
-                    help="lauf: ein Durchgang (Standard, so ruft ihn der Dienst)")
+                        help="Kanaele abfragen: neue Videos clippen, YouTube planen")
+    bo.add_argument("aktion", nargs="?", default="lauf", choices=("lauf", "status"),
+                    help="lauf: neue Videos suchen und clippen (Standard)")
     bo.add_argument("--probe", action="store_true",
                     help="nur Feeds abrufen und zeigen, was offen ist")
     bo.add_argument("--video", help="nur dieses offene Video bearbeiten")

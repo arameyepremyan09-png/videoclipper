@@ -246,21 +246,23 @@ TikTok-Einschränkung: Solange die App kein Audit bestanden hat, ist jeder
 Direct Post `SELF_ONLY`. `--tiktok-modus entwurf` legt das Video stattdessen
 in den Entwürfen der TikTok-App ab, dort tippst du auf Posten.
 
-## Kanäle beobachten (Automatik)
+## Neue Videos abfragen (Automatik)
 
-`clip beobachte` verfolgt die Kanäle aus `config/kanaele.yaml` und clippt jedes
-neue Video ohne Zutun: RSS-Feed → `yt-dlp` → ein `claude -p`-Lauf nach
-`config/automat_auftrag.md` → YouTube öffentlich ins Stundenraster. TikTok
-bekommt nur eine Mitteilung; die Entwürfe gehen nach Durchsicht mit
-`clip veroeffentliche <lauf> --nur tiktok` raus. Ablauf und Gründe stehen im
-Kopf von `src/videoclipper/beobachten.py`, Stellschrauben unter `[beobachten]`
-in `settings.toml`.
+`werkzeuge/neue-clips` (= `clip beobachte`) fragt die Kanäle aus
+`config/kanaele.yaml` ab und clippt jedes Video, das seit dem letzten Aufruf
+erschienen ist: RSS-Feed → `yt-dlp` → ein `claude -p`-Lauf nach
+`config/automat_auftrag.md` (5 Clips + Top 5 aus denselben Momenten) →
+YouTube öffentlich ins Stundenraster. TikTok bekommt nur eine Mitteilung; die
+Entwürfe gehen nach Durchsicht mit `clip veroeffentliche <lauf> --nur tiktok`
+raus. Kein Dauerdienst: Der Mac muss nur laufen, solange der Befehl läuft.
+Ablauf und Gründe im Kopf von `src/videoclipper/beobachten.py`,
+Stellschrauben unter `[beobachten]` in `settings.toml`.
 
 ```bash
-clip beobachte dienst-an     # LaunchAgent, alle 10 Minuten
-clip beobachte status        # Kanäle, Videos, wartende TikTok-Läufe
-clip beobachte --probe       # nur Feeds abrufen, nichts laden
-clip beobachte dienst-aus
+werkzeuge/neue-clips             # suchen und clippen
+werkzeuge/neue-clips --probe     # nur zeigen, was neu ist
+werkzeuge/neue-clips status      # was passiert ist, welche Läufe auf TikTok warten
+werkzeuge/neue-clips --video ID  # nur dieses Video
 ```
 
 Voraussetzung: `claude` ist im Terminal angemeldet (`claude`, dann `/login`).
